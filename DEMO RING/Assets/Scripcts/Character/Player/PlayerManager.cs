@@ -15,6 +15,7 @@ public class PlayerManager : CharacterManager
     [HideInInspector] public PlayerStatsManager playerStatsManager;
     [HideInInspector] public PlayerInventoryManager playerInventoryManager;
     [HideInInspector] public PlayerEquipmentManager playerEquipmentManager;
+    [HideInInspector] public PlayerCombatManager playerCombatManager;
 
     protected override void Awake()
     {
@@ -26,6 +27,7 @@ public class PlayerManager : CharacterManager
         playerStatsManager = GetComponent<PlayerStatsManager>();
         playerInventoryManager = GetComponent<PlayerInventoryManager>();
         playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
+        playerCombatManager = GetComponent<PlayerCombatManager>();
     }
 
     protected override void Update()
@@ -80,6 +82,7 @@ public class PlayerManager : CharacterManager
         //装备
         playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChanged;
         playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChanged;
+        playerNetworkManager.currentWeaponBeingUsed.OnValueChanged += playerNetworkManager.OnCurrentWeaponBedingUsedIDChanged;
 
         //如果不是房主，本地玩家需要重新设置状态条最大值和当前值 因为房主的数值会同步过来
         //否则会导致Player Network Manager的数据不会更新
@@ -113,7 +116,7 @@ public class PlayerManager : CharacterManager
             
             //重生效果 如 减少血上限
 
-            playerAnimatorManager.PlayerTargetAnimation("Empty", false);
+            playerAnimatorManager.PlayerTargetActionAnimation("Empty", false);
         }
     }
 

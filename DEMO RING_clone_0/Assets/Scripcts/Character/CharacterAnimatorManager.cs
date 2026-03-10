@@ -30,7 +30,7 @@ public class CharacterAnimatorManager : MonoBehaviour
         character.animator.SetFloat(vertical, verticalAmount, 0.1f, Time.deltaTime);
     }
     
-    public virtual void PlayerTargetAnimation(string targetAnimation,bool isPerformingAction,bool applyRootMotion = true,bool canRotate = false,bool canMove = false)
+    public virtual void PlayerTargetActionAnimation(string targetAnimation,bool isPerformingAction,bool applyRootMotion = true,bool canRotate = false,bool canMove = false)
     {
         character.applyRootMotion = applyRootMotion;
         character.animator.CrossFade(targetAnimation, 0.2f);
@@ -39,6 +39,24 @@ public class CharacterAnimatorManager : MonoBehaviour
         character.canMove = canMove;
 
         character.characterNetworkManager.NotifyTheServerOfActionAnimationServerRpc(
+            NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
+    }
+
+    public virtual void PlayerTargetAttackActionAnimation(string targetAnimation, bool isPerformingAction, bool applyRootMotion = true, bool canRotate = false, bool canMove = false)
+    {
+        //COMBOS
+        //确定攻击类型
+        //根据武器更新当前的动作模组
+        //确定是否是成对的
+        //标记 “Attacking”
+
+        character.applyRootMotion = applyRootMotion;
+        character.animator.CrossFade(targetAnimation, 0.2f);
+        character.isPerformingAction = isPerformingAction;
+        character.canRotate = canRotate;
+        character.canMove = canMove;
+
+        character.characterNetworkManager.NotifyTheServerOfAttackActionAnimationServerRpc(
             NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
     }
 }

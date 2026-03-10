@@ -38,8 +38,10 @@ public class WeaponItem : Item
     //跑功耐力消耗
     //轻攻击耐力消耗修饰
     //重攻击耐力小号修饰
-    
+
     //基于物品的动作 （RB,RT,LB,LT）
+    [Header("Weapon Actions")]
+    public WeaponItemAction oh_RB_Action;//oh for one hand
     
     //ASH OF WAR
     

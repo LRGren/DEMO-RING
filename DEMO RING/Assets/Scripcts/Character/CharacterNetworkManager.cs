@@ -75,4 +75,28 @@ public class CharacterNetworkManager : NetworkBehaviour
         character.applyRootMotion = applyRootMotion;
         character.animator.CrossFade(animationName, 0.2f);
     }
+
+    [ServerRpc]
+    public void NotifyTheServerOfAttackActionAnimationServerRpc(ulong clientId, string animationName, bool applyRootMotion)
+    {
+        if (IsServer)
+        {
+            PlayAttackActionAnimationForAllClientsClientRpc(clientId, animationName, applyRootMotion);
+        }
+    }
+
+    [ClientRpc]
+    public void PlayAttackActionAnimationForAllClientsClientRpc(ulong clientId, string animationName, bool applyRootMotion)
+    {
+        if (clientId != NetworkManager.Singleton.LocalClientId)
+        {
+            PerformAttackActionAnimationFromServer(animationName, applyRootMotion);
+        }
+    }
+
+    public void PerformAttackActionAnimationFromServer(string animationName, bool applyRootMotion)
+    {
+        character.applyRootMotion = applyRootMotion;
+        character.animator.CrossFade(animationName, 0.2f);
+    }
 }

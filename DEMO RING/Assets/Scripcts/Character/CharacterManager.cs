@@ -79,7 +79,7 @@ public class CharacterManager : NetworkBehaviour
 
         if (!manuallySelectedDeathAnimation)
         {
-            characterAnimatorManager.PlayerTargetAnimation("Death_01", true);
+            characterAnimatorManager.PlayerTargetActionAnimation("Death_01", true);
         }
 
         yield return new WaitForSeconds(5);

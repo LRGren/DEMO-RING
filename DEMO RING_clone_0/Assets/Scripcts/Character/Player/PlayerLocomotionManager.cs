@@ -173,12 +173,12 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
             Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
             player.transform.rotation = playerRotation;
 
-            player.playerAnimatorManager.PlayerTargetAnimation("Roll_Forward_01", true, true);
+            player.playerAnimatorManager.PlayerTargetActionAnimation("Roll_Forward_01", true, true);
         }
         else
         {
             //后跳
-            player.playerAnimatorManager.PlayerTargetAnimation("Back_Step_01", true, true);
+            player.playerAnimatorManager.PlayerTargetActionAnimation("Back_Step_01", true, true);
         }
 
         player.playerNetworkManager.currentStamina.Value -= dodgeStaminaCost;
@@ -224,7 +224,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
             return;
         
         //注意是单手跳跃，还是双持跳跃
-        player.playerAnimatorManager.PlayerTargetAnimation("Main_Jump_01", false);
+        player.playerAnimatorManager.PlayerTargetActionAnimation("Main_Jump_01", false);
 
         player.playerNetworkManager.isJumping.Value = true;
         

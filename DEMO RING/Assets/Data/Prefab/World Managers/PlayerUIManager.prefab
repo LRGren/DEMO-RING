@@ -592,7 +592,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleBarLengthWithStats: 1
-  widthScaleMultiplier: 1
+  widthScaleMultiplier: 1.5
 --- !u!1 &3277709858994681362
 GameObject:
   m_ObjectHideFlags: 0

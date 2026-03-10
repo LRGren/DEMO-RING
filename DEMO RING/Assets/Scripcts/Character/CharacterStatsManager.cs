@@ -28,7 +28,7 @@ public class CharacterStatsManager : MonoBehaviour
         float stamina = 0;
         
         //耐力计算公式
-        stamina = endurance * 10;
+        stamina = endurance * 15;
         
         return Mathf.RoundToInt(stamina);
     }

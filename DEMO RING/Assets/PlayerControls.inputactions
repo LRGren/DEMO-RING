@@ -152,6 +152,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "RB",
+                    "type": "Button",
+                    "id": "5eee892d-229f-45bb-a3ae-fb9c5f28dea7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Sprint",
                     "type": "Button",
                     "id": "ab3e788a-88a5-4756-bda6-5af674554c86",
@@ -203,6 +212,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9895217d-3ac4-4688-a291-0c7e2fda7945",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4e6c1d54-8b21-416f-8916-09602710cbd7",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RB",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
