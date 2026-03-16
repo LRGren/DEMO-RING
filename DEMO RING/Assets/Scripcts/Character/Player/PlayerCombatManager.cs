@@ -25,4 +25,26 @@ public class PlayerCombatManager : CharacterCombatManager
 
         }
     }
+
+    public virtual void DrainStaminaBasedOnAttack()
+    {
+        if (!player.IsOwner)
+            return;
+
+        if(currentWeaponBedingUsed == null)
+            return;
+
+        float staminaCost = currentWeaponBedingUsed.basicStaminaCost;
+
+        switch (currentAttackType)
+        {
+            case AttackType.LightAttack01:
+                staminaCost *= currentWeaponBedingUsed.lightAttackStaminaModifier;
+                break;
+            default:
+                break;
+        }
+
+        player.playerNetworkManager.currentStamina.Value -= staminaCost;
+    }
 }

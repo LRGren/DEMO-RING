@@ -1118,6 +1118,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   characterEffectsManager: {fileID: 0}
   characterAnimatorManager: {fileID: 0}
+  characterCombatManager: {fileID: 0}
   isPerformingAction: 0
   isGrounded: 0
   applyRootMotion: 0
@@ -1209,7 +1210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d17c7d63bcad64439ccadaa55344cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentRightHandWeapon: {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f,
+  currentRightHandWeapon: {fileID: 11400000, guid: 5127d45e178cc8649b053be9de266c07,
     type: 2}
   currentLeftHandWeapon: {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f,
     type: 2}
@@ -1235,6 +1236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e3ec0fd495fc274988b34cbb9454c45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAttackType: 0
   currentWeaponBedingUsed: {fileID: 0}
 --- !u!114 &-8460170855653998535
 MonoBehaviour:

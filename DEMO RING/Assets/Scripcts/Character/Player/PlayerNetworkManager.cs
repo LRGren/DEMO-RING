@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Unity.Netcode;
 using Unity.Collections;
+using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerNetworkManager : CharacterNetworkManager
 {
@@ -40,7 +41,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
     public void SetNewMaxHealthValue(int oldVitality, int newVitality)
     {
-        maxHealth.Value = player.playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(newVitality);
+        maxHealth.Value = player.playerStatsManager.CalculateHealthBasedOnVitalityLevel(newVitality);
         PlayerUIManager.instance.playerUIHudManager.SetMaxHealthValue(maxHealth.Value);
         currentHealth.Value = maxHealth.Value;
         
@@ -48,11 +49,13 @@ public class PlayerNetworkManager : CharacterNetworkManager
     
     public void SetNewMaxStaminaValue(int oldEndurance, int newEndurance)
     {
-        maxStamina.Value = player.playerStatsManager.CalculateHealthBasedOnVitalityLevel(newEndurance);
+        maxStamina.Value = player.playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(newEndurance);
         PlayerUIManager.instance.playerUIHudManager.SetMaxStaminaValue(maxStamina.Value);
         currentStamina.Value = maxStamina.Value;
     }
-    
+
+
+    // Weapon
     public void OnCurrentRightHandWeaponIDChanged(int oldWeaponID, int newWeaponID)
     {
         WeaponItem newWeapon = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(newWeaponID));
@@ -71,6 +74,9 @@ public class PlayerNetworkManager : CharacterNetworkManager
         WeaponItem newWeapon = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(newWeaponID));
         player.playerCombatManager.currentWeaponBedingUsed = newWeapon;
     }
+
+
+    // Weapon
 
     [ServerRpc]
     public void NotifyTheServerOfWeaponActionServerRpc(ulong clientID,int actionID,int weaponID)
@@ -105,4 +111,5 @@ public class PlayerNetworkManager : CharacterNetworkManager
         }
     }
 
+    
 }

@@ -54,6 +54,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         LoadLeftWeapon();
     }
 
+    // Right Weapon
     public void LoadRightWeapon()
     {
         if (player.playerInventoryManager.currentRightHandWeapon != null)
@@ -137,6 +138,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         }
     }
 
+    // Left Weapon 
     public void LoadLeftWeapon()
     {
         if (player.playerInventoryManager.currentLeftHandWeapon != null)
@@ -156,4 +158,31 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
     }
 
+    // Damage Colliders
+    public void OpenDamageCollider()
+    {
+        if (player.playerNetworkManager.isUsingRightHand.Value)
+        {
+            rightHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
+        }
+        else if (player.playerNetworkManager.isUsingLeftHand.Value)
+        {
+            leftHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
+        }
+
+        //双手共持
+    }
+
+    public void CloseDamageCollider()
+    {
+        if (player.playerNetworkManager.isUsingRightHand.Value)
+        {
+            rightHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
+        }
+        else if (player.playerNetworkManager.isUsingLeftHand.Value)
+        {
+            leftHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
+        }
+        //双手共持
+    }
 }

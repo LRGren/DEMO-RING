@@ -27,16 +27,19 @@ public class WeaponItem : Item
     [Header("Weapon Poise")]
     public float poiseDamage = 10;
     //出手硬直
-    
+
+    [Header("Attack Modifiers")]
     //武器修饰符
     //轻攻击修饰
+    public float light_Attack_01_Modifier = 1.1f;
     //重攻击修饰
     //暴击伤害修饰 等等
-    
-    [Header("Stamina Cost")]
+
+    [Header("Stamina Cost Modifiers")]
     public int basicStaminaCost = 0;
     //跑功耐力消耗
     //轻攻击耐力消耗修饰
+    public float lightAttackStaminaModifier = 0.9f;
     //重攻击耐力小号修饰
 
     //基于物品的动作 （RB,RT,LB,LT）

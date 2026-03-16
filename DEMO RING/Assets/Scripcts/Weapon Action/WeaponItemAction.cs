@@ -15,7 +15,7 @@ public class WeaponItemAction : ScriptableObject
             playerPerformingAction.playerNetworkManager.currentWeaponBeingUsed.Value = weaponPerformingAction.itemID;
         }
 
-        Debug.Log("Attempt To Perform Action");
+        //Debug.Log("Attempt To Perform Action");
     }
 
 }

@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8f7e699a11501e4386d763342df3e0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageCollider: {fileID: 8907491334150187207}
   physicalDamage: 0
   magicalDamage: 0
   fireDamage: 0
@@ -235,6 +236,7 @@ MonoBehaviour:
   holyDamage: 0
   contactPoint: {x: 0, y: 0, z: 0}
   characterCasuingDamage: {fileID: 0}
+  light_Attack_01_Modifier: 0
 --- !u!1 &6703533235803094392
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class PlayerInputManager : MonoBehaviour
@@ -125,6 +126,9 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleAllInputs()
     {
+        if(player == null)
+            return;
+
         HandlePlayerMovementInput();
         HandleCameraMovementInput();
         HandleDodgeInput();
@@ -206,6 +210,8 @@ public class PlayerInputManager : MonoBehaviour
             RBInput = false;
 
             //如果有UI，不反应
+
+            player.playerNetworkManager.SetCharacterActionHand(true);
 
             player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_RB_Action, player.playerInventoryManager.currentRightHandWeapon);
         }
