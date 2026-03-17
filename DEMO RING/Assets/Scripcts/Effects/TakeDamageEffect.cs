@@ -54,6 +54,7 @@ public class TakeDamageEffect : InstantCharacterEffect
         //确认累计效果 如 毒
         //SOUND FX
         //VFX 溅血效果
+        PlayDamage(character);
         
         //如果是 AI 将敌人设置为发动攻击的人
     }
@@ -85,4 +86,12 @@ public class TakeDamageEffect : InstantCharacterEffect
         //计算削韧值
     }
     
+    private void PlayDamage(CharacterManager character)
+    {
+        //火焰伤害特效
+        //雷电伤害特效
+        //等等
+
+        character.characterEffectsManager.PlayBloodSplatterVFX(contactPoint);
+    }
 }

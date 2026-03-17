@@ -13,6 +13,9 @@ public class CharacterEffectsManager : MonoBehaviour
 
     private CharacterManager character;
 
+    [Header("VFX")]
+    [SerializeField] private GameObject bloodSplatterVFX;
+
     protected virtual void Awake()
     {
         character = GetComponent<CharacterManager>();
@@ -23,4 +26,17 @@ public class CharacterEffectsManager : MonoBehaviour
         effect.ProcessEffect(character);
     }
     
+    public void PlayBloodSplatterVFX(Vector3 contactPoint)
+    {
+        if (bloodSplatterVFX != null)
+        {
+            //如果有血迹特效预设，则实例化它
+            GameObject bloodSplatter = Instantiate(bloodSplatterVFX, contactPoint, Quaternion.identity);
+        }
+        else
+        {
+            //如果没有血迹特效预设，则尝试从世界角色效果管理器中获取并实例化它
+            GameObject bloodSplatter = Instantiate(WorldCharacterEffectsManager.instance.bloodSplatterVFX, contactPoint, Quaternion.identity);
+        }
+    }
 }
