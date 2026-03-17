@@ -20,7 +20,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         base.Awake();
 
         player = GetComponent<PlayerManager>();
-        
+
         InitialiseWeaponSlots();
     }
 

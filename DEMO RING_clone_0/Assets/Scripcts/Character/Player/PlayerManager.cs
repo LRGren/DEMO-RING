@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public class PlayerManager : CharacterManager
 {
@@ -57,6 +58,7 @@ public class PlayerManager : CharacterManager
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnecterCallback;
 
         if (IsOwner)
         {
@@ -90,6 +92,25 @@ public class PlayerManager : CharacterManager
         if (IsOwner && !IsServer)
         {
             LoadGameFromCurrentCharacterData(ref WorldSaveGameManager.instance.currentCharacterData);
+        }
+    }
+
+    private void OnClientConnecterCallback(ulong clientId)
+    {
+        WorldGameSessionManager.instance.AddPlayerToActivePlayerList(this);
+
+        //如果我们是服务器，表示我们是主机，不会迟于其他玩家加入，所以在他们加入的时候会进行加载
+        //如果我们是客户端，表示我们是加入别人的玩家，我们需要在加入的时候加载其他玩家的数据
+
+        if (!IsServer && IsOwner)
+        {
+            foreach (var player in WorldGameSessionManager.instance.players)
+            {
+                if (player != this)
+                {
+                    player.LoadOtherPlayerCharacterWhenJoingServer();
+                }
+            }
         }
     }
 
@@ -163,6 +184,12 @@ public class PlayerManager : CharacterManager
         //自己加的
         PlayerUIManager.instance.playerUIHudManager.SetNewHealthValue(playerNetworkManager.currentHealth.Value, playerNetworkManager.currentHealth.Value);
         PlayerUIManager.instance.playerUIHudManager.SetNewStaminaValue(playerNetworkManager.currentStamina.Value, playerNetworkManager.currentStamina.Value);
+    }
+
+    public void LoadOtherPlayerCharacterWhenJoingServer()
+    {
+        playerNetworkManager.OnCurrentRightHandWeaponIDChanged(0, playerNetworkManager.currentRightHandWeaponID.Value);
+        playerNetworkManager.OnCurrentLeftHandWeaponIDChanged(0, playerNetworkManager.currentLeftHandWeaponID.Value);
     }
 
     public void DebugMenu()
