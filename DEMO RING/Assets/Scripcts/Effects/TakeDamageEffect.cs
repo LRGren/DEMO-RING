@@ -50,6 +50,7 @@ public class TakeDamageEffect : InstantCharacterEffect
         //计算伤害
         CalculteDamage(character);
         //确认受击方向
+        PlayDirectionalBasedDamageAnimation(character);
         //受击动画
         //确认累计效果 如 毒
         //SOUND FX
@@ -102,4 +103,45 @@ public class TakeDamageEffect : InstantCharacterEffect
 
         character.characterSoundFXManager.PlaySoundFX(physicalSFX);
     }
+
+    private void PlayDirectionalBasedDamageAnimation(CharacterManager character)
+    {
+        if(!character.IsOwner)
+            return;
+
+        //失衡
+        poiseIsBroken = true;
+
+        if(angleHitFrom >= 145 && angleHitFrom <= 180)
+        {
+            //front
+            damageAnimation = character.characterAnimatorManager.hit_Forward_Medium_01;
+        }
+        else if(angleHitFrom <= -145 && angleHitFrom > 180)
+        {
+            //front
+            damageAnimation = character.characterAnimatorManager.hit_Forward_Medium_01;
+        }
+        else if(angleHitFrom >= -45 && angleHitFrom <= 45)
+        {
+            //back
+            damageAnimation = character.characterAnimatorManager.hit_Back_Medium_01;
+        }
+        else if(angleHitFrom >= -144 && angleHitFrom <= -45)
+        {
+            //left
+            damageAnimation = character.characterAnimatorManager.hit_Left_Medium_01;
+        }
+        else if (angleHitFrom >= 45 && angleHitFrom <= 144)
+        {
+            //right
+            damageAnimation = character.characterAnimatorManager.hit_Right_Medium_01;
+        }
+        
+        if(poiseIsBroken)
+        {
+            character.characterAnimatorManager.PlayerTargetActionAnimation(damageAnimation, true);
+        }
+    }
+
 }

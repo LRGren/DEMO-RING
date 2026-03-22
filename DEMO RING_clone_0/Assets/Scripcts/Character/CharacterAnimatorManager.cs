@@ -11,6 +11,12 @@ public class CharacterAnimatorManager : MonoBehaviour
     private int horizontal;
     private int vertical;
 
+    [Header("Damage Animation")]
+    public string hit_Forward_Medium_01 = "Hit_Forward_Medium_01";
+    public string hit_Back_Medium_01 = "Hit_Back_Medium_01";
+    public string hit_Left_Medium_01 = "Hit_Left_Medium_01";
+    public string hit_Right_Medium_01 = "Hit_Right_Medium_01";
+
     protected virtual void Awake()
     {
         character = GetComponent<CharacterManager>();
@@ -32,6 +38,8 @@ public class CharacterAnimatorManager : MonoBehaviour
     
     public virtual void PlayerTargetActionAnimation(string targetAnimation,bool isPerformingAction,bool applyRootMotion = true,bool canRotate = false,bool canMove = false)
     {
+        Debug.Log("Playing Target Action Animation: " + targetAnimation);
+
         character.applyRootMotion = applyRootMotion;
         character.animator.CrossFade(targetAnimation, 0.2f);
         character.isPerformingAction = isPerformingAction;
@@ -60,4 +68,5 @@ public class CharacterAnimatorManager : MonoBehaviour
         character.characterNetworkManager.NotifyTheServerOfAttackActionAnimationServerRpc(
             NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
     }
+
 }
