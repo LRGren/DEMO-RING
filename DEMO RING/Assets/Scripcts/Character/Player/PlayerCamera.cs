@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
@@ -26,7 +27,13 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private float upAndDownAngle;
     private float cameraZPosition;
     private float targetCameraZPosition;
-    
+
+    [Header("Lock On")]
+    [SerializeField] private float lockOnRadius = 20f;
+    [SerializeField] private float minimumLockOnAngle = -50f;
+    [SerializeField] private float maximumLockOnAngle = 50f;
+    [SerializeField] private float maximumLockOnDistance = 20f;
+
     private void Awake()
     {
         if (instance == null)
@@ -106,5 +113,58 @@ public class PlayerCamera : MonoBehaviour
 
         cameraObjectPosition.z = Mathf.Lerp(cameraObject.transform.localPosition.z, targetCameraZPosition, 0.2f);
         cameraObject.transform.localPosition = cameraObjectPosition;
+    }
+
+    public void HandleLocatingLockOnTargets()
+    {
+        float shortestDistance = Mathf.Infinity;                //锁定目标的最短距离
+        float shortestDistanceOfRightTarget = Mathf.Infinity;   //用于确定某一轴【当前目标右侧】的最短距离
+        float shortestDistanceOfLeftTarget = -Mathf.Infinity;   //用于确定某一轴【当前目标左侧】的最短距离
+
+        //TO DO: Layers
+        Collider[] colliders = Physics.OverlapSphere(player.transform.position, lockOnRadius,WorldUtilityManager.instance.GetCharacterLayers());
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            CharacterManager lockOnTarget = colliders[i].GetComponent<CharacterManager>();
+
+            if (lockOnTarget != null)
+            {
+                Vector3 lockTargetDirection = lockOnTarget.transform.position - player.transform.position;
+                float distanceFromTarget = Vector3.Distance(player.transform.position, lockOnTarget.transform.position);
+                float viewableAngle = Vector3.Angle(lockTargetDirection, cameraObject.transform.forward);
+
+                //如果目标死亡
+                if (lockOnTarget.isDead.Value)
+                    continue;
+
+                //如果目标是自己
+                if(lockOnTarget.transform.root == player.transform.root)
+                    continue;
+
+                //如果目标在锁定范围外
+                if(distanceFromTarget > maximumLockOnDistance)
+                    continue;
+
+                //如果目标在锁定视野内
+                if(viewableAngle > minimumLockOnAngle && viewableAngle < maximumLockOnAngle)
+                {
+                    RaycastHit hit;
+
+                    //TO DO: Layers
+                    if (Physics.Linecast(player.playerCombatManager.lockOnTransform.position, 
+                        lockOnTarget.characterCombatManager.lockOnTransform.position, 
+                        out hit,WorldUtilityManager.instance.GetEnviroLayers()))
+                    {
+                        //如果射线碰撞到的物体不是锁定目标
+                        continue;
+                    }
+                    else
+                    {
+                        Debug .Log("WE MADE IT");
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -20,7 +21,10 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private Vector2 cameraMouseInput;
     public float cameraVerticalInput;
     public float cameraHorizontalInput;
-    
+
+    [Header("Lock On Inputs")]
+    [SerializeField] private bool lock_On_Input = false;
+
     [Header("Player Movement Inputs")]
     [SerializeField] private Vector2 movementInput;
     public float verticalInput;
@@ -28,10 +32,10 @@ public class PlayerInputManager : MonoBehaviour
     public float moveAmount;
     
     [Header("Player Dodge Inputs")]
-    [SerializeField] private bool dodgeInput = false;
-    [SerializeField] private bool sprintInput = false;
-    [SerializeField] private bool jumpInput = false;
-    [SerializeField] private bool RBInput = false;
+    [SerializeField] private bool dodge_Input = false;
+    [SerializeField] private bool sprint_Input = false;
+    [SerializeField] private bool jump_Input = false;
+    [SerializeField] private bool RB_Input = false;
 
     private void Awake()
     {
@@ -86,16 +90,16 @@ public class PlayerInputManager : MonoBehaviour
             playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
 
             playerControls.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
-            playerControls.PlayerCamera.Mouse.performed += i => cameraMouseInput = i.ReadValue<Vector2>();
+            //playerControls.PlayerCamera.Mouse.performed += i => cameraMouseInput = i.ReadValue<Vector2>();
 
-            playerControls.PlayerActions.Dodge.performed += i => dodgeInput = true;
+            playerControls.PlayerActions.Dodge.performed += i => dodge_Input = true;
+            playerControls.PlayerActions.Jump.performed += i => jump_Input = true;
+            playerControls.PlayerActions.LockOn.performed += i => lock_On_Input = true;
             
-            playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
-            
-            playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
-            playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
+            playerControls.PlayerActions.Sprint.performed += i => sprint_Input = true;
+            playerControls.PlayerActions.Sprint.canceled += i => sprint_Input = false;
 
-            playerControls.PlayerActions.RB.performed += i => RBInput = true;
+            playerControls.PlayerActions.RB.performed += i => RB_Input = true;
 
         }
         
@@ -135,6 +139,43 @@ public class PlayerInputManager : MonoBehaviour
         HandleSprintInput();
         HandleJumpInput();
         HandleRBInput();
+        HandleLockOnInput();
+    }
+
+    private void HandleLockOnInput()
+    {
+        //时刻检测锁定状态，如果有目标死亡，取消锁定
+        if (player.playerNetworkManager.isLockOn.Value)
+        {
+            //如果没有目标，取消锁定
+            if (player.playerCombatManager.currentTarget == null)
+                return ;
+
+            if(player.playerCombatManager.currentTarget.isDead.Value){
+                player.playerNetworkManager.isLockOn.Value = false;
+            }
+        }
+
+        if(lock_On_Input)
+        {
+            lock_On_Input = false;
+
+            if (player.playerNetworkManager.isLockOn.Value)
+            {
+
+                //如果有目标，取消锁定
+
+            }
+            else
+            {
+
+                //如果使用远程武器，不需要锁定
+
+                //如果没有目标，尝试锁定
+                PlayerCamera.instance.HandleLocatingLockOnTargets();
+
+            }
+        }
     }
     
     private void HandlePlayerMovementInput()
@@ -163,15 +204,15 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleCameraMovementInput()
     {
-        cameraVerticalInput = cameraInput.y + cameraMouseInput.y * 0.2f;
-        cameraHorizontalInput = cameraInput.x + cameraMouseInput.x * 0.2f;
+        cameraVerticalInput = cameraInput.y/* + cameraMouseInput.y * 0.2f*/;
+        cameraHorizontalInput = cameraInput.x/* + cameraMouseInput.x * 0.2f*/;
     }
 
     private void HandleDodgeInput()
     {
-        if (dodgeInput)
+        if (dodge_Input)
         {
-            dodgeInput = false;
+            dodge_Input = false;
             
             //后跳或者翻滚
             player.playerLocomotionManager.AttemptToPerformDodge();
@@ -180,7 +221,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleSprintInput()
     {
-        if (sprintInput)
+        if (sprint_Input)
         {
             player.playerLocomotionManager.HandleSprinting();
         }
@@ -192,9 +233,9 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleJumpInput()
     {
-        if (jumpInput)
+        if (jump_Input)
         {
-            jumpInput = false;
+            jump_Input = false;
             
             //有UI，不反应
             
@@ -205,9 +246,9 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleRBInput()
     {
-        if(RBInput)
+        if(RB_Input)
         {
-            RBInput = false;
+            RB_Input = false;
 
             //如果有UI，不反应
 

@@ -46,6 +46,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponSlot: 1
   currentWeapon: {fileID: 0}
+--- !u!1 &6094994201249385832
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7146341785185102418}
+  m_Layer: 7
+  m_Name: Lock On Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7146341785185102418
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6094994201249385832}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.9999738, y: -0.00724309, z: 0, w: 0}
+  m_LocalPosition: {x: -0.178, y: 0.166, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4997820302169637279}
+  m_LocalEulerAnglesHint: {x: -180, y: 0, z: -0.83}
 --- !u!1001 &6622889276326942249
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -427,6 +458,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -7011284792763705418, guid: 0ad932253e8dc8841948afa5d1a0d051,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7146341785185102418}
     - targetCorrespondingSourceObject: {fileID: 3780837713738550241, guid: 0ad932253e8dc8841948afa5d1a0d051,
         type: 3}
       insertIndex: -1
@@ -894,6 +929,12 @@ CapsuleCollider:
   m_Height: 0.31
   m_Direction: 2
   m_Center: {x: 0, y: -0.02, z: 0}
+--- !u!4 &4997820302169637279 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7011284792763705418, guid: 0ad932253e8dc8841948afa5d1a0d051,
+    type: 3}
+  m_PrefabInstance: {fileID: 6622889276326942249}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5285344430729084004 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1346693338035923533, guid: 0ad932253e8dc8841948afa5d1a0d051,
@@ -970,7 +1011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3877479120
+  GlobalObjectIdHash: 2804101485
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1003,6 +1044,8 @@ MonoBehaviour:
   verticalMovement:
     m_InternalValue: 0
   moveAmount:
+    m_InternalValue: 0
+  isLockOn:
     m_InternalValue: 0
   isSprinting:
     m_InternalValue: 0
@@ -1119,6 +1162,7 @@ MonoBehaviour:
   characterEffectsManager: {fileID: 0}
   characterAnimatorManager: {fileID: 0}
   characterCombatManager: {fileID: 0}
+  characterSoundFXManager: {fileID: 0}
   isPerformingAction: 0
   isGrounded: 0
   applyRootMotion: 0
@@ -1236,7 +1280,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e3ec0fd495fc274988b34cbb9454c45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentTarget: {fileID: 0}
   currentAttackType: 0
+  lockOnTransform: {fileID: 7146341785185102418}
   currentWeaponBedingUsed: {fileID: 0}
 --- !u!114 &-8460170855653998535
 MonoBehaviour:
@@ -1250,6 +1296,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bdca8e34b815c409d90353483ec1c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hit_Forward_Medium_01: Hit_Forward_Medium_01
+  hit_Back_Medium_01: Hit_Back_Medium_01
+  hit_Left_Medium_01: Hit_Left_Medium_01
+  hit_Right_Medium_01: Hit_Right_Medium_01
 --- !u!114 &7357961890845608713
 MonoBehaviour:
   m_ObjectHideFlags: 0
