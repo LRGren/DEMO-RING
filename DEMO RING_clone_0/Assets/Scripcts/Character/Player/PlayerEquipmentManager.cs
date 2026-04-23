@@ -27,7 +27,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     protected override void Start()
     {
         base.Start();
-        
+
         LoadWeaponsOnBothHands();
     }
 

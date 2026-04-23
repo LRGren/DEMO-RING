@@ -27,18 +27,40 @@ public class CharacterAnimatorManager : MonoBehaviour
     
     public void UpdateAnimatorMovementParameters(float horizontalValue, float verticalValue,bool isSprinting)
     {
-        float horizontalAmount = horizontalValue;
-        float verticalAmount = verticalValue;
+        float snappedHorizontal;
+        float snappedVertical;
 
-        if (isSprinting) verticalAmount = 2f;
+        if(horizontalValue > 0 && horizontalValue < 0.55f)
+            snappedHorizontal = 0.5f;
+        else if(horizontalValue > 0.55f)
+            snappedHorizontal = 1f;
+        else if(horizontalValue < 0 && horizontalValue > -0.55f)
+            snappedHorizontal = -0.5f;
+        else if(horizontalValue < -0.55f)
+            snappedHorizontal = -1f;
+        else
+            snappedHorizontal = 0;
+
+        if(verticalValue > 0 && verticalValue < 0.55f)
+            snappedVertical = 0.5f;
+        else if(verticalValue > 0.55f)
+            snappedVertical = 1f;
+        else if(verticalValue < 0 && verticalValue > -0.55f)
+            snappedVertical = -0.5f;
+        else if(verticalValue < -0.55f)
+            snappedVertical = -1f;
+        else
+            snappedVertical = 0;
+
+        if (isSprinting) snappedVertical = 2f;
         
-        character.animator.SetFloat(horizontal, horizontalAmount,0.1f, Time.deltaTime);
-        character.animator.SetFloat(vertical, verticalAmount, 0.1f, Time.deltaTime);
+        character.animator.SetFloat(horizontal, snappedHorizontal,0.1f, Time.deltaTime);
+        character.animator.SetFloat(vertical, snappedVertical, 0.1f, Time.deltaTime);
     }
     
     public virtual void PlayerTargetActionAnimation(string targetAnimation,bool isPerformingAction,bool applyRootMotion = true,bool canRotate = false,bool canMove = false)
     {
-        Debug.Log("Playing Target Action Animation: " + targetAnimation);
+        //Debug.Log("Playing Target Action Animation: " + targetAnimation);
 
         character.applyRootMotion = applyRootMotion;
         character.animator.CrossFade(targetAnimation, 0.2f);

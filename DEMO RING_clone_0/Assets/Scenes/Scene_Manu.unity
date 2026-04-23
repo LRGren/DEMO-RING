@@ -2285,6 +2285,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 5569815213192464941, guid: 7cd3f94f79b3e3944b8b9e4f99481b01,
+        type: 3}
+      propertyPath: setCameraHeightSpeed
+      value: 0.05
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6265,13 +6270,19 @@ PrefabInstance:
     - target: {fileID: 8955009173859086938, guid: 9e62f436f7216ee4496db0b6e58cbfa6,
         type: 3}
       propertyPath: weaponItemActions.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8955009173859086938, guid: 9e62f436f7216ee4496db0b6e58cbfa6,
         type: 3}
       propertyPath: weaponItemActions.Array.data[1]
       value: 
       objectReference: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b,
+        type: 2}
+    - target: {fileID: 8955009173859086938, guid: 9e62f436f7216ee4496db0b6e58cbfa6,
+        type: 3}
+      propertyPath: weaponItemActions.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8,
         type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

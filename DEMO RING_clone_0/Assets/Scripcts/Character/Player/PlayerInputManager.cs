@@ -18,12 +18,14 @@ public class PlayerInputManager : MonoBehaviour
     
     [Header("Camera Movement Inputs")]
     [SerializeField] private Vector2 cameraInput;
-    [SerializeField] private Vector2 cameraMouseInput;
     public float cameraVerticalInput;
     public float cameraHorizontalInput;
 
     [Header("Lock On Inputs")]
     [SerializeField] private bool lock_On_Input = false;
+    [SerializeField] private bool lockOn_Left_Input = false;
+    [SerializeField] private bool lockOn_Right_Input = false;
+    private Coroutine lockOnCoroutine;
 
     [Header("Player Movement Inputs")]
     [SerializeField] private Vector2 movementInput;
@@ -35,7 +37,14 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private bool dodge_Input = false;
     [SerializeField] private bool sprint_Input = false;
     [SerializeField] private bool jump_Input = false;
+
+    [Header("Bumper Inputs")]
     [SerializeField] private bool RB_Input = false;
+
+    [Header("Trigger Inputs")]
+    [SerializeField] private bool RT_Input = false;
+    [SerializeField] private bool Hold_RT_Input = false;
+
 
     private void Awake()
     {
@@ -86,21 +95,31 @@ public class PlayerInputManager : MonoBehaviour
         if (playerControls == null)
         {
             playerControls = new PlayerControls();
-            
-            playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
 
+            //Camera Movement
             playerControls.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
-            //playerControls.PlayerCamera.Mouse.performed += i => cameraMouseInput = i.ReadValue<Vector2>();
+
+            //Base Movement
+            playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
 
             playerControls.PlayerActions.Dodge.performed += i => dodge_Input = true;
             playerControls.PlayerActions.Jump.performed += i => jump_Input = true;
-            playerControls.PlayerActions.LockOn.performed += i => lock_On_Input = true;
-            
+
             playerControls.PlayerActions.Sprint.performed += i => sprint_Input = true;
             playerControls.PlayerActions.Sprint.canceled += i => sprint_Input = false;
 
+            //Bumpers
             playerControls.PlayerActions.RB.performed += i => RB_Input = true;
 
+            //Triggers
+            playerControls.PlayerActions.RT.started += i => RT_Input = true;
+            playerControls.PlayerActions.HoldRT.performed += i => Hold_RT_Input = true;
+            playerControls.PlayerActions.HoldRT.canceled += i => Hold_RT_Input = false;
+
+            //Lock On
+            playerControls.PlayerActions.LockOn.performed += i => lock_On_Input = true;
+            playerControls.PlayerActions.SeekLeftLockOnTarget.performed += i => lockOn_Left_Input = true;
+            playerControls.PlayerActions.SeekRightLockOnTarget.performed += i => lockOn_Right_Input = true;
         }
         
         playerControls.Enable();
@@ -135,11 +154,14 @@ public class PlayerInputManager : MonoBehaviour
 
         HandlePlayerMovementInput();
         HandleCameraMovementInput();
+        HandleLockOnInput();
+        HandleLockOnSwitchTargetInput();
         HandleDodgeInput();
         HandleSprintInput();
         HandleJumpInput();
         HandleRBInput();
-        HandleLockOnInput();
+        HandleRTInput();
+        HandleHoldRTInput();
     }
 
     private void HandleLockOnInput()
@@ -149,14 +171,22 @@ public class PlayerInputManager : MonoBehaviour
         {
             //如果没有目标，取消锁定
             if (player.playerCombatManager.currentTarget == null)
-                return ;
+                return;
 
-            if(player.playerCombatManager.currentTarget.isDead.Value){
+            if (player.playerCombatManager.currentTarget.isDead.Value)
+            {
                 player.playerNetworkManager.isLockOn.Value = false;
+
+                //尝试寻找新的目标
+                if (lockOnCoroutine != null)
+                    StopCoroutine(lockOnCoroutine);
+
+                lockOnCoroutine = StartCoroutine(PlayerCamera.instance.WaitThenFindNewTarget());
             }
+
         }
 
-        if(lock_On_Input)
+        if (lock_On_Input)
         {
             lock_On_Input = false;
 
@@ -164,20 +194,63 @@ public class PlayerInputManager : MonoBehaviour
             {
 
                 //如果有目标，取消锁定
+                PlayerCamera.instance.ClearLockOnTargets();
 
+                player.playerNetworkManager.isLockOn.Value = false;
             }
             else
             {
-
                 //如果使用远程武器，不需要锁定
 
                 //如果没有目标，尝试锁定
                 PlayerCamera.instance.HandleLocatingLockOnTargets();
 
+                if(PlayerCamera.instance.nearestLockOnTarget != null)
+                {
+                    player.playerCombatManager.SetTarget(PlayerCamera.instance.nearestLockOnTarget);
+
+                    player.playerNetworkManager.isLockOn.Value = true;
+                }
+
             }
         }
     }
     
+    private void HandleLockOnSwitchTargetInput()
+    {
+        if (lockOn_Left_Input)
+        {
+            lockOn_Left_Input = false;
+
+            if(player.playerNetworkManager.isLockOn.Value)
+            {
+                //Debug.Log("Switching Left Lock On Target");
+                PlayerCamera.instance.HandleLocatingLockOnTargets();
+                if (PlayerCamera.instance.leftLockOnTarget != null)
+                {
+                    player.playerCombatManager.SetTarget(PlayerCamera.instance.leftLockOnTarget);
+                }
+            }
+        }
+
+        if(lockOn_Right_Input)
+        {
+            lockOn_Right_Input = false;
+
+            if(player.playerNetworkManager.isLockOn.Value)
+            {
+                //Debug.Log("Switching Right Lock On Target");
+
+                PlayerCamera.instance.HandleLocatingLockOnTargets();
+
+                if (PlayerCamera.instance.rightLockOnTarget != null)
+                {
+                    player.playerCombatManager.SetTarget(PlayerCamera.instance.rightLockOnTarget);
+                }
+            }
+        }
+    }
+
     private void HandlePlayerMovementInput()
     {
         verticalInput = movementInput.y;
@@ -197,9 +270,16 @@ public class PlayerInputManager : MonoBehaviour
         
         if(player == null)
             return;
-        //未锁定时只需要前进的动作
-        player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount,
-            player.playerNetworkManager.isSprinting.Value);
+
+        if(!player.playerNetworkManager.isLockOn.Value || player.playerNetworkManager.isSprinting.Value)
+        {
+            //未锁定时只需要前进的动作 或者疾跑
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
+        }
+        else
+        {
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(horizontalInput, verticalInput, player.playerNetworkManager.isSprinting.Value);
+        }
     }
 
     private void HandleCameraMovementInput()
@@ -257,6 +337,31 @@ public class PlayerInputManager : MonoBehaviour
             player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_RB_Action, player.playerInventoryManager.currentRightHandWeapon);
         }
 
+    }
+
+    private void HandleRTInput()
+    {
+        if (RT_Input)
+        {
+            RT_Input = false;
+            //如果有UI，不反应
+
+            player.playerNetworkManager.SetCharacterActionHand(true);
+
+            player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_RT_Action, player.playerInventoryManager.currentRightHandWeapon);
+        }
+
+    }
+
+    private void HandleHoldRTInput()
+    {
+        if (player.isPerformingAction)
+        {
+            if (player.playerNetworkManager.isUsingRightHand.Value)
+            {
+                player.playerNetworkManager.isChargingAttack.Value = Hold_RT_Input;
+            }
+        }
     }
 
 }

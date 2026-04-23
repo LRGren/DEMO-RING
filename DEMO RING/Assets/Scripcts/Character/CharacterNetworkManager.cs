@@ -20,10 +20,14 @@ public class CharacterNetworkManager : NetworkBehaviour
     public NetworkVariable<float> verticalMovement = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<float> moveAmount = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
+    [Header("Target")]
+    public NetworkVariable<ulong> currentTargetNetworkObjectID = new NetworkVariable<ulong>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
     [Header("Flags")]
     public NetworkVariable<bool> isLockOn = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isSprinting = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isJumping = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<bool> isChargingAttack = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("Stats")]
     public NetworkVariable<int> endurance = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -56,6 +60,27 @@ public class CharacterNetworkManager : NetworkBehaviour
         }
     }
     
+    public void OnLockOnTargetIDChange(ulong oldID, ulong newID)
+    {
+        if (!IsOwner)
+        {
+            character.characterCombatManager.currentTarget = NetworkManager.Singleton.SpawnManager.SpawnedObjects[newID].GetComponent<CharacterManager>();
+        }
+    }
+
+    public void OnIsLockOnChanged(bool old, bool isLockedOn)
+    {
+        if (!isLockedOn)
+        {
+            character.characterCombatManager.currentTarget = null;
+        }
+    }
+
+    public void OnIsChargingAttackChanged(bool old,bool newStatus)
+    {
+        character.animator.SetBool("isChargingAttack", isChargingAttack.Value);
+    }
+
     [ServerRpc]
     public void NotifyTheServerOfActionAnimationServerRpc(ulong clientId,string animationName,bool applyRootMotion)
     {

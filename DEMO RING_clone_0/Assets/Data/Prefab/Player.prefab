@@ -1011,7 +1011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2804101485
+  GlobalObjectIdHash: 3877479120
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1045,11 +1045,15 @@ MonoBehaviour:
     m_InternalValue: 0
   moveAmount:
     m_InternalValue: 0
+  currentTargetNetworkObjectID:
+    m_InternalValue: 0
   isLockOn:
     m_InternalValue: 0
   isSprinting:
     m_InternalValue: 0
   isJumping:
+    m_InternalValue: 0
+  isChargingAttack:
     m_InternalValue: 0
   endurance:
     m_InternalValue: 10
@@ -1163,6 +1167,7 @@ MonoBehaviour:
   characterAnimatorManager: {fileID: 0}
   characterCombatManager: {fileID: 0}
   characterSoundFXManager: {fileID: 0}
+  characterLocomotionManager: {fileID: 0}
   isPerformingAction: 0
   isGrounded: 0
   applyRootMotion: 0
@@ -1211,6 +1216,7 @@ MonoBehaviour:
   yVelocity: {x: 0, y: 0, z: 0}
   groundedYVelocity: -20
   fallStartYVelocity: -5
+  isRolling: 0
   verticalMovement: 0
   horizontalMovement: 0
   moveAmount: 0
@@ -1220,7 +1226,7 @@ MonoBehaviour:
   rotationSpeed: 15
   sprintingCost: 2
   jumpStaminaCost: 10
-  jumpHeight: 4
+  jumpHeight: 2
   jumpingForwardSpeed: 5
   freeFallSpeed: 2
   dodgeStaminaCost: 25
@@ -1260,7 +1266,7 @@ MonoBehaviour:
     type: 2}
   weaponsInRightHand:
   - {fileID: 11400000, guid: 5127d45e178cc8649b053be9de266c07, type: 2}
-  - {fileID: 11400000, guid: fd164a1d6f05bda478dd90018ab02d46, type: 2}
+  - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   rightWeaponIndex: 0
   weaponsInLeftHand:

@@ -38,16 +38,18 @@ public class WeaponItem : Item
     [Header("Stamina Cost Modifiers")]
     public int basicStaminaCost = 0;
     //跑功耐力消耗
+
     //轻攻击耐力消耗修饰
     public float lightAttackStaminaModifier = 0.9f;
-    //重攻击耐力小号修饰
+    //重攻击耐力消耗修饰
 
     //基于物品的动作 （RB,RT,LB,LT）
     [Header("Weapon Actions")]
     public WeaponItemAction oh_RB_Action;//oh for one hand
-    
+    public WeaponItemAction oh_RT_Action;//oh for one hand
+
     //ASH OF WAR
-    
+
     //格挡音效
 
 }

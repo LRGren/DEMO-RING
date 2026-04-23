@@ -109,6 +109,9 @@ public class TakeDamageEffect : InstantCharacterEffect
         if(!character.IsOwner)
             return;
 
+        if(character.isDead.Value)
+            return;
+
         //失衡
         poiseIsBroken = true;
 
