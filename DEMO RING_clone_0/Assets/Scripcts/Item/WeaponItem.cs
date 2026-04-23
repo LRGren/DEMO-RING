@@ -32,6 +32,8 @@ public class WeaponItem : Item
     //武器修饰符
     //轻攻击修饰
     public float light_Attack_01_Modifier = 1.1f;
+    public float heavy_Attack_01_Modifier = 1.4f;
+    public float charged_Attack_01_Modifier = 2.2f;
     //重攻击修饰
     //暴击伤害修饰 等等
 

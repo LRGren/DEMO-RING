@@ -74,7 +74,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         if (!player.IsOwner)
             return;
 
-        player.playerAnimatorManager.PlayerTargetActionAnimation("Swap_Right_Weapon_01", false, true, true, true);
+        player.playerAnimatorManager.PlayerTargetActionAnimation("Swap_Right_Weapon_01", false, false, true, true);
 
         //确认是否有其他武器，如果有，切换武器
         //如果没有，切换到空手

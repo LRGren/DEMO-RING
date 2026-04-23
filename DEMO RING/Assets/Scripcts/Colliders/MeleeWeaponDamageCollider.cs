@@ -9,6 +9,8 @@ public class MeleeWeaponDamageCollider : DamageCollider
 
     [Header("Modifiers")]
     public float light_Attack_01_Modifier;
+    public float heavy_Attack_01_Modifier;
+    public float charged_Attack_01_Modifier;
 
     protected override void Awake()
     {
@@ -35,7 +37,7 @@ public class MeleeWeaponDamageCollider : DamageCollider
                 return;
             }
 
-            Debug.Log(damageTarget.name);
+            //Debug.Log(damageTarget.name);
             contactPoint = other.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
 
             //友军
@@ -69,6 +71,12 @@ public class MeleeWeaponDamageCollider : DamageCollider
         {
             case AttackType.LightAttack01:
                 ApplyAttackModifier(light_Attack_01_Modifier,damageEffect);
+                break;
+            case AttackType.HeavyAttack01:
+                ApplyAttackModifier(heavy_Attack_01_Modifier,damageEffect);
+                break;
+            case AttackType.ChargedAttack01:
+                ApplyAttackModifier(charged_Attack_01_Modifier, damageEffect);
                 break;
             default:
                 break;

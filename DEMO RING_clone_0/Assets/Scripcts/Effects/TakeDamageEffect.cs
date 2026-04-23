@@ -49,6 +49,9 @@ public class TakeDamageEffect : InstantCharacterEffect
         
         //计算伤害
         CalculteDamage(character);
+
+        Debug.Log("Final Damage Dealt: " + finalDamageDealt);
+
         //确认受击方向
         PlayDirectionalBasedDamageAnimation(character);
         //受击动画
@@ -82,7 +85,7 @@ public class TakeDamageEffect : InstantCharacterEffect
             finalDamageDealt = 1;
         }
         
-        Debug.Log("Cause Damage");
+        //Debug.Log("Cause Damage");
         character.characterNetworkManager.currentHealth.Value -= finalDamageDealt;
         
         //计算削韧值
@@ -115,7 +118,7 @@ public class TakeDamageEffect : InstantCharacterEffect
         //失衡
         poiseIsBroken = true;
 
-        if(angleHitFrom >= 145 && angleHitFrom <= 180)
+        /*if(angleHitFrom >= 145 && angleHitFrom <= 180)
         {
             //front
             damageAnimation = character.characterAnimatorManager.hit_Forward_Medium_01;
@@ -139,9 +142,30 @@ public class TakeDamageEffect : InstantCharacterEffect
         {
             //right
             damageAnimation = character.characterAnimatorManager.hit_Right_Medium_01;
+        }*/
+
+        if (angleHitFrom >= -180 && angleHitFrom <= -145 || angleHitFrom >= 145 && angleHitFrom <= 180)
+        {
+            // front
+            damageAnimation = character.characterAnimatorManager.hit_Forward_Medium_01;
         }
-        
-        if(poiseIsBroken)
+        else if (angleHitFrom >= -45 && angleHitFrom <= 45)
+        {
+            // back
+            damageAnimation = character.characterAnimatorManager.hit_Back_Medium_01;
+        }
+        else if (angleHitFrom >= -144 && angleHitFrom < -45)
+        {
+            // left
+            damageAnimation = character.characterAnimatorManager.hit_Left_Medium_01;
+        }
+        else if (angleHitFrom > 45 && angleHitFrom <= 144)
+        {
+            // right
+            damageAnimation = character.characterAnimatorManager.hit_Right_Medium_01;
+        }
+
+        if (poiseIsBroken)
         {
             character.characterAnimatorManager.PlayerTargetActionAnimation(damageAnimation, true);
         }

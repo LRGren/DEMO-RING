@@ -8,10 +8,10 @@ public class CharacterStatsManager : MonoBehaviour
     private CharacterManager character;
     
     [Header("Stamina Regeneration")]
-    [SerializeField] private float staminaRegenerationAmount = 2;
+    [SerializeField] private float staminaRegenerationAmount = 5;
     private float staminaRegenerationTimer = 0;
     private float staminaRegenerationTicker = 0;
-    [SerializeField] private float staminaRegenerationDelay = 2;
+    [SerializeField] private float staminaRegenerationDelay = 5;
 
     protected virtual void Awake()
     {
