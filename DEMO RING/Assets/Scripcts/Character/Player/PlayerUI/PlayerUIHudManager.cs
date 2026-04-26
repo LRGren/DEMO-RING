@@ -51,6 +51,7 @@ public class PlayerUIHudManager : MonoBehaviour
             Debug.Log("Weapon not found in database for ID: " + weaponID);
             rightWeaponQuickSlotUI.enabled = false;
             rightWeaponQuickSlotUI.sprite = null;
+            return;
         }
 
         if (weapon.itemIcon == null)
@@ -58,6 +59,7 @@ public class PlayerUIHudManager : MonoBehaviour
             Debug.Log("Weapon icon not found for weapon: " + weapon.itemName);
             rightWeaponQuickSlotUI.enabled = false;
             rightWeaponQuickSlotUI.sprite = null;
+            return;
         }
 
         rightWeaponQuickSlotUI.sprite = weapon.itemIcon;
@@ -73,6 +75,7 @@ public class PlayerUIHudManager : MonoBehaviour
             Debug.Log("Weapon not found in database for ID: " + weaponID);
             leftWeaponQuickSlotUI.enabled = false;
             leftWeaponQuickSlotUI.sprite = null;
+            return;
         }
 
         if (weapon.itemIcon == null)
@@ -80,6 +83,7 @@ public class PlayerUIHudManager : MonoBehaviour
             Debug.Log("Weapon icon not found for weapon: " + weapon.itemName);
             leftWeaponQuickSlotUI.enabled = false;
             leftWeaponQuickSlotUI.sprite = null;
+            return;
         }
 
         leftWeaponQuickSlotUI.sprite = weapon.itemIcon;

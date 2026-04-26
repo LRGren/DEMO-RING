@@ -36,4 +36,29 @@ public class WorldUtilityManager : MonoBehaviour
     {
         return enviroLayers;
     }
+
+    public bool CanIDamageThisTarget(CharacterGroup attacker,CharacterGroup target)
+    {
+        if(attacker == CharacterGroup.Team_01)
+        {
+            switch (target)
+            {
+                case CharacterGroup.Team_01: return false;
+                case CharacterGroup.Team_02: return true;
+                default:
+                    break;
+            }
+        }
+        else if (attacker == CharacterGroup.Team_02)
+        {
+            switch (target)
+            {
+                case CharacterGroup.Team_01: return true;
+                case CharacterGroup.Team_02: return false;
+                default:
+                    break;
+            }
+        }
+        return false;
+    }
 }

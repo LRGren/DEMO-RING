@@ -28,4 +28,15 @@ MonoBehaviour:
   holyDamage: 0
   lightningDamage: 0
   poiseDamage: 5
+  light_Attack_01_Modifier: 1.1
+  light_Attack_02_Modifier: 1.2
+  heavy_Attack_01_Modifier: 1.4
+  heavy_Attack_02_Modifier: 1.6
+  charged_Attack_01_Modifier: 2.2
+  charged_Attack_02_Modifier: 2.5
   basicStaminaCost: 0
+  lightAttackStaminaModifier: 0.9
+  heavyAttackStaminaModifier: 0.9
+  chargedAttackStaminaModifier: 0.9
+  oh_RB_Action: {fileID: 0}
+  oh_RT_Action: {fileID: 0}

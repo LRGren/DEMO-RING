@@ -24,6 +24,7 @@ public class CharacterNetworkManager : NetworkBehaviour
     public NetworkVariable<ulong> currentTargetNetworkObjectID = new NetworkVariable<ulong>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("Flags")]
+    public NetworkVariable<bool> isMoving = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isLockOn = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isSprinting = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isJumping = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -79,6 +80,11 @@ public class CharacterNetworkManager : NetworkBehaviour
     public void OnIsChargingAttackChanged(bool old,bool newStatus)
     {
         character.animator.SetBool("isChargingAttack", isChargingAttack.Value);
+    }
+
+    public void OnIsMovingChanged(bool old, bool newStatus)
+    {
+        character.animator.SetBool("isMoving", isMoving.Value);
     }
 
     [ServerRpc]

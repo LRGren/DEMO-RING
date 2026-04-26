@@ -81,6 +81,7 @@ public class CharacterAnimatorManager : MonoBehaviour
         //标记 “Attacking”
 
         character.characterCombatManager.currentAttackType = attackType;
+        character.characterCombatManager.lastAttackAnimation = targetAnimation;
         character.applyRootMotion = applyRootMotion;
         character.animator.CrossFade(targetAnimation, 0.2f);
         character.isPerformingAction = isPerformingAction;
@@ -89,6 +90,16 @@ public class CharacterAnimatorManager : MonoBehaviour
 
         character.characterNetworkManager.NotifyTheServerOfAttackActionAnimationServerRpc(
             NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
+    }
+
+
+    //Animation Event Calls
+    public virtual void EnableDoCombo()
+    {
+    }
+
+    public virtual void DisableDoCombo()
+    {
     }
 
 }

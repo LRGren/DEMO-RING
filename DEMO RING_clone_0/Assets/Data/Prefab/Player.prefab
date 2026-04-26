@@ -1265,13 +1265,13 @@ MonoBehaviour:
   currentLeftHandWeapon: {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f,
     type: 2}
   weaponsInRightHand:
-  - {fileID: 11400000, guid: 5127d45e178cc8649b053be9de266c07, type: 2}
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
+  - {fileID: 11400000, guid: 5127d45e178cc8649b053be9de266c07, type: 2}
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   rightWeaponIndex: 0
   weaponsInLeftHand:
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
-  - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
+  - {fileID: 11400000, guid: fd164a1d6f05bda478dd90018ab02d46, type: 2}
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   leftWeaponIndex: 0
 --- !u!114 &8339025184558944112

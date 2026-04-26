@@ -8,6 +8,10 @@ public class PlayerCombatManager : CharacterCombatManager
     PlayerManager player;
     public WeaponItem currentWeaponBedingUsed;
 
+    [Header("Flags")]
+    public bool canComboWithMainHandWeapon = false;
+    //public bool canComboWithOffHandWeapon = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -18,6 +22,9 @@ public class PlayerCombatManager : CharacterCombatManager
     {
         if (player.IsOwner)
         {
+            if (weaponAction == null)
+                return;
+
             weaponAction.AttemptToPerformAction(player, weaponPerformingAction);
 
             //执行对应的动画
@@ -39,7 +46,16 @@ public class PlayerCombatManager : CharacterCombatManager
         switch (currentAttackType)
         {
             case AttackType.LightAttack01:
+            case AttackType.LightAttack02:
                 staminaCost *= currentWeaponBedingUsed.lightAttackStaminaModifier;
+                break;
+            case AttackType.HeavyAttack01:
+            case AttackType.HeavyAttack02:
+                staminaCost *= currentWeaponBedingUsed.heavyAttackStaminaModifier;
+                break;
+            case AttackType.ChargedAttack01:
+            case AttackType.ChargedAttack02:
+                staminaCost *= currentWeaponBedingUsed.chargedAttackStaminaModifier;
                 break;
             default:
                 break;
@@ -57,4 +73,5 @@ public class PlayerCombatManager : CharacterCombatManager
             PlayerCamera.instance.SetLockOnCameraHeight();
         }
     }
+
 }

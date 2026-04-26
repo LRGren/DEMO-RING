@@ -31,9 +31,12 @@ public class WeaponItem : Item
     [Header("Attack Modifiers")]
     //武器修饰符
     //轻攻击修饰
-    public float light_Attack_01_Modifier = 1.1f;
+    public float light_Attack_01_Modifier = 0.9f;
+    public float light_Attack_02_Modifier = 1.2f;
     public float heavy_Attack_01_Modifier = 1.4f;
+    public float heavy_Attack_02_Modifier = 1.6f;
     public float charged_Attack_01_Modifier = 2.2f;
+    public float charged_Attack_02_Modifier = 2.5f;
     //重攻击修饰
     //暴击伤害修饰 等等
 
@@ -43,6 +46,8 @@ public class WeaponItem : Item
 
     //轻攻击耐力消耗修饰
     public float lightAttackStaminaModifier = 0.9f;
+    public float heavyAttackStaminaModifier = 1.2f;
+    public float chargedAttackStaminaModifier = 1.5f;
     //重攻击耐力消耗修饰
 
     //基于物品的动作 （RB,RT,LB,LT）

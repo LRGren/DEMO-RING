@@ -5,10 +5,13 @@ using Unity.Netcode;
 
 public class CharacterCombatManager : NetworkBehaviour
 {
-    CharacterManager characterManager;
+    protected CharacterManager characterManager;
 
     [Header("Attack Target")]
     public CharacterManager currentTarget;
+
+    [Header("Last Attack Animation")]
+    public string lastAttackAnimation = "";
 
     [Header("Attack Type")]
     public AttackType currentAttackType;

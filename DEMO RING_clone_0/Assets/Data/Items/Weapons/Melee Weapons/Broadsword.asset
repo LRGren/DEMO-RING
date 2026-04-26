@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Broadsword
   m_EditorClassIdentifier: 
   itemName: Broadsword
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300114, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
   itemDescription: A straight sword
   itemID: 2
   weaponModel: {fileID: 1711130412322516538, guid: 56af49cc44ec3a24dba59291ba12d421,
@@ -29,6 +29,8 @@ MonoBehaviour:
   lightningDamage: 0
   poiseDamage: 25
   light_Attack_01_Modifier: 1.1
+  heavy_Attack_01_Modifier: 1.4
+  charged_Attack_01_Modifier: 2.2
   basicStaminaCost: 20
   lightAttackStaminaModifier: 0.9
   oh_RB_Action: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b, type: 2}

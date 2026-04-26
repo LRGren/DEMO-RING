@@ -45,6 +45,10 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private bool RT_Input = false;
     [SerializeField] private bool Hold_RT_Input = false;
 
+    [Header("D-pad Inputs")]
+    [SerializeField]private bool switch_Right_Weapons_Input = false;
+    [SerializeField]private bool switch_Leftt_Weapons_Input = false;
+
 
     private void Awake()
     {
@@ -120,8 +124,12 @@ public class PlayerInputManager : MonoBehaviour
             playerControls.PlayerActions.LockOn.performed += i => lock_On_Input = true;
             playerControls.PlayerActions.SeekLeftLockOnTarget.performed += i => lockOn_Left_Input = true;
             playerControls.PlayerActions.SeekRightLockOnTarget.performed += i => lockOn_Right_Input = true;
+
+            //D-Pad
+            playerControls.PlayerActions.SwitchRightWeapon.performed += i => switch_Right_Weapons_Input = true;
+            playerControls.PlayerActions.SwitchLeftWeapon.performed += i => switch_Leftt_Weapons_Input = true;
         }
-        
+
         playerControls.Enable();
     }
 
@@ -154,14 +162,20 @@ public class PlayerInputManager : MonoBehaviour
 
         HandlePlayerMovementInput();
         HandleCameraMovementInput();
+
         HandleLockOnInput();
         HandleLockOnSwitchTargetInput();
+
         HandleDodgeInput();
         HandleSprintInput();
         HandleJumpInput();
+
         HandleRBInput();
         HandleRTInput();
         HandleHoldRTInput();
+
+        HandleSwitchRightWeaponsInput();
+        HandleSwitchLeftWeaponsInput();
     }
 
     private void HandleLockOnInput()
@@ -271,6 +285,16 @@ public class PlayerInputManager : MonoBehaviour
         if(player == null)
             return;
 
+        if (moveAmount != 0)
+        {
+            player.playerNetworkManager.isMoving.Value = true;
+
+        }
+        else
+        {
+            player.playerNetworkManager.isMoving.Value = false;
+        }
+
         if(!player.playerNetworkManager.isLockOn.Value || player.playerNetworkManager.isSprinting.Value)
         {
             //未锁定时只需要前进的动作 或者疾跑
@@ -361,6 +385,23 @@ public class PlayerInputManager : MonoBehaviour
             {
                 player.playerNetworkManager.isChargingAttack.Value = Hold_RT_Input;
             }
+        }
+    }
+
+    private void HandleSwitchRightWeaponsInput()
+    {
+        if (switch_Right_Weapons_Input)
+        {
+            switch_Right_Weapons_Input = false;
+            player.playerEquipmentManager.SwitchRightWeapon();
+        }
+    }
+    private void HandleSwitchLeftWeaponsInput()
+    {
+        if (switch_Leftt_Weapons_Input)
+        {
+            switch_Leftt_Weapons_Input = false;
+            player.playerEquipmentManager.SwitchLeftWeapon();
         }
     }
 

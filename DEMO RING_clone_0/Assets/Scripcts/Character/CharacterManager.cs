@@ -18,6 +18,9 @@ public class CharacterManager : NetworkBehaviour
     [HideInInspector] public CharacterSoundFXManager characterSoundFXManager;
     [HideInInspector] public CharacterLocomotionManager characterLocomotionManager;
 
+    [Header("Character Group")]
+    public CharacterGroup characterGroup;
+
     [Header("Flags")]
     public bool isPerformingAction = false;
     public bool isGrounded = false;
@@ -44,6 +47,20 @@ public class CharacterManager : NetworkBehaviour
         IgnoreMyOwnColliders();
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        characterNetworkManager.isMoving.OnValueChanged += characterNetworkManager.OnIsMovingChanged;
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        characterNetworkManager.isMoving.OnValueChanged -= characterNetworkManager.OnIsMovingChanged;
+    }
+
     protected virtual void Update()
     {
         animator.SetBool("isGrounded", isGrounded);
@@ -64,6 +81,10 @@ public class CharacterManager : NetworkBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, characterNetworkManager.networkRotation.Value,
                 characterNetworkManager.networkRotationSmoothTime);
         }
+    }
+
+    protected virtual void FixedUpdate()
+    {
     }
 
     protected virtual void LateUpdate()

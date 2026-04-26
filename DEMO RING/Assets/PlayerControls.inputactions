@@ -142,6 +142,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Switch Right Weapon",
+                    "type": "Button",
+                    "id": "84721696-3d9e-4357-a256-8c3d66487458",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Switch Left Weapon",
+                    "type": "Button",
+                    "id": "d25502ff-2a1f-425f-8206-3b83413c95c3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Seek Left Lock On Target",
                     "type": "Button",
                     "id": "9758e58d-d17a-4887-b14d-ceb457cdf238",
@@ -191,6 +209,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "RB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89b81e96-f1e1-492f-80bc-a6f5ac0c0fe7",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Switch Right Weapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf2e9188-ea79-4872-adcf-65ef3069250b",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Switch Left Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

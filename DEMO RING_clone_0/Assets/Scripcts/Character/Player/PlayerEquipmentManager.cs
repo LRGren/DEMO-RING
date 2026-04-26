@@ -155,7 +155,71 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     
     public void SwitchLeftWeapon()
     {
+        if (!player.IsOwner)
+            return;
 
+        player.playerAnimatorManager.PlayerTargetActionAnimation("Swap_Left_Weapon_01", false, false, true, true);
+
+        //确认是否有其他武器，如果有，切换武器
+        //如果没有，切换到空手
+        WeaponItem selectedWeapon = null;
+
+        player.playerInventoryManager.leftWeaponIndex++;
+
+        if (player.playerInventoryManager.leftWeaponIndex < 0 || player.playerInventoryManager.leftWeaponIndex > 2)
+        {
+            player.playerInventoryManager.leftWeaponIndex = 0;
+            int weaponCount = 0;
+            WeaponItem firstWeapon = null;
+            int firstWeaponPosition = 0;
+
+            for (int i = 0; i < player.playerInventoryManager.weaponsInLeftHand.Length; i++)
+            {
+                if (player.playerInventoryManager.weaponsInLeftHand[i].itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                {
+                    weaponCount++;
+                    if (firstWeapon == null)
+                    {
+                        firstWeapon = player.playerInventoryManager.weaponsInLeftHand[i];
+                        firstWeaponPosition = i;
+                    }
+                }
+            }
+
+            if (weaponCount <= 1)
+            {
+                player.playerInventoryManager.leftWeaponIndex = -1;
+                selectedWeapon = WorldItemDatabase.Instance.unarmedWeapon;
+                player.playerNetworkManager.currentLeftHandWeaponID.Value = selectedWeapon.itemID;
+            }
+            else
+            {
+                player.playerInventoryManager.leftWeaponIndex = firstWeaponPosition;
+                player.playerNetworkManager.currentLeftHandWeaponID.Value = firstWeapon.itemID;
+            }
+
+
+            return;
+        }
+
+        foreach (WeaponItem weaponItem in player.playerInventoryManager.weaponsInLeftHand)
+        {
+            //Debug.Log(player.playerInventoryManager.leftWeaponIndex + " and " + player.playerInventoryManager.weaponsInLeftHand.Length);
+            if (player.playerInventoryManager.weaponsInLeftHand[player.playerInventoryManager.leftWeaponIndex].itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+            {
+                selectedWeapon = player.playerInventoryManager.weaponsInLeftHand[player.playerInventoryManager.leftWeaponIndex];
+
+                //需要分配武器ID到网络上使得客户端能够正确加载武器模型
+                player.playerNetworkManager.currentLeftHandWeaponID.Value = player.playerInventoryManager.weaponsInLeftHand[player.playerInventoryManager.leftWeaponIndex].itemID;
+
+                return;
+            }
+        }
+
+        if (selectedWeapon == null && player.playerInventoryManager.leftWeaponIndex <= 2)
+        {
+            SwitchLeftWeapon();
+        }
     }
 
     // Damage Colliders

@@ -80,6 +80,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
             PlayerUIManager.instance.playerUIHudManager.SetLeftWeaponQuickSlot(newWeaponID);
         }
     }
+    
     public void OnCurrentWeaponBedingUsedIDChanged(int oldWeaponID, int newWeaponID)
     {
         WeaponItem newWeapon = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(newWeaponID));
