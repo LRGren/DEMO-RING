@@ -20,6 +20,10 @@ public class PursueTargetState : AIState
         if(!aiCharacterManager.navMeshAgent.enabled)
             aiCharacterManager.navMeshAgent.enabled = true;
 
+        if (aiCharacterManager.aiCharacterCombatManager.viewableAngle < aiCharacterManager.aiCharacterCombatManager.minimumFOV ||
+            aiCharacterManager.aiCharacterCombatManager.viewableAngle > aiCharacterManager.aiCharacterCombatManager.maximumFOV)
+            aiCharacterManager.aiCharacterCombatManager.PivotTowardsTarget(aiCharacterManager);
+
         aiCharacterManager.aiCharacterLocomotionManager.RotateTowardsAgent(aiCharacterManager);
 
         //检测是否在攻击范围内，如果是，返回AttackState

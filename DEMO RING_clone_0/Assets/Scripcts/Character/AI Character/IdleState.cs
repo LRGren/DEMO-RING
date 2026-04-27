@@ -13,7 +13,7 @@ public class IdleState : AIState
         }
         else
         {
-            Debug.Log("We are searching for a target");
+            //Debug.Log("We are searching for a target");
             aiCharacterManager.aiCharacterCombatManager.FindATargetViaLineOfSight(aiCharacterManager);
 
             return this;

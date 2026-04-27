@@ -69,6 +69,12 @@ public class AICharacterManager : CharacterManager
             currentState = nextState;
         }
 
+        if(aiCharacterCombatManager.currentTarget != null)
+        {
+            aiCharacterCombatManager.targetDirection = aiCharacterCombatManager.currentTarget.transform.position - transform.position;
+            aiCharacterCombatManager.viewableAngle = WorldUtilityManager.instance.GetAngleOfTarget(transform, aiCharacterCombatManager.targetDirection);
+        }
+
         navMeshAgent.transform.localPosition = Vector3.zero;
         navMeshAgent.transform.localRotation = Quaternion.identity;
 
