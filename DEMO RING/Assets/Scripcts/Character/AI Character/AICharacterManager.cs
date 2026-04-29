@@ -18,6 +18,8 @@ public class AICharacterManager : CharacterManager
     [Header("AI States")]
     public IdleState idle;
     public PursueTargetState pursueTarget;
+    public CombatStanceState combatStance;
+    public AttackState attack;
 
 
     protected override void Awake()
@@ -31,9 +33,18 @@ public class AICharacterManager : CharacterManager
         //拷贝一份，不改变原始的状态对象
         idle = Instantiate(idle);
         pursueTarget = Instantiate(pursueTarget);
+        combatStance = Instantiate(combatStance);
+        attack = Instantiate(attack);
 
         currentState = idle;
 
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        aiCharacterCombatManager.HandleActionRecovery(this);
     }
 
     protected override void FixedUpdate()
@@ -73,6 +84,7 @@ public class AICharacterManager : CharacterManager
         {
             aiCharacterCombatManager.targetDirection = aiCharacterCombatManager.currentTarget.transform.position - transform.position;
             aiCharacterCombatManager.viewableAngle = WorldUtilityManager.instance.GetAngleOfTarget(transform, aiCharacterCombatManager.targetDirection);
+            aiCharacterCombatManager.distanceFromTarget = Vector3.Distance(transform.position, aiCharacterCombatManager.currentTarget.transform.position);
         }
 
         navMeshAgent.transform.localPosition = Vector3.zero;

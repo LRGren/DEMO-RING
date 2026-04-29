@@ -26,7 +26,9 @@ public class PursueTargetState : AIState
 
         aiCharacterManager.aiCharacterLocomotionManager.RotateTowardsAgent(aiCharacterManager);
 
-        //检测是否在攻击范围内，如果是，返回AttackState
+        //检测是否在攻击范围内，如果是，返回CombatStanceState
+        if(aiCharacterManager.aiCharacterCombatManager.distanceFromTarget <= aiCharacterManager.navMeshAgent.stoppingDistance)
+            return SwitchState(aiCharacterManager, aiCharacterManager.combatStance);
 
         //检测是否在追击范围内，如果不是（目标过远），回家
 

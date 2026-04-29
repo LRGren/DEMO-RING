@@ -347,7 +347,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0ad932253e8dc8841948afa5d1a0d051,
         type: 3}
       propertyPath: m_Name
-      value: Dummy_01
+      value: Undead_Dummy_01
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0ad932253e8dc8841948afa5d1a0d051,
         type: 3}
@@ -838,7 +838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3820589272
+  GlobalObjectIdHash: 1732247804
   InScenePlacedSourceGlobalObjectIdHash: 1732247804
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -931,6 +931,8 @@ MonoBehaviour:
   navMeshAgent: {fileID: 0}
   idle: {fileID: 11400000, guid: 9927f457ae17ff14f94577f4ade16d2d, type: 2}
   pursueTarget: {fileID: 11400000, guid: a48a7953ff369d743b391ea7e97cf344, type: 2}
+  combatStance: {fileID: 11400000, guid: 5808f6a37d47170499cb462594cdb85d, type: 2}
+  attack: {fileID: 11400000, guid: f620c2fa329502145bb2871fb2faeb1f, type: 2}
 --- !u!114 &-8441148072163557365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -963,9 +965,14 @@ MonoBehaviour:
   lastAttackAnimation: 
   currentAttackType: 0
   lockOnTransform: {fileID: 6598238437659444050}
+  actionRecoveryTimer: 0
+  distanceFromTarget: 0
+  viewableAngle: 0
+  targetDirection: {x: 0, y: 0, z: 0}
   detectionRadius: 15
-  minimumDetectionAngle: -35
-  maximumDetectionAngle: 35
+  minimumFOV: -35
+  maximumFOV: 35
+  attackRotationSpeed: 5
 --- !u!114 &5664989452523142964
 MonoBehaviour:
   m_ObjectHideFlags: 0
