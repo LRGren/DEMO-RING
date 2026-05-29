@@ -11,6 +11,10 @@ public class CharacterAnimatorManager : MonoBehaviour
     private int horizontal;
     private int vertical;
 
+    [Header("Flags")]
+    public bool applyRootMotion = false;
+
+
     [Header("Damage Animation")]
     public string hit_Forward_Medium_01 = "Hit_Forward_Medium_01";
     public string hit_Back_Medium_01 = "Hit_Back_Medium_01";
@@ -20,53 +24,53 @@ public class CharacterAnimatorManager : MonoBehaviour
     protected virtual void Awake()
     {
         character = GetComponent<CharacterManager>();
-        
+
         horizontal = Animator.StringToHash("Horizontal");
         vertical = Animator.StringToHash("Vertical");
     }
-    
-    public void UpdateAnimatorMovementParameters(float horizontalValue, float verticalValue,bool isSprinting)
+
+    public void UpdateAnimatorMovementParameters(float horizontalValue, float verticalValue, bool isSprinting)
     {
         float snappedHorizontal;
         float snappedVertical;
 
-        if(horizontalValue > 0 && horizontalValue < 0.55f)
+        if (horizontalValue > 0 && horizontalValue < 0.55f)
             snappedHorizontal = 0.5f;
-        else if(horizontalValue > 0.55f)
+        else if (horizontalValue > 0.55f)
             snappedHorizontal = 1f;
-        else if(horizontalValue < 0 && horizontalValue > -0.55f)
+        else if (horizontalValue < 0 && horizontalValue > -0.55f)
             snappedHorizontal = -0.5f;
-        else if(horizontalValue < -0.55f)
+        else if (horizontalValue < -0.55f)
             snappedHorizontal = -1f;
         else
             snappedHorizontal = 0;
 
-        if(verticalValue > 0 && verticalValue < 0.55f)
+        if (verticalValue > 0 && verticalValue < 0.55f)
             snappedVertical = 0.5f;
-        else if(verticalValue > 0.55f)
+        else if (verticalValue > 0.55f)
             snappedVertical = 1f;
-        else if(verticalValue < 0 && verticalValue > -0.55f)
+        else if (verticalValue < 0 && verticalValue > -0.55f)
             snappedVertical = -0.5f;
-        else if(verticalValue < -0.55f)
+        else if (verticalValue < -0.55f)
             snappedVertical = -1f;
         else
             snappedVertical = 0;
 
         if (isSprinting) snappedVertical = 2f;
-        
-        character.animator.SetFloat(horizontal, snappedHorizontal,0.1f, Time.deltaTime);
+
+        character.animator.SetFloat(horizontal, snappedHorizontal, 0.1f, Time.deltaTime);
         character.animator.SetFloat(vertical, snappedVertical, 0.1f, Time.deltaTime);
     }
-    
-    public virtual void PlayerTargetActionAnimation(string targetAnimation,bool isPerformingAction,bool applyRootMotion = true,bool canRotate = false,bool canMove = false)
+
+    public virtual void PlayerTargetActionAnimation(string targetAnimation, bool isPerformingAction, bool applyRootMotion = true, bool canRotate = false, bool canMove = false)
     {
         //Debug.Log("Playing Target Action Animation: " + targetAnimation);
 
-        character.applyRootMotion = applyRootMotion;
+        character.characterAnimatorManager.applyRootMotion = applyRootMotion;
         character.animator.CrossFade(targetAnimation, 0.2f);
         character.isPerformingAction = isPerformingAction;
-        character.canRotate = canRotate;
-        character.canMove = canMove;
+        character.characterLocomotionManager.canRotate = canRotate;
+        character.characterLocomotionManager.canMove = canMove;
 
         character.characterNetworkManager.NotifyTheServerOfActionAnimationServerRpc(
             NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
@@ -82,11 +86,11 @@ public class CharacterAnimatorManager : MonoBehaviour
 
         character.characterCombatManager.currentAttackType = attackType;
         character.characterCombatManager.lastAttackAnimation = targetAnimation;
-        character.applyRootMotion = applyRootMotion;
+        character.characterAnimatorManager.applyRootMotion = applyRootMotion;
         character.animator.CrossFade(targetAnimation, 0.2f);
         character.isPerformingAction = isPerformingAction;
-        character.canRotate = canRotate;
-        character.canMove = canMove;
+        character.characterLocomotionManager.canRotate = canRotate;
+        character.characterLocomotionManager.canMove = canMove;
 
         character.characterNetworkManager.NotifyTheServerOfAttackActionAnimationServerRpc(
             NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);

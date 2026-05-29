@@ -19,6 +19,7 @@ public class AIState : ScriptableObject
     {
         // Reset all flags or states in the AICharacterManager
         // For example, you might want to reset attack flags, movement flags, etc.
+        
     }
 
 }

@@ -21,27 +21,34 @@ public class AICharacterCombatManager : CharacterCombatManager
     [Header("Attack Rotation Speed")]
     public float attackRotationSpeed = 25f;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        lockOnTransform = GetComponentInChildren<LockOnTransform>().transform;
+
+    }
+
     public void FindATargetViaLineOfSight(AICharacterManager aiCharacter)
     {
         if (currentTarget != null)
             return;
 
-        Collider[] colliders = Physics.OverlapSphere(aiCharacter.transform.position, detectionRadius,WorldUtilityManager.instance.GetCharacterLayers());
+        Collider[] colliders = Physics.OverlapSphere(aiCharacter.transform.position, detectionRadius, WorldUtilityManager.instance.GetCharacterLayers());
 
-        for(int i=0; i<colliders.Length; i++)
+        for (int i = 0; i < colliders.Length; i++)
         {
             CharacterManager targetCharacter = colliders[i].GetComponent<CharacterManager>();
-            
-            if(targetCharacter == null)
+
+            if (targetCharacter == null)
                 continue;
 
-            if(targetCharacter == aiCharacter)
+            if (targetCharacter == aiCharacter)
                 continue;
 
-            if(targetCharacter.isDead.Value)
+            if (targetCharacter.isDead.Value)
                 continue;
 
-            if(WorldUtilityManager.instance.CanIDamageThisTarget(aiCharacter.characterGroup, targetCharacter.characterGroup))
+            if (WorldUtilityManager.instance.CanIDamageThisTarget(aiCharacter.characterGroup, targetCharacter.characterGroup))
             {
                 //判断是否在视线范围内
                 Vector3 targetDirection = targetCharacter.transform.position - aiCharacter.transform.position;
@@ -49,8 +56,8 @@ public class AICharacterCombatManager : CharacterCombatManager
 
                 if (angleToPotentialTarget >= minimumFOV && angleToPotentialTarget <= maximumFOV)
                 {
-                    if(Physics.Linecast(aiCharacter.characterCombatManager.lockOnTransform.position, 
-                        targetCharacter.transform.position, 
+                    if (Physics.Linecast(aiCharacter.characterCombatManager.lockOnTransform.position,
+                        targetCharacter.transform.position,
                         WorldUtilityManager.instance.GetEnviroLayers()))
                     {
                         Debug.DrawLine(aiCharacter.characterCombatManager.lockOnTransform.position, targetCharacter.transform.position, Color.red, 0.1f);
@@ -121,10 +128,10 @@ public class AICharacterCombatManager : CharacterCombatManager
 
     public void RotateTowardsTargetWhilstAttacking(AICharacterManager aiCharacter)
     {
-        if(currentTarget == null)
+        if (currentTarget == null)
             return;
 
-        if (!aiCharacter.canRotate)
+        if (!aiCharacter.characterLocomotionManager.canRotate)
             return;
 
         if (!aiCharacter.isPerformingAction)
@@ -134,7 +141,7 @@ public class AICharacterCombatManager : CharacterCombatManager
         tmp_TargetDirection.y = 0;
         tmp_TargetDirection.Normalize();
 
-        if(tmp_TargetDirection == Vector3.zero)
+        if (tmp_TargetDirection == Vector3.zero)
         {
             tmp_TargetDirection = aiCharacter.transform.forward;
         }
@@ -146,13 +153,13 @@ public class AICharacterCombatManager : CharacterCombatManager
 
     public void HandleActionRecovery(AICharacterManager aiCharacter)
     {
-       if(actionRecoveryTimer > 0)
+        if (actionRecoveryTimer > 0)
         {
-            if(!aiCharacter.isPerformingAction)
+            if (!aiCharacter.isPerformingAction)
             {
                 actionRecoveryTimer -= Time.deltaTime;
             }
-        } 
+        }
     }
 
 }

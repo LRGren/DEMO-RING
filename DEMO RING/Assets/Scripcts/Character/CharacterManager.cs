@@ -23,10 +23,6 @@ public class CharacterManager : NetworkBehaviour
 
     [Header("Flags")]
     public bool isPerformingAction = false;
-    public bool isGrounded = false;
-    public bool applyRootMotion = false;
-    public bool canRotate = true;
-    public bool canMove = true;
 
     protected virtual void Awake()
     {
@@ -63,7 +59,7 @@ public class CharacterManager : NetworkBehaviour
 
     protected virtual void Update()
     {
-        animator.SetBool("isGrounded", isGrounded);
+        animator.SetBool("isGrounded", characterLocomotionManager.isGrounded);
 
         if (IsOwner)
         {

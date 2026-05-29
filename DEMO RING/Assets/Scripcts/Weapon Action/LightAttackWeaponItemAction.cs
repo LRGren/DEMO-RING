@@ -19,7 +19,7 @@ public class LightAttackWeaponItemAction : WeaponItemAction
         if (playerPerformingAction.playerNetworkManager.currentStamina.Value <= 0)
             return;
 
-        if (!playerPerformingAction.isGrounded)
+        if (!playerPerformingAction.playerLocomotionManager.isGrounded)
             return;
 
         //执行攻击
@@ -31,11 +31,11 @@ public class LightAttackWeaponItemAction : WeaponItemAction
 
         if (playerPerformingAction.playerCombatManager.canComboWithMainHandWeapon && playerPerformingAction.isPerformingAction)
         {
-            if(playerPerformingAction.playerCombatManager.lastAttackAnimation == light_Attack_01)
+            if (playerPerformingAction.playerCombatManager.lastAttackAnimation == light_Attack_01)
             {
                 playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackType.LightAttack02, light_Attack_02, true);
             }
-            else if(playerPerformingAction.playerCombatManager.lastAttackAnimation == light_Attack_02)
+            else if (playerPerformingAction.playerCombatManager.lastAttackAnimation == light_Attack_02)
             {
                 playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackType.LightAttack01, light_Attack_01, true);
             }

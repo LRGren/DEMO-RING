@@ -10,13 +10,13 @@ public class PlayerAnimatorManager : CharacterAnimatorManager
     protected override void Awake()
     {
         base.Awake();
-        
+
         player = GetComponent<PlayerManager>();
     }
 
     private void OnAnimatorMove()
     {
-        if (player.applyRootMotion)
+        if (player.characterAnimatorManager.applyRootMotion)
         {
             Vector3 velocity = player.animator.deltaPosition;
             player.characterController.Move(velocity);

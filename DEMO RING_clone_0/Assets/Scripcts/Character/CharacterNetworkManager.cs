@@ -7,8 +7,8 @@ using Unity.Netcode;
 public class CharacterNetworkManager : NetworkBehaviour
 {
     private CharacterManager character;
-    
-    [Header("Position")] 
+
+    [Header("Position")]
     public NetworkVariable<Vector3> networkPosition = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<Quaternion> networkRotation = new NetworkVariable<Quaternion>(Quaternion.identity, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public Vector3 networkPositionVelocity;
@@ -33,7 +33,7 @@ public class CharacterNetworkManager : NetworkBehaviour
     [Header("Stats")]
     public NetworkVariable<int> endurance = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> vitality = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    
+
     [Header("Resources")]
     public NetworkVariable<float> currentStamina = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> maxStamina = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -60,7 +60,7 @@ public class CharacterNetworkManager : NetworkBehaviour
             currentHealth.Value = maxHealth.Value;
         }
     }
-    
+
     public void OnLockOnTargetIDChange(ulong oldID, ulong newID)
     {
         if (!IsOwner)
@@ -77,7 +77,7 @@ public class CharacterNetworkManager : NetworkBehaviour
         }
     }
 
-    public void OnIsChargingAttackChanged(bool old,bool newStatus)
+    public void OnIsChargingAttackChanged(bool old, bool newStatus)
     {
         character.animator.SetBool("isChargingAttack", isChargingAttack.Value);
     }
@@ -88,7 +88,7 @@ public class CharacterNetworkManager : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void NotifyTheServerOfActionAnimationServerRpc(ulong clientId,string animationName,bool applyRootMotion)
+    public void NotifyTheServerOfActionAnimationServerRpc(ulong clientId, string animationName, bool applyRootMotion)
     {
         if (IsServer)
         {
@@ -97,7 +97,7 @@ public class CharacterNetworkManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void PlayActionAnimationForAllClientsClientRpc(ulong clientId,string animationName,bool applyRootMotion)
+    public void PlayActionAnimationForAllClientsClientRpc(ulong clientId, string animationName, bool applyRootMotion)
     {
         if (clientId != NetworkManager.Singleton.LocalClientId)
         {
@@ -107,7 +107,7 @@ public class CharacterNetworkManager : NetworkBehaviour
 
     public void PerformActionAnimationFromServer(string animationName, bool applyRootMotion)
     {
-        character.applyRootMotion = applyRootMotion;
+        character.characterAnimatorManager.applyRootMotion = applyRootMotion;
         character.animator.CrossFade(animationName, 0.2f);
     }
 
@@ -132,7 +132,7 @@ public class CharacterNetworkManager : NetworkBehaviour
 
     public void PerformAttackActionAnimationFromServer(string animationName, bool applyRootMotion)
     {
-        character.applyRootMotion = applyRootMotion;
+        character.characterAnimatorManager.applyRootMotion = applyRootMotion;
         character.animator.CrossFade(animationName, 0.2f);
     }
 

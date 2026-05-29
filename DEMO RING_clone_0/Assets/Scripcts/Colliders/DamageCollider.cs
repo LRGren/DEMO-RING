@@ -20,7 +20,7 @@ public class DamageCollider : MonoBehaviour
 
     [Header("Character Damaged")]
     protected List<CharacterManager> characterDamaged = new List<CharacterManager>();
-    
+
     protected virtual void Awake()
     {
 
@@ -34,13 +34,13 @@ public class DamageCollider : MonoBehaviour
         if (damageTarget != null)
         {
             contactPoint = other.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
-            
+
             //友军
-            
+
             //格挡
-            
+
             //无敌
-            
+
             //伤害
             DamageTarget(damageTarget);
         }
@@ -50,7 +50,7 @@ public class DamageCollider : MonoBehaviour
     {
         if (characterDamaged.Contains(damageTarget))
             return;
-        
+
         characterDamaged.Add(damageTarget);
 
         TakeDamageEffect damageEffect = Instantiate(WorldCharacterEffectsManager.instance.takeDamageEffect);
@@ -59,7 +59,7 @@ public class DamageCollider : MonoBehaviour
         damageEffect.fireDamage = fireDamage;
         damageEffect.lightningDamage = lightningDamage;
         damageEffect.holyDamage = holyDamage;
-        
+
         damageEffect.contactPoint = contactPoint;
 
         damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);

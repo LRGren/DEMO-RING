@@ -8,7 +8,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
     [HideInInspector] public float verticalMovement;
     [HideInInspector] public float horizontalMovement;
     [HideInInspector] public float moveAmount;
-    
+
     [Header("Movement")]
     private Vector3 moveDirection;
     private Vector3 targetRotationDirection;
@@ -24,15 +24,15 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
     [SerializeField] private float jumpHeight = 4;
     [SerializeField] private float jumpingForwardSpeed = 5f;
     [SerializeField] private float freeFallSpeed = 2f;
-    
+
     [Header("Dodge")]
     private Vector3 rollDirection;
     [SerializeField] private float dodgeStaminaCost = 25;
-    
+
     protected override void Awake()
     {
         base.Awake();
-        
+
         player = GetComponent<PlayerManager>();
     }
 
@@ -82,11 +82,11 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
 
     private void HandleGroundedMovement()
     {
-        if (!player.canMove)
+        if (!player.characterLocomotionManager.canMove)
             return;
-        
+
         GetMovementValues();
-        
+
         moveDirection =
             PlayerCamera.instance.transform.forward * verticalMovement +
             PlayerCamera.instance.transform.right * horizontalMovement;
@@ -108,9 +108,9 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
             {
                 //行走
                 player.characterController.Move(moveDirection * (walkingSpeed * Time.deltaTime));
-            }   
+            }
         }
-        
+
     }
 
     private void HandleJumpingMovement()
@@ -123,10 +123,10 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
 
     private void HandleFreeFallMovement()
     {
-        if (!player.isGrounded)
+        if (!player.playerLocomotionManager.isGrounded)
         {
             Vector3 freeFallDirection;
-            
+
             freeFallDirection = PlayerCamera.instance.cameraObject.transform.forward *
                                 PlayerInputManager.instance.verticalInput;
             freeFallDirection += PlayerCamera.instance.cameraObject.transform.right *
@@ -141,7 +141,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         if (player.isDead.Value)
             return;
 
-        if(!player.canRotate)
+        if (!player.characterLocomotionManager.canRotate)
             return;
 
         if (player.playerNetworkManager.isLockOn.Value)
@@ -205,7 +205,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
 
         if (player.playerNetworkManager.currentStamina.Value <= 0)
             return;
-        
+
         if (PlayerInputManager.instance.moveAmount > 0)
         {
             //翻滚
@@ -215,7 +215,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
                              PlayerInputManager.instance.horizontalInput;
             rollDirection.y = 0;
             rollDirection.Normalize();
-            
+
             Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
             player.transform.rotation = playerRotation;
 
@@ -252,8 +252,8 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         {
             player.playerNetworkManager.isSprinting.Value = false;
         }
-        
-        player.playerNetworkManager.currentStamina.Value -= sprintingCost *  Time.deltaTime;
+
+        player.playerNetworkManager.currentStamina.Value -= sprintingCost * Time.deltaTime;
     }
 
     public void AttemptToPerformJump()
@@ -263,18 +263,18 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
 
         if (player.playerNetworkManager.currentStamina.Value <= 0)
             return;
-        
-        if(player.playerNetworkManager.isJumping.Value)
+
+        if (player.playerNetworkManager.isJumping.Value)
             return;
-        
-        if(!player.isGrounded)
+
+        if (!player.playerLocomotionManager.isGrounded)
             return;
-        
+
         //注意是单手跳跃，还是双持跳跃
         player.playerAnimatorManager.PlayerTargetActionAnimation("Main_Jump_01", false);
 
         player.playerNetworkManager.isJumping.Value = true;
-        
+
         player.playerNetworkManager.currentStamina.Value -= jumpStaminaCost;
 
         jumpDirection = PlayerCamera.instance.cameraObject.transform.forward *

@@ -18,14 +18,15 @@ public class AttackState : AIState
 
     public override AIState Tick(AICharacterManager aiCharacterManager)
     {
-        if(aiCharacterManager.aiCharacterCombatManager.currentTarget == null)
+        if (aiCharacterManager.aiCharacterCombatManager.currentTarget == null)
             return SwitchState(aiCharacterManager, aiCharacterManager.idle);
 
-        if(aiCharacterManager.isDead.Value)
+        if (aiCharacterManager.isDead.Value)
             return SwitchState(aiCharacterManager, aiCharacterManager.idle);
 
 
         // Rotate towards the target
+        aiCharacterManager.aiCharacterCombatManager.RotateTowardsTargetWhilstAttacking(aiCharacterManager);
 
         // 更新Animator中的"Vertical"参数'
         aiCharacterManager.characterAnimatorManager.UpdateAnimatorMovementParameters(0, 0, false);
@@ -38,12 +39,12 @@ public class AttackState : AIState
             }
         }
 
+        if (aiCharacterManager.isPerformingAction)
+            return this;
+
         if (!hasPerformedAttack)
         {
             if (aiCharacterManager.aiCharacterCombatManager.actionRecoveryTimer > 0)
-                return this;
-
-            if(aiCharacterManager.isPerformingAction)
                 return this;
 
             PerformAttack(aiCharacterManager);
@@ -54,7 +55,7 @@ public class AttackState : AIState
         if (pivotAfterAttack)
             aiCharacterManager.aiCharacterCombatManager.PivotTowardsTarget(aiCharacterManager);
 
-        return SwitchState(aiCharacterManager,aiCharacterManager.combatStance);
+        return SwitchState(aiCharacterManager, aiCharacterManager.combatStance);
     }
 
     protected void PerformAttack(AICharacterManager aiCharacter)

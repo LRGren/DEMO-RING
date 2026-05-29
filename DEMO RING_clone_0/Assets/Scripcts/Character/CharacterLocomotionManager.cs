@@ -7,8 +7,8 @@ using UnityEngine.Serialization;
 public class CharacterLocomotionManager : MonoBehaviour
 {
     private CharacterManager character;
-    
-    [Header("Ground Check & Jump")] 
+
+    [Header("Ground Check & Jump")]
     [SerializeField] protected float gravityForce = -40f;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundCheckSphereRadius = 0.3f;
@@ -20,6 +20,9 @@ public class CharacterLocomotionManager : MonoBehaviour
 
     [Header("Flags")]
     public bool isRolling;
+    public bool isGrounded = false;
+    public bool canRotate = true;
+    public bool canMove = true;
 
     protected virtual void Awake()
     {
@@ -30,7 +33,7 @@ public class CharacterLocomotionManager : MonoBehaviour
     {
         HandleGroundCheck();
 
-        if (character.isGrounded)
+        if (isGrounded)
         {
             //没有尝试跳跃或者向上移动
             if (yVelocity.y < 0)
@@ -51,22 +54,32 @@ public class CharacterLocomotionManager : MonoBehaviour
 
             inAirTimer += Time.deltaTime;
             character.animator.SetFloat("inAirTimer", inAirTimer);
-            
+
             yVelocity.y += gravityForce * Time.deltaTime;
         }
-        
+
         //一直模拟重力
         character.characterController.Move(yVelocity * Time.deltaTime);
     }
-    
+
 
     protected void HandleGroundCheck()
     {
-        character.isGrounded = Physics.CheckSphere(character.transform.position, groundCheckSphereRadius, groundLayer);
+        isGrounded = Physics.CheckSphere(character.transform.position, groundCheckSphereRadius, groundLayer);
     }
 
     protected void OnDrawGizmosSelected()
     {
         //Gizmos.DrawSphere(character.transform.position, groundCheckSphereRadius);
+    }
+
+    public void EnableRotate()
+    {
+        canRotate = true;
+    }
+
+    public void DisableRotate()
+    {
+        canRotate = false;
     }
 }
