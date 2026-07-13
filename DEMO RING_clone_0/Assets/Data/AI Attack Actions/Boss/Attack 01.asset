@@ -16,8 +16,8 @@ MonoBehaviour:
   comboAction: {fileID: 0}
   attackType: 0
   attackWeigth: 45
-  attackRecoveryTime: 1.5
+  attackRecoveryTime: 1
   maximumAttackAngle: 45
   minimumAttackAngle: -45
-  maximumAttackDistance: 10
+  maximumAttackDistance: 12
   minimumAttackDistance: 0

@@ -914,7 +914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1732247804
+  GlobalObjectIdHash: 2104209809
   InScenePlacedSourceGlobalObjectIdHash: 1732247804
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1083,6 +1083,7 @@ MonoBehaviour:
   isGrounded: 0
   canRotate: 1
   canMove: 1
+  agentRotationSpeed: 10
 --- !u!114 &1092894521891446041
 MonoBehaviour:
   m_ObjectHideFlags: 0
