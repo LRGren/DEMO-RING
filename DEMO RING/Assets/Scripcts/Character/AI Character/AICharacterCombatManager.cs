@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class AICharacterCombatManager : CharacterCombatManager
 {
+    protected AICharacterManager aiCharacterManager;
     [Header("Action Recovery Time")]
     public float actionRecoveryTimer = 0f;
 
@@ -19,11 +20,12 @@ public class AICharacterCombatManager : CharacterCombatManager
     public float maximumFOV = 35f;
 
     [Header("Attack Rotation Speed")]
-    public float attackRotationSpeed = 25f;
+    public float attackRotationSpeed = 5f;
 
     protected override void Awake()
     {
         base.Awake();
+        aiCharacterManager = GetComponent<AICharacterManager>();
         lockOnTransform = GetComponentInChildren<LockOnTransform>().transform;
 
     }
@@ -56,9 +58,8 @@ public class AICharacterCombatManager : CharacterCombatManager
 
                 if (angleToPotentialTarget >= minimumFOV && angleToPotentialTarget <= maximumFOV)
                 {
-                    if (Physics.Linecast(aiCharacter.characterCombatManager.lockOnTransform.position,
-                        targetCharacter.transform.position,
-                        WorldUtilityManager.instance.GetEnviroLayers()))
+                    if (WorldUtilityManager.instance.IsTargetBlockedByEnvironment(aiCharacter.characterCombatManager.lockOnTransform.position,
+                        targetCharacter.transform.position))
                     {
                         Debug.DrawLine(aiCharacter.characterCombatManager.lockOnTransform.position, targetCharacter.transform.position, Color.red, 0.1f);
                         //Debug.Log("Blocked by environment");
@@ -148,7 +149,8 @@ public class AICharacterCombatManager : CharacterCombatManager
 
         Quaternion tmp_TargetRotation = Quaternion.LookRotation(tmp_TargetDirection);
 
-        aiCharacter.transform.rotation = Quaternion.Slerp(aiCharacter.transform.rotation, tmp_TargetRotation, attackRotationSpeed * Time.deltaTime);
+        /*aiCharacter.transform.rotation = Quaternion.Slerp(aiCharacter.transform.rotation, tmp_TargetRotation, attackRotationSpeed * Time.deltaTime);*/
+        aiCharacter.transform.rotation = Quaternion.RotateTowards(aiCharacter.transform.rotation, tmp_TargetRotation, attackRotationSpeed * Time.deltaTime);
     }
 
     public void HandleActionRecovery(AICharacterManager aiCharacter)

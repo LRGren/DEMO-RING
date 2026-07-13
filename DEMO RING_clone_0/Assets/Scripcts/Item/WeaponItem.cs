@@ -8,7 +8,7 @@ public class WeaponItem : Item
 
     [Header("Weapon Model")]
     public GameObject weaponModel;
-    
+
     [Header("Weapon Requirements")]
     public int strengthREQ = 0;
     public int dexterityREQ = 0;
@@ -21,7 +21,7 @@ public class WeaponItem : Item
     public int fireDamage = 0;
     public int holyDamage = 0;
     public int lightningDamage = 0;
-    
+
     //武器格挡强度
 
     [Header("Weapon Poise")]
@@ -59,4 +59,7 @@ public class WeaponItem : Item
 
     //格挡音效
 
+    //武器音效
+    [Header("Weapon SFX")]
+    public AudioClip[] wooshes;
 }

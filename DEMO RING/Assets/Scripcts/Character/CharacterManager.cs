@@ -47,6 +47,7 @@ public class CharacterManager : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
+        animator.SetBool("isMoving", characterNetworkManager.isMoving.Value);
         characterNetworkManager.isMoving.OnValueChanged += characterNetworkManager.OnIsMovingChanged;
     }
 
@@ -63,7 +64,7 @@ public class CharacterManager : NetworkBehaviour
 
         if (IsOwner)
         {
-            //如果该角色由本地控制，那么实时更改位置
+            //如果该角色由本地控制，那么实时更改位置，并且写入网络变量
             characterNetworkManager.networkPosition.Value = transform.position;
 
             characterNetworkManager.networkRotation.Value = transform.rotation;

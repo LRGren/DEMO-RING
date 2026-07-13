@@ -7,28 +7,28 @@ public class TakeDamageEffect : InstantCharacterEffect
 {
     [Header("Character Causing Damage")]
     CharacterManager characterCausingDamage;
-    
+
     [Header("Damage")]
     public float physicalDamage = 0;
     public float magicalDamage = 0;
     public float fireDamage = 0;
     public float lightningDamage = 0;
     public float holyDamage = 0;
-    
+
     [Header("Final Damage")]
     private int finalDamageDealt = 0;
-    
+
     [Header("Poise")]
     public float poiseDamage = 0;//削韧
     public bool poiseIsBroken = false;
-    
+
     //TODO:BUILD UP EFFECTS
-    
+
     [Header("Animation")]
     public bool playDamageAnimation = true;
     public bool manuallySelectDamageAnimation = false;
     public string damageAnimation = "";
-    
+
     [Header("Sound FX")]
     public bool willPlaySoundFX = true;
     public AudioClip elementalDamageSoundFX;
@@ -40,13 +40,13 @@ public class TakeDamageEffect : InstantCharacterEffect
     public override void ProcessEffect(CharacterManager character)
     {
         base.ProcessEffect(character);
-        
+
         //如果角色死了 无需继续计算
-        if(character.isDead.Value)
+        if (character.isDead.Value)
             return;
-        
+
         //是否无敌
-        
+
         //计算伤害
         CalculteDamage(character);
 
@@ -60,34 +60,34 @@ public class TakeDamageEffect : InstantCharacterEffect
         PlayDamageSFX(character);
         //VFX 溅血效果
         PlayDamageVFX(character);
-        
+
         //如果是 AI 将敌人设置为发动攻击的人
     }
 
     private void CalculteDamage(CharacterManager character)
     {
-        if(!character.IsOwner)
+        if (!character.IsOwner)
             return;
-        
+
         if (characterCausingDamage != null)
         {
             //确认对方是否有伤害修饰符
         }
-        
+
         //属性减伤
-        
+
         //装备减伤
-        
+
         //将所有伤害加起来
         finalDamageDealt = Mathf.RoundToInt(physicalDamage + magicalDamage + fireDamage + lightningDamage + holyDamage);
         if (finalDamageDealt <= 0)
         {
             finalDamageDealt = 1;
         }
-        
+
         //Debug.Log("Cause Damage");
         character.characterNetworkManager.currentHealth.Value -= finalDamageDealt;
-        
+
         //计算削韧值
     }
 
@@ -105,14 +105,15 @@ public class TakeDamageEffect : InstantCharacterEffect
         AudioClip physicalSFX = WorldSoundFXManager.instance.ChooseRandomSFXFromArray(WorldSoundFXManager.instance.physicalDamageSFX);
 
         character.characterSoundFXManager.PlaySoundFX(physicalSFX);
+        character.characterSoundFXManager.PlayDamageGruntSFX();
     }
 
     private void PlayDirectionalBasedDamageAnimation(CharacterManager character)
     {
-        if(!character.IsOwner)
+        if (!character.IsOwner)
             return;
 
-        if(character.isDead.Value)
+        if (character.isDead.Value)
             return;
 
         //失衡

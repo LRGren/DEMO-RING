@@ -8,11 +8,11 @@ public class WorldUtilityManager : MonoBehaviour
 
     [Header("Layers")]
     [SerializeField] private LayerMask characterLayers;
-    [SerializeField] private LayerMask enviroLayers;  
+    [SerializeField] private LayerMask enviroLayers;
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -37,9 +37,9 @@ public class WorldUtilityManager : MonoBehaviour
         return enviroLayers;
     }
 
-    public bool CanIDamageThisTarget(CharacterGroup attacker,CharacterGroup target)
+    public bool CanIDamageThisTarget(CharacterGroup attacker, CharacterGroup target)
     {
-        if(attacker == CharacterGroup.Team_01)
+        if (attacker == CharacterGroup.Team_01)
         {
             switch (target)
             {
@@ -62,12 +62,12 @@ public class WorldUtilityManager : MonoBehaviour
         return false;
     }
 
-    public float GetAngleOfTarget(Transform transform,Vector3 targetDirection)
+    public float GetAngleOfTarget(Transform transform, Vector3 targetDirection)
     {
         float viewableAngle = Vector3.Angle(transform.forward, targetDirection);
         Vector3 cross = Vector3.Cross(transform.forward, targetDirection);
 
-        if(cross.y < 0)
+        if (cross.y < 0)
         {
             viewableAngle = -viewableAngle;
         }
@@ -75,4 +75,8 @@ public class WorldUtilityManager : MonoBehaviour
         return viewableAngle;
     }
 
+    public bool IsTargetBlockedByEnvironment(Vector3 fromPosition, Vector3 toPosition)
+    {
+        return Physics.Linecast(fromPosition, toPosition, enviroLayers);
+    }
 }

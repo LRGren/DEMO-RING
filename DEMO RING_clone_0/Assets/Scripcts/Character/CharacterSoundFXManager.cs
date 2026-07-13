@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class CharacterSoundFXManager : MonoBehaviour
 {
+    [Header("Damage Grunt SFX")]
+    public AudioClip[] damageGrunts;
+
+    [Header("Attack Grunt SFX")]
+    public AudioClip[] attackGrunts;
+
     private AudioSource audioSource;
 
     private void Awake()
@@ -12,7 +18,7 @@ public class CharacterSoundFXManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlaySoundFX(AudioClip soundFX,float volume = 1f, bool randomizePitch = true, float randomPitchRange = 0.1f)
+    public void PlaySoundFX(AudioClip soundFX, float volume = 1f, bool randomizePitch = true, float randomPitchRange = 0.1f)
     {
         audioSource.PlayOneShot(soundFX, volume);
 
@@ -27,5 +33,17 @@ public class CharacterSoundFXManager : MonoBehaviour
     public void PlayRollSFX()
     {
         audioSource.PlayOneShot(WorldSoundFXManager.instance.rollSFX);
+    }
+
+    public virtual void PlayDamageGruntSFX()
+    {
+        AudioClip gruntClip = WorldSoundFXManager.instance.ChooseRandomSFXFromArray(damageGrunts);
+        PlaySoundFX(gruntClip);
+    }
+
+    public virtual void PlayAttackGruntSFX()
+    {
+        AudioClip gruntClip = WorldSoundFXManager.instance.ChooseRandomSFXFromArray(attackGrunts);
+        PlaySoundFX(gruntClip);
     }
 }

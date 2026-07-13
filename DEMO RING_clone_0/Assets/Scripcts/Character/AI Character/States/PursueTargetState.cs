@@ -9,25 +9,27 @@ public class PursueTargetState : AIState
     public override AIState Tick(AICharacterManager aiCharacterManager)
     {
         //检测是否正在播放动画isPerformingAction，如果是，不做任何操作
-        if(aiCharacterManager.isPerformingAction)
+        if (aiCharacterManager.isPerformingAction)
             return this;
 
         //检测是否有目标，如果没有，返回IdleState
-        if(aiCharacterManager.aiCharacterCombatManager.currentTarget == null)
+        if (aiCharacterManager.aiCharacterCombatManager.currentTarget == null)
             return aiCharacterManager.idle;
 
         //检测是否开启NavMeshAgent，如果没有，开启NavMeshAgent
-        if(!aiCharacterManager.navMeshAgent.enabled)
+        if (!aiCharacterManager.navMeshAgent.enabled)
             aiCharacterManager.navMeshAgent.enabled = true;
 
-        if (aiCharacterManager.aiCharacterCombatManager.viewableAngle < aiCharacterManager.aiCharacterCombatManager.minimumFOV ||
-            aiCharacterManager.aiCharacterCombatManager.viewableAngle > aiCharacterManager.aiCharacterCombatManager.maximumFOV)
+        if ((aiCharacterManager.aiCharacterCombatManager.viewableAngle < aiCharacterManager.aiCharacterCombatManager.minimumFOV ||
+            aiCharacterManager.aiCharacterCombatManager.viewableAngle > aiCharacterManager.aiCharacterCombatManager.maximumFOV) &&
+            !WorldUtilityManager.instance.IsTargetBlockedByEnvironment(aiCharacterManager.characterCombatManager.lockOnTransform.position,
+            aiCharacterManager.aiCharacterCombatManager.currentTarget.transform.position))
             aiCharacterManager.aiCharacterCombatManager.PivotTowardsTarget(aiCharacterManager);
 
         aiCharacterManager.aiCharacterLocomotionManager.RotateTowardsAgent(aiCharacterManager);
 
         //检测是否在攻击范围内，如果是，返回CombatStanceState
-        if(aiCharacterManager.aiCharacterCombatManager.distanceFromTarget <= aiCharacterManager.navMeshAgent.stoppingDistance)
+        if (aiCharacterManager.aiCharacterCombatManager.distanceFromTarget <= aiCharacterManager.navMeshAgent.stoppingDistance)
             return SwitchState(aiCharacterManager, aiCharacterManager.combatStance);
 
         //检测是否在追击范围内，如果不是（目标过远），回家

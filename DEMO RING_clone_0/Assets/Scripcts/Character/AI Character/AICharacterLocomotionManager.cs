@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class AICharacterLocomotionManager : CharacterLocomotionManager
 {
+    [Header("AI Rotation")]
+    public float agentRotationSpeed = 10f;
+
     public void RotateTowardsAgent(AICharacterManager aiCharacterManager)
     {
         if (aiCharacterManager.aiCharacterNetworkManager.isMoving.Value)
+        {
             aiCharacterManager.transform.rotation = aiCharacterManager.navMeshAgent.transform.rotation;
+
+        }
     }
 }

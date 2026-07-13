@@ -60,7 +60,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
             else
             {
                 player.playerAnimatorManager.UpdateAnimatorMovementParameters(horizontalMovement, verticalMovement,
-                                                                                player.playerNetworkManager.isSprinting.Value);
+                player.playerNetworkManager.isSprinting.Value);
             }
         }
     }
@@ -127,10 +127,8 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         {
             Vector3 freeFallDirection;
 
-            freeFallDirection = PlayerCamera.instance.cameraObject.transform.forward *
-                                PlayerInputManager.instance.verticalInput;
-            freeFallDirection += PlayerCamera.instance.cameraObject.transform.right *
-                                 PlayerInputManager.instance.horizontalInput;
+            freeFallDirection = PlayerCamera.instance.cameraObject.transform.forward * PlayerInputManager.instance.verticalInput;
+            freeFallDirection += PlayerCamera.instance.cameraObject.transform.right * PlayerInputManager.instance.horizontalInput;
             freeFallDirection.y = 0;
             player.characterController.Move(freeFallDirection * (freeFallSpeed * Time.deltaTime));
         }
@@ -148,15 +146,16 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         {
             if (player.playerNetworkManager.isSprinting.Value || player.playerLocomotionManager.isRolling)
             {
+                //如果当前有锁定目标，并且正在疾跑或者翻滚，那么应该根据移动方向进行旋转
                 Vector3 targetDirection = Vector3.zero;
-                targetDirection = PlayerCamera.instance.cameraObject.transform.forward * verticalMovement +
-                                          PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
+                targetDirection = PlayerCamera.instance.cameraObject.transform.forward * verticalMovement + PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
 
                 targetDirection.Normalize();
                 targetDirection.y = 0;
 
                 if (targetDirection == Vector3.zero)
                 {
+                    //如果没有移动方向，那么应该保持当前朝向
                     targetDirection = transform.forward;
                 }
 
@@ -166,6 +165,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
             }
             else
             {
+                //如果当前有锁定目标但是没有在疾跑或翻滚，那么应该始终面向锁定目标
                 if (player.playerCombatManager.currentTarget == null)
                     return;
 
@@ -180,9 +180,9 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         }
         else
         {
+            //如果没有锁定目标，那么应该根据移动方向进行旋转
             targetRotationDirection = Vector3.zero;
-            targetRotationDirection = PlayerCamera.instance.cameraObject.transform.forward * verticalMovement +
-                                      PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
+            targetRotationDirection = PlayerCamera.instance.cameraObject.transform.forward * verticalMovement + PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
 
             targetRotationDirection.Normalize();
             targetRotationDirection.y = 0;
@@ -203,6 +203,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         if (player.isPerformingAction)
             return;
 
+        //如果当前体力小于等于0，那么无法翻滚
         if (player.playerNetworkManager.currentStamina.Value <= 0)
             return;
 
@@ -236,6 +237,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         if (player.isPerformingAction)
         {
             player.playerNetworkManager.isSprinting.Value = false;
+            return;
         }
 
         if (player.playerNetworkManager.currentStamina.Value <= 0.5f)

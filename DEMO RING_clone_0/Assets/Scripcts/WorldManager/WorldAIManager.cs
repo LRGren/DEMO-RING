@@ -8,17 +8,13 @@ public class WorldAIManager : MonoBehaviour
 {
     public static WorldAIManager instance;
 
-    [Header("Debug")]
-    public bool respawn = false;
-    public bool despawn = false;
-
     [Header("Characters")]
-    public GameObject[] aiCharacters;
+    [SerializeField] private List<AICharacterSpawner> aiCharacterSpawners = new List<AICharacterSpawner>();
     public List<GameObject> spawnedInCharacters;
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -28,53 +24,10 @@ public class WorldAIManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void SpawnAllCharacters(AICharacterSpawner spawner)
     {
-        if(NetworkManager.Singleton.IsServer)
-        {
-            // Server-specific initialization
-            StartCoroutine(WaitForSceneToLoadThenSpawnCharacters());
-        }
-    }
-
-    private void Update()
-    {
-        //Debug
-        if(respawn)
-        {
-            respawn = false;
-            if(spawnedInCharacters.Count > 0)
-            {
-                DespawnAllCharacters();
-            }
-            SpawnAllCharacters();
-        }
-
-        if (despawn)
-        {
-            despawn = false;
-            DespawnAllCharacters();
-        }
-    }
-
-    private IEnumerator WaitForSceneToLoadThenSpawnCharacters()
-    {
-        //如果不是在加载场景，直接返回
-        if (!SceneManager.GetActiveScene().isLoaded)
-        {
-            yield return null;
-        }
-
-        SpawnAllCharacters();
-    }
-
-    private void SpawnAllCharacters()
-    {
-        foreach (var character in aiCharacters) { 
-            GameObject characterInstance = Instantiate(character);
-            characterInstance.GetComponent<NetworkObject>().Spawn();
-            spawnedInCharacters.Add(characterInstance);
-        }
+        aiCharacterSpawners.Add(spawner);
+        spawner.AttemptToSpawnAICharacter();
     }
 
     private void DespawnAllCharacters()

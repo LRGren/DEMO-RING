@@ -14,7 +14,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
     public GameObject rightWeaponModel;
     public GameObject leftWeaponModel;
-    
+
     protected override void Awake()
     {
         base.Awake();
@@ -41,7 +41,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             {
                 rightHandSlot = weapon;
             }
-            else if(weapon.weaponSlot == WeaponModelSlot.LeftHand)
+            else if (weapon.weaponSlot == WeaponModelSlot.LeftHand)
             {
                 leftHandSlot = weapon;
             }
@@ -152,7 +152,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             leftHandWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentLeftHandWeapon);
         }
     }
-    
+
     public void SwitchLeftWeapon()
     {
         if (!player.IsOwner)
@@ -228,10 +228,12 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         if (player.playerNetworkManager.isUsingRightHand.Value)
         {
             rightHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
+            player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(player.playerInventoryManager.currentRightHandWeapon.wooshes));
         }
         else if (player.playerNetworkManager.isUsingLeftHand.Value)
         {
             leftHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
+            player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(player.playerInventoryManager.currentLeftHandWeapon.wooshes));
         }
 
         //双手共持
