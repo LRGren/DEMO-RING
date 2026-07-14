@@ -27,9 +27,15 @@ public class CharacterSaveData
     public int vitality;
     public int endurance;
 
+    [Header("Bosses")]
+    public SerializableDictionary<string, bool> bossesAwakened;
+    public SerializableDictionary<string, bool> bossesDefeated;
 
-    //TODO:自己先写的
-    [Header("Bosses Defeated")]
-    public List<string> bosses = new List<string>();
-    public List<string> bossesDefeated = new List<string>();
+    public CharacterSaveData()
+    {
+        bossesAwakened = new SerializableDictionary<string, bool>();
+        bossesDefeated = new SerializableDictionary<string, bool>();
+    }
+
+
 }

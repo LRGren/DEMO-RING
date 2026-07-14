@@ -48,7 +48,10 @@ public class CharacterManager : NetworkBehaviour
         base.OnNetworkSpawn();
 
         animator.SetBool("isMoving", characterNetworkManager.isMoving.Value);
+        characterNetworkManager.OnIsActiveChanged(false, characterNetworkManager.isActive.Value);
+
         characterNetworkManager.isMoving.OnValueChanged += characterNetworkManager.OnIsMovingChanged;
+        characterNetworkManager.isActive.OnValueChanged += characterNetworkManager.OnIsActiveChanged;
     }
 
     public override void OnNetworkDespawn()
@@ -56,6 +59,7 @@ public class CharacterManager : NetworkBehaviour
         base.OnNetworkDespawn();
 
         characterNetworkManager.isMoving.OnValueChanged -= characterNetworkManager.OnIsMovingChanged;
+        characterNetworkManager.isActive.OnValueChanged -= characterNetworkManager.OnIsActiveChanged;
     }
 
     protected virtual void Update()
@@ -99,11 +103,11 @@ public class CharacterManager : NetworkBehaviour
             //重置所有FLAG
 
             //如果在空中，选择播放其他动画
-        }
 
-        if (!manuallySelectedDeathAnimation)
-        {
-            characterAnimatorManager.PlayerTargetActionAnimation("Death_01", true);
+            if (!manuallySelectedDeathAnimation)
+            {
+                characterAnimatorManager.PlayerTargetActionAnimation("Death_01", true);
+            }
         }
 
         yield return new WaitForSeconds(5);

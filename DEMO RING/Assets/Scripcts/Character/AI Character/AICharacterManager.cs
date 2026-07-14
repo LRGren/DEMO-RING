@@ -70,6 +70,11 @@ public class AICharacterManager : CharacterManager
     }*/
     private void ProcessStateMachine()
     {
+        if (!IsServer)
+        {
+            return; // 仅在服务器上处理状态机逻辑
+        }
+
         // 1. 使用 Null 合并操作符 (?.) 确保 currentState 不为空时才执行 Tick
         // 2. 将 Tick 的返回值（即建议的下一个状态）存入 nextState
         AIState nextState = currentState?.Tick(this);
@@ -80,7 +85,7 @@ public class AICharacterManager : CharacterManager
             currentState = nextState;
         }
 
-        if(aiCharacterCombatManager.currentTarget != null)
+        if (aiCharacterCombatManager.currentTarget != null)
         {
             aiCharacterCombatManager.targetDirection = aiCharacterCombatManager.currentTarget.transform.position - transform.position;
             aiCharacterCombatManager.viewableAngle = WorldUtilityManager.instance.GetAngleOfTarget(transform, aiCharacterCombatManager.targetDirection);

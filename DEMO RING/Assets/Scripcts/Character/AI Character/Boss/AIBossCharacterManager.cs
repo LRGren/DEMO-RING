@@ -7,59 +7,120 @@ public class AIBossCharacterManager : AICharacterManager
     //分配唯一的ID
     [Header("Boss ID")]
     public string bossID = "Boss_001";
+
+    [Space(10)]
+    [SerializeField] private bool defeated = false;
+
+
+    [Header("Test")]
+    [SerializeField] private bool testDefeated = false;
     //当Boss生成，检查Save File（A List）
     //如果没有这个ID，就分配一个新的ID
-    //如果有这个ID，检查是否被击败过
+    //如果有这个ID，检查,是否被唤醒，是否被击败过
     //如果被击败过，就disable掉这个Boss的生成
     //如果没有被击败过，就保持active状态
-    void OnEnable()
-    {
-        Test01();
-        if (WorldSaveGameManager.instance.currentCharacterData.bosses.Contains(bossID))
-        {
-            if (WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Contains(bossID))
-            {
-                gameObject.SetActive(false);
-            }
-        }
-        else
-        {
-            WorldSaveGameManager.instance.currentCharacterData.bosses.Add(bossID);
-        }
-    }
 
-    public void Test01()
+
+    public override void OnNetworkSpawn()
     {
-        if (WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Contains(bossID))
+        base.OnNetworkSpawn();
+
+        if (IsServer)
         {
-            if (WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Contains(bossID))
+            //检查是否有这个ID
+            if (!WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.ContainsKey(bossID))
             {
-                Debug.Log("Boss has been defeated before.");
+                //如果没有这个ID，就分配一个新的ID
+                WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.Add(bossID, false);
+                WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Add(bossID, false);
             }
             else
             {
-                Debug.Log("Boss has not been defeated yet.");
+                defeated = WorldSaveGameManager.instance.currentCharacterData.bossesDefeated[bossID];
+
+                //如果有这个ID，检查,是否被唤醒，是否被击败过
+                if (defeated)
+                {
+                    //如果被击败过，就disable掉这个Boss的生成
+                    aiCharacterNetworkManager.isActive.Value = false;
+                }
+                else
+                {
+                    //如果没有被击败过，就保持active状态
+                    aiCharacterNetworkManager.isActive.Value = true;
+                }
             }
         }
-        else
-        {
-            Debug.Log("Boss ID not found in the save data.");
-        }
-    }
-
-    public void Test02()
-    {
-        WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Add(bossID);
-        Debug.Log("Boss marked as defeated.");
     }
 
     protected override void Update()
     {
         base.Update();
 
-        if (Input.GetKeyDown(KeyCode.K))
+        if (testDefeated)
         {
-            Test02();
+            testDefeated = false;
+
+            defeated = true;
+            if (!WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.ContainsKey(bossID))
+            {
+                //如果没有这个ID，就分配一个新的ID
+                WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.Add(bossID, true);
+                WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Add(bossID, true);
+            }
+            else
+            {
+                WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.Remove(bossID);
+                WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Remove(bossID);
+
+                WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.Add(bossID, true);
+                WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Add(bossID, true);
+            }
+
+            WorldSaveGameManager.instance.SaveGame();
         }
+    }
+
+    public override IEnumerator ProcessDeathEvent(bool manuallySelectedDeathAnimation = false)
+    {
+        if (IsOwner)
+        {
+            characterNetworkManager.currentHealth.Value = 0;
+            isDead.Value = true;
+
+            //重置所有FLAG
+
+            //如果在空中，选择播放其他动画
+
+            if (!manuallySelectedDeathAnimation)
+            {
+                characterAnimatorManager.PlayerTargetActionAnimation("Death_01", true);
+            }
+
+
+            defeated = true;
+            if (!WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.ContainsKey(bossID))
+            {
+                //如果没有这个ID，就分配一个新的ID
+                WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.Add(bossID, true);
+                WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Add(bossID, true);
+            }
+            else
+            {
+                WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.Remove(bossID);
+                WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Remove(bossID);
+
+                WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.Add(bossID, true);
+                WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Add(bossID, true);
+            }
+
+            WorldSaveGameManager.instance.SaveGame();
+        }
+
+        yield return new WaitForSeconds(5);
+
+        //虚化
+
+        //消失
     }
 }
