@@ -8,8 +8,11 @@ public class AIBossCharacterManager : AICharacterManager
     [Header("Boss ID")]
     public string bossID = "Boss_001";
 
+    [SerializeField] private List<FogWallInteractable> fogWalls;
+
     [Space(10)]
-    [SerializeField] private bool defeated = false;
+    [SerializeField] private bool hasBeenDefeated = false;
+    [SerializeField] private bool hasBeenAwakened = false;
 
 
     [Header("Test")]
@@ -36,48 +39,47 @@ public class AIBossCharacterManager : AICharacterManager
             }
             else
             {
-                defeated = WorldSaveGameManager.instance.currentCharacterData.bossesDefeated[bossID];
+                hasBeenDefeated = WorldSaveGameManager.instance.currentCharacterData.bossesDefeated[bossID];
+                hasBeenAwakened = WorldSaveGameManager.instance.currentCharacterData.bossesAwakened[bossID];
+            }
 
-                //如果有这个ID，检查,是否被唤醒，是否被击败过
-                if (defeated)
+            StartCoroutine(GetFogWallsFromWorldObjectManager());
+
+            if (hasBeenAwakened)
+            {
+                foreach (var fogWall in fogWalls)
                 {
-                    //如果被击败过，就disable掉这个Boss的生成
-                    aiCharacterNetworkManager.isActive.Value = false;
+                    fogWall.isActive.Value = true;
                 }
-                else
+            }
+
+            if (hasBeenDefeated)
+            {
+                foreach (var fogWall in fogWalls)
                 {
-                    //如果没有被击败过，就保持active状态
-                    aiCharacterNetworkManager.isActive.Value = true;
+                    fogWall.isActive.Value = false;
                 }
+                aiCharacterNetworkManager.isActive.Value = false;
             }
         }
     }
 
-    protected override void Update()
+    private IEnumerator GetFogWallsFromWorldObjectManager()
     {
-        base.Update();
+        fogWalls = new List<FogWallInteractable>();
 
-        if (testDefeated)
+        while (fogWalls.Count == 0)
         {
-            testDefeated = false;
-
-            defeated = true;
-            if (!WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.ContainsKey(bossID))
+            foreach (var fogWall in WorldObjectManager.instance.fogWalls)
             {
-                //如果没有这个ID，就分配一个新的ID
-                WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.Add(bossID, true);
-                WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Add(bossID, true);
-            }
-            else
-            {
-                WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.Remove(bossID);
-                WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Remove(bossID);
-
-                WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.Add(bossID, true);
-                WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Add(bossID, true);
+                if (fogWall.objectID == bossID)
+                {
+                    fogWalls.Add(fogWall);
+                }
             }
 
-            WorldSaveGameManager.instance.SaveGame();
+            if (fogWalls.Count == 0)
+                yield return new WaitForEndOfFrame();
         }
     }
 
@@ -98,7 +100,7 @@ public class AIBossCharacterManager : AICharacterManager
             }
 
 
-            defeated = true;
+            hasBeenDefeated = true;
             if (!WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.ContainsKey(bossID))
             {
                 //如果没有这个ID，就分配一个新的ID

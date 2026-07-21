@@ -9,7 +9,7 @@ public class WorldAIManager : MonoBehaviour
     public static WorldAIManager instance;
 
     [Header("Characters")]
-    [SerializeField] private List<AICharacterSpawner> aiCharacterSpawners = new List<AICharacterSpawner>();
+    [SerializeField] private List<AICharacterSpawner> aiCharacterSpawners;
     public List<GameObject> spawnedInCharacters;
 
     private void Awake()
@@ -24,7 +24,7 @@ public class WorldAIManager : MonoBehaviour
         }
     }
 
-    public void SpawnAllCharacters(AICharacterSpawner spawner)
+    public void SpawnCharacter(AICharacterSpawner spawner)
     {
         aiCharacterSpawners.Add(spawner);
         spawner.AttemptToSpawnAICharacter();

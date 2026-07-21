@@ -11,7 +11,7 @@ public class AICharacterSpawner : MonoBehaviour
 
     void Start()
     {
-        WorldAIManager.instance.SpawnAllCharacters(this);
+        WorldAIManager.instance.SpawnCharacter(this);
         gameObject.SetActive(false);
     }
 
