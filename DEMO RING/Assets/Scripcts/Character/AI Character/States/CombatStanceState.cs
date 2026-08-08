@@ -28,21 +28,24 @@ public class CombatStanceState : AIState
 
     public override AIState Tick(AICharacterManager aiCharacterManager)
     {
-        if(aiCharacterManager.isPerformingAction)
+        if (aiCharacterManager.isPerformingAction)
             return this;
 
-        if (!aiCharacterManager.aiCharacterNetworkManager.isMoving.Value)
+        if (aiCharacterManager.aiCharacterCombatManager.enablePivot)
         {
-            if(aiCharacterManager.aiCharacterCombatManager.viewableAngle < -30 || aiCharacterManager.aiCharacterCombatManager.viewableAngle > 30)
+            if (!aiCharacterManager.aiCharacterNetworkManager.isMoving.Value)
             {
-                aiCharacterManager.aiCharacterCombatManager.PivotTowardsTarget(aiCharacterManager);
+                if (aiCharacterManager.aiCharacterCombatManager.viewableAngle < -30 || aiCharacterManager.aiCharacterCombatManager.viewableAngle > 30)
+                {
+                    aiCharacterManager.aiCharacterCombatManager.PivotTowardsTarget(aiCharacterManager);
+                }
             }
         }
 
         //  转向目标
         aiCharacterManager.aiCharacterCombatManager.RotateTowardsAgent(aiCharacterManager);
 
-        if(aiCharacterManager.aiCharacterCombatManager.currentTarget == null)
+        if (aiCharacterManager.aiCharacterCombatManager.currentTarget == null)
             return SwitchState(aiCharacterManager, aiCharacterManager.idle);
 
         if (!hasAttacked)
@@ -55,7 +58,7 @@ public class CombatStanceState : AIState
             return SwitchState(aiCharacterManager, aiCharacterManager.attack);
         }
 
-        if(aiCharacterManager.aiCharacterCombatManager.distanceFromTarget > maximumEngagementDistance)
+        if (aiCharacterManager.aiCharacterCombatManager.distanceFromTarget > maximumEngagementDistance)
             return SwitchState(aiCharacterManager, aiCharacterManager.pursueTarget);
 
         NavMeshPath navMeshPath = new NavMeshPath();
@@ -65,7 +68,8 @@ public class CombatStanceState : AIState
         return this;
     }
 
-    protected virtual void GetNewAttack(AICharacterManager aiCharacter) {
+    protected virtual void GetNewAttack(AICharacterManager aiCharacter)
+    {
 
         potentialAttacks = new List<AICharacterAttackAction>();
 
@@ -74,13 +78,13 @@ public class CombatStanceState : AIState
             if (potentialAttack.minimumAttackAngle > aiCharacter.aiCharacterCombatManager.viewableAngle)
                 continue;
 
-            if(potentialAttack.maximumAttackAngle < aiCharacter.aiCharacterCombatManager.viewableAngle)
+            if (potentialAttack.maximumAttackAngle < aiCharacter.aiCharacterCombatManager.viewableAngle)
                 continue;
 
-            if(potentialAttack.minimumAttackDistance > aiCharacter.aiCharacterCombatManager.distanceFromTarget)
+            if (potentialAttack.minimumAttackDistance > aiCharacter.aiCharacterCombatManager.distanceFromTarget)
                 continue;
 
-            if(potentialAttack.maximumAttackDistance < aiCharacter.aiCharacterCombatManager.distanceFromTarget)
+            if (potentialAttack.maximumAttackDistance < aiCharacter.aiCharacterCombatManager.distanceFromTarget)
                 continue;
 
             potentialAttacks.Add(potentialAttack);
@@ -89,20 +93,21 @@ public class CombatStanceState : AIState
         if (potentialAttacks.Count <= 0)
             return;
 
-        int totalWeigth = 0;
+        int totalWeight = 0;
         foreach (var potentialAttack in potentialAttacks)
-            totalWeigth += potentialAttack.attackWeigth;
+            totalWeight += potentialAttack.attackWeight;
 
-        int randomValue = Random.Range(1, totalWeigth+1);
+        int randomValue = Random.Range(1, totalWeight + 1);
         int processWeight = 0;
         foreach (var potentialAttack in potentialAttacks)
         {
-            processWeight += potentialAttack.attackWeigth;
+            processWeight += potentialAttack.attackWeight;
 
             if (processWeight >= randomValue)
             {
-                chosenAttack = potentialAttack;
                 previousAttack = chosenAttack;
+                chosenAttack = potentialAttack;
+
                 hasAttacked = true;
                 return;
             }

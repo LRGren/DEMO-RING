@@ -39,6 +39,12 @@ public class TakeDamageEffect : InstantCharacterEffect
 
     public override void ProcessEffect(CharacterManager character)
     {
+        if (character.characterNetworkManager.isInvulnerable.Value)
+        {
+            Debug.Log("Character is Invulnerable, No Damage Taken");
+            return;
+        }
+
         base.ProcessEffect(character);
 
         //如果角色死了 无需继续计算

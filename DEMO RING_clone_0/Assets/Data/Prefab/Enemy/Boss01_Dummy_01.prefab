@@ -342,11 +342,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 5
+  m_AngularSpeed: 240
+  m_StoppingDistance: 3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -2026,7 +2026,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 22}
-  m_LocalScale: {x: 2.1, y: 2, z: 2.5}
+  m_LocalScale: {x: 1.5, y: 1.4, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 983760694748911799}
@@ -2088,6 +2088,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c15ff89cd9a3546829e6874bab02d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive:
+    m_InternalValue: 1
   networkPosition:
     m_InternalValue: {x: 0, y: 0, z: 0}
   networkRotation:
@@ -2102,6 +2104,8 @@ MonoBehaviour:
   moveAmount:
     m_InternalValue: 0
   currentTargetNetworkObjectID:
+    m_InternalValue: 0
+  isInvulnerable:
     m_InternalValue: 0
   isMoving:
     m_InternalValue: 0
@@ -2426,17 +2430,19 @@ MonoBehaviour:
   currentAttackType: 0
   lockOnTransform: {fileID: 1484316845855349640}
   actionRecoveryTimer: 0
+  enablePivot: 1
   distanceFromTarget: 0
   viewableAngle: 0
   targetDirection: {x: 0, y: 0, z: 0}
   detectionRadius: 15
   minimumFOV: -35
   maximumFOV: 35
-  attackRotationSpeed: 20
-  swordDamageCollider: {fileID: 3775670401441535420}
+  attackRotationSpeed: 240
+  swordDamageCollider: {fileID: 7589180796454479796}
   baseDamage: 50
   attack01Modifier: 1
   attack02Modifier: 1.5
+  attack03Modifier: 2.5
 --- !u!114 &5133234835343430868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2466,10 +2472,14 @@ MonoBehaviour:
   aiCharacterLocomotionManager: {fileID: 0}
   currentState: {fileID: 0}
   navMeshAgent: {fileID: 8201334019433091815}
-  idle: {fileID: 11400000, guid: 9927f457ae17ff14f94577f4ade16d2d, type: 2}
-  pursueTarget: {fileID: 11400000, guid: a48a7953ff369d743b391ea7e97cf344, type: 2}
+  idle: {fileID: 11400000, guid: a6b7ab525bb930a4bac25b3412c45d88, type: 2}
+  pursueTarget: {fileID: 11400000, guid: c160b605b2a184346be482d479d4e2b9, type: 2}
   combatStance: {fileID: 11400000, guid: a095a333a837f4749ba71f472f88bd0d, type: 2}
-  attack: {fileID: 11400000, guid: f620c2fa329502145bb2871fb2faeb1f, type: 2}
+  attack: {fileID: 11400000, guid: 54bea59cc308c934c80ca7643487f2d7, type: 2}
+  bossID: Boss_001
+  fogWalls: []
+  hasBeenDefeated: 0
+  hasBeenAwakened: 0
 --- !u!1 &6245145032224923085
 GameObject:
   m_ObjectHideFlags: 0
@@ -3292,11 +3302,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 583d48938bd8c9e4cbfddcda655087bd,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3775670401441535420}
+      addedObject: {fileID: 1089452301794279829}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 583d48938bd8c9e4cbfddcda655087bd,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1089452301794279829}
+      addedObject: {fileID: 7589180796454479796}
   m_SourcePrefab: {fileID: 100100000, guid: 583d48938bd8c9e4cbfddcda655087bd, type: 3}
 --- !u!4 &2819092788371261856 stripped
 Transform:
@@ -3310,25 +3320,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2348016465904496203}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3775670401441535420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3194386225478521626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a868735211ab67b4e9445bc2e1cbe962, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageCollider: {fileID: 1089452301794279829}
-  physicalDamage: 0
-  magicalDamage: 0
-  fireDamage: 0
-  lightningDamage: 0
-  holyDamage: 0
-  contactPoint: {x: 0, y: 0, z: 0}
 --- !u!65 &1089452301794279829
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3348,5 +3339,25 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 0.48558673, y: 1.6218204, z: 0.25442362}
-  m_Center: {x: -0.017523857, y: 0.7760565, z: -0.029785331}
+  m_Size: {x: 0.48558673, y: 2.5410745, z: 0.3698788}
+  m_Center: {x: -0.018054776, y: 0.83829564, z: -0.023052676}
+--- !u!114 &7589180796454479796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3194386225478521626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58742f2bdcb5239479f883b5f3f2d7d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageCollider: {fileID: 1089452301794279829}
+  physicalDamage: 0
+  magicalDamage: 0
+  fireDamage: 0
+  lightningDamage: 0
+  holyDamage: 0
+  contactPoint: {x: 0, y: 0, z: 0}
+  bossCharacter: {fileID: 5133234835343430868}

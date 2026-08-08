@@ -19,7 +19,7 @@ public class MeleeWeaponDamageCollider : DamageCollider
     {
         base.Awake();
 
-        if(damageCollider == null)
+        if (damageCollider == null)
         {
             damageCollider = GetComponent<Collider>();
         }
@@ -34,7 +34,7 @@ public class MeleeWeaponDamageCollider : DamageCollider
 
         if (damageTarget != null)
         {
-            if(characterCasuingDamage == damageTarget)
+            if (characterCasuingDamage == damageTarget)
             {
                 // 如果碰撞到的角色是自己，直接返回，不进行伤害计算
                 return;
@@ -46,8 +46,6 @@ public class MeleeWeaponDamageCollider : DamageCollider
             //友军
 
             //格挡
-
-            //无敌
 
             //伤害
             DamageTarget(damageTarget);
@@ -73,13 +71,13 @@ public class MeleeWeaponDamageCollider : DamageCollider
         switch (characterCasuingDamage.characterCombatManager.currentAttackType)
         {
             case AttackType.LightAttack01:
-                ApplyAttackModifier(light_Attack_01_Modifier,damageEffect);
+                ApplyAttackModifier(light_Attack_01_Modifier, damageEffect);
                 break;
             case AttackType.LightAttack02:
                 ApplyAttackModifier(light_Attack_02_Modifier, damageEffect);
                 break;
             case AttackType.HeavyAttack01:
-                ApplyAttackModifier(heavy_Attack_01_Modifier,damageEffect);
+                ApplyAttackModifier(heavy_Attack_01_Modifier, damageEffect);
                 break;
             case AttackType.HeavyAttack02:
                 ApplyAttackModifier(heavy_Attack_02_Modifier, damageEffect);
@@ -107,7 +105,7 @@ public class MeleeWeaponDamageCollider : DamageCollider
         //damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);
     }
 
-    private void ApplyAttackModifier(float modifier,TakeDamageEffect damageEffect)
+    private void ApplyAttackModifier(float modifier, TakeDamageEffect damageEffect)
     {
         damageEffect.physicalDamage *= modifier;
         damageEffect.magicalDamage *= modifier;

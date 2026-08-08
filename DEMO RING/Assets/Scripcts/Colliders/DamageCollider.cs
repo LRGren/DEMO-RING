@@ -39,8 +39,6 @@ public class DamageCollider : MonoBehaviour
 
             //格挡
 
-            //无敌
-
             //伤害
             DamageTarget(damageTarget);
         }

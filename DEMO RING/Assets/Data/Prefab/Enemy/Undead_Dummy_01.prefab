@@ -914,7 +914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2104209809
+  GlobalObjectIdHash: 1732247804
   InScenePlacedSourceGlobalObjectIdHash: 1732247804
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -935,6 +935,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c15ff89cd9a3546829e6874bab02d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive:
+    m_InternalValue: 1
   networkPosition:
     m_InternalValue: {x: 0, y: 0, z: 0}
   networkRotation:
@@ -949,6 +951,8 @@ MonoBehaviour:
   moveAmount:
     m_InternalValue: 0
   currentTargetNetworkObjectID:
+    m_InternalValue: 0
+  isInvulnerable:
     m_InternalValue: 0
   isMoving:
     m_InternalValue: 0
@@ -1306,13 +1310,14 @@ MonoBehaviour:
   currentAttackType: 0
   lockOnTransform: {fileID: 0}
   actionRecoveryTimer: 0
+  enablePivot: 1
   distanceFromTarget: 0
   viewableAngle: 0
   targetDirection: {x: 0, y: 0, z: 0}
   detectionRadius: 15
   minimumFOV: -35
   maximumFOV: 35
-  attackRotationSpeed: 25
+  attackRotationSpeed: 180
   rightHandUndeadDamageCollider: {fileID: 6356024641420292441}
   leftHandUndeadDamageCollider: {fileID: 3005679609566684791}
   baseDamage: 25

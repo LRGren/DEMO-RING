@@ -9,6 +9,9 @@ public class AICharacterCombatManager : CharacterCombatManager
     [Header("Action Recovery Time")]
     public float actionRecoveryTimer = 0f;
 
+    [Header("Pivot")]
+    public bool enablePivot = true;
+
     [Header("Target Information")]
     public float distanceFromTarget;
     public float viewableAngle;
@@ -20,7 +23,7 @@ public class AICharacterCombatManager : CharacterCombatManager
     public float maximumFOV = 35f;
 
     [Header("Attack Rotation Speed")]
-    public float attackRotationSpeed = 5f;
+    public float attackRotationSpeed = 180;
 
     protected override void Awake()
     {
@@ -70,14 +73,16 @@ public class AICharacterCombatManager : CharacterCombatManager
                         viewableAngle = WorldUtilityManager.instance.GetAngleOfTarget(transform, targetDirection);
 
                         aiCharacter.characterCombatManager.SetTarget(targetCharacter);
-                        PivotTowardsTarget(aiCharacter);
+
+                        if (enablePivot)
+                            PivotTowardsTarget(aiCharacter);
                     }
                 }
             }
         }
     }
 
-    public void PivotTowardsTarget(AICharacterManager aiCharacter)
+    public virtual void PivotTowardsTarget(AICharacterManager aiCharacter)
     {
         if (aiCharacter.isPerformingAction)
             return;
@@ -140,12 +145,16 @@ public class AICharacterCombatManager : CharacterCombatManager
 
         Vector3 tmp_TargetDirection = currentTarget.transform.position - aiCharacter.transform.position;
         tmp_TargetDirection.y = 0;
-        tmp_TargetDirection.Normalize();
 
-        if (tmp_TargetDirection == Vector3.zero)
+        if (tmp_TargetDirection.sqrMagnitude < 0.0001f)
         {
             tmp_TargetDirection = aiCharacter.transform.forward;
         }
+        else
+        {
+            tmp_TargetDirection.Normalize();
+        }
+
 
         Quaternion tmp_TargetRotation = Quaternion.LookRotation(tmp_TargetDirection);
 

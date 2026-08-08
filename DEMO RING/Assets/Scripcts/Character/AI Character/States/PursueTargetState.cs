@@ -20,11 +20,13 @@ public class PursueTargetState : AIState
         if (!aiCharacterManager.navMeshAgent.enabled)
             aiCharacterManager.navMeshAgent.enabled = true;
 
-        if ((aiCharacterManager.aiCharacterCombatManager.viewableAngle < aiCharacterManager.aiCharacterCombatManager.minimumFOV ||
-            aiCharacterManager.aiCharacterCombatManager.viewableAngle > aiCharacterManager.aiCharacterCombatManager.maximumFOV) &&
-            !WorldUtilityManager.instance.IsTargetBlockedByEnvironment(aiCharacterManager.characterCombatManager.lockOnTransform.position,
-            aiCharacterManager.aiCharacterCombatManager.currentTarget.transform.position))
-            aiCharacterManager.aiCharacterCombatManager.PivotTowardsTarget(aiCharacterManager);
+        if (aiCharacterManager.aiCharacterCombatManager.enablePivot)
+        {
+            if ((aiCharacterManager.aiCharacterCombatManager.viewableAngle < aiCharacterManager.aiCharacterCombatManager.minimumFOV ||
+                aiCharacterManager.aiCharacterCombatManager.viewableAngle > aiCharacterManager.aiCharacterCombatManager.maximumFOV) &&
+                !WorldUtilityManager.instance.IsTargetBlockedByEnvironment(aiCharacterManager.characterCombatManager.lockOnTransform.position, aiCharacterManager.aiCharacterCombatManager.currentTarget.transform.position))
+                aiCharacterManager.aiCharacterCombatManager.PivotTowardsTarget(aiCharacterManager);
+        }
 
         aiCharacterManager.aiCharacterLocomotionManager.RotateTowardsAgent(aiCharacterManager);
 

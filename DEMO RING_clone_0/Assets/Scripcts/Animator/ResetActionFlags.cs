@@ -19,6 +19,11 @@ public class ResetActionFlags : StateMachineBehaviour
         character.characterLocomotionManager.canMove = true;
         character.characterLocomotionManager.isRolling = false;
         character.characterAnimatorManager.DisableDoCombo();
+
+        if (character.IsOwner)
+        {
+            character.characterNetworkManager.isInvulnerable.Value = false;
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

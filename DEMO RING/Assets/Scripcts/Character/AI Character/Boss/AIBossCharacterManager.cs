@@ -15,8 +15,8 @@ public class AIBossCharacterManager : AICharacterManager
     [SerializeField] private bool hasBeenAwakened = false;
 
 
-    [Header("Test")]
-    [SerializeField] private bool testDefeated = false;
+    //[Header("Test")]
+    //[SerializeField] private bool testDefeated = false;
     //当Boss生成，检查Save File（A List）
     //如果没有这个ID，就分配一个新的ID
     //如果有这个ID，检查,是否被唤醒，是否被击败过
