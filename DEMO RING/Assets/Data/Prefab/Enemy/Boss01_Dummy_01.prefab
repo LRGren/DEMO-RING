@@ -191,6 +191,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3020914213183146329}
+  - component: {fileID: 2891092878340270951}
+  - component: {fileID: 5898797190442059170}
   m_Layer: 3
   m_Name: Toes_L
   m_TagString: Untagged
@@ -213,6 +215,119 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1839748770608277257}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2891092878340270951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668156985225232946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1657f0017a513944d91217140da3fc94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playSoundFXBasedOnSurfaceType: 0
+  selfFootstepSFX:
+  - {fileID: 8300000, guid: 425b173908d24124facd5a0b17af5f52, type: 3}
+  audioSource: {fileID: 0}
+  footstepCheckDistance: 0.1
+--- !u!82 &5898797190442059170
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668156985225232946}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 7
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &792235469245271241
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,11 +457,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 1
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 240
-  m_StoppingDistance: 3
+  m_AngularSpeed: 360
+  m_StoppingDistance: 2.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -613,7 +728,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d8729fadd84065041aaeaf5e9248a0c4, type: 2}
+  - {fileID: 2100000, guid: 7f46ec59f861bee4ca9473bba85f3b68, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1449,6 +1564,37 @@ Transform:
   - {fileID: 1977120555529741496}
   m_Father: {fileID: 1636031603686782100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4654152421273489330
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5167568855406675212}
+  m_Layer: 10
+  m_Name: EarthquakeAttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5167568855406675212
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4654152421273489330}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.009, y: 1.19, z: -0.011}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2819092788371261856}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4731399843792156777
 GameObject:
   m_ObjectHideFlags: 0
@@ -1916,6 +2062,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2349452934070416907}
+  - component: {fileID: 4130350842756808622}
+  - component: {fileID: 3283912328158423101}
   m_Layer: 3
   m_Name: Toes_R
   m_TagString: Untagged
@@ -1938,6 +2086,119 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3348721437217714627}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &4130350842756808622
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6085943136503330989}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 7
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &3283912328158423101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6085943136503330989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1657f0017a513944d91217140da3fc94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playSoundFXBasedOnSurfaceType: 0
+  selfFootstepSFX:
+  - {fileID: 8300000, guid: 425b173908d24124facd5a0b17af5f52, type: 3}
+  audioSource: {fileID: 0}
+  footstepCheckDistance: 0.1
 --- !u!1 &6094728771392567561
 GameObject:
   m_ObjectHideFlags: 0
@@ -2001,14 +2262,14 @@ GameObject:
   - component: {fileID: 5766027131290333020}
   - component: {fileID: 7132560717083368243}
   - component: {fileID: 5804182300970313103}
-  - component: {fileID: 4154022815306692857}
   - component: {fileID: 7190445280894901129}
   - component: {fileID: 7016019718725040864}
   - component: {fileID: 5828806300916637300}
   - component: {fileID: 5234350005315087510}
   - component: {fileID: 2911986707318656380}
   - component: {fileID: 649129733402237863}
-  - component: {fileID: 5133234835343430868}
+  - component: {fileID: 2239858814955359206}
+  - component: {fileID: 4966367541513654335}
   m_Layer: 6
   m_Name: Boss01_Dummy_01
   m_TagString: Untagged
@@ -2208,33 +2469,6 @@ MonoBehaviour:
   canRotate: 1
   canMove: 1
   agentRotationSpeed: 15
---- !u!114 &4154022815306692857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6199065445168199212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cf4212a1d1eb334996409613640b997, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageGrunts:
-  - {fileID: 8300000, guid: 88b91714a2e2cbb428f61e18ca4d39d8, type: 3}
-  - {fileID: 8300000, guid: 80cc6816623c9a04580970e36613d8c4, type: 3}
-  - {fileID: 8300000, guid: cad57fcf83264a4489ae5c41b55e7a8b, type: 3}
-  - {fileID: 8300000, guid: 50b441f111083504d90ad648f16723e0, type: 3}
-  - {fileID: 8300000, guid: 36104c8b981b4a349a1948b61c9e8a20, type: 3}
-  - {fileID: 8300000, guid: 14a883f5f8241cc4ca1f35fe54fef1d2, type: 3}
-  - {fileID: 8300000, guid: c39ba448713aff147bdc2b9b4126b1d8, type: 3}
-  - {fileID: 8300000, guid: 9ef3f6cb1b48c67419812b50793d9da6, type: 3}
-  - {fileID: 8300000, guid: 5583e9c9a0afdf0408f9d0946666f85a, type: 3}
-  attackGrunts:
-  - {fileID: 8300000, guid: ecd7be3558355d644801e8fce7647774, type: 3}
-  - {fileID: 8300000, guid: 322f6b00738c5344eaa929da8e7ae352, type: 3}
-  - {fileID: 8300000, guid: 1810897ac2aece94e81e45d4000d60d6, type: 3}
-  - {fileID: 8300000, guid: 7aacf403d0a174246a1940b059f6d241, type: 3}
 --- !u!114 &7190445280894901129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2337,7 +2571,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 7
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -2439,11 +2673,16 @@ MonoBehaviour:
   maximumFOV: 35
   attackRotationSpeed: 240
   swordDamageCollider: {fileID: 7589180796454479796}
+  earthquakeAttackPoint: {fileID: 5167568855406675212}
+  earthquakeAttackRadius: 3
+  earthquakeAttackEffect: {fileID: 6689306379200550012, guid: acfbd5cbccbeea94c9bfcc360d95cf42,
+    type: 3}
   baseDamage: 50
   attack01Modifier: 1
   attack02Modifier: 1.5
-  attack03Modifier: 2.5
---- !u!114 &5133234835343430868
+  attack03Modifier: 2
+  earthquakeDamage: 60
+--- !u!114 &2239858814955359206
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2452,7 +2691,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6199065445168199212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26a2988ee08188a42816bafea469936b, type: 3}
+  m_Script: {fileID: 11500000, guid: 67f3a033550e00042b3b8af276aa1979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isDead:
@@ -2480,6 +2719,48 @@ MonoBehaviour:
   fogWalls: []
   hasBeenDefeated: 0
   hasBeenAwakened: 0
+  aiBOSS01SoundFXManager: {fileID: 0}
+--- !u!114 &4966367541513654335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6199065445168199212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46e3b98db563ccc4d852e8e1d792f859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageGrunts:
+  - {fileID: 8300000, guid: 36face8ac33b3814caa19d440d6d33fa, type: 3}
+  - {fileID: 8300000, guid: e5cec87f827407d4c80611da3e064acd, type: 3}
+  - {fileID: 8300000, guid: c9fcdbd8bb5bb9c42981a9ba28089d98, type: 3}
+  - {fileID: 8300000, guid: c5311bb6d7d14a14c80bfdcaf3f07b8c, type: 3}
+  - {fileID: 8300000, guid: ed5d0007a6aca7a4e9cfe74b94ed21a2, type: 3}
+  - {fileID: 8300000, guid: 6267fe68d4c4db24da7e77a14132ef56, type: 3}
+  - {fileID: 8300000, guid: d15a57e785dbdb54881ba70edc461552, type: 3}
+  attackGrunts:
+  - {fileID: 8300000, guid: 93e2375703cfc9445b94007a531cd9f7, type: 3}
+  - {fileID: 8300000, guid: 4f38cfc057803284a8ce039fd8f26215, type: 3}
+  - {fileID: 8300000, guid: 33b254c7c6a9bd544942d22f9324246a, type: 3}
+  - {fileID: 8300000, guid: 19aedbf8b29a60d43952665e81c18be6, type: 3}
+  - {fileID: 8300000, guid: 7d7fc97b142add344bdaa7c64e9c8673, type: 3}
+  - {fileID: 8300000, guid: b1b0134244e36784b9a6d58c192d76c9, type: 3}
+  - {fileID: 8300000, guid: f7e6e74bdab7f44489dd30d3593b115b, type: 3}
+  - {fileID: 8300000, guid: 171f04d3f87ca6140a6520d5fb2ef9f7, type: 3}
+  footstepSFX:
+  - {fileID: 8300000, guid: 419336aa8912ae0468e104596863a0a1, type: 3}
+  footstepSFXGrass:
+  - {fileID: 8300000, guid: 68058b7dc40be724cb1ac5a1be3265ba, type: 3}
+  footstepSFXDirt:
+  - {fileID: 8300000, guid: fa16bd6cbe8bcba40ad0f5c9644c9607, type: 3}
+  footstepSFXStone:
+  - {fileID: 8300000, guid: 29536eb6a0b57b04596917e9e6193bcb, type: 3}
+  wooshes:
+  - {fileID: 8300000, guid: 4e7a9f408abdba8459fdccbeaea95215, type: 3}
+  - {fileID: 8300000, guid: e4b229d1cd4c5954c982c44b6f42eb27, type: 3}
+  earthquakeSFX: {fileID: 8300000, guid: e7cb68da88d8b274eb008f9a214589d8, type: 3}
 --- !u!1 &6245145032224923085
 GameObject:
   m_ObjectHideFlags: 0
@@ -3297,7 +3578,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 583d48938bd8c9e4cbfddcda655087bd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5167568855406675212}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 583d48938bd8c9e4cbfddcda655087bd,
         type: 3}
@@ -3360,4 +3645,4 @@ MonoBehaviour:
   lightningDamage: 0
   holyDamage: 0
   contactPoint: {x: 0, y: 0, z: 0}
-  bossCharacter: {fileID: 5133234835343430868}
+  bossCharacter: {fileID: 0}

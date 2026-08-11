@@ -11,7 +11,7 @@ public class WorldSoundFXManager : MonoBehaviour
 
     [Header("Action Sounds")]
     public AudioClip rollSFX;
-    
+
     private void Awake()
     {
         if (instance == null)
@@ -33,6 +33,26 @@ public class WorldSoundFXManager : MonoBehaviour
     {
         int idx = Random.Range(0, array.Length);
         return array[idx];
+    }
+
+    public AudioClip ChooseRandomFootstepSFXBasedOnSurfaceType(GameObject surfaceObject, CharacterManager character)
+    {
+        if (surfaceObject == null || character == null)
+            return null;
+
+        string surfaceTag = surfaceObject.tag;
+
+        switch (surfaceTag)
+        {
+            case "Grass":
+                return ChooseRandomSFXFromArray(character.characterSoundFXManager.footstepSFXGrass);
+            case "Dirt":
+                return ChooseRandomSFXFromArray(character.characterSoundFXManager.footstepSFXDirt);
+            case "Stone":
+                return ChooseRandomSFXFromArray(character.characterSoundFXManager.footstepSFXStone);
+            default:
+                return ChooseRandomSFXFromArray(character.characterSoundFXManager.footstepSFX);
+        }
     }
 
 }

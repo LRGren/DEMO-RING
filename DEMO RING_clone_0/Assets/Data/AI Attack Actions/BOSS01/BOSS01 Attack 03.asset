@@ -15,9 +15,9 @@ MonoBehaviour:
   actionAnimation: Attack_03
   comboAction: {fileID: 0}
   attackType: 0
-  attackWeight: 50
-  attackRecoveryTime: 2
+  attackWeight: 80
+  attackRecoveryTime: 4
   maximumAttackAngle: 20
   minimumAttackAngle: -20
-  maximumAttackDistance: 5
+  maximumAttackDistance: 6
   minimumAttackDistance: 0
