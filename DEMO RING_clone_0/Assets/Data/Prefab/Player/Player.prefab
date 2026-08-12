@@ -1027,7 +1027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3877479120
+  GlobalObjectIdHash: 2804101485
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1573,6 +1573,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1657f0017a513944d91217140da3fc94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playSoundFXBasedOnSurfaceType: 1
+  selfFootstepSFX: []
+  selfFootstepVolume: 0.1
   audioSource: {fileID: 0}
   footstepCheckDistance: 0.05
 --- !u!82 &231027067391307753
@@ -1753,6 +1756,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1657f0017a513944d91217140da3fc94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playSoundFXBasedOnSurfaceType: 1
+  selfFootstepSFX: []
+  selfFootstepVolume: 0.1
   audioSource: {fileID: 0}
   footstepCheckDistance: 0.05
 --- !u!82 &4514816070367581336

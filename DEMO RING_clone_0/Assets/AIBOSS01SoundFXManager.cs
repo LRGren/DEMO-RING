@@ -9,4 +9,6 @@ public class AIBOSS01SoundFXManager : CharacterSoundFXManager
 
     [Header("Earthquake")]
     public AudioClip earthquakeSFX;
+
+
 }

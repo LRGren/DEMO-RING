@@ -14,6 +14,10 @@ public class AIBOSS01CharacterCombatManager : AICharacterCombatManager
     [SerializeField] private float earthquakeAttackRadius = 2f;
     [SerializeField] private GameObject earthquakeAttackEffect;
 
+    [Header("BOSS01 SIGNAL")]
+    [SerializeField] private Transform signalEffectPoint;
+    [SerializeField] private GameObject BOSS01SignalEffect;
+
     [Header("BOSS01 Attack Damage")]
     [SerializeField] private int baseDamage = 50;
     [SerializeField] private float attack01Modifier = 1f;
@@ -92,6 +96,14 @@ public class AIBOSS01CharacterCombatManager : AICharacterCombatManager
         {
             aiBOSS01CharacterManager.aiBOSS01SoundFXManager.PlaySoundFX(aiBOSS01CharacterManager.aiBOSS01SoundFXManager.earthquakeSFX);
             Instantiate(earthquakeAttackEffect, earthquakeAttackPoint.position, Quaternion.identity);
+        }
+    }
+    public void ActivateBOSS01Signal()
+    {
+        if (BOSS01SignalEffect != null)
+        {
+            Debug.Log("Activating BOSS01 Signal Effect");
+            Instantiate(BOSS01SignalEffect, signalEffectPoint.position, Quaternion.identity);
         }
     }
 

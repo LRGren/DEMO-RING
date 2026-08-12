@@ -6,6 +6,7 @@ public class CharacterFootSFXMaker : MonoBehaviour
 {
     [SerializeField] private bool playSoundFXBasedOnSurfaceType = true;
     [SerializeField] private AudioClip[] selfFootstepSFX;
+    [SerializeField] private float selfFootstepVolume = 0.5f;
 
 
     private CharacterManager characterManager;
@@ -62,7 +63,7 @@ public class CharacterFootSFXMaker : MonoBehaviour
             if (playSoundFXBasedOnSurfaceType)
                 characterManager.characterSoundFXManager.PlayFootstepSFX(steppedOnObject, characterManager);
             else
-                characterManager.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(selfFootstepSFX), 0.5f);
+                characterManager.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(selfFootstepSFX), selfFootstepVolume);
         }
     }
 }

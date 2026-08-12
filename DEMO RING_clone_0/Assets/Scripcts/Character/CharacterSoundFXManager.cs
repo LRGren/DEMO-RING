@@ -67,6 +67,6 @@ public class CharacterSoundFXManager : MonoBehaviour
 
         AudioClip footstepClip = WorldSoundFXManager.instance.ChooseRandomFootstepSFXBasedOnSurfaceType(surfaceObject, character);
 
-        PlaySoundFX(footstepClip, 0.5f);
+        PlaySoundFX(footstepClip, 0.1f);
     }
 }

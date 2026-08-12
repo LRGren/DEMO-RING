@@ -13,15 +13,19 @@ public class PlayerUIHudManager : MonoBehaviour
     [SerializeField] private Image rightWeaponQuickSlotUI;
     [SerializeField] private Image leftWeaponQuickSlotUI;
 
+    [Header("Boss HP Bar")]
+    public Transform bossHPBarParent;
+    public GameObject bossHPBarObject;
+
     public void RefreshHUD()
     {
         healthBar.gameObject.SetActive(false);
         healthBar.gameObject.SetActive(true);
-        
+
         staminaBar.gameObject.SetActive(false);
         staminaBar.gameObject.SetActive(true);
     }
-    
+
     public void SetNewHealthValue(int oldValue, int newValue)
     {
         healthBar.SetStat(newValue);
@@ -31,7 +35,7 @@ public class PlayerUIHudManager : MonoBehaviour
     {
         healthBar.SetMaxStat(maxHealth);
     }
-    
+
     public void SetNewStaminaValue(float oldValue, float newValue)
     {
         staminaBar.SetStat(Mathf.RoundToInt(newValue));
@@ -46,7 +50,7 @@ public class PlayerUIHudManager : MonoBehaviour
     {
         WeaponItem weapon = WorldItemDatabase.Instance.GetWeaponByID(weaponID);
 
-        if(weapon == null)
+        if (weapon == null)
         {
             Debug.Log("Weapon not found in database for ID: " + weaponID);
             rightWeaponQuickSlotUI.enabled = false;
@@ -89,4 +93,6 @@ public class PlayerUIHudManager : MonoBehaviour
         leftWeaponQuickSlotUI.sprite = weapon.itemIcon;
         leftWeaponQuickSlotUI.enabled = true;
     }
+
+
 }

@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class AICharacterManager : CharacterManager
 {
+    [Header("Character Name")]
+    public string characterName = "AI Character";
+
     [HideInInspector] public AICharacterCombatManager aiCharacterCombatManager;
     [HideInInspector] public AIChracterNetworkManager aiCharacterNetworkManager;
     [HideInInspector] public AICharacterLocomotionManager aiCharacterLocomotionManager;
@@ -30,14 +33,22 @@ public class AICharacterManager : CharacterManager
         aiCharacterLocomotionManager = GetComponent<AICharacterLocomotionManager>();
         navMeshAgent = GetComponentInChildren<NavMeshAgent>();
 
-        //拷贝一份，不改变原始的状态对象
-        idle = Instantiate(idle);
-        pursueTarget = Instantiate(pursueTarget);
-        combatStance = Instantiate(combatStance);
-        attack = Instantiate(attack);
+    }
 
-        currentState = idle;
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
 
+        if (IsOwner)
+        {
+            //拷贝一份，不改变原始的状态对象
+            idle = Instantiate(idle);
+            pursueTarget = Instantiate(pursueTarget);
+            combatStance = Instantiate(combatStance);
+            attack = Instantiate(attack);
+
+            currentState = idle;
+        }
     }
 
     protected override void Update()
