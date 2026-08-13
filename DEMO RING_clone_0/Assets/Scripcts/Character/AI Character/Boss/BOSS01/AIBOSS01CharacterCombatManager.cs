@@ -102,7 +102,7 @@ public class AIBOSS01CharacterCombatManager : AICharacterCombatManager
     {
         if (BOSS01SignalEffect != null)
         {
-            Debug.Log("Activating BOSS01 Signal Effect");
+            //Debug.Log("Activating BOSS01 Signal Effect");
             Instantiate(BOSS01SignalEffect, signalEffectPoint.position, Quaternion.identity);
         }
     }

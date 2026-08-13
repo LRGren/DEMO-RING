@@ -82,10 +82,19 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
 
     private void HandleGroundedMovement()
     {
+        if (player.characterLocomotionManager.canMove || player.playerLocomotionManager.canRotate)
+        {
+            GetMovementValues();
+        }
+        else
+        {
+            verticalMovement = 0;
+            horizontalMovement = 0;
+            moveAmount = 0;
+        }
+
         if (!player.characterLocomotionManager.canMove)
             return;
-
-        GetMovementValues();
 
         moveDirection =
             PlayerCamera.instance.transform.forward * verticalMovement +

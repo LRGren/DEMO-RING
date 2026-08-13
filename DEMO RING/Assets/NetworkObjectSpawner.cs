@@ -26,7 +26,7 @@ public class NetworkObjectSpawner : MonoBehaviour
             spawnedNetworkObject.transform.position = transform.position;
             spawnedNetworkObject.transform.rotation = transform.rotation;
 
-            spawnedNetworkObject.GetComponent<Object>().objectID = objectID;
+            spawnedNetworkObject.GetComponent<FogWallInteractable>().bossID = objectID;
             spawnedNetworkObject.GetComponent<NetworkObject>().Spawn();
         }
     }

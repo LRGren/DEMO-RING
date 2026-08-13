@@ -6,6 +6,11 @@ public class WorldSoundFXManager : MonoBehaviour
 {
     public static WorldSoundFXManager instance;
 
+    [Header("Boss Track")]
+    public AudioSource bossIntroPlayer;
+    public AudioSource bossLoopPlayer;
+
+
     [Header("Damage Sounds")]
     public AudioClip[] physicalDamageSFX;
 
@@ -27,6 +32,37 @@ public class WorldSoundFXManager : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void PlayBossTrack(AudioClip bossIntro, AudioClip bossLoop)
+    {
+        bossIntroPlayer.volume = 1f;
+        bossIntroPlayer.clip = bossIntro;
+        bossIntroPlayer.loop = false;
+        bossIntroPlayer.Play();
+
+        bossLoopPlayer.volume = 1f;
+        bossLoopPlayer.clip = bossLoop;
+        bossLoopPlayer.loop = true;
+        bossLoopPlayer.PlayDelayed(bossIntroPlayer.clip.length);
+    }
+
+    public void StopBossTrack()
+    {
+        StartCoroutine(FadeOutAudioSourceOverTime());
+    }
+
+    private IEnumerator FadeOutAudioSourceOverTime()
+    {
+        while (bossLoopPlayer.volume > 0)
+        {
+            bossLoopPlayer.volume -= Time.deltaTime;
+            bossIntroPlayer.volume -= Time.deltaTime;
+            yield return null;
+        }
+
+        bossLoopPlayer.Stop();
+        bossIntroPlayer.Stop();
     }
 
     public AudioClip ChooseRandomSFXFromArray(AudioClip[] array)

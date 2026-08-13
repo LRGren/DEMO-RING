@@ -2289,7 +2289,7 @@ GameObject:
   - component: {fileID: 5142671361863323074}
   - component: {fileID: 2455837323369424432}
   - component: {fileID: 143205281154385809}
-  - component: {fileID: 5522381947589295005}
+  - component: {fileID: 656423046279490037}
   - component: {fileID: 4264454895461412249}
   - component: {fileID: 8348419834664082542}
   - component: {fileID: 5766027131290333020}
@@ -2361,7 +2361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3963331255
+  GlobalObjectIdHash: 6309587
   InScenePlacedSourceGlobalObjectIdHash: 1732247804
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -2370,7 +2370,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &5522381947589295005
+--- !u!114 &656423046279490037
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2379,7 +2379,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6199065445168199212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8c15ff89cd9a3546829e6874bab02d6, type: 3}
+  m_Script: {fileID: 11500000, guid: 73ee7443db3c18c47b382b886879e447, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isActive:
@@ -2420,9 +2420,9 @@ MonoBehaviour:
   maxStamina:
     m_InternalValue: 0
   currentHealth:
-    m_InternalValue: 0
+    m_InternalValue: 800
   maxHealth:
-    m_InternalValue: 0
+    m_InternalValue: 800
 --- !u!114 &4264454895461412249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2753,6 +2753,8 @@ MonoBehaviour:
   combatStance: {fileID: 11400000, guid: a095a333a837f4749ba71f472f88bd0d, type: 2}
   attack: {fileID: 11400000, guid: 54bea59cc308c934c80ca7643487f2d7, type: 2}
   bossID: Boss_001
+  bossIntroMusic: {fileID: 8300000, guid: 35cf7766e9e2aa542811e896fde57989, type: 3}
+  bossLoopMusic: {fileID: 8300000, guid: c0f5786f639278d479c9da914217fdad, type: 3}
   fogWalls: []
   bossFightIsActive:
     m_InternalValue: 0
@@ -2762,6 +2764,10 @@ MonoBehaviour:
     m_InternalValue: 0
   sleepAnimation: Sleep_01
   awakenAnimation: Awaken_01
+  phaseShiftHealthThresholdPercent: 60
+  phaseChangeAnimation: PhaseChange_01
+  phaseTwoCombatStance: {fileID: 11400000, guid: b48870dde65bf0a489f19004c01aa6ce,
+    type: 2}
   bossSleepState: {fileID: 11400000, guid: 79a845fb859627441b673a5ee195a90c, type: 2}
   aiBOSS01SoundFXManager: {fileID: 0}
 --- !u!114 &4966367541513654335

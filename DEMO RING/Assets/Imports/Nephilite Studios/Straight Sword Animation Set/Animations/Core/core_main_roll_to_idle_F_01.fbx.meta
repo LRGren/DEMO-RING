@@ -74,8 +74,15 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.30085167
+      - time: 0.36495417
         functionName: DisableIsInvulnerable
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.4157304
+        functionName: EnableCanPerformRollingAttack
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

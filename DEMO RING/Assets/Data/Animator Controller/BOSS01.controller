@@ -180,7 +180,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Phase_Change_01
+  m_Name: PhaseChange_01
   m_Speed: 0.25
   m_CycleOffset: 0
   m_Transitions:
@@ -194,7 +194,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 3528136816302494991, guid: 07f61330265f92544b953745be9307dd,
+  m_Motion: {fileID: -8998736153758727476, guid: 334477d0354e229459f3a1c00cbcfa61,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 

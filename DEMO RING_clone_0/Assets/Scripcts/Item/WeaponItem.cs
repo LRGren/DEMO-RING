@@ -33,11 +33,16 @@ public class WeaponItem : Item
     //轻攻击修饰
     public float light_Attack_01_Modifier = 0.9f;
     public float light_Attack_02_Modifier = 1.2f;
+
+    //重攻击修饰
     public float heavy_Attack_01_Modifier = 1.4f;
     public float heavy_Attack_02_Modifier = 1.6f;
     public float charged_Attack_01_Modifier = 2.2f;
     public float charged_Attack_02_Modifier = 2.5f;
-    //重攻击修饰
+
+    public float run_Attack_01_Modifier = 1.0f;
+    public float roll_Attack_01_Modifier = 1.0f;
+    public float backstep_Attack_01_Modifier = 1.0f;
     //暴击伤害修饰 等等
 
     [Header("Stamina Cost Modifiers")]
@@ -46,9 +51,12 @@ public class WeaponItem : Item
 
     //轻攻击耐力消耗修饰
     public float lightAttackStaminaModifier = 0.9f;
+    //重攻击耐力消耗修饰
     public float heavyAttackStaminaModifier = 1.2f;
     public float chargedAttackStaminaModifier = 1.5f;
-    //重攻击耐力消耗修饰
+    public float runningAttackStaminaModifier = 1.0f;
+    public float rollingAttackStaminaModifier = 1.0f;
+    public float backstepAttackStaminaModifier = 1.0f;
 
     //基于物品的动作 （RB,RT,LB,LT）
     [Header("Weapon Actions")]

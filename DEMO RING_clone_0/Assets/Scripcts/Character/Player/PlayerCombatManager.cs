@@ -18,7 +18,7 @@ public class PlayerCombatManager : CharacterCombatManager
         player = GetComponent<PlayerManager>();
     }
 
-    public void PerformWeaponBasedAction(WeaponItemAction weaponAction,WeaponItem weaponPerformingAction)
+    public void PerformWeaponBasedAction(WeaponItemAction weaponAction, WeaponItem weaponPerformingAction)
     {
         if (player.IsOwner)
         {
@@ -38,7 +38,7 @@ public class PlayerCombatManager : CharacterCombatManager
         if (!player.IsOwner)
             return;
 
-        if(currentWeaponBedingUsed == null)
+        if (currentWeaponBedingUsed == null)
             return;
 
         float staminaCost = currentWeaponBedingUsed.basicStaminaCost;
@@ -57,6 +57,15 @@ public class PlayerCombatManager : CharacterCombatManager
             case AttackType.ChargedAttack02:
                 staminaCost *= currentWeaponBedingUsed.chargedAttackStaminaModifier;
                 break;
+            case AttackType.RunningAttack01:
+                staminaCost *= currentWeaponBedingUsed.runningAttackStaminaModifier;
+                break;
+            case AttackType.RollingAttack01:
+                staminaCost *= currentWeaponBedingUsed.rollingAttackStaminaModifier;
+                break;
+            case AttackType.BackstepAttack01:
+                staminaCost *= currentWeaponBedingUsed.backstepAttackStaminaModifier;
+                break;
             default:
                 break;
         }
@@ -72,6 +81,23 @@ public class PlayerCombatManager : CharacterCombatManager
         {
             PlayerCamera.instance.SetLockOnCameraHeight();
         }
+    }
+
+    public override void EnableDoCombo()
+    {
+        if (player.playerNetworkManager.isUsingRightHand.Value)
+        {
+            player.playerCombatManager.canComboWithMainHandWeapon = true;
+        }
+        else
+        {
+
+        }
+    }
+
+    public override void DisableDoCombo()
+    {
+        player.playerCombatManager.canComboWithMainHandWeapon = false;
     }
 
 }

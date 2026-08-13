@@ -4945,7 +4945,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7697029196688679569}
   - component: {fileID: 705081202589016113}
-  - component: {fileID: 6527030134269361786}
+  - component: {fileID: 5564331562722237262}
   m_Layer: 0
   m_Name: Fog Wall Interactable
   m_TagString: Untagged
@@ -4991,7 +4991,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &6527030134269361786
+--- !u!114 &5564331562722237262
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5003,9 +5003,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894be15f2e5927d46b2462d9b99087e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectID: 
+  bossID: Boss_001
   fogWalls:
   - {fileID: 143939314636965421}
   - {fileID: 124162122288079607}
   isActive:
-    m_InternalValue: 1
+    m_InternalValue: 0

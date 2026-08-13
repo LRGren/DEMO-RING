@@ -11,7 +11,7 @@ public class WeaponManager : MonoBehaviour
         meleeWeaponDamageCollider = GetComponentInChildren<MeleeWeaponDamageCollider>();
     }
 
-    public void SetWeaponDamage(CharacterManager characterWeildingDamage,WeaponItem weaponItem)
+    public void SetWeaponDamage(CharacterManager characterWeildingDamage, WeaponItem weaponItem)
     {
         meleeWeaponDamageCollider.characterCasuingDamage = characterWeildingDamage;
         meleeWeaponDamageCollider.physicalDamage = weaponItem.physicalDamage;
@@ -28,6 +28,10 @@ public class WeaponManager : MonoBehaviour
 
         meleeWeaponDamageCollider.charged_Attack_01_Modifier = weaponItem.charged_Attack_01_Modifier;
         meleeWeaponDamageCollider.charged_Attack_02_Modifier = weaponItem.charged_Attack_02_Modifier;
+
+        meleeWeaponDamageCollider.run_Attack_01_Modifier = weaponItem.run_Attack_01_Modifier;
+        meleeWeaponDamageCollider.roll_Attack_01_Modifier = weaponItem.roll_Attack_01_Modifier;
+        meleeWeaponDamageCollider.backstep_Attack_01_Modifier = weaponItem.backstep_Attack_01_Modifier;
 
     }
 }

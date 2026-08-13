@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class FogWallInteractable : Object
+public class FogWallInteractable : NetworkBehaviour
 {
+    public string bossID = "Boss_001";
+
     [Header("Fog Walls")]
     [SerializeField] private GameObject[] fogWalls;
 

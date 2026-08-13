@@ -19,6 +19,10 @@ public class CharacterCombatManager : NetworkBehaviour
     [Header("Lock On Transform")]
     public Transform lockOnTransform;
 
+    [Header("Attack Flags")]
+    public bool canPerformRollingAttack = false;
+    public bool canPerformBackstepAttack = false;
+
     protected virtual void Awake()
     {
         characterManager = GetComponent<CharacterManager>();
@@ -53,5 +57,33 @@ public class CharacterCombatManager : NetworkBehaviour
     {
         if (characterManager.IsOwner)
             characterManager.characterNetworkManager.isInvulnerable.Value = false;
+    }
+
+    public void EnableCanPerformRollingAttack()
+    {
+        canPerformRollingAttack = true;
+    }
+
+    public void DisableCanPerformRollingAttack()
+    {
+        canPerformRollingAttack = false;
+    }
+
+    public void EnableCanPerformBackstepAttack()
+    {
+        canPerformBackstepAttack = true;
+    }
+
+    public void DisableCanPerformBackstepAttack()
+    {
+        canPerformBackstepAttack = false;
+    }
+
+    public virtual void EnableDoCombo()
+    {
+    }
+
+    public virtual void DisableDoCombo()
+    {
     }
 }

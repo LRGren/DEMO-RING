@@ -5,19 +5,25 @@ using TMPro;
 
 public class PlayerUIPopUpManager : MonoBehaviour
 {
-    [Header("You Died Pop Up")] 
+    [Header("You Died Pop Up")]
     [SerializeField] private GameObject youDiedPopUpGameObject;
     [SerializeField] private TextMeshProUGUI youDiedPopUpBackgroundText;
     [SerializeField] private TextMeshProUGUI youDiedPopUpText;
     [SerializeField] private CanvasGroup youDiedPopUpCanvasGroup;
 
+    [Header("Boss Defeated Pop Up")]
+    [SerializeField] private GameObject bossDefeatedPopUpGameObject;
+    [SerializeField] private TextMeshProUGUI bossDefeatedPopUpBackgroundText;
+    [SerializeField] private TextMeshProUGUI bossDefeatedPopUpText;
+    [SerializeField] private CanvasGroup bossDefeatedPopUpCanvasGroup;
+
     public void SendYouDiedPopUp()
     {
         //实现某些效果 如 咒死
-        
+
         youDiedPopUpGameObject.SetActive(true);
         youDiedPopUpBackgroundText.characterSpacing = 0;
-        
+
         //拉伸
         StartCoroutine(StretchPopUpTextOverTime(youDiedPopUpBackgroundText, 8, 8.32f));
 
@@ -29,7 +35,27 @@ public class PlayerUIPopUpManager : MonoBehaviour
 
     }
 
-    private IEnumerator StretchPopUpTextOverTime(TextMeshProUGUI text,float duration,float stretchAmount)
+    public void SendBossDefeatedPopUp(string bossDefeatedMessage)
+    {
+        bossDefeatedPopUpText.text = bossDefeatedMessage;
+        bossDefeatedPopUpBackgroundText.text = bossDefeatedMessage;
+
+        //实现某些效果 如 咒死
+
+        bossDefeatedPopUpGameObject.SetActive(true);
+        bossDefeatedPopUpBackgroundText.characterSpacing = 0;
+
+        //拉伸
+        StartCoroutine(StretchPopUpTextOverTime(bossDefeatedPopUpBackgroundText, 8, 8.32f));
+
+        //渐入
+        StartCoroutine(FadeInPopUpOverTime(bossDefeatedPopUpCanvasGroup, 5));
+
+        //等待 渐渐淡出
+        StartCoroutine(WaitThenFadeOutPopUpOverTime(bossDefeatedPopUpCanvasGroup, 2, 5));
+    }
+
+    private IEnumerator StretchPopUpTextOverTime(TextMeshProUGUI text, float duration, float stretchAmount)
     {
         if (duration > 0)
         {
@@ -53,7 +79,7 @@ public class PlayerUIPopUpManager : MonoBehaviour
         {
             canvas.alpha = 0;
             float timer = 0;
-            
+
             yield return null;
 
             while (timer < duration)
@@ -63,7 +89,7 @@ public class PlayerUIPopUpManager : MonoBehaviour
                 yield return null;
             }
         }
-        
+
         canvas.alpha = 1;
         yield return null;
     }
@@ -77,7 +103,7 @@ public class PlayerUIPopUpManager : MonoBehaviour
                 delay -= Time.deltaTime;
                 yield return null;
             }
-            
+
             canvas.alpha = 1;
             float timer = 0;
 

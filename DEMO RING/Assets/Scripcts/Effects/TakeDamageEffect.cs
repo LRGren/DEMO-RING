@@ -56,7 +56,7 @@ public class TakeDamageEffect : InstantCharacterEffect
         //计算伤害
         CalculteDamage(character);
 
-        Debug.Log("Final Damage Dealt: " + finalDamageDealt);
+        //Debug.Log("Final Damage Dealt: " + finalDamageDealt);
 
         //确认受击方向
         PlayDirectionalBasedDamageAnimation(character);

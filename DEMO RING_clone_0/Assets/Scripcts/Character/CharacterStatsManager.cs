@@ -6,12 +6,12 @@ using UnityEngine;
 public class CharacterStatsManager : MonoBehaviour
 {
     private CharacterManager character;
-    
+
     [Header("Stamina Regeneration")]
-    [SerializeField] private float staminaRegenerationAmount = 5;
+    [SerializeField] private float staminaRegenerationAmount = 10;
     private float staminaRegenerationTimer = 0;
     private float staminaRegenerationTicker = 0;
-    [SerializeField] private float staminaRegenerationDelay = 5;
+    [SerializeField] private float staminaRegenerationDelay = 2;
 
     protected virtual void Awake()
     {
@@ -20,29 +20,29 @@ public class CharacterStatsManager : MonoBehaviour
 
     protected virtual void Start()
     {
-        
+
     }
 
     public int CalculateStaminaBasedOnEnduranceLevel(int endurance)
     {
         float stamina = 0;
-        
+
         //耐力计算公式
         stamina = endurance * 15;
-        
+
         return Mathf.RoundToInt(stamina);
     }
-    
+
     public int CalculateHealthBasedOnVitalityLevel(int vitality)
     {
         float health = 0;
-        
+
         //耐力计算公式
         health = vitality * 15;
-        
+
         return Mathf.RoundToInt(health);
     }
-    
+
     public void StaminaRegeneration()
     {
         if (!character.IsOwner)
@@ -50,10 +50,10 @@ public class CharacterStatsManager : MonoBehaviour
 
         if (character.characterNetworkManager.isSprinting.Value)
             return;
-        
-        if(character.isPerformingAction)
+
+        if (character.isPerformingAction)
             return;
-        
+
         staminaRegenerationTimer += Time.deltaTime;
         if (staminaRegenerationTimer >= staminaRegenerationDelay)
         {
@@ -71,7 +71,7 @@ public class CharacterStatsManager : MonoBehaviour
 
     public void ResetStaminaTimer(float previousStaminaAmount, float currentStaminaAmount)
     {
-        if(currentStaminaAmount < previousStaminaAmount)
+        if (currentStaminaAmount < previousStaminaAmount)
             staminaRegenerationTimer = 0;
     }
 }

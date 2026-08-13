@@ -49,6 +49,8 @@ public class AICharacterManager : CharacterManager
 
             currentState = idle;
         }
+
+        aiCharacterNetworkManager.currentHealth.OnValueChanged += aiCharacterNetworkManager.CheckHP;
     }
 
     protected override void Update()
@@ -56,6 +58,13 @@ public class AICharacterManager : CharacterManager
         base.Update();
 
         aiCharacterCombatManager.HandleActionRecovery(this);
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        aiCharacterNetworkManager.currentHealth.OnValueChanged -= aiCharacterNetworkManager.CheckHP;
     }
 
     protected override void FixedUpdate()

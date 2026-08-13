@@ -9,6 +9,13 @@ public class AIBossCharacterManager : AICharacterManager
     [Header("Boss ID")]
     public string bossID = "Boss_001";
 
+
+    [Header("Boss Music")]
+    [SerializeField] private AudioClip bossIntroMusic;
+    [SerializeField] private AudioClip bossLoopMusic;
+
+
+
     [SerializeField] private List<FogWallInteractable> fogWalls;
 
     [Space(10)]
@@ -19,6 +26,12 @@ public class AIBossCharacterManager : AICharacterManager
 
     [SerializeField] private string sleepAnimation = "Sleep_01";
     [SerializeField] private string awakenAnimation = "Awaken_01";
+
+    [Header("Phase Shift")]
+    public float phaseShiftHealthThresholdPercent = 50f;
+    [SerializeField] private string phaseChangeAnimation = "PhaseChange_01";
+    [SerializeField] private CombatStanceState phaseTwoCombatStance;
+    private bool hasPhaseChanged = false;
 
     [Header("State")]
     [SerializeField] private BossSleepState bossSleepState;
@@ -54,31 +67,7 @@ public class AIBossCharacterManager : AICharacterManager
                 hasBeenAwakened.Value = WorldSaveGameManager.instance.currentCharacterData.bossesAwakened[bossID];
             }
 
-            StartCoroutine(GetFogWallsFromWorldObjectManager());
-
-            if (hasBeenAwakened.Value)
-            {
-                foreach (var fogWall in fogWalls)
-                {
-                    fogWall.isActive.Value = true;
-                }
-            }
-            else
-            {
-                foreach (var fogWall in fogWalls)
-                {
-                    fogWall.isActive.Value = false;
-                }
-            }
-
-            if (hasBeenDefeated.Value)
-            {
-                foreach (var fogWall in fogWalls)
-                {
-                    fogWall.isActive.Value = false;
-                }
-                aiCharacterNetworkManager.isActive.Value = false;
-            }
+            StartCoroutine(ApplyFogWallState());
         }
 
         if (IsOwner)
@@ -103,14 +92,20 @@ public class AIBossCharacterManager : AICharacterManager
 
     public void OnBossFightIsActiveChanged(bool oldValue, bool newValue)
     {
-        if (!bossFightIsActive.Value)
-            return;
+        if (bossFightIsActive.Value && !hasBeenDefeated.Value)
+        {
+            WorldSoundFXManager.instance.PlayBossTrack(bossIntroMusic, bossLoopMusic);
 
-        GameObject bossHPBar =
-        Instantiate(PlayerUIManager.instance.playerUIHudManager.bossHPBarObject,
-        PlayerUIManager.instance.playerUIHudManager.bossHPBarParent);
+            GameObject bossHPBar =
+            Instantiate(PlayerUIManager.instance.playerUIHudManager.bossHPBarObject,
+            PlayerUIManager.instance.playerUIHudManager.bossHPBarParent);
 
-        bossHPBar.GetComponentInChildren<UI_Boss_HP_Bar>().EnableBossHPBar(this);
+            bossHPBar.GetComponentInChildren<UI_Boss_HP_Bar>().EnableBossHPBar(this);
+        }
+        else
+        {
+            WorldSoundFXManager.instance.StopBossTrack();
+        }
     }
 
     private IEnumerator GetFogWallsFromWorldObjectManager()
@@ -121,7 +116,7 @@ public class AIBossCharacterManager : AICharacterManager
         {
             foreach (var fogWall in WorldObjectManager.instance.fogWalls)
             {
-                if (fogWall.objectID == bossID)
+                if (fogWall.bossID == bossID)
                 {
                     fogWalls.Add(fogWall);
                 }
@@ -134,12 +129,18 @@ public class AIBossCharacterManager : AICharacterManager
 
     public override IEnumerator ProcessDeathEvent(bool manuallySelectedDeathAnimation = false)
     {
+        PlayerUIManager.instance.playerUIPopUpManager.SendBossDefeatedPopUp("GREAT FOE FELLED");
+
         if (IsOwner)
         {
             characterNetworkManager.currentHealth.Value = 0;
             isDead.Value = true;
-
             bossFightIsActive.Value = false;
+
+            foreach (var fogWall in fogWalls)
+            {
+                fogWall.isActive.Value = false;
+            }
 
             //重置所有FLAG
 
@@ -150,8 +151,9 @@ public class AIBossCharacterManager : AICharacterManager
                 characterAnimatorManager.PlayerTargetActionAnimation("Death_01", true);
             }
 
-
+            hasBeenAwakened.Value = true;
             hasBeenDefeated.Value = true;
+
             if (!WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.ContainsKey(bossID))
             {
                 //如果没有这个ID，就分配一个新的ID
@@ -166,6 +168,8 @@ public class AIBossCharacterManager : AICharacterManager
                 WorldSaveGameManager.instance.currentCharacterData.bossesAwakened.Add(bossID, true);
                 WorldSaveGameManager.instance.currentCharacterData.bossesDefeated.Add(bossID, true);
             }
+
+            currentState = bossSleepState;
 
             WorldSaveGameManager.instance.SaveGame();
         }
@@ -211,4 +215,36 @@ public class AIBossCharacterManager : AICharacterManager
             }
         }
     }
+
+    public void PhaseChange()
+    {
+        //切换阶段
+        if (!phaseTwoCombatStance || hasPhaseChanged)
+            return;
+
+        hasPhaseChanged = true;
+
+        Debug.Log("Phase Change Triggered");
+
+        characterAnimatorManager.PlayerTargetActionAnimation(phaseChangeAnimation, true);
+
+        combatStance = Instantiate(phaseTwoCombatStance);
+        currentState = combatStance;
+    }
+
+    private IEnumerator ApplyFogWallState()
+    {
+        yield return GetFogWallsFromWorldObjectManager(); // 先等列表填满（雾门已 spawn）
+
+        foreach (var fogWall in fogWalls)
+        {
+            fogWall.isActive.Value = hasBeenAwakened.Value && !hasBeenDefeated.Value;
+        }
+
+        if (hasBeenDefeated.Value)
+        {
+            aiCharacterNetworkManager.isActive.Value = false;
+        }
+    }
+
 }
