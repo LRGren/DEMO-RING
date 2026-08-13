@@ -9,12 +9,12 @@ public class PlayerInputManager : MonoBehaviour
 {
     public static PlayerInputManager instance;
     [HideInInspector] public PlayerManager player;
-    
+
     //从玩家输入中获取数据
     //按照数据移动
 
     private PlayerControls playerControls;
-    
+
     [Header("Camera Movement Inputs")]
     [SerializeField] private Vector2 cameraInput;
     public float cameraVerticalInput;
@@ -31,7 +31,7 @@ public class PlayerInputManager : MonoBehaviour
     public float verticalInput;
     public float horizontalInput;
     public float moveAmount;
-    
+
     [Header("Player Dodge Inputs")]
     [SerializeField] private bool dodge_Input = false;
     [SerializeField] private bool sprint_Input = false;
@@ -45,8 +45,15 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private bool Hold_RT_Input = false;
 
     [Header("D-pad Inputs")]
-    [SerializeField]private bool switch_Right_Weapons_Input = false;
-    [SerializeField]private bool switch_Leftt_Weapons_Input = false;
+    [SerializeField] private bool switch_Right_Weapons_Input = false;
+    [SerializeField] private bool switch_Leftt_Weapons_Input = false;
+
+    [Header("Qued Inputs")]
+    private bool que_Input_Is_Active = false;
+    [SerializeField] private float default_Que_Input_Timer = 0.35f;
+    [SerializeField] private float que_Input_Timer = 0f;
+    [SerializeField] private bool que_RB_Input = false;
+    [SerializeField] private bool que_RT_Input = false;
 
 
     private void Awake()
@@ -66,10 +73,10 @@ public class PlayerInputManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         SceneManager.activeSceneChanged += OnSceneChange;
-        
+
         instance.enabled = false;
 
-        if(playerControls != null)
+        if (playerControls != null)
         {
             playerControls.Disable();
         }
@@ -81,7 +88,7 @@ public class PlayerInputManager : MonoBehaviour
         if (newScene.buildIndex == WorldSaveGameManager.instance.GetWorldSceneIndex())
         {
             instance.enabled = true;
-            if(playerControls != null)
+            if (playerControls != null)
             {
                 playerControls.Enable();
             }
@@ -127,6 +134,10 @@ public class PlayerInputManager : MonoBehaviour
             //D-Pad
             playerControls.PlayerActions.SwitchRightWeapon.performed += i => switch_Right_Weapons_Input = true;
             playerControls.PlayerActions.SwitchLeftWeapon.performed += i => switch_Leftt_Weapons_Input = true;
+
+            //Que Inputs
+            playerControls.PlayerActions.QueRB.performed += i => QueInput(ref que_RB_Input);
+            playerControls.PlayerActions.QueRT.performed += i => QueInput(ref que_RT_Input);
         }
 
         playerControls.Enable();
@@ -148,7 +159,7 @@ public class PlayerInputManager : MonoBehaviour
             playerControls.Disable();
         }
     }
-    
+
     private void Update()
     {
         HandleAllInputs();
@@ -156,7 +167,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleAllInputs()
     {
-        if(player == null)
+        if (player == null)
             return;
 
         HandlePlayerMovementInput();
@@ -175,6 +186,8 @@ public class PlayerInputManager : MonoBehaviour
 
         HandleSwitchRightWeaponsInput();
         HandleSwitchLeftWeaponsInput();
+
+        HandleQueInput();
     }
 
     private void HandleLockOnInput()
@@ -218,7 +231,7 @@ public class PlayerInputManager : MonoBehaviour
                 //如果没有目标，尝试锁定
                 PlayerCamera.instance.HandleLocatingLockOnTargets();
 
-                if(PlayerCamera.instance.nearestLockOnTarget != null)
+                if (PlayerCamera.instance.nearestLockOnTarget != null)
                 {
                     player.playerCombatManager.SetTarget(PlayerCamera.instance.nearestLockOnTarget);
 
@@ -228,14 +241,14 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
     }
-    
+
     private void HandleLockOnSwitchTargetInput()
     {
         if (lockOn_Left_Input)
         {
             lockOn_Left_Input = false;
 
-            if(player.playerNetworkManager.isLockOn.Value)
+            if (player.playerNetworkManager.isLockOn.Value)
             {
                 //Debug.Log("Switching Left Lock On Target");
                 PlayerCamera.instance.HandleLocatingLockOnTargets();
@@ -246,11 +259,11 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
 
-        if(lockOn_Right_Input)
+        if (lockOn_Right_Input)
         {
             lockOn_Right_Input = false;
 
-            if(player.playerNetworkManager.isLockOn.Value)
+            if (player.playerNetworkManager.isLockOn.Value)
             {
                 //Debug.Log("Switching Right Lock On Target");
 
@@ -268,9 +281,9 @@ public class PlayerInputManager : MonoBehaviour
     {
         verticalInput = movementInput.y;
         horizontalInput = movementInput.x;
-        
+
         moveAmount = Mathf.Clamp01
-            (Mathf.Abs(verticalInput)+Mathf.Abs(horizontalInput));
+            (Mathf.Abs(verticalInput) + Mathf.Abs(horizontalInput));
 
         if (moveAmount > 0 && moveAmount <= 0.5f)
         {
@@ -280,8 +293,8 @@ public class PlayerInputManager : MonoBehaviour
         {
             moveAmount = 1f;
         }
-        
-        if(player == null)
+
+        if (player == null)
             return;
 
         if (moveAmount != 0)
@@ -294,7 +307,7 @@ public class PlayerInputManager : MonoBehaviour
             player.playerNetworkManager.isMoving.Value = false;
         }
 
-        if(!player.playerNetworkManager.isLockOn.Value || player.playerNetworkManager.isSprinting.Value)
+        if (!player.playerNetworkManager.isLockOn.Value || player.playerNetworkManager.isSprinting.Value)
         {
             //未锁定时只需要前进的动作 或者疾跑
             player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
@@ -316,7 +329,7 @@ public class PlayerInputManager : MonoBehaviour
         if (dodge_Input)
         {
             dodge_Input = false;
-            
+
             //后跳或者翻滚
             player.playerLocomotionManager.AttemptToPerformDodge();
         }
@@ -339,9 +352,9 @@ public class PlayerInputManager : MonoBehaviour
         if (jump_Input)
         {
             jump_Input = false;
-            
+
             //有UI，不反应
-            
+
             //尝试跳跃
             player.playerLocomotionManager.AttemptToPerformJump();
         }
@@ -349,7 +362,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleRBInput()
     {
-        if(RB_Input)
+        if (RB_Input)
         {
             RB_Input = false;
 
@@ -404,4 +417,49 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    private void QueInput(ref bool quedInput)
+    {
+        que_RB_Input = false;
+        que_RT_Input = false;
+
+        if (player.isPerformingAction || !player.playerNetworkManager.isJumping.Value)
+        {
+            que_Input_Is_Active = true;
+            que_Input_Timer = default_Que_Input_Timer;
+            quedInput = true;
+        }
+    }
+
+    private void ProcessQueInput()
+    {
+        if (player.isDead.Value)
+            return;
+
+        if (que_RB_Input)
+            RB_Input = true;
+
+        if (que_RT_Input)
+            RT_Input = true;
+    }
+
+    private void HandleQueInput()
+    {
+        if (que_Input_Is_Active)
+        {
+            if (que_Input_Timer > 0)
+            {
+                que_Input_Timer -= Time.deltaTime;
+                ProcessQueInput();
+            }
+            else
+            {
+                que_Input_Is_Active = false;
+                que_Input_Timer = 0;
+
+                //Reset all queued inputs to false after the que input timer has expired
+                que_RB_Input = false;
+                que_RT_Input = false;
+            }
+        }
+    }
 }

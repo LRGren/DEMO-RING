@@ -26,21 +26,4 @@ public class PlayerAnimatorManager : CharacterAnimatorManager
 
     //Animation Event Calls
 
-    public override void EnableDoCombo()
-    {
-        if (player.playerNetworkManager.isUsingRightHand.Value)
-        {
-            player.playerCombatManager.canComboWithMainHandWeapon = true;
-        }
-        else
-        {
-
-        }
-    }
-
-    public override void DisableDoCombo()
-    {
-        player.playerCombatManager.canComboWithMainHandWeapon = false;
-    }
-
 }

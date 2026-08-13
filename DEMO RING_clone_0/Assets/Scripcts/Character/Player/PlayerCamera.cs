@@ -9,17 +9,17 @@ public class PlayerCamera : MonoBehaviour
     public PlayerManager player;
     public Camera cameraObject;
     [SerializeField] private Transform cameraPivotTransform;
-    
+
     [Header("Camera Settings")]
-    public float cameraSmoothTime = 1f;
+    public float cameraSmoothTime = 0.1f;
     [SerializeField] private float leftAndRightRotationSpeed = 220f;
     [SerializeField] private float upAndDownRotationSpeed = 220f;
     [SerializeField] private float minimumPivot = -30f;
     [SerializeField] private float maximumPivot = 60f;
     [SerializeField] private float cameraCollisionRadius = 0.2f;
     [SerializeField] private LayerMask collideWithLayers;
-    
-    
+
+
     [Header("Camera Values")]
     private Vector3 cameraVelocity;
     private Vector3 cameraObjectPosition;
@@ -76,7 +76,7 @@ public class PlayerCamera : MonoBehaviour
     private void HandleFollowTarget()
     {
         Vector3 targetCameraPosition = Vector3.SmoothDamp(transform.position, player.transform.position,
-            ref cameraVelocity, cameraSmoothTime * Time.deltaTime);
+            ref cameraVelocity, cameraSmoothTime);
         transform.position = targetCameraPosition;
     }
 
@@ -125,7 +125,7 @@ public class PlayerCamera : MonoBehaviour
     private void HandleCollisions()
     {
         targetCameraZPosition = cameraZPosition;
-        
+
         RaycastHit hit;
         Vector3 direction = cameraObject.transform.position - cameraPivotTransform.position;
         direction.Normalize();
@@ -153,7 +153,7 @@ public class PlayerCamera : MonoBehaviour
         float shortestDistanceOfLeftTarget = -Mathf.Infinity;   //用于确定某一轴【当前目标左侧】的最短距离
 
         //TO DO: Layers
-        Collider[] colliders = Physics.OverlapSphere(player.transform.position, lockOnRadius,WorldUtilityManager.instance.GetCharacterLayers());
+        Collider[] colliders = Physics.OverlapSphere(player.transform.position, lockOnRadius, WorldUtilityManager.instance.GetCharacterLayers());
 
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -170,18 +170,18 @@ public class PlayerCamera : MonoBehaviour
                     continue;
 
                 //如果目标是自己
-                if(lockOnTarget.transform.root == player.transform.root)
+                if (lockOnTarget.transform.root == player.transform.root)
                     continue;
 
                 //如果目标在锁定视野内
-                if(viewableAngle > minimumLockOnAngle && viewableAngle < maximumLockOnAngle)
+                if (viewableAngle > minimumLockOnAngle && viewableAngle < maximumLockOnAngle)
                 {
                     RaycastHit hit;
 
                     //TO DO: Layers
-                    if (Physics.Linecast(player.playerCombatManager.lockOnTransform.position, 
-                        lockOnTarget.characterCombatManager.lockOnTransform.position, 
-                        out hit,WorldUtilityManager.instance.GetEnviroLayers()))
+                    if (Physics.Linecast(player.playerCombatManager.lockOnTransform.position,
+                        lockOnTarget.characterCombatManager.lockOnTransform.position,
+                        out hit, WorldUtilityManager.instance.GetEnviroLayers()))
                     {
                         //如果射线碰撞到的物体不是锁定目标
                         continue;
@@ -201,7 +201,8 @@ public class PlayerCamera : MonoBehaviour
         for (int i = 0; i < availableTargets.Count; i++)
         {
 
-            if(availableTargets[i] != null) {
+            if (availableTargets[i] != null)
+            {
                 float distanceFromTarget = Vector3.Distance(player.transform.position, availableTargets[i].transform.position);
 
                 if (distanceFromTarget < shortestDistance)
@@ -245,7 +246,7 @@ public class PlayerCamera : MonoBehaviour
 
     public void SetLockOnCameraHeight()
     {
-        if(cameraLockOnCoroutine != null)
+        if (cameraLockOnCoroutine != null)
         {
             StopCoroutine(cameraLockOnCoroutine);
         }
@@ -271,7 +272,7 @@ public class PlayerCamera : MonoBehaviour
         ClearLockOnTargets();
         HandleLocatingLockOnTargets();
 
-        if(nearestLockOnTarget != null)
+        if (nearestLockOnTarget != null)
         {
             player.playerCombatManager.currentTarget = nearestLockOnTarget;
             player.playerNetworkManager.isLockOn.Value = true;
@@ -292,7 +293,7 @@ public class PlayerCamera : MonoBehaviour
 
         var targetCameraHeight = player.playerCombatManager.currentTarget != null ? newLockedCameraHeight : newUnlockedCameraHeight;
 
-        while(Vector3.Distance(cameraPivotTransform.localEulerAngles, targetCameraHeight) > 0.01f)
+        while (Vector3.Distance(cameraPivotTransform.localEulerAngles, targetCameraHeight) > 0.01f)
         //while (timer < duration)
         {
             //Debug.Log("Setting Camera Height");

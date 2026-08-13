@@ -98,12 +98,5 @@ public class CharacterAnimatorManager : MonoBehaviour
 
 
     //Animation Event Calls
-    public virtual void EnableDoCombo()
-    {
-    }
-
-    public virtual void DisableDoCombo()
-    {
-    }
 
 }

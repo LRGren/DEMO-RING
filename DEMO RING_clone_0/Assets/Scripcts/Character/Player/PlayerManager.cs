@@ -208,7 +208,7 @@ public class PlayerManager : CharacterManager
 
         Vector3 myPosition = new Vector3(
             currentCharacterSaveData.xPosition,
-            currentCharacterSaveData.yPosition,
+            currentCharacterSaveData.yPosition + 0.5f,
             currentCharacterSaveData.zPosition);
 
         transform.position = myPosition;
