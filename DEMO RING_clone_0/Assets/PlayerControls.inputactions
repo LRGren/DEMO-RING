@@ -97,6 +97,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Interaction",
+                    "type": "Button",
+                    "id": "1d9d5d81-45d5-4228-aa81-e6fe38b79100",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "RB",
                     "type": "Button",
                     "id": "5eee892d-229f-45bb-a3ae-fb9c5f28dea7",
@@ -227,6 +236,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "RB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "127950d1-df05-43d6-938b-433b9d526dd6",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interaction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -33,6 +33,7 @@ public class PlayerInputManager : MonoBehaviour
     public float moveAmount;
 
     [Header("Player Dodge Inputs")]
+    [SerializeField] private bool interaction_Input = false;
     [SerializeField] private bool dodge_Input = false;
     [SerializeField] private bool sprint_Input = false;
     [SerializeField] private bool jump_Input = false;
@@ -138,6 +139,9 @@ public class PlayerInputManager : MonoBehaviour
             //Que Inputs
             playerControls.PlayerActions.QueRB.performed += i => QueInput(ref que_RB_Input);
             playerControls.PlayerActions.QueRT.performed += i => QueInput(ref que_RT_Input);
+
+            //Interaction
+            playerControls.PlayerActions.Interaction.performed += i => interaction_Input = true;
         }
 
         playerControls.Enable();
@@ -186,6 +190,8 @@ public class PlayerInputManager : MonoBehaviour
 
         HandleSwitchRightWeaponsInput();
         HandleSwitchLeftWeaponsInput();
+
+        HandleInteractionInput();
 
         HandleQueInput();
     }
@@ -414,6 +420,16 @@ public class PlayerInputManager : MonoBehaviour
         {
             switch_Leftt_Weapons_Input = false;
             player.playerEquipmentManager.SwitchLeftWeapon();
+        }
+    }
+
+    private void HandleInteractionInput()
+    {
+        if (interaction_Input)
+        {
+            interaction_Input = false;
+
+            player.playerInteractionManager.Interact();
         }
     }
 

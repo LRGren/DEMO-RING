@@ -13,7 +13,11 @@ public class PlayerUIManager : MonoBehaviour
 
     [HideInInspector] public PlayerUIHudManager playerUIHudManager;
     [HideInInspector] public PlayerUIPopUpManager playerUIPopUpManager;
-    
+
+    [Header("UI Flags")]
+    public bool menuWindowIsOpen = false;
+    public bool popUpWindowIsOpen = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -24,7 +28,7 @@ public class PlayerUIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+
         playerUIHudManager = GetComponentInChildren<PlayerUIHudManager>();
         playerUIPopUpManager = GetComponentInChildren<PlayerUIPopUpManager>();
     }
