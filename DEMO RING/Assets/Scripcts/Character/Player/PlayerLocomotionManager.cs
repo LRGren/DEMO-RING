@@ -16,7 +16,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
     [SerializeField] private float runningSpeed = 4.5f;
     [SerializeField] private float sprintingSpeed = 7f;
     [SerializeField] private float rotationSpeed = 15f;
-    [SerializeField] private float sprintingCost = 2f;
+    [SerializeField] private float sprintingCost = 5f;
 
     [Header("Jump")]
     private Vector3 jumpDirection;

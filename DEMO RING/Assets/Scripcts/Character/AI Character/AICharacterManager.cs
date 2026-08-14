@@ -134,4 +134,24 @@ public class AICharacterManager : CharacterManager
             aiCharacterNetworkManager.isMoving.Value = false;
         }
     }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        if (characterUIManager.hasFloatingHPBarUI)
+        {
+            aiCharacterNetworkManager.currentHealth.OnValueChanged += characterUIManager.OnHPChanged;
+        }
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        if (characterUIManager.hasFloatingHPBarUI)
+        {
+            aiCharacterNetworkManager.currentHealth.OnValueChanged -= characterUIManager.OnHPChanged;
+        }
+    }
 }

@@ -286,9 +286,17 @@ public class WorldSaveGameManager : MonoBehaviour
     public IEnumerator LoadWorldScene()
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(worldSceneIndex);
-        
+
+        // 等待场景完全加载完成后再设置角色位置。
+        // 如果一调用 LoadSceneAsync 就立刻传送角色，此时世界场景的地面碰撞体还没生成，
+        // 角色会被传送到空中并持续下落，掉出地图。
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
         player.LoadGameFromCurrentCharacterData(ref currentCharacterData);
-        
+
         yield return null;
     }
 

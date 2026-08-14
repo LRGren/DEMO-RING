@@ -78,6 +78,11 @@ public class PlayerManager : CharacterManager
 
         }
 
+        if (!IsOwner)
+        {
+            playerNetworkManager.currentHealth.OnValueChanged += characterUIManager.OnHPChanged;
+        }
+
         //状态
         playerNetworkManager.currentHealth.OnValueChanged += playerNetworkManager.CheckHP;
 
@@ -119,6 +124,11 @@ public class PlayerManager : CharacterManager
             playerNetworkManager.currentStamina.OnValueChanged -= PlayerUIManager.instance.playerUIHudManager.SetNewStaminaValue;
             playerNetworkManager.currentStamina.OnValueChanged -= playerStatsManager.ResetStaminaTimer;
 
+        }
+
+        if (!IsOwner)
+        {
+            playerNetworkManager.currentHealth.OnValueChanged -= characterUIManager.OnHPChanged;
         }
 
         //状态
@@ -208,10 +218,14 @@ public class PlayerManager : CharacterManager
 
         Vector3 myPosition = new Vector3(
             currentCharacterSaveData.xPosition,
-            currentCharacterSaveData.yPosition + 0.5f,
+            currentCharacterSaveData.yPosition,
             currentCharacterSaveData.zPosition);
 
+        // 传送 CharacterController 前先禁用再启用，直接改 transform.position
+        // 可能导致控制器内部位置状态错乱，从而穿透地面掉出地图
+        characterController.enabled = false;
         transform.position = myPosition;
+        characterController.enabled = true;
 
         playerNetworkManager.vitality.Value = currentCharacterSaveData.vitality;
         playerNetworkManager.endurance.Value = currentCharacterSaveData.endurance;

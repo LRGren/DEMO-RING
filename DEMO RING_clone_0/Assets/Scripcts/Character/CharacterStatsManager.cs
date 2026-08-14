@@ -11,7 +11,7 @@ public class CharacterStatsManager : MonoBehaviour
     [SerializeField] private float staminaRegenerationAmount = 10;
     private float staminaRegenerationTimer = 0;
     private float staminaRegenerationTicker = 0;
-    [SerializeField] private float staminaRegenerationDelay = 2;
+    [SerializeField] private float staminaRegenerationDelay = 0.5f;
 
     protected virtual void Awake()
     {
