@@ -5,6 +5,11 @@ using UnityEngine;
 public class WeaponItem : Item
 {
     //ANIMATION CONTROLLE 覆盖（基于武器需要有不同的攻击模组）
+    [Header("Weapon Animator Override Controller")]
+    public AnimatorOverrideController weaponAnimator;
+
+    [Header("Weapon Type")]
+    public WeaponType weaponType;
 
     [Header("Weapon Model")]
     public GameObject weaponModel;
@@ -26,7 +31,14 @@ public class WeaponItem : Item
 
     [Header("Weapon Poise")]
     public float poiseDamage = 10;
-    //出手硬直
+
+    [Header("Weapon Blocking Absorption")]
+    public float physicalDamageAbsorption = 100;
+    public float magicalDamageAbsorption = 0;
+    public float fireDamageAbsorption = 0;
+    public float holyDamageAbsorption = 0;
+    public float lightningDamageAbsorption = 0;
+    public float staminaCostToBlock = 0;
 
     [Header("Attack Modifiers")]
     //武器修饰符
@@ -62,6 +74,7 @@ public class WeaponItem : Item
     [Header("Weapon Actions")]
     public WeaponItemAction oh_RB_Action;//oh for one hand
     public WeaponItemAction oh_RT_Action;//oh for one hand
+    public WeaponItemAction oh_LB_Action;//oh for one hand
 
     //ASH OF WAR
 
@@ -70,4 +83,5 @@ public class WeaponItem : Item
     //武器音效
     [Header("Weapon SFX")]
     public AudioClip[] wooshes;
+    public AudioClip[] blocks;
 }

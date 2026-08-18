@@ -28,4 +28,9 @@ public class AICharacterSpawner : MonoBehaviour
             WorldAIManager.instance.AddSpawnedCharacter(spawnedAICharacter.GetComponent<AICharacterManager>());
         }
     }
+
+    public void ResetSpawnedCharacter()
+    {
+        spawnedAICharacter = null;
+    }
 }

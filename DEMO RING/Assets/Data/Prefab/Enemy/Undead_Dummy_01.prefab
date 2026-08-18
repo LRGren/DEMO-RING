@@ -798,6 +798,7 @@ MonoBehaviour:
   fireDamage: 0
   lightningDamage: 0
   holyDamage: 0
+  poiseDamage: 0
   contactPoint: {x: 0, y: 0, z: 0}
   undeadCharacter: {fileID: 0}
 --- !u!135 &346415835987155526
@@ -1085,6 +1086,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   characterEffectsManager: {fileID: 0}
   characterAnimatorManager: {fileID: 0}
+  characterStatsManager: {fileID: 0}
   characterCombatManager: {fileID: 0}
   characterSoundFXManager: {fileID: 0}
   characterLocomotionManager: {fileID: 0}
@@ -1211,6 +1213,7 @@ MonoBehaviour:
   footstepSFXGrass: []
   footstepSFXDirt: []
   footstepSFXStone: []
+  audioSource: {fileID: 0}
 --- !u!114 &-6051730209635047487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1225,6 +1228,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   staminaRegenerationAmount: 2
   staminaRegenerationDelay: 2
+  blockingPhysicalAbsorption: 0
+  blockingMagicalAbsorption: 0
+  blockingFireAbsorption: 0
+  blockingLightningAbsorption: 0
+  blockingHolyAbsorption: 0
+  blockingStaminaCost: 0
 --- !u!114 &8501314987108709682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1404,9 +1413,10 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   lastAttackAnimation: 
   currentAttackType: 0
-  lockOnTransform: {fileID: 0}
+  lockOnTransform: {fileID: 6598238437659444050}
   canPerformRollingAttack: 0
   canPerformBackstepAttack: 0
+  canBlock: 1
   actionRecoveryTimer: 0
   enablePivot: 1
   distanceFromTarget: 0
@@ -1419,6 +1429,7 @@ MonoBehaviour:
   rightHandUndeadDamageCollider: {fileID: 6356024641420292441}
   leftHandUndeadDamageCollider: {fileID: 3005679609566684791}
   baseDamage: 25
+  basePoiseDamage: 10
   attack01Modifier: 1.4
   attack02Modifier: 1
 --- !u!114 &4534554568840621454
@@ -1463,6 +1474,10 @@ MonoBehaviour:
   moveAmount:
     m_InternalValue: 0
   currentTargetNetworkObjectID:
+    m_InternalValue: 0
+  isBlocking:
+    m_InternalValue: 0
+  isAttacking:
     m_InternalValue: 0
   isInvulnerable:
     m_InternalValue: 0
@@ -1970,6 +1985,7 @@ MonoBehaviour:
   fireDamage: 0
   lightningDamage: 0
   holyDamage: 0
+  poiseDamage: 0
   contactPoint: {x: 0, y: 0, z: 0}
   undeadCharacter: {fileID: 0}
 --- !u!135 &2402492860487455978

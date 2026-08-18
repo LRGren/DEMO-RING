@@ -22,6 +22,8 @@ public class HeavyAttackWeaponItemAction : WeaponItemAction
         if (!playerPerformingAction.playerLocomotionManager.isGrounded)
             return;
 
+        playerPerformingAction.playerNetworkManager.isAttacking.Value = true;
+
         //执行攻击
         PerformHeavyAttack(playerPerformingAction, weaponPerformingAction);
     }
@@ -33,16 +35,16 @@ public class HeavyAttackWeaponItemAction : WeaponItemAction
         {
             if (playerPerformingAction.playerCombatManager.lastAttackAnimation == heavy_Attack_01)
             {
-                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackType.HeavyAttack02, heavy_Attack_02, true);
+                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.HeavyAttack02, heavy_Attack_02, true);
             }
             else if (playerPerformingAction.playerCombatManager.lastAttackAnimation == heavy_Attack_02)
             {
-                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackType.HeavyAttack01, heavy_Attack_01, true);
+                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.HeavyAttack01, heavy_Attack_01, true);
             }
         }
         else if (!playerPerformingAction.isPerformingAction)
         {
-            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackType.HeavyAttack01, heavy_Attack_01, true);
+            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.HeavyAttack01, heavy_Attack_01, true);
         }
     }
 }

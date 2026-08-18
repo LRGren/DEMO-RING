@@ -27,12 +27,17 @@ public class CharacterSaveData
     public int vitality;
     public int endurance;
 
+    [Header("Site Of Grace")]
+    public SerializableDictionary<int, bool> siteOfGraceActivated;
+
     [Header("Bosses")]
     public SerializableDictionary<string, bool> bossesAwakened;
     public SerializableDictionary<string, bool> bossesDefeated;
 
     public CharacterSaveData()
     {
+        siteOfGraceActivated = new SerializableDictionary<int, bool>();
+
         bossesAwakened = new SerializableDictionary<string, bool>();
         bossesDefeated = new SerializableDictionary<string, bool>();
     }

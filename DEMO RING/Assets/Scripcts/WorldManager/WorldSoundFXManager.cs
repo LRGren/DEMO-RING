@@ -36,12 +36,12 @@ public class WorldSoundFXManager : MonoBehaviour
 
     public void PlayBossTrack(AudioClip bossIntro, AudioClip bossLoop)
     {
-        bossIntroPlayer.volume = 1f;
+        bossIntroPlayer.volume = .5f;
         bossIntroPlayer.clip = bossIntro;
         bossIntroPlayer.loop = false;
         bossIntroPlayer.Play();
 
-        bossLoopPlayer.volume = 1f;
+        bossLoopPlayer.volume = .5f;
         bossLoopPlayer.clip = bossLoop;
         bossLoopPlayer.loop = true;
         bossLoopPlayer.PlayDelayed(bossIntroPlayer.clip.length);

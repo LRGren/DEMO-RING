@@ -115,6 +115,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "LB",
+                    "type": "Button",
+                    "id": "d1eeb4d6-ff1b-492c-8496-6d5d69c60560",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LB Shield",
+                    "type": "Button",
+                    "id": "68ecacd1-1d9d-4429-913a-28f8372f831e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Que RB",
                     "type": "Button",
                     "id": "9c042a08-562d-49d3-8695-61b9ef7c2f08",
@@ -236,6 +254,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "RB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "366885b3-2f82-4dac-9e83-7c1c369cc3b7",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "41530976-0511-426b-9dd5-987b1e6a8523",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LB Shield",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

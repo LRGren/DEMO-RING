@@ -2295,15 +2295,14 @@ GameObject:
   - component: {fileID: 7132560717083368243}
   - component: {fileID: 5804182300970313103}
   - component: {fileID: 7190445280894901129}
-  - component: {fileID: 7016019718725040864}
   - component: {fileID: 5828806300916637300}
   - component: {fileID: 5234350005315087510}
   - component: {fileID: 2911986707318656380}
+  - component: {fileID: 1360170305559593800}
+  - component: {fileID: 900801292555197106}
   - component: {fileID: 649129733402237863}
   - component: {fileID: 2239858814955359206}
   - component: {fileID: 4966367541513654335}
-  - component: {fileID: 1360170305559593800}
-  - component: {fileID: 900801292555197106}
   m_Layer: 6
   m_Name: Boss01_Dummy_01
   m_TagString: Untagged
@@ -2363,7 +2362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3963331255
+  GlobalObjectIdHash: 6309587
   InScenePlacedSourceGlobalObjectIdHash: 1732247804
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -2465,21 +2464,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   staminaRegenerationAmount: 2
   staminaRegenerationDelay: 2
---- !u!114 &7016019718725040864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6199065445168199212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9777077a2a37b924d8f930a0062936ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bloodSplatterVFX: {fileID: 0}
-  effectToTest: {fileID: 0}
-  processEffect: 0
+  blockingPhysicalAbsorption: 0
+  blockingMagicalAbsorption: 0
+  blockingFireAbsorption: 0
+  blockingLightningAbsorption: 0
+  blockingHolyAbsorption: 0
+  blockingStaminaCost: 0
 --- !u!143 &5828806300916637300
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2629,6 +2619,77 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1360170305559593800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6199065445168199212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff8202d50e28514292d7af6df56a35f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasFloatingHPBarUI: 0
+  characterHPBar: {fileID: 5055505779340905573}
+--- !u!114 &900801292555197106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6199065445168199212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73ee7443db3c18c47b382b886879e447, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive:
+    m_InternalValue: 1
+  networkPosition:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  networkRotation:
+    m_InternalValue: {x: 0, y: 0, z: 0, w: 1}
+  networkPositionVelocity: {x: 0, y: 0, z: 0}
+  networkPositionSmoothTime: 0.1
+  networkRotationSmoothTime: 0.1
+  horizontalMovement:
+    m_InternalValue: 0
+  verticalMovement:
+    m_InternalValue: 0
+  moveAmount:
+    m_InternalValue: 0
+  currentTargetNetworkObjectID:
+    m_InternalValue: 0
+  isBlocking:
+    m_InternalValue: 0
+  isAttacking:
+    m_InternalValue: 0
+  isInvulnerable:
+    m_InternalValue: 0
+  isMoving:
+    m_InternalValue: 0
+  isLockOn:
+    m_InternalValue: 0
+  isSprinting:
+    m_InternalValue: 0
+  isJumping:
+    m_InternalValue: 0
+  isChargingAttack:
+    m_InternalValue: 0
+  endurance:
+    m_InternalValue: 1
+  vitality:
+    m_InternalValue: 1
+  currentStamina:
+    m_InternalValue: 0
+  maxStamina:
+    m_InternalValue: 0
+  currentHealth:
+    m_InternalValue: 1600
+  maxHealth:
+    m_InternalValue: 1600
 --- !u!114 &649129733402237863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2647,6 +2708,7 @@ MonoBehaviour:
   lockOnTransform: {fileID: 1484316845855349640}
   canPerformRollingAttack: 0
   canPerformBackstepAttack: 0
+  canBlock: 1
   actionRecoveryTimer: 0
   enablePivot: 1
   distanceFromTarget: 0
@@ -2665,6 +2727,7 @@ MonoBehaviour:
   BOSS01SignalEffect: {fileID: 119183615461286708, guid: 48aee95160c85f64c98b6ef36f2b59d6,
     type: 3}
   baseDamage: 50
+  basePoiseDamage: 70
   attack01Modifier: 1
   attack02Modifier: 1.5
   attack03Modifier: 2
@@ -2688,6 +2751,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   characterEffectsManager: {fileID: 0}
   characterAnimatorManager: {fileID: 0}
+  characterStatsManager: {fileID: 0}
   characterCombatManager: {fileID: 0}
   characterSoundFXManager: {fileID: 0}
   characterLocomotionManager: {fileID: 0}
@@ -2705,8 +2769,8 @@ MonoBehaviour:
   combatStance: {fileID: 11400000, guid: a095a333a837f4749ba71f472f88bd0d, type: 2}
   attack: {fileID: 11400000, guid: 54bea59cc308c934c80ca7643487f2d7, type: 2}
   bossID: Boss_001
-  bossIntroMusic: {fileID: 8300000, guid: 35cf7766e9e2aa542811e896fde57989, type: 3}
-  bossLoopMusic: {fileID: 8300000, guid: c0f5786f639278d479c9da914217fdad, type: 3}
+  bossIntroMusic: {fileID: 8300000, guid: 3ad8df087fc8b8d4d87460c304619e62, type: 3}
+  bossLoopMusic: {fileID: 8300000, guid: 67033a6ace935ee4e8d913fdf9711235, type: 3}
   fogWalls: []
   bossFightIsActive:
     m_InternalValue: 0
@@ -2759,77 +2823,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fa16bd6cbe8bcba40ad0f5c9644c9607, type: 3}
   footstepSFXStone:
   - {fileID: 8300000, guid: 29536eb6a0b57b04596917e9e6193bcb, type: 3}
+  audioSource: {fileID: 0}
   wooshes:
   - {fileID: 8300000, guid: 4e7a9f408abdba8459fdccbeaea95215, type: 3}
   - {fileID: 8300000, guid: e4b229d1cd4c5954c982c44b6f42eb27, type: 3}
   earthquakeSFX: {fileID: 8300000, guid: e7cb68da88d8b274eb008f9a214589d8, type: 3}
---- !u!114 &1360170305559593800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6199065445168199212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eff8202d50e28514292d7af6df56a35f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hasFloatingHPBarUI: 0
-  characterHPBar: {fileID: 5055505779340905573}
---- !u!114 &900801292555197106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6199065445168199212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73ee7443db3c18c47b382b886879e447, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isActive:
-    m_InternalValue: 1
-  networkPosition:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  networkRotation:
-    m_InternalValue: {x: 0, y: 0, z: 0, w: 1}
-  networkPositionVelocity: {x: 0, y: 0, z: 0}
-  networkPositionSmoothTime: 0.1
-  networkRotationSmoothTime: 0.1
-  horizontalMovement:
-    m_InternalValue: 0
-  verticalMovement:
-    m_InternalValue: 0
-  moveAmount:
-    m_InternalValue: 0
-  currentTargetNetworkObjectID:
-    m_InternalValue: 0
-  isInvulnerable:
-    m_InternalValue: 0
-  isMoving:
-    m_InternalValue: 0
-  isLockOn:
-    m_InternalValue: 0
-  isSprinting:
-    m_InternalValue: 0
-  isJumping:
-    m_InternalValue: 0
-  isChargingAttack:
-    m_InternalValue: 0
-  endurance:
-    m_InternalValue: 1
-  vitality:
-    m_InternalValue: 1
-  currentStamina:
-    m_InternalValue: 0
-  maxStamina:
-    m_InternalValue: 0
-  currentHealth:
-    m_InternalValue: 1600
-  maxHealth:
-    m_InternalValue: 1600
 --- !u!1 &6245145032224923085
 GameObject:
   m_ObjectHideFlags: 0
@@ -3714,6 +3712,7 @@ MonoBehaviour:
   fireDamage: 0
   lightningDamage: 0
   holyDamage: 0
+  poiseDamage: 0
   contactPoint: {x: 0, y: 0, z: 0}
   bossCharacter: {fileID: 0}
 --- !u!1001 &3997725098807351300

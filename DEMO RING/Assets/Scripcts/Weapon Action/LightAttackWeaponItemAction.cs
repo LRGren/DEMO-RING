@@ -32,6 +32,8 @@ public class LightAttackWeaponItemAction : WeaponItemAction
         if (!playerPerformingAction.playerLocomotionManager.isGrounded)
             return;
 
+        playerPerformingAction.playerNetworkManager.isAttacking.Value = true;
+
         if (playerPerformingAction.playerNetworkManager.isSprinting.Value)
         {
             PerformRunningAttack(playerPerformingAction, weaponPerformingAction);
@@ -61,34 +63,34 @@ public class LightAttackWeaponItemAction : WeaponItemAction
         {
             if (playerPerformingAction.playerCombatManager.lastAttackAnimation == light_Attack_01)
             {
-                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackType.LightAttack02, light_Attack_02, true);
+                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.LightAttack02, light_Attack_02, true);
             }
             else if (playerPerformingAction.playerCombatManager.lastAttackAnimation == light_Attack_02)
             {
-                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackType.LightAttack01, light_Attack_01, true);
+                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.LightAttack01, light_Attack_01, true);
             }
         }
         else if (!playerPerformingAction.isPerformingAction)
         {
-            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackType.LightAttack01, light_Attack_01, true);
+            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.LightAttack01, light_Attack_01, true);
         }
     }
 
     private void PerformRunningAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
     {
-        playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackType.RunningAttack01, running_Attack_01, true);
+        playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.RunningAttack01, running_Attack_01, true);
     }
 
     public void PerformRollingAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
     {
         playerPerformingAction.playerCombatManager.canPerformRollingAttack = false;
-        playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackType.RollingAttack01, rolling_Attack_01, true);
+        playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.RollingAttack01, rolling_Attack_01, true);
     }
 
     public void PerformBackstepAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
     {
         playerPerformingAction.playerCombatManager.canPerformBackstepAttack = false;
-        playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(AttackType.BackstepAttack01, backstep_Attack_01, true);
+        playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.BackstepAttack01, backstep_Attack_01, true);
     }
 
 }

@@ -506,6 +506,35 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 6115227e3e8f9474bb5502588e2a6138,
         type: 2}
+    - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
+        type: 3}
+      propertyPath: takeBlockedDamageEffect
+      value: 
+      objectReference: {fileID: 11400000, guid: 55d23956ad00a4a459f94133c2c7008b,
+        type: 2}
+    - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
+        type: 3}
+      propertyPath: instantEffects.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
+        type: 3}
+      propertyPath: instantEffects.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6115227e3e8f9474bb5502588e2a6138,
+        type: 2}
+    - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
+        type: 3}
+      propertyPath: instantEffects.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: ecce7b364c05f294a977a15279ac04a3,
+        type: 2}
+    - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
+        type: 3}
+      propertyPath: instantEffects.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 55d23956ad00a4a459f94133c2c7008b,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1717,23 +1746,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8955009173859086938, guid: 9e62f436f7216ee4496db0b6e58cbfa6,
-        type: 3}
-      propertyPath: weaponItemActions.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8955009173859086938, guid: 9e62f436f7216ee4496db0b6e58cbfa6,
-        type: 3}
-      propertyPath: weaponItemActions.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b,
-        type: 2}
-    - target: {fileID: 8955009173859086938, guid: 9e62f436f7216ee4496db0b6e58cbfa6,
-        type: 3}
-      propertyPath: weaponItemActions.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8,
-        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

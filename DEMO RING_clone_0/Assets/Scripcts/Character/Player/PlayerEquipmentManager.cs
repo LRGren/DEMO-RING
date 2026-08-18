@@ -7,7 +7,8 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 {
     PlayerManager player;
     public WeaponModelInstantiationSlot rightHandSlot;
-    public WeaponModelInstantiationSlot leftHandSlot;
+    public WeaponModelInstantiationSlot leftHandWeaponSlot;
+    public WeaponModelInstantiationSlot leftHandShieldSlot;
 
     [SerializeField] WeaponManager rightHandWeaponManager;
     [SerializeField] WeaponManager leftHandWeaponManager;
@@ -24,13 +25,6 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         InitialiseWeaponSlots();
     }
 
-    protected override void Start()
-    {
-        base.Start();
-
-        LoadWeaponsOnBothHands();
-    }
-
     private void InitialiseWeaponSlots()
     {
         WeaponModelInstantiationSlot[] weaponSlots = GetComponentsInChildren<WeaponModelInstantiationSlot>();
@@ -41,9 +35,13 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             {
                 rightHandSlot = weapon;
             }
-            else if (weapon.weaponSlot == WeaponModelSlot.LeftHand)
+            else if (weapon.weaponSlot == WeaponModelSlot.LeftHandWeapon)
             {
-                leftHandSlot = weapon;
+                leftHandWeaponSlot = weapon;
+            }
+            else if (weapon.weaponSlot == WeaponModelSlot.LeftHandShield)
+            {
+                leftHandShieldSlot = weapon;
             }
         }
     }
@@ -66,6 +64,8 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
             rightHandWeaponManager = rightWeaponModel.GetComponentInChildren<WeaponManager>();
             rightHandWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentRightHandWeapon);
+
+            player.playerAnimatorManager.UpdateAnimatorController(player.playerInventoryManager.currentRightHandWeapon.weaponAnimator);
         }
     }
 
@@ -143,10 +143,26 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     {
         if (player.playerInventoryManager.currentLeftHandWeapon != null)
         {
-            leftHandSlot.UnloadWeapon();
+            if (leftHandWeaponSlot.currentWeapon != null)
+                leftHandWeaponSlot.UnloadWeapon();
+
+            if (leftHandShieldSlot.currentWeapon != null)
+                leftHandShieldSlot.UnloadWeapon();
 
             leftWeaponModel = Instantiate(player.playerInventoryManager.currentLeftHandWeapon.weaponModel);
-            leftHandSlot.LoadWeapon(leftWeaponModel);
+
+            switch (player.playerInventoryManager.currentLeftHandWeapon.weaponType)
+            {
+                case WeaponType.Weapon:
+                    leftHandWeaponSlot.LoadWeapon(leftWeaponModel);
+                    break;
+                case WeaponType.Shield:
+                    leftHandShieldSlot.LoadWeapon(leftWeaponModel);
+                    break;
+                default:
+                    Debug.LogError("Unknown weapon type for left hand weapon.");
+                    break;
+            }
 
             leftHandWeaponManager = leftWeaponModel.GetComponentInChildren<WeaponManager>();
             leftHandWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentLeftHandWeapon);

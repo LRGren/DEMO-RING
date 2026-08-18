@@ -10,19 +10,26 @@ public class AIUndeadCombatManager : AICharacterCombatManager
 
     [Header("Undead Attack Damage")]
     [SerializeField] private int baseDamage = 25;
+    [SerializeField] private float basePoiseDamage = 10;
     [SerializeField] private float attack01Modifier = 1f;
     [SerializeField] private float attack02Modifier = 1.4f;
 
     public void SetAttack01Damage()
     {
         rightHandUndeadDamageCollider.physicalDamage = baseDamage * attack01Modifier;
+        rightHandUndeadDamageCollider.poiseDamage = basePoiseDamage * attack01Modifier;
+
         leftHandUndeadDamageCollider.physicalDamage = baseDamage * attack01Modifier;
+        leftHandUndeadDamageCollider.poiseDamage = basePoiseDamage * attack01Modifier;
     }
 
     public void SetAttack02Damage()
     {
         rightHandUndeadDamageCollider.physicalDamage = baseDamage * attack02Modifier;
+        rightHandUndeadDamageCollider.poiseDamage = basePoiseDamage * attack02Modifier;
+
         leftHandUndeadDamageCollider.physicalDamage = baseDamage * attack02Modifier;
+        leftHandUndeadDamageCollider.poiseDamage = basePoiseDamage * attack02Modifier;
     }
 
     public void EnableRightHandDamageCollider()

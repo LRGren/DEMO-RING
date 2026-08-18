@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BOSS01DamagerCollider : DamageCollider
+public class BOSS01DamageCollider : DamageCollider
 {
     [SerializeField] private AIBossCharacterManager bossCharacter;
 
@@ -11,6 +11,12 @@ public class BOSS01DamagerCollider : DamageCollider
         base.Awake();
         damageCollider = GetComponent<Collider>();
         bossCharacter = GetComponentInParent<AIBossCharacterManager>();
+    }
+
+    protected override void CalculateDirectionToAttacker(CharacterManager damageTarget)
+    {
+        directionToAttacker = (bossCharacter.transform.position - damageTarget.transform.position).normalized;
+        dotFromDamageTargetToAttacker = Vector3.Dot(damageTarget.transform.forward, directionToAttacker);
     }
 
     protected override void DamageTarget(CharacterManager damageTarget)
@@ -26,6 +32,7 @@ public class BOSS01DamagerCollider : DamageCollider
         damageEffect.fireDamage = fireDamage;
         damageEffect.lightningDamage = lightningDamage;
         damageEffect.holyDamage = holyDamage;
+        damageEffect.poiseDamage = poiseDamage;
         damageEffect.contactPoint = contactPoint;
         damageEffect.angleHitFrom = Vector3.SignedAngle(bossCharacter.transform.forward, damageTarget.transform.forward, Vector3.up);
 

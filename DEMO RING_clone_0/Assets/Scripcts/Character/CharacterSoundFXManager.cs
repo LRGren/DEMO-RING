@@ -18,7 +18,7 @@ public class CharacterSoundFXManager : MonoBehaviour
     public AudioClip[] footstepSFXDirt;
     public AudioClip[] footstepSFXStone;
 
-    private AudioSource audioSource;
+    [SerializeField] private AudioSource audioSource;
 
     private void Awake()
     {
@@ -68,5 +68,10 @@ public class CharacterSoundFXManager : MonoBehaviour
         AudioClip footstepClip = WorldSoundFXManager.instance.ChooseRandomFootstepSFXBasedOnSurfaceType(surfaceObject, character);
 
         PlaySoundFX(footstepClip, 0.2f);
+    }
+
+    public virtual void PlayBlockSFX()
+    {
+
     }
 }

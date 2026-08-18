@@ -40,6 +40,7 @@ public class PlayerInputManager : MonoBehaviour
 
     [Header("Bumper Inputs")]
     [SerializeField] private bool RB_Input = false;
+    [SerializeField] private bool LB_Input = false;
 
     [Header("Trigger Inputs")]
     [SerializeField] private bool RT_Input = false;
@@ -122,6 +123,9 @@ public class PlayerInputManager : MonoBehaviour
             //Bumpers
             playerControls.PlayerActions.RB.performed += i => RB_Input = true;
 
+            playerControls.PlayerActions.LBShield.performed += i => LB_Input = true;
+            playerControls.PlayerActions.LBShield.canceled += i => player.characterNetworkManager.isBlocking.Value = false;
+
             //Triggers
             playerControls.PlayerActions.RT.started += i => RT_Input = true;
             playerControls.PlayerActions.HoldRT.performed += i => Hold_RT_Input = true;
@@ -185,6 +189,7 @@ public class PlayerInputManager : MonoBehaviour
         HandleJumpInput();
 
         HandleRBInput();
+        HandleLBInput();
         HandleRTInput();
         HandleHoldRTInput();
 
@@ -377,6 +382,21 @@ public class PlayerInputManager : MonoBehaviour
             player.playerNetworkManager.SetCharacterActionHand(true);
 
             player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_RB_Action, player.playerInventoryManager.currentRightHandWeapon);
+        }
+
+    }
+
+    private void HandleLBInput()
+    {
+        if (LB_Input)
+        {
+            LB_Input = false;
+
+            //如果有UI，不反应
+
+            player.playerNetworkManager.SetCharacterActionHand(false);
+
+            player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftHandWeapon.oh_LB_Action, player.playerInventoryManager.currentLeftHandWeapon);
         }
 
     }

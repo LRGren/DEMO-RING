@@ -41,7 +41,7 @@ public class TakeDamageEffect : InstantCharacterEffect
     {
         if (character.characterNetworkManager.isInvulnerable.Value)
         {
-            Debug.Log("Character is Invulnerable, No Damage Taken");
+            //Debug.Log("Character is Invulnerable, No Damage Taken");
             return;
         }
 
@@ -50,8 +50,6 @@ public class TakeDamageEffect : InstantCharacterEffect
         //如果角色死了 无需继续计算
         if (character.isDead.Value)
             return;
-
-        //是否无敌
 
         //计算伤害
         CalculteDamage(character);

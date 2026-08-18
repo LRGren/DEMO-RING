@@ -7,7 +7,7 @@ public class AIBOSS01CharacterCombatManager : AICharacterCombatManager
     AIBOSS01CharacterManager aiBOSS01CharacterManager;
 
     [Header("BOSS01 Damage Colliders")]
-    [SerializeField] private BOSS01DamagerCollider swordDamageCollider;
+    [SerializeField] private BOSS01DamageCollider swordDamageCollider;
 
     [Header("BOSS01 Earthquake")]
     [SerializeField] private Transform earthquakeAttackPoint;
@@ -20,6 +20,7 @@ public class AIBOSS01CharacterCombatManager : AICharacterCombatManager
 
     [Header("BOSS01 Attack Damage")]
     [SerializeField] private int baseDamage = 50;
+    [SerializeField] private float basePoiseDamage = 25;
     [SerializeField] private float attack01Modifier = 1f;
     [SerializeField] private float attack02Modifier = 1.4f;
     [SerializeField] private float attack03Modifier = 2.5f;
@@ -36,18 +37,21 @@ public class AIBOSS01CharacterCombatManager : AICharacterCombatManager
     {
         aiBOSS01CharacterManager.aiBOSS01SoundFXManager.PlayAttackGruntSFX();
         swordDamageCollider.physicalDamage = baseDamage * attack01Modifier;
+        swordDamageCollider.poiseDamage = basePoiseDamage * attack01Modifier;
     }
 
     public void SetAttack02Damage()
     {
         aiBOSS01CharacterManager.aiBOSS01SoundFXManager.PlayAttackGruntSFX();
         swordDamageCollider.physicalDamage = baseDamage * attack02Modifier;
+        swordDamageCollider.poiseDamage = basePoiseDamage * attack02Modifier;
     }
 
     public void SetAttack03Damage()
     {
         aiBOSS01CharacterManager.aiBOSS01SoundFXManager.PlayAttackGruntSFX();
         swordDamageCollider.physicalDamage = baseDamage * attack03Modifier;
+        swordDamageCollider.poiseDamage = basePoiseDamage * attack03Modifier;
     }
 
     public void EnableSwordDamageCollider()

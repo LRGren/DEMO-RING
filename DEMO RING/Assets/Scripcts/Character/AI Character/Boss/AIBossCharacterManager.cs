@@ -79,7 +79,7 @@ public class AIBossCharacterManager : AICharacterManager
 
         if (!hasBeenAwakened.Value)
         {
-            characterAnimatorManager.PlayerTargetActionAnimation(sleepAnimation, true);
+            animator.Play(sleepAnimation);
         }
     }
 
@@ -213,6 +213,8 @@ public class AIBossCharacterManager : AICharacterManager
             {
                 fogWall.isActive.Value = true;
             }
+
+            WorldSaveGameManager.instance.SaveBossInfo(bossID, hasBeenAwakened.Value, hasBeenDefeated.Value);
         }
     }
 

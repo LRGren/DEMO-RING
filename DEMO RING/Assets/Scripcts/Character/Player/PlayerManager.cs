@@ -92,6 +92,15 @@ public class PlayerManager : CharacterManager
         playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChanged;
         playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChanged;
         playerNetworkManager.currentWeaponBeingUsed.OnValueChanged += playerNetworkManager.OnCurrentWeaponBedingUsedIDChanged;
+        playerNetworkManager.isBlocking.OnValueChanged += playerNetworkManager.OnIsBlockingChanged;
+
+        if (IsOwner)
+        {
+            playerNetworkManager.currentRightHandWeaponID.Value =
+                playerInventoryManager.weaponsInRightHand[playerInventoryManager.rightWeaponIndex].itemID;
+            playerNetworkManager.currentLeftHandWeaponID.Value =
+                playerInventoryManager.weaponsInLeftHand[playerInventoryManager.leftWeaponIndex].itemID;
+        }
 
         //锁定
         playerNetworkManager.isLockOn.OnValueChanged += playerNetworkManager.OnIsLockOnChanged;
@@ -140,6 +149,7 @@ public class PlayerManager : CharacterManager
         playerNetworkManager.currentRightHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentRightHandWeaponIDChanged;
         playerNetworkManager.currentLeftHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentLeftHandWeaponIDChanged;
         playerNetworkManager.currentWeaponBeingUsed.OnValueChanged -= playerNetworkManager.OnCurrentWeaponBedingUsedIDChanged;
+        playerNetworkManager.isBlocking.OnValueChanged -= playerNetworkManager.OnIsBlockingChanged;
 
         //锁定
         playerNetworkManager.isLockOn.OnValueChanged -= playerNetworkManager.OnIsLockOnChanged;
@@ -212,6 +222,39 @@ public class PlayerManager : CharacterManager
 
         currentCharacterSaveData.vitality = playerNetworkManager.vitality.Value;
         currentCharacterSaveData.endurance = playerNetworkManager.endurance.Value;
+
+        currentCharacterSaveData.siteOfGraceActivated = WorldSaveGameManager.instance.currentCharacterData.siteOfGraceActivated;
+
+        currentCharacterSaveData.bossesAwakened = WorldSaveGameManager.instance.currentCharacterData.bossesAwakened;
+        currentCharacterSaveData.bossesDefeated = WorldSaveGameManager.instance.currentCharacterData.bossesDefeated;
+    }
+
+    /// <summary>
+    /// (临时添加用以测试) 将当前boss的状态保存到当前角色数据中
+    /// </summary>
+    /// <param name="currentCharacterSaveData"></param>
+    /// <param name="bossID"></param>
+    /// <param name="isAwakened"></param>
+    /// <param name="isDefeated"></param>
+    public void SaveGameBossInfoToCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData, string bossID, bool isAwakened, bool isDefeated)
+    {
+        if (!currentCharacterSaveData.bossesAwakened.ContainsKey(bossID))
+        {
+            currentCharacterSaveData.bossesAwakened.Add(bossID, isAwakened);
+        }
+        else
+        {
+            currentCharacterSaveData.bossesAwakened[bossID] = isAwakened;
+        }
+
+        if (!currentCharacterSaveData.bossesDefeated.ContainsKey(bossID))
+        {
+            currentCharacterSaveData.bossesDefeated.Add(bossID, isDefeated);
+        }
+        else
+        {
+            currentCharacterSaveData.bossesDefeated[bossID] = isDefeated;
+        }
     }
 
     public void LoadGameFromCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData)
@@ -250,6 +293,9 @@ public class PlayerManager : CharacterManager
     {
         playerNetworkManager.OnCurrentRightHandWeaponIDChanged(0, playerNetworkManager.currentRightHandWeaponID.Value);
         playerNetworkManager.OnCurrentLeftHandWeaponIDChanged(0, playerNetworkManager.currentLeftHandWeaponID.Value);
+
+        //Block
+        playerNetworkManager.OnIsBlockingChanged(false, playerNetworkManager.isBlocking.Value);
 
         //Lock On
         if (playerNetworkManager.isLockOn.Value)

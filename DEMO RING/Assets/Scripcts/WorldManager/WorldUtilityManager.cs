@@ -79,4 +79,28 @@ public class WorldUtilityManager : MonoBehaviour
     {
         return Physics.Linecast(fromPosition, toPosition, enviroLayers);
     }
+
+    public DamageIntensity GetDamageIntensityBasedOnPoiseDamage(float poiseDamage)
+    {
+        if (poiseDamage < 10)
+        {
+            return DamageIntensity.Ping;
+        }
+        else if (poiseDamage < 30)
+        {
+            return DamageIntensity.Light;
+        }
+        else if (poiseDamage < 70)
+        {
+            return DamageIntensity.Medium;
+        }
+        else if (poiseDamage < 120)
+        {
+            return DamageIntensity.Heavy;
+        }
+        else
+        {
+            return DamageIntensity.Colossal;
+        }
+    }
 }

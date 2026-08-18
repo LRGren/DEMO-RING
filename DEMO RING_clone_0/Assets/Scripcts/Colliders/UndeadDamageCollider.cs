@@ -13,6 +13,12 @@ public class UndeadDamageCollider : DamageCollider
         undeadCharacter = GetComponentInParent<AICharacterManager>();
     }
 
+    protected override void CalculateDirectionToAttacker(CharacterManager damageTarget)
+    {
+        directionToAttacker = (undeadCharacter.transform.position - damageTarget.transform.position).normalized;
+        dotFromDamageTargetToAttacker = Vector3.Dot(damageTarget.transform.forward, directionToAttacker);
+    }
+
     protected override void DamageTarget(CharacterManager damageTarget)
     {
         if (characterDamaged.Contains(damageTarget))
@@ -26,6 +32,7 @@ public class UndeadDamageCollider : DamageCollider
         damageEffect.fireDamage = fireDamage;
         damageEffect.lightningDamage = lightningDamage;
         damageEffect.holyDamage = holyDamage;
+        damageEffect.poiseDamage = poiseDamage;
         damageEffect.contactPoint = contactPoint;
         damageEffect.angleHitFrom = Vector3.SignedAngle(undeadCharacter.transform.forward, damageTarget.transform.forward, Vector3.up);
 

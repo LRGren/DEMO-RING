@@ -21,6 +21,12 @@ public class PlayerUIPopUpManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI bossDefeatedPopUpText;
     [SerializeField] private CanvasGroup bossDefeatedPopUpCanvasGroup;
 
+    [Header("Site Of Grace Activated Pop Up")]
+    [SerializeField] private GameObject siteOfGraceActivatedPopUpGameObject;
+    [SerializeField] private TextMeshProUGUI siteOfGraceActivatedPopUpBackgroundText;
+    [SerializeField] private TextMeshProUGUI siteOfGraceActivatedPopUpText;
+    [SerializeField] private CanvasGroup siteOfGraceActivatedPopUpCanvasGroup;
+
     public void CloseAllPopUps()
     {
         PlayerUIManager.instance.popUpWindowIsOpen = false;
@@ -72,6 +78,27 @@ public class PlayerUIPopUpManager : MonoBehaviour
         //等待 渐渐淡出
         StartCoroutine(WaitThenFadeOutPopUpOverTime(bossDefeatedPopUpCanvasGroup, 2, 5));
     }
+
+    public void SendSiteOfGraceActivatedPopUp(string siteOfGraceActivatedMessage)
+    {
+        siteOfGraceActivatedPopUpText.text = siteOfGraceActivatedMessage;
+        siteOfGraceActivatedPopUpBackgroundText.text = siteOfGraceActivatedMessage;
+
+        //实现某些效果 如 咒死
+
+        siteOfGraceActivatedPopUpGameObject.SetActive(true);
+        siteOfGraceActivatedPopUpBackgroundText.characterSpacing = 0;
+
+        //拉伸
+        StartCoroutine(StretchPopUpTextOverTime(siteOfGraceActivatedPopUpBackgroundText, 8, 8.32f));
+
+        //渐入
+        StartCoroutine(FadeInPopUpOverTime(siteOfGraceActivatedPopUpCanvasGroup, 5));
+
+        //等待 渐渐淡出
+        StartCoroutine(WaitThenFadeOutPopUpOverTime(siteOfGraceActivatedPopUpCanvasGroup, 2, 5));
+    }
+
 
     private IEnumerator StretchPopUpTextOverTime(TextMeshProUGUI text, float duration, float stretchAmount)
     {

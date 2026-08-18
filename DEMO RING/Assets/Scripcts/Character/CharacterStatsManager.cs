@@ -13,6 +13,14 @@ public class CharacterStatsManager : MonoBehaviour
     private float staminaRegenerationTicker = 0;
     [SerializeField] private float staminaRegenerationDelay = 0.5f;
 
+    [Header("Blocking Absorption")]
+    public float blockingPhysicalAbsorption;
+    public float blockingMagicalAbsorption;
+    public float blockingFireAbsorption;
+    public float blockingLightningAbsorption;
+    public float blockingHolyAbsorption;
+    public float blockingStaminaCost;
+
     protected virtual void Awake()
     {
         character = GetComponent<CharacterManager>();
@@ -45,7 +53,13 @@ public class CharacterStatsManager : MonoBehaviour
 
     public void StaminaRegeneration()
     {
+        if (character.isDead.Value)
+            return;
+
         if (!character.IsOwner)
+            return;
+
+        if (character.characterNetworkManager.isBlocking.Value)
             return;
 
         if (character.characterNetworkManager.isSprinting.Value)

@@ -9,7 +9,7 @@ using UnityEngine.TextCore.Text;
 public class PlayerNetworkManager : CharacterNetworkManager
 {
     private PlayerManager player;
-    
+
     public NetworkVariable<FixedString64Bytes> characterName = new NetworkVariable<FixedString64Bytes>("sereinjians", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("Equipment")]
@@ -22,7 +22,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
     protected override void Awake()
     {
         base.Awake();
-        
+
         player = GetComponent<PlayerManager>();
     }
 
@@ -45,9 +45,9 @@ public class PlayerNetworkManager : CharacterNetworkManager
         maxHealth.Value = player.playerStatsManager.CalculateHealthBasedOnVitalityLevel(newVitality);
         PlayerUIManager.instance.playerUIHudManager.SetMaxHealthValue(maxHealth.Value);
         currentHealth.Value = maxHealth.Value;
-        
+
     }
-    
+
     public void SetNewMaxStaminaValue(int oldEndurance, int newEndurance)
     {
         maxStamina.Value = player.playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(newEndurance);
@@ -80,22 +80,43 @@ public class PlayerNetworkManager : CharacterNetworkManager
             PlayerUIManager.instance.playerUIHudManager.SetLeftWeaponQuickSlot(newWeaponID);
         }
     }
-    
+
     public void OnCurrentWeaponBedingUsedIDChanged(int oldWeaponID, int newWeaponID)
     {
         WeaponItem newWeapon = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(newWeaponID));
         player.playerCombatManager.currentWeaponBedingUsed = newWeapon;
+
+        if (!IsOwner)
+            return;
+
+        if (player.playerCombatManager.currentWeaponBedingUsed != null)
+            player.playerAnimatorManager.UpdateAnimatorController(player.playerCombatManager.currentWeaponBedingUsed.weaponAnimator);
     }
 
 
     // Weapon
+    public override void OnIsBlockingChanged(bool old, bool isLockedOn)
+    {
+        base.OnIsBlockingChanged(old, isLockedOn);
+
+        if (IsOwner)
+        {
+            player.playerStatsManager.blockingPhysicalAbsorption = player.playerInventoryManager.currentLeftHandWeapon.physicalDamageAbsorption;
+            player.playerStatsManager.blockingMagicalAbsorption = player.playerInventoryManager.currentLeftHandWeapon.magicalDamageAbsorption;
+            player.playerStatsManager.blockingFireAbsorption = player.playerInventoryManager.currentLeftHandWeapon.fireDamageAbsorption;
+            player.playerStatsManager.blockingHolyAbsorption = player.playerInventoryManager.currentLeftHandWeapon.holyDamageAbsorption;
+            player.playerStatsManager.blockingLightningAbsorption = player.playerInventoryManager.currentLeftHandWeapon.lightningDamageAbsorption;
+
+            player.playerStatsManager.blockingStaminaCost = player.playerInventoryManager.currentLeftHandWeapon.staminaCostToBlock;
+        }
+    }
 
     [ServerRpc]
-    public void NotifyTheServerOfWeaponActionServerRpc(ulong clientID,int actionID,int weaponID)
+    public void NotifyTheServerOfWeaponActionServerRpc(ulong clientID, int actionID, int weaponID)
     {
         if (IsServer)
         {
-            NotifyTheClientsOfWeaponActionClientRpc(clientID,actionID,weaponID);
+            NotifyTheClientsOfWeaponActionClientRpc(clientID, actionID, weaponID);
         }
     }
 
@@ -110,7 +131,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
     }
 
     private void PerformWeaponBasedAction(int actionID, int weaponID)
-    { 
+    {
         WeaponItemAction weaponAction = WorldActionManager.Instance.GetWeaponActionByID(actionID);
 
         if (weaponAction != null)
@@ -123,5 +144,5 @@ public class PlayerNetworkManager : CharacterNetworkManager
         }
     }
 
-    
+
 }

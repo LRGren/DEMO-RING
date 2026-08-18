@@ -16,7 +16,9 @@ MonoBehaviour:
   itemIcon: {fileID: 21300114, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
   itemDescription: A straight sword
   itemID: 1
-  weaponModel: {fileID: 1711130412322516538, guid: ac1c0c907d9ebf4499db0b6721bf1ee3,
+  weaponAnimator: {fileID: 22100000, guid: 9579843364df031448b1014815f84953, type: 2}
+  weaponType: 0
+  weaponModel: {fileID: 1711130412322516538, guid: 56af49cc44ec3a24dba59291ba12d421,
     type: 3}
   strengthREQ: 10
   dexterityREQ: 10
@@ -28,18 +30,33 @@ MonoBehaviour:
   holyDamage: 0
   lightningDamage: 0
   poiseDamage: 25
+  physicalDamageAbsorption: 50
+  magicalDamageAbsorption: 0
+  fireDamageAbsorption: 0
+  holyDamageAbsorption: 0
+  lightningDamageAbsorption: 0
+  staminaCostToBlock: 200
   light_Attack_01_Modifier: 1.1
   light_Attack_02_Modifier: 1.2
   heavy_Attack_01_Modifier: 1.4
   heavy_Attack_02_Modifier: 1.6
   charged_Attack_01_Modifier: 2.2
   charged_Attack_02_Modifier: 2.5
+  run_Attack_01_Modifier: 1
+  roll_Attack_01_Modifier: 1
+  backstep_Attack_01_Modifier: 1
   basicStaminaCost: 20
   lightAttackStaminaModifier: 0.9
   heavyAttackStaminaModifier: 0.9
   chargedAttackStaminaModifier: 0.9
+  runningAttackStaminaModifier: 1
+  rollingAttackStaminaModifier: 1
+  backstepAttackStaminaModifier: 1
   oh_RB_Action: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b, type: 2}
   oh_RT_Action: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8, type: 2}
+  oh_LB_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
   wooshes:
   - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
   - {fileID: 8300000, guid: 4d4ef7516a431934681038a3dc391e55, type: 3}
+  blocks:
+  - {fileID: 8300000, guid: 738e3bff6c9edfe409dcb5b68d82d66a, type: 3}

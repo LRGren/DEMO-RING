@@ -24,7 +24,7 @@ public class AICharacterAttackAction : ScriptableObject
 
     public void AttemptToPerformAction(AICharacterManager aiCharacter)
     {
-        aiCharacter.characterAnimatorManager.PlayerTargetAttackActionAnimation(attackType, actionAnimation, true);
+        aiCharacter.characterAnimatorManager.PlayerTargetActionAnimation(actionAnimation, true);
     }
 
 }

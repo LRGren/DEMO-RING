@@ -12,12 +12,13 @@ public class WorldCharacterEffectsManager : MonoBehaviour
 
     [Header("Damage")]
     public TakeDamageEffect takeDamageEffect;
+    public TakeBlockedDamageEffect takeBlockedDamageEffect;
 
     [SerializeField] private List<InstantCharacterEffect> instantEffects;
-    
+
     private void Awake()
     {
-        if (instance == null) 
+        if (instance == null)
         {
             instance = this;
         }
@@ -25,7 +26,7 @@ public class WorldCharacterEffectsManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+
         GenerateEffectsIDs();
     }
 

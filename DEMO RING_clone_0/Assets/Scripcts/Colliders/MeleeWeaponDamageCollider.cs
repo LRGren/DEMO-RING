@@ -55,6 +55,12 @@ public class MeleeWeaponDamageCollider : DamageCollider
         }
     }
 
+    protected override void CalculateDirectionToAttacker(CharacterManager damageTarget)
+    {
+        directionToAttacker = (characterCasuingDamage.transform.position - damageTarget.transform.position).normalized;
+        dotFromDamageTargetToAttacker = Vector3.Dot(damageTarget.transform.forward, directionToAttacker);
+    }
+
     protected override void DamageTarget(CharacterManager damageTarget)
     {
         if (characterDamaged.Contains(damageTarget))
