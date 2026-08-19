@@ -18,6 +18,7 @@ MonoBehaviour:
   itemID: 3
   weaponAnimator: {fileID: 22100000, guid: 9be177efe1fcba84294f9aff999f6bfe, type: 2}
   weaponType: 1
+  weaponClass: 1
   weaponModel: {fileID: 1711130412322516538, guid: 5e4a8ffaada9b6646bf4fea57396c14c,
     type: 3}
   strengthREQ: 10

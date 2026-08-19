@@ -85,7 +85,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.67405903
+      - time: 0.47747785
         functionName: DisableSwordDamageCollider
         data: 
         objectReferenceParameter: {instanceID: 0}

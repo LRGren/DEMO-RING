@@ -792,7 +792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94a8b112de61326439f7f6bb631d1c80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageCollider: {fileID: 0}
+  damageCollider: {fileID: 346415835987155526}
   physicalDamage: 0
   magicalDamage: 0
   fireDamage: 0
@@ -1234,6 +1234,11 @@ MonoBehaviour:
   blockingLightningAbsorption: 0
   blockingHolyAbsorption: 0
   blockingStaminaCost: 0
+  totalPoiseDamage: 0
+  offensivePoiseBonus: 0
+  basePoiseDefense: 0
+  defaultPoiseResetTimer: 8
+  poiseResetTimer: 0
 --- !u!114 &8501314987108709682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1979,7 +1984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94a8b112de61326439f7f6bb631d1c80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageCollider: {fileID: 0}
+  damageCollider: {fileID: 2402492860487455978}
   physicalDamage: 0
   magicalDamage: 0
   fireDamage: 0

@@ -21,6 +21,14 @@ public class CharacterStatsManager : MonoBehaviour
     public float blockingHolyAbsorption;
     public float blockingStaminaCost;
 
+    [Header("Poise")]
+    public float totalPoiseDamage;              //一段时间内收到的削韧值总和
+    public float offensivePoiseBonus;           //攻击时增加的韧性值
+    public float basePoiseDefense;              //基础韧性值(来自装备，护符等)
+    public float defaultPoiseResetTimer = 8f;   //韧性值重置时间
+    public float poiseResetTimer;               //韧性值重置计时器
+
+
     protected virtual void Awake()
     {
         character = GetComponent<CharacterManager>();
@@ -29,6 +37,11 @@ public class CharacterStatsManager : MonoBehaviour
     protected virtual void Start()
     {
 
+    }
+
+    protected virtual void Update()
+    {
+        HandlePoiseResetTimer();
     }
 
     public int CalculateStaminaBasedOnEnduranceLevel(int endurance)
@@ -87,5 +100,18 @@ public class CharacterStatsManager : MonoBehaviour
     {
         if (currentStaminaAmount < previousStaminaAmount)
             staminaRegenerationTimer = 0;
+    }
+
+    protected virtual void HandlePoiseResetTimer()
+    {
+        if (poiseResetTimer > 0)
+        {
+            poiseResetTimer -= Time.deltaTime;
+        }
+        else
+        {
+            totalPoiseDamage = 0;
+            poiseResetTimer = 0;
+        }
     }
 }

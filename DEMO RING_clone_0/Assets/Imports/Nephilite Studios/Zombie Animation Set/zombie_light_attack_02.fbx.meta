@@ -86,14 +86,14 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.3439021
-        functionName: EnableRightHandDamageCollider
+        functionName: EnableLeftHandDamageCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.49770984
-        functionName: DisableRightHandDamageCollider
+        functionName: DisableLeftHandDamageCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

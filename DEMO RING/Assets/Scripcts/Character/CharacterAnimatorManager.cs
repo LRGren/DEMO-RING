@@ -16,10 +16,18 @@ public class CharacterAnimatorManager : MonoBehaviour
 
 
     [Header("Damage Animation")]
+    //Medium Hit Animations
     public string hit_Forward_Medium_01 = "Hit_Forward_Medium_01";
     public string hit_Back_Medium_01 = "Hit_Back_Medium_01";
     public string hit_Left_Medium_01 = "Hit_Left_Medium_01";
     public string hit_Right_Medium_01 = "Hit_Right_Medium_01";
+
+    public bool hasPingHitAnimation = true;
+    //Ping Hit Animations
+    public string hit_Forward_Ping_01 = "Hit_Forward_Ping_01";
+    public string hit_Back_Ping_01 = "Hit_Back_Ping_01";
+    public string hit_Left_Ping_01 = "Hit_Left_Ping_01";
+    public string hit_Right_Ping_01 = "Hit_Right_Ping_01";
 
     protected virtual void Awake()
     {

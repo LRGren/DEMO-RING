@@ -43,7 +43,7 @@ public class BOSS02DamageCollider : DamageCollider
             damageTarget.characterNetworkManager.NotifyTheServerOfCharacterDamageServerRpc(
                 damageTarget.NetworkObjectId, bossCharacter.NetworkObjectId,
                 damageEffect.physicalDamage, damageEffect.magicalDamage, damageEffect.fireDamage, damageEffect.holyDamage, damageEffect.lightningDamage,
-                damageEffect.angleHitFrom, damageEffect.contactPoint.x, damageEffect.contactPoint.y, damageEffect.contactPoint.z);
+                damageEffect.angleHitFrom, damageEffect.poiseDamage, damageEffect.contactPoint.x, damageEffect.contactPoint.y, damageEffect.contactPoint.z);
         }
 
         //damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);

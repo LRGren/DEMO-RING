@@ -6,6 +6,7 @@ public class PlayerInventoryManager : CharacterInventoryManager
 {
     public WeaponItem currentRightHandWeapon;
     public WeaponItem currentLeftHandWeapon;
+    public WeaponItem currentTwoHandedWeapon;
 
     [Header("Quick Slots")]
     public WeaponItem[] weaponsInRightHand = new WeaponItem[3];

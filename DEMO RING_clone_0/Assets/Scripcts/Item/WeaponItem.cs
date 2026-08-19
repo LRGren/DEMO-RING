@@ -11,6 +11,9 @@ public class WeaponItem : Item
     [Header("Weapon Type")]
     public WeaponType weaponType;
 
+    [Header("Weapon Class")]
+    public WeaponClass weaponClass;
+
     [Header("Weapon Model")]
     public GameObject weaponModel;
 

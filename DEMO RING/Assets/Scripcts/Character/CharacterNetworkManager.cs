@@ -154,29 +154,24 @@ public class CharacterNetworkManager : NetworkBehaviour
 
     //  Damage
     [ServerRpc(RequireOwnership = false)]
-    public void NotifyTheServerOfCharacterDamageServerRpc(ulong damageCharacterID, ulong charcterCausingDamageID,
-        float physicalDamage, float magicalDamage, float fireDamage, float holyDamage, float lightningDamage, float angleHitFrom,
-        float contactPointX, float contactPointY, float contactPointZ)
+    public void NotifyTheServerOfCharacterDamageServerRpc(ulong damageCharacterID, ulong charcterCausingDamageID, float physicalDamage, float magicalDamage, float fireDamage, float holyDamage, float lightningDamage, float angleHitFrom, float poiseDamage, float contactPointX, float contactPointY, float contactPointZ)
     {
         if (IsServer)
         {
-            NotifyTheServerOfCharacterDamageClientRpc(damageCharacterID, charcterCausingDamageID, physicalDamage, magicalDamage, fireDamage, holyDamage, lightningDamage, angleHitFrom,
-                contactPointX, contactPointY, contactPointZ);
+            NotifyTheServerOfCharacterDamageClientRpc(damageCharacterID, charcterCausingDamageID, physicalDamage, magicalDamage, fireDamage, holyDamage, lightningDamage, angleHitFrom, poiseDamage, contactPointX, contactPointY, contactPointZ);
         }
     }
 
     [ClientRpc]
-    public void NotifyTheServerOfCharacterDamageClientRpc(ulong damageCharacterID, ulong charcterCausingDamageID,
-        float physicalDamage, float magicalDamage, float fireDamage, float holyDamage, float lightningDamage, float angleHitFrom,
-        float contactPointX, float contactPointY, float contactPointZ)
+    public void NotifyTheServerOfCharacterDamageClientRpc(ulong damageCharacterID, ulong charcterCausingDamageID, float physicalDamage, float magicalDamage, float fireDamage, float holyDamage, float lightningDamage, float angleHitFrom, float poiseDamage, float contactPointX, float contactPointY, float contactPointZ)
     {
         ProcessCharacterDamageFromServer(damageCharacterID, charcterCausingDamageID, physicalDamage, magicalDamage, fireDamage, holyDamage, lightningDamage, angleHitFrom,
-            contactPointX, contactPointY, contactPointZ);
+            poiseDamage, contactPointX, contactPointY, contactPointZ);
     }
 
     public void ProcessCharacterDamageFromServer(ulong damageCharacterID, ulong charcterCausingDamageID,
         float physicalDamage, float magicalDamage, float fireDamage, float holyDamage, float lightningDamage, float angleHitFrom,
-        float contactPointX, float contactPointY, float contactPointZ)
+        float poiseDamage, float contactPointX, float contactPointY, float contactPointZ)
     {
         CharacterManager damageCharacter = NetworkManager.SpawnManager.SpawnedObjects[damageCharacterID].GetComponent<CharacterManager>();
         CharacterManager characterCausingDamage = NetworkManager.SpawnManager.SpawnedObjects[charcterCausingDamageID].GetComponent<CharacterManager>();
@@ -187,6 +182,7 @@ public class CharacterNetworkManager : NetworkBehaviour
         damageEffect.fireDamage = fireDamage;
         damageEffect.holyDamage = holyDamage;
         damageEffect.lightningDamage = lightningDamage;
+        damageEffect.poiseDamage = poiseDamage;
         damageEffect.angleHitFrom = angleHitFrom;
         damageEffect.contactPoint = new Vector3(contactPointX, contactPointY, contactPointZ);
 

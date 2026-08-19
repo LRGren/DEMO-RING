@@ -6,13 +6,18 @@ using UnityEngine;
 public class PlayerEquipmentManager : CharacterEquipmentManager
 {
     PlayerManager player;
-    public WeaponModelInstantiationSlot rightHandSlot;
+
+    [Header("Weapon Slots")]
+    public WeaponModelInstantiationSlot rightHandWeaponSlot;
     public WeaponModelInstantiationSlot leftHandWeaponSlot;
     public WeaponModelInstantiationSlot leftHandShieldSlot;
+    public WeaponModelInstantiationSlot backSlot;
 
+    [Header("Weapon Managers")]
     [SerializeField] WeaponManager rightHandWeaponManager;
     [SerializeField] WeaponManager leftHandWeaponManager;
 
+    [Header("Weapon Models")]
     public GameObject rightWeaponModel;
     public GameObject leftWeaponModel;
 
@@ -31,17 +36,21 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
         foreach (var weapon in weaponSlots)
         {
-            if (weapon.weaponSlot == WeaponModelSlot.RightHand)
+            if (weapon.weaponSlot == WeaponModelSlot.RightHandSlot)
             {
-                rightHandSlot = weapon;
+                rightHandWeaponSlot = weapon;
             }
-            else if (weapon.weaponSlot == WeaponModelSlot.LeftHandWeapon)
+            else if (weapon.weaponSlot == WeaponModelSlot.LeftHandWeaponSlot)
             {
                 leftHandWeaponSlot = weapon;
             }
-            else if (weapon.weaponSlot == WeaponModelSlot.LeftHandShield)
+            else if (weapon.weaponSlot == WeaponModelSlot.LeftHandShieldSlot)
             {
                 leftHandShieldSlot = weapon;
+            }
+            else if (weapon.weaponSlot == WeaponModelSlot.BackSlot)
+            {
+                backSlot = weapon;
             }
         }
     }
@@ -57,10 +66,10 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     {
         if (player.playerInventoryManager.currentRightHandWeapon != null)
         {
-            rightHandSlot.UnloadWeapon();
+            rightHandWeaponSlot.UnloadWeapon();
 
             rightWeaponModel = Instantiate(player.playerInventoryManager.currentRightHandWeapon.weaponModel);
-            rightHandSlot.LoadWeapon(rightWeaponModel);
+            rightHandWeaponSlot.PlaceWeaponIntoSlot(rightWeaponModel);
 
             rightHandWeaponManager = rightWeaponModel.GetComponentInChildren<WeaponManager>();
             rightHandWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentRightHandWeapon);
@@ -154,10 +163,10 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             switch (player.playerInventoryManager.currentLeftHandWeapon.weaponType)
             {
                 case WeaponType.Weapon:
-                    leftHandWeaponSlot.LoadWeapon(leftWeaponModel);
+                    leftHandWeaponSlot.PlaceWeaponIntoSlot(leftWeaponModel);
                     break;
                 case WeaponType.Shield:
-                    leftHandShieldSlot.LoadWeapon(leftWeaponModel);
+                    leftHandShieldSlot.PlaceWeaponIntoSlot(leftWeaponModel);
                     break;
                 default:
                     Debug.LogError("Unknown weapon type for left hand weapon.");
@@ -236,6 +245,89 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         {
             SwitchLeftWeapon();
         }
+    }
+
+    // Two Hand Weapon
+    public void UnTwoHandWeapon()
+    {
+        //更新动画
+        player.playerAnimatorManager.UpdateAnimatorController(player.playerInventoryManager.currentRightHandWeapon.weaponAnimator);
+
+        //去除力量加成
+
+        //恢复非双持武器
+        if (player.playerInventoryManager.currentLeftHandWeapon.weaponType == WeaponType.Weapon)
+        {
+            leftHandWeaponSlot.PlaceWeaponIntoSlot(leftWeaponModel);
+        }
+        else if (player.playerInventoryManager.currentLeftHandWeapon.weaponType == WeaponType.Shield)
+        {
+            leftHandShieldSlot.PlaceWeaponIntoSlot(leftWeaponModel);
+        }
+
+        rightHandWeaponSlot.PlaceWeaponIntoSlot(rightWeaponModel);
+
+        //damage collider更新
+        rightHandWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentRightHandWeapon);
+        leftHandWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentLeftHandWeapon);
+    }
+
+    public void TwoHandRightWeapon()
+    {
+        //检查是否可以双持
+        if (player.playerInventoryManager.currentRightHandWeapon == WorldItemDatabase.Instance.unarmedWeapon)
+        {
+
+            //如果RETURNING 或者 NOT TWO HANDING，直接RESET BOOL
+            if (player.IsOwner)
+            {
+                player.playerNetworkManager.isTwoHandingWeapon.Value = false;
+                player.playerNetworkManager.isTwoHandingRightWeapon.Value = false;
+            }
+
+            return;
+        }
+
+        //更新动画
+        player.playerAnimatorManager.UpdateAnimatorController(player.playerInventoryManager.currentRightHandWeapon.weaponAnimator);
+
+        //将non two hand weapon放在back slot
+        player.playerEquipmentManager.backSlot.PlaceWeaponModelInUnequipedSlot(leftWeaponModel, player.playerInventoryManager.currentLeftHandWeapon.weaponClass, player);
+
+        //将two hand weapon放在right hand slot
+        rightHandWeaponSlot.PlaceWeaponIntoSlot(rightWeaponModel);
+
+        rightHandWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentRightHandWeapon);
+        leftHandWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentLeftHandWeapon);
+    }
+
+    public void TwoHandLeftWeapon()
+    {
+        //检查是否可以双持
+        if (player.playerInventoryManager.currentLeftHandWeapon == WorldItemDatabase.Instance.unarmedWeapon)
+        {
+
+            //如果RETURNING 或者 NOT TWO HANDING，直接RESET BOOL
+            if (player.IsOwner)
+            {
+                player.playerNetworkManager.isTwoHandingWeapon.Value = false;
+                player.playerNetworkManager.isTwoHandingLeftWeapon.Value = false;
+            }
+
+            return;
+        }
+
+        //更新动画
+        player.playerAnimatorManager.UpdateAnimatorController(player.playerInventoryManager.currentLeftHandWeapon.weaponAnimator);
+
+        //将non two hand weapon放在back slot
+        player.playerEquipmentManager.backSlot.PlaceWeaponModelInUnequipedSlot(rightWeaponModel, player.playerInventoryManager.currentRightHandWeapon.weaponClass, player);
+
+        //将two hand weapon放在right hand slot
+        rightHandWeaponSlot.PlaceWeaponIntoSlot(leftWeaponModel);
+
+        rightHandWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentRightHandWeapon);
+        leftHandWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentLeftHandWeapon);
     }
 
     // Damage Colliders

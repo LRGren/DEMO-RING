@@ -74,6 +74,7 @@ public class MeleeWeaponDamageCollider : DamageCollider
         damageEffect.fireDamage = fireDamage;
         damageEffect.lightningDamage = lightningDamage;
         damageEffect.holyDamage = holyDamage;
+        damageEffect.poiseDamage = poiseDamage;
         damageEffect.contactPoint = contactPoint;
         damageEffect.angleHitFrom = Vector3.SignedAngle(characterCasuingDamage.transform.forward, damageTarget.transform.forward, Vector3.up);
 
@@ -117,7 +118,7 @@ public class MeleeWeaponDamageCollider : DamageCollider
             damageTarget.characterNetworkManager.NotifyTheServerOfCharacterDamageServerRpc(
                 damageTarget.NetworkObjectId, characterCasuingDamage.NetworkObjectId,
                 damageEffect.physicalDamage, damageEffect.magicalDamage, damageEffect.fireDamage, damageEffect.holyDamage, damageEffect.lightningDamage,
-                damageEffect.angleHitFrom, damageEffect.contactPoint.x, damageEffect.contactPoint.y, damageEffect.contactPoint.z);
+                damageEffect.angleHitFrom, damageEffect.poiseDamage, damageEffect.contactPoint.x, damageEffect.contactPoint.y, damageEffect.contactPoint.z);
         }
 
         //damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);

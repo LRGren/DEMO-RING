@@ -109,6 +109,11 @@ public class PlayerManager : CharacterManager
         //FLAGS
         playerNetworkManager.isChargingAttack.OnValueChanged += playerNetworkManager.OnIsChargingAttackChanged;
 
+        //Two Handed
+        playerNetworkManager.isTwoHandingWeapon.OnValueChanged += playerNetworkManager.OnIsTwoHandingWeaponChanged;
+        playerNetworkManager.isTwoHandingRightWeapon.OnValueChanged += playerNetworkManager.OnIsTwoHandingRightWeaponChanged;
+        playerNetworkManager.isTwoHandingLeftWeapon.OnValueChanged += playerNetworkManager.OnIsTwoHandingLeftWeaponChanged;
+
         //如果不是房主，本地玩家需要重新设置状态条最大值和当前值 因为房主的数值会同步过来
         //否则会导致Player Network Manager的数据不会更新
         //如果是房主，当前角色数据会在游戏开始时加载,所以不需要在这里加载
@@ -154,6 +159,12 @@ public class PlayerManager : CharacterManager
         //锁定
         playerNetworkManager.isLockOn.OnValueChanged -= playerNetworkManager.OnIsLockOnChanged;
         playerNetworkManager.currentTargetNetworkObjectID.OnValueChanged -= playerNetworkManager.OnLockOnTargetIDChange;
+
+        //Two Handed
+        playerNetworkManager.isTwoHandingWeapon.OnValueChanged -= playerNetworkManager.OnIsTwoHandingWeaponChanged;
+        playerNetworkManager.isTwoHandingRightWeapon.OnValueChanged -= playerNetworkManager.OnIsTwoHandingRightWeaponChanged;
+        playerNetworkManager.isTwoHandingLeftWeapon.OnValueChanged -= playerNetworkManager.OnIsTwoHandingLeftWeaponChanged;
+
         //FLAGS
         playerNetworkManager.isChargingAttack.OnValueChanged -= playerNetworkManager.OnIsChargingAttackChanged;
     }
@@ -296,6 +307,11 @@ public class PlayerManager : CharacterManager
 
         //Block
         playerNetworkManager.OnIsBlockingChanged(false, playerNetworkManager.isBlocking.Value);
+
+        //Two Handed
+        playerNetworkManager.OnIsTwoHandingWeaponChanged(false, playerNetworkManager.isTwoHandingWeapon.Value);
+        playerNetworkManager.OnIsTwoHandingRightWeaponChanged(false, playerNetworkManager.isTwoHandingRightWeapon.Value);
+        playerNetworkManager.OnIsTwoHandingLeftWeaponChanged(false, playerNetworkManager.isTwoHandingLeftWeapon.Value);
 
         //Lock On
         if (playerNetworkManager.isLockOn.Value)

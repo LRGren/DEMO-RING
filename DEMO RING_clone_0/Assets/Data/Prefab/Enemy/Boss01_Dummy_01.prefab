@@ -2388,6 +2388,11 @@ MonoBehaviour:
   hit_Back_Medium_01: Hit_Back_Medium_01
   hit_Left_Medium_01: Hit_Left_Medium_01
   hit_Right_Medium_01: Hit_Right_Medium_01
+  hasPingHitAnimation: 0
+  hit_Forward_Ping_01: Hit_Forward_Ping_01
+  hit_Back_Ping_01: Hit_Back_Ping_01
+  hit_Left_Ping_01: Hit_Left_Ping_01
+  hit_Right_Ping_01: Hit_Right_Ping_01
 --- !u!114 &8348419834664082542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2470,6 +2475,11 @@ MonoBehaviour:
   blockingLightningAbsorption: 0
   blockingHolyAbsorption: 0
   blockingStaminaCost: 0
+  totalPoiseDamage: 0
+  offensivePoiseBonus: 0
+  basePoiseDefense: 120
+  defaultPoiseResetTimer: 8
+  poiseResetTimer: 0
 --- !u!143 &5828806300916637300
 CharacterController:
   m_ObjectHideFlags: 0

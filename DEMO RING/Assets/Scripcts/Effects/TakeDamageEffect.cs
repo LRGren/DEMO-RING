@@ -93,6 +93,21 @@ public class TakeDamageEffect : InstantCharacterEffect
         character.characterNetworkManager.currentHealth.Value -= finalDamageDealt;
 
         //计算削韧值
+        if (poiseIsBroken)
+        {
+            character.characterStatsManager.totalPoiseDamage = 0;
+        }
+        character.characterStatsManager.totalPoiseDamage -= poiseDamage;
+        Debug.Log("Poise Damage Taken: " + poiseDamage + " Total Poise Damage: " + character.characterStatsManager.totalPoiseDamage);
+
+        float remainingPoise = character.characterStatsManager.basePoiseDefense + character.characterStatsManager.offensivePoiseBonus + character.characterStatsManager.totalPoiseDamage;
+
+        if (remainingPoise <= 0)
+        {
+            poiseIsBroken = true;
+        }
+
+        character.characterStatsManager.poiseResetTimer = character.characterStatsManager.defaultPoiseResetTimer;
     }
 
     private void PlayDamageVFX(CharacterManager character)
@@ -121,58 +136,64 @@ public class TakeDamageEffect : InstantCharacterEffect
             return;
 
         //失衡
-        poiseIsBroken = true;
+        if (poiseIsBroken)
+        {
+            if (angleHitFrom >= -180 && angleHitFrom <= -145 || angleHitFrom >= 145 && angleHitFrom <= 180)
+            {
+                // front
+                damageAnimation = character.characterAnimatorManager.hit_Forward_Medium_01;
+            }
+            else if (angleHitFrom >= -45 && angleHitFrom <= 45)
+            {
+                // back
+                damageAnimation = character.characterAnimatorManager.hit_Back_Medium_01;
+            }
+            else if (angleHitFrom >= -144 && angleHitFrom < -45)
+            {
+                // left
+                damageAnimation = character.characterAnimatorManager.hit_Left_Medium_01;
+            }
+            else if (angleHitFrom > 45 && angleHitFrom <= 144)
+            {
+                // right
+                damageAnimation = character.characterAnimatorManager.hit_Right_Medium_01;
+            }
+        }
+        else
+        {
+            if (angleHitFrom >= -180 && angleHitFrom <= -145 || angleHitFrom >= 145 && angleHitFrom <= 180)
+            {
+                // front
+                damageAnimation = character.characterAnimatorManager.hit_Forward_Ping_01;
+            }
+            else if (angleHitFrom >= -45 && angleHitFrom <= 45)
+            {
+                // back
+                damageAnimation = character.characterAnimatorManager.hit_Back_Ping_01;
+            }
+            else if (angleHitFrom >= -144 && angleHitFrom < -45)
+            {
+                // left
+                damageAnimation = character.characterAnimatorManager.hit_Left_Ping_01;
+            }
+            else if (angleHitFrom > 45 && angleHitFrom <= 144)
+            {
+                // right
+                damageAnimation = character.characterAnimatorManager.hit_Right_Ping_01;
+            }
+        }
 
-        /*if(angleHitFrom >= 145 && angleHitFrom <= 180)
-        {
-            //front
-            damageAnimation = character.characterAnimatorManager.hit_Forward_Medium_01;
-        }
-        else if(angleHitFrom <= -145 && angleHitFrom > 180)
-        {
-            //front
-            damageAnimation = character.characterAnimatorManager.hit_Forward_Medium_01;
-        }
-        else if(angleHitFrom >= -45 && angleHitFrom <= 45)
-        {
-            //back
-            damageAnimation = character.characterAnimatorManager.hit_Back_Medium_01;
-        }
-        else if(angleHitFrom >= -144 && angleHitFrom <= -45)
-        {
-            //left
-            damageAnimation = character.characterAnimatorManager.hit_Left_Medium_01;
-        }
-        else if (angleHitFrom >= 45 && angleHitFrom <= 144)
-        {
-            //right
-            damageAnimation = character.characterAnimatorManager.hit_Right_Medium_01;
-        }*/
-
-        if (angleHitFrom >= -180 && angleHitFrom <= -145 || angleHitFrom >= 145 && angleHitFrom <= 180)
-        {
-            // front
-            damageAnimation = character.characterAnimatorManager.hit_Forward_Medium_01;
-        }
-        else if (angleHitFrom >= -45 && angleHitFrom <= 45)
-        {
-            // back
-            damageAnimation = character.characterAnimatorManager.hit_Back_Medium_01;
-        }
-        else if (angleHitFrom >= -144 && angleHitFrom < -45)
-        {
-            // left
-            damageAnimation = character.characterAnimatorManager.hit_Left_Medium_01;
-        }
-        else if (angleHitFrom > 45 && angleHitFrom <= 144)
-        {
-            // right
-            damageAnimation = character.characterAnimatorManager.hit_Right_Medium_01;
-        }
 
         if (poiseIsBroken)
         {
             character.characterAnimatorManager.PlayerTargetActionAnimation(damageAnimation, true);
+        }
+        else
+        {
+            if (!character.characterAnimatorManager.hasPingHitAnimation)
+                return;
+
+            character.characterAnimatorManager.PlayerTargetActionAnimation(damageAnimation, false, false, true, true);
         }
     }
 

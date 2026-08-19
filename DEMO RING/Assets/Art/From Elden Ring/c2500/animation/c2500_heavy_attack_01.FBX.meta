@@ -78,20 +78,6 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.34365314
-        functionName: EnableShieldDamageCollider
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.762496
-        functionName: DisableShieldDamageCollider
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       - time: 0.32026696
         functionName: EnableWholeBodyDamageCollider
         data: 
@@ -99,8 +85,22 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.78193146
+      - time: 0.34365314
+        functionName: EnableShieldDamageCollider
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.44859812
         functionName: DisableWholeBodyDamageCollider
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.45765272
+        functionName: DisableShieldDamageCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
