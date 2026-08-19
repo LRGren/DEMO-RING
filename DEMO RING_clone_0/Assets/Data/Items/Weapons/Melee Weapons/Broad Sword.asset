@@ -18,6 +18,7 @@ MonoBehaviour:
   itemID: 2
   weaponAnimator: {fileID: 22100000, guid: 7233d515cbc095a44b72c59e7a1d72f8, type: 2}
   weaponType: 0
+  weaponClass: 0
   weaponModel: {fileID: 1711130412322516538, guid: ac1c0c907d9ebf4499db0b6721bf1ee3,
     type: 3}
   strengthREQ: 10
@@ -30,12 +31,12 @@ MonoBehaviour:
   holyDamage: 0
   lightningDamage: 0
   poiseDamage: 25
-  physicalDamageAbsorption: 50
+  physicalDamageAbsorption: 80
   magicalDamageAbsorption: 0
   fireDamageAbsorption: 0
   holyDamageAbsorption: 0
   lightningDamageAbsorption: 0
-  staminaCostToBlock: 200
+  staminaAbsorption: 10
   light_Attack_01_Modifier: 1.1
   light_Attack_02_Modifier: 1.2
   heavy_Attack_01_Modifier: 1.4

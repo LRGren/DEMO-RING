@@ -113,7 +113,7 @@ public class TakeBlockedDamageEffect : InstantCharacterEffect
 
     private void CalculateStaminaCost(CharacterManager character)
     {
-        finalStaminaCost = staminaCost - staminaCost * character.characterStatsManager.blockingStaminaCost / 100;
+        finalStaminaCost = staminaCost - staminaCost * character.characterStatsManager.blockingStaminaAbsorption / 100;
 
         if (finalStaminaCost <= 0)
         {
@@ -130,9 +130,20 @@ public class TakeBlockedDamageEffect : InstantCharacterEffect
 
         if (character.characterNetworkManager.currentStamina.Value <= 0)
         {
-            character.characterAnimatorManager.PlayerTargetActionAnimation("Guard_Break_01", true);
+            PlayerManager player = character as PlayerManager;
+            if (player != null && player.playerNetworkManager.isTwoHandingWeapon.Value)
+            {
+                character.characterAnimatorManager.PlayerTargetActionAnimation("Guard_Break_01", true);
+                //Play SFX
+            }
+            else
+            {
+                character.characterAnimatorManager.PlayerTargetActionAnimation("Guard_Break_01", true);
+                //Play SFX
+            }
+
+
             character.characterNetworkManager.isBlocking.Value = false;
-            //Play SFX
         }
     }
 
@@ -161,28 +172,57 @@ public class TakeBlockedDamageEffect : InstantCharacterEffect
 
         //TODO: 以后根据双手武器和单手武器来决定受击动画
         DamageIntensity damageIntensity = WorldUtilityManager.instance.GetDamageIntensityBasedOnPoiseDamage(poiseDamage);
-        switch (damageIntensity)
+
+        PlayerManager player = character as PlayerManager;
+        if (player != null && player.playerNetworkManager.isTwoHandingWeapon.Value)
         {
-            case DamageIntensity.Ping:
-                damageAnimation = "Block_Ping_01";
-                break;
-            case DamageIntensity.Light:
-                damageAnimation = "Block_Light_01";
-                break;
-            case DamageIntensity.Medium:
-                damageAnimation = "Block_Medium_01";
-                break;
-            case DamageIntensity.Heavy:
-                damageAnimation = "Block_Heavy_01";
-                break;
-            case DamageIntensity.Colossal:
-                damageAnimation = "Block_Colossal_01";
-                break;
-            default:
-                break;
+            switch (damageIntensity)
+            {
+                case DamageIntensity.Ping:
+                    damageAnimation = "TH_Block_Ping_01";
+                    break;
+                case DamageIntensity.Light:
+                    damageAnimation = "TH_Block_Light_01";
+                    break;
+                case DamageIntensity.Medium:
+                    damageAnimation = "TH_Block_Medium_01";
+                    break;
+                case DamageIntensity.Heavy:
+                    damageAnimation = "TH_Block_Heavy_01";
+                    break;
+                case DamageIntensity.Colossal:
+                    damageAnimation = "TH_Block_Colossal_01";
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            switch (damageIntensity)
+            {
+                case DamageIntensity.Ping:
+                    damageAnimation = "Block_Ping_01";
+                    break;
+                case DamageIntensity.Light:
+                    damageAnimation = "Block_Light_01";
+                    break;
+                case DamageIntensity.Medium:
+                    damageAnimation = "Block_Medium_01";
+                    break;
+                case DamageIntensity.Heavy:
+                    damageAnimation = "Block_Heavy_01";
+                    break;
+                case DamageIntensity.Colossal:
+                    damageAnimation = "Block_Colossal_01";
+                    break;
+                default:
+                    break;
+            }
         }
 
         character.characterAnimatorManager.PlayerTargetActionAnimation(damageAnimation, true);
     }
+
 
 }

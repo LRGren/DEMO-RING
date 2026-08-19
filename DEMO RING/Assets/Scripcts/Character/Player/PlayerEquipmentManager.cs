@@ -253,6 +253,18 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         //更新动画
         player.playerAnimatorManager.UpdateAnimatorController(player.playerInventoryManager.currentRightHandWeapon.weaponAnimator);
 
+        //判断之前双持的是什么武器
+        if (player.playerInventoryManager.currentRightHandWeapon == player.playerInventoryManager.currentTwoHandedWeapon)
+        {
+            //说明之前双持的是右手武器，恢复左手武器
+            player.playerAnimatorManager.PlayerTargetActionAnimation("TH_Back_Left_Weapon_01", true, false, true, true);
+        }
+        else if (player.playerInventoryManager.currentLeftHandWeapon == player.playerInventoryManager.currentTwoHandedWeapon)
+        {
+            //说明之前双持的是左手武器，恢复右手武器
+            player.playerAnimatorManager.PlayerTargetActionAnimation("TH_Back_Right_Weapon_01", true, false, true, true);
+        }
+
         //去除力量加成
 
         //恢复非双持武器
@@ -291,6 +303,8 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         //更新动画
         player.playerAnimatorManager.UpdateAnimatorController(player.playerInventoryManager.currentRightHandWeapon.weaponAnimator);
 
+        player.playerAnimatorManager.PlayerTargetActionAnimation("TH_Back_Left_Weapon_01", true, false, true, true);
+
         //将non two hand weapon放在back slot
         player.playerEquipmentManager.backSlot.PlaceWeaponModelInUnequipedSlot(leftWeaponModel, player.playerInventoryManager.currentLeftHandWeapon.weaponClass, player);
 
@@ -319,6 +333,8 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
         //更新动画
         player.playerAnimatorManager.UpdateAnimatorController(player.playerInventoryManager.currentLeftHandWeapon.weaponAnimator);
+
+        player.playerAnimatorManager.PlayerTargetActionAnimation("TH_Back_Right_Weapon_01", true, false, true, true);
 
         //将non two hand weapon放在back slot
         player.playerEquipmentManager.backSlot.PlaceWeaponModelInUnequipedSlot(rightWeaponModel, player.playerInventoryManager.currentRightHandWeapon.weaponClass, player);

@@ -25,7 +25,7 @@ MonoBehaviour:
   dexterityREQ: 10
   intelligenceREQ: 0
   faithREQ: 0
-  physicalDamage: 118
+  physicalDamage: 78
   magicalDamage: 0
   fireDamage: 0
   holyDamage: 0
@@ -36,7 +36,7 @@ MonoBehaviour:
   fireDamageAbsorption: 0
   holyDamageAbsorption: 0
   lightningDamageAbsorption: 0
-  staminaCostToBlock: 60
+  staminaAbsorption: 40
   light_Attack_01_Modifier: 1.1
   light_Attack_02_Modifier: 1.2
   heavy_Attack_01_Modifier: 1.4

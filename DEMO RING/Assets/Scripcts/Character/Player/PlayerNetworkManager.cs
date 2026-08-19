@@ -107,13 +107,26 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
         if (IsOwner)
         {
-            player.playerStatsManager.blockingPhysicalAbsorption = player.playerInventoryManager.currentLeftHandWeapon.physicalDamageAbsorption;
-            player.playerStatsManager.blockingMagicalAbsorption = player.playerInventoryManager.currentLeftHandWeapon.magicalDamageAbsorption;
-            player.playerStatsManager.blockingFireAbsorption = player.playerInventoryManager.currentLeftHandWeapon.fireDamageAbsorption;
-            player.playerStatsManager.blockingHolyAbsorption = player.playerInventoryManager.currentLeftHandWeapon.holyDamageAbsorption;
-            player.playerStatsManager.blockingLightningAbsorption = player.playerInventoryManager.currentLeftHandWeapon.lightningDamageAbsorption;
+            if (player.playerNetworkManager.isTwoHandingWeapon.Value)
+            {
+                player.playerStatsManager.blockingPhysicalAbsorption = player.playerInventoryManager.currentTwoHandedWeapon.physicalDamageAbsorption;
+                player.playerStatsManager.blockingMagicalAbsorption = player.playerInventoryManager.currentTwoHandedWeapon.magicalDamageAbsorption;
+                player.playerStatsManager.blockingFireAbsorption = player.playerInventoryManager.currentTwoHandedWeapon.fireDamageAbsorption;
+                player.playerStatsManager.blockingHolyAbsorption = player.playerInventoryManager.currentTwoHandedWeapon.holyDamageAbsorption;
+                player.playerStatsManager.blockingLightningAbsorption = player.playerInventoryManager.currentTwoHandedWeapon.lightningDamageAbsorption;
 
-            player.playerStatsManager.blockingStaminaCost = player.playerInventoryManager.currentLeftHandWeapon.staminaCostToBlock;
+                player.playerStatsManager.blockingStaminaAbsorption = player.playerInventoryManager.currentTwoHandedWeapon.staminaAbsorption;
+            }
+            else
+            {
+                player.playerStatsManager.blockingPhysicalAbsorption = player.playerInventoryManager.currentLeftHandWeapon.physicalDamageAbsorption;
+                player.playerStatsManager.blockingMagicalAbsorption = player.playerInventoryManager.currentLeftHandWeapon.magicalDamageAbsorption;
+                player.playerStatsManager.blockingFireAbsorption = player.playerInventoryManager.currentLeftHandWeapon.fireDamageAbsorption;
+                player.playerStatsManager.blockingHolyAbsorption = player.playerInventoryManager.currentLeftHandWeapon.holyDamageAbsorption;
+                player.playerStatsManager.blockingLightningAbsorption = player.playerInventoryManager.currentLeftHandWeapon.lightningDamageAbsorption;
+
+                player.playerStatsManager.blockingStaminaAbsorption = player.playerInventoryManager.currentLeftHandWeapon.staminaAbsorption;
+            }
         }
     }
 
@@ -129,6 +142,11 @@ public class PlayerNetworkManager : CharacterNetworkManager
             }
 
             player.playerEquipmentManager.UnTwoHandWeapon();
+            player.playerEffectsManager.RemoveStaticEffect(WorldCharacterEffectsManager.instance.twoHandingEffect.staticEffectID);
+        }
+        else
+        {
+            player.playerEffectsManager.AddStaticEffect(WorldCharacterEffectsManager.instance.twoHandingEffect);
         }
 
         player.animator.SetBool("isTwoHandWeapon", isTwoHandingWeapon.Value);

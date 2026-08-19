@@ -13,6 +13,8 @@ public class TwoHandWeaponAnimationFixed : StateMachineBehaviour
         {
             player = animator.GetComponent<PlayerManager>();
         }
+
+        animator.SetBool("twoHandWeaponAnimationFixed", true);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

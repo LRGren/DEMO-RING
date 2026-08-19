@@ -1547,7 +1547,7 @@ MonoBehaviour:
   blockingFireAbsorption: 0
   blockingLightningAbsorption: 0
   blockingHolyAbsorption: 0
-  blockingStaminaCost: 0
+  blockingStaminaAbsorption: 0
   totalPoiseDamage: 0
   offensivePoiseBonus: 0
   basePoiseDefense: 50

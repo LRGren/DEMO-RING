@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Character Actions/Weapon Actions/Light Attack Action")]
 public class LightAttackWeaponItemAction : WeaponItemAction
 {
+
+    [Header("Main Hand Animation Settings")]
     [Header("Light Attack Animations")]
     [SerializeField] private string light_Attack_01 = "Main_Light_Attack_01";
     [SerializeField] private string light_Attack_02 = "Main_Light_Attack_02";
@@ -17,6 +19,21 @@ public class LightAttackWeaponItemAction : WeaponItemAction
 
     [Header("Backstep Attack Animations")]
     [SerializeField] private string backstep_Attack_01 = "Main_Backstep_Attack_01";
+
+    [Header("Two Hand Animation Settings")]
+    [Header("Light Attack Animations")]
+    [SerializeField] private string th_light_Attack_01 = "TH_Light_Attack_01";
+    [SerializeField] private string th_light_Attack_02 = "TH_Light_Attack_02";
+    [SerializeField] private string th_light_Attack_03 = "TH_Light_Attack_03";
+
+    [Header("Running Attack Animations")]
+    [SerializeField] private string th_running_Attack_01 = "TH_Run_Attack_01";
+
+    [Header("Rolling Attack Animations")]
+    [SerializeField] private string th_rolling_Attack_01 = "TH_Roll_Attack_01";
+
+    [Header("Backstep Attack Animations")]
+    [SerializeField] private string th_backstep_Attack_01 = "TH_Backstep_Attack_01";
 
     public override void AttemptToPerformAction(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
     {
@@ -58,7 +75,18 @@ public class LightAttackWeaponItemAction : WeaponItemAction
 
     private void PerformLightAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
     {
+        if (playerPerformingAction.playerNetworkManager.isTwoHandingWeapon.Value)
+        {
+            PerformTwoHandLightAttack(playerPerformingAction, weaponPerformingAction);
+        }
+        else
+        {
+            PerformMainHandLightAttack(playerPerformingAction, weaponPerformingAction);
+        }
+    }
 
+    private void PerformMainHandLightAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
+    {
         if (playerPerformingAction.playerCombatManager.canComboWithMainHandWeapon && playerPerformingAction.isPerformingAction)
         {
             if (playerPerformingAction.playerCombatManager.lastAttackAnimation == light_Attack_01)
@@ -76,21 +104,55 @@ public class LightAttackWeaponItemAction : WeaponItemAction
         }
     }
 
+    private void PerformTwoHandLightAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
+    {
+        if (playerPerformingAction.playerCombatManager.canComboWithMainHandWeapon && playerPerformingAction.isPerformingAction)
+        {
+            if (playerPerformingAction.playerCombatManager.lastAttackAnimation == th_light_Attack_01)
+            {
+                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.LightAttack02, th_light_Attack_02, true);
+            }
+            else if (playerPerformingAction.playerCombatManager.lastAttackAnimation == th_light_Attack_02)
+            {
+                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.LightAttack03, th_light_Attack_03, true);
+            }
+            else if (playerPerformingAction.playerCombatManager.lastAttackAnimation == th_light_Attack_03)
+            {
+                playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.LightAttack01, th_light_Attack_01, true);
+            }
+        }
+        else if (!playerPerformingAction.isPerformingAction)
+        {
+            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.LightAttack01, th_light_Attack_01, true);
+        }
+    }
+
     private void PerformRunningAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
     {
-        playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.RunningAttack01, running_Attack_01, true);
+        if (playerPerformingAction.playerNetworkManager.isTwoHandingWeapon.Value)
+            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.RunningAttack01, th_running_Attack_01, true);
+        else
+            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.RunningAttack01, running_Attack_01, true);
     }
 
     public void PerformRollingAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
     {
         playerPerformingAction.playerCombatManager.canPerformRollingAttack = false;
-        playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.RollingAttack01, rolling_Attack_01, true);
+
+        if (playerPerformingAction.playerNetworkManager.isTwoHandingWeapon.Value)
+            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.RollingAttack01, th_rolling_Attack_01, true);
+        else
+            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.RollingAttack01, rolling_Attack_01, true);
     }
 
     public void PerformBackstepAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
     {
         playerPerformingAction.playerCombatManager.canPerformBackstepAttack = false;
-        playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.BackstepAttack01, backstep_Attack_01, true);
+
+        if (playerPerformingAction.playerNetworkManager.isTwoHandingWeapon.Value)
+            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.BackstepAttack01, th_backstep_Attack_01, true);
+        else
+            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.BackstepAttack01, backstep_Attack_01, true);
     }
 
 }

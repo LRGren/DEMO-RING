@@ -41,7 +41,7 @@ public class WeaponItem : Item
     public float fireDamageAbsorption = 0;
     public float holyDamageAbsorption = 0;
     public float lightningDamageAbsorption = 0;
-    public float staminaCostToBlock = 0;
+    public float staminaAbsorption = 0; // 格挡时减免的耐力消耗百分比(0-100)，越高越省耐力
 
     [Header("Attack Modifiers")]
     //武器修饰符

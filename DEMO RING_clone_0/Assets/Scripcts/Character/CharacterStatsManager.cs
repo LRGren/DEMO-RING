@@ -19,7 +19,7 @@ public class CharacterStatsManager : MonoBehaviour
     public float blockingFireAbsorption;
     public float blockingLightningAbsorption;
     public float blockingHolyAbsorption;
-    public float blockingStaminaCost;
+    public float blockingStaminaAbsorption;
 
     [Header("Poise")]
     public float totalPoiseDamage;              //一段时间内收到的削韧值总和

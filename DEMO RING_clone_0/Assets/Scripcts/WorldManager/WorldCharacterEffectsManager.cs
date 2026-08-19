@@ -11,10 +11,17 @@ public class WorldCharacterEffectsManager : MonoBehaviour
     public GameObject bloodSplatterVFX;
 
     [Header("Damage")]
+    public TakeStaminaDamageEffect takeStaminaDamageEffect;
     public TakeDamageEffect takeDamageEffect;
     public TakeBlockedDamageEffect takeBlockedDamageEffect;
 
+    [Header("Two Handing")]
+    public TwoHandingEffect twoHandingEffect;
+
+    [Header("Instant Effects")]
     [SerializeField] private List<InstantCharacterEffect> instantEffects;
+    [Header("Static Effects")]
+    [SerializeField] private List<StaticCharacterEffect> staticEffects;
 
     private void Awake()
     {
@@ -40,6 +47,10 @@ public class WorldCharacterEffectsManager : MonoBehaviour
         for (int i = 0; i < instantEffects.Count; i++)
         {
             instantEffects[i].instantEffectID = i;
+        }
+        for (int i = 0; i < staticEffects.Count; i++)
+        {
+            staticEffects[i].staticEffectID = i;
         }
     }
 }

@@ -508,15 +508,38 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
         type: 3}
+      propertyPath: twoHandingEffect
+      value: 
+      objectReference: {fileID: 11400000, guid: 3e86854075b234a4f85a3bba2718cf45,
+        type: 2}
+    - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
+        type: 3}
       propertyPath: takeBlockedDamageEffect
       value: 
       objectReference: {fileID: 11400000, guid: 55d23956ad00a4a459f94133c2c7008b,
         type: 2}
     - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
         type: 3}
+      propertyPath: takeStaminaDamageEffect
+      value: 
+      objectReference: {fileID: 11400000, guid: ecce7b364c05f294a977a15279ac04a3,
+        type: 2}
+    - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
+        type: 3}
+      propertyPath: staticEffects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
+        type: 3}
       propertyPath: instantEffects.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
+        type: 3}
+      propertyPath: staticEffects.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3e86854075b234a4f85a3bba2718cf45,
+        type: 2}
     - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
         type: 3}
       propertyPath: instantEffects.Array.data[0]

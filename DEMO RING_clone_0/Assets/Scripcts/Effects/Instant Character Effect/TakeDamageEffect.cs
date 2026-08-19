@@ -93,12 +93,8 @@ public class TakeDamageEffect : InstantCharacterEffect
         character.characterNetworkManager.currentHealth.Value -= finalDamageDealt;
 
         //计算削韧值
-        if (poiseIsBroken)
-        {
-            character.characterStatsManager.totalPoiseDamage = 0;
-        }
         character.characterStatsManager.totalPoiseDamage -= poiseDamage;
-        Debug.Log("Poise Damage Taken: " + poiseDamage + " Total Poise Damage: " + character.characterStatsManager.totalPoiseDamage);
+        //Debug.Log("Poise Damage Taken: " + poiseDamage + " Total Poise Damage: " + character.characterStatsManager.totalPoiseDamage);
 
         float remainingPoise = character.characterStatsManager.basePoiseDefense + character.characterStatsManager.offensivePoiseBonus + character.characterStatsManager.totalPoiseDamage;
 

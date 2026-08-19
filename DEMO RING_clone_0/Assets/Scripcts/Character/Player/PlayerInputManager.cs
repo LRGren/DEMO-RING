@@ -524,6 +524,12 @@ public class PlayerInputManager : MonoBehaviour
         if (switch_Right_Weapons_Input)
         {
             switch_Right_Weapons_Input = false;
+
+            if (player.playerNetworkManager.isTwoHandingWeapon.Value)
+            {
+                player.playerNetworkManager.isTwoHandingWeapon.Value = false;
+            }
+
             player.playerEquipmentManager.SwitchRightWeapon();
         }
     }
@@ -532,6 +538,12 @@ public class PlayerInputManager : MonoBehaviour
         if (switch_Leftt_Weapons_Input)
         {
             switch_Leftt_Weapons_Input = false;
+
+            if (player.playerNetworkManager.isTwoHandingWeapon.Value)
+            {
+                player.playerNetworkManager.isTwoHandingWeapon.Value = false;
+            }
+
             player.playerEquipmentManager.SwitchLeftWeapon();
         }
     }
@@ -548,6 +560,11 @@ public class PlayerInputManager : MonoBehaviour
 
     private void QueInput(ref bool quedInput)
     {
+        if (two_Hand_Input)
+        {
+            return;
+        }
+
         que_RB_Input = false;
         que_RT_Input = false;
 
@@ -558,6 +575,7 @@ public class PlayerInputManager : MonoBehaviour
             quedInput = true;
         }
     }
+
 
     private void ProcessQueInput()
     {
