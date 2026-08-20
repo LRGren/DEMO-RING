@@ -282,7 +282,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
             return;
 
         //注意是单手跳跃，还是双持跳跃
-        player.playerAnimatorManager.PlayerTargetActionAnimation("Main_Jump_01", false);
+        player.playerAnimatorManager.PlayerTargetActionAnimation("Main_Jump_01", false, true, true, false);
 
         player.playerNetworkManager.isJumping.Value = true;
 

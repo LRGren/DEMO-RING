@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce00bb60fd1689a4c926891f5ed4c7f5, type: 3}
+  m_Name: Knight Greaves
+  m_EditorClassIdentifier: 
+  itemName: Knight Greaves
+  itemIcon: {fileID: 0}
+  itemDescription: 'Iron greaves of an unknown knight.
+
+    It is made of thin iron
+    plate.
+
+    Such metal armor is heavy, but provides considerable damage negation.'
+  itemID: 50007
+  itemWeight: 6.6
+  physicalDamageAbsorption: 7.1
+  magicDamageAbsorption: 6.2
+  fireDamageAbsorption: 6.2
+  lightningDamageAbsorption: 5.4
+  holyDamageAbsorption: 5
+  immunity: 17
+  robustness: 31
+  focus: 11
+  vitality: 11
+  poise: 14
+  equipmentModels:
+  - {fileID: 11400000, guid: 837d3b99ac15ecf478515561c493e201, type: 2}
+  - {fileID: 11400000, guid: 7d15fb6732bc4fe44b8fcf4b44ac04de, type: 2}
+  - {fileID: 11400000, guid: 17e48fce4f336554090062acac75a5a8, type: 2}
+  - {fileID: 11400000, guid: 3127a055337715541bfad9a23d235d1d, type: 2}
+  - {fileID: 11400000, guid: 257064dd851daea4dacdd69ff95978e3, type: 2}

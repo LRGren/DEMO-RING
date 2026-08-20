@@ -50,3 +50,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5127d45e178cc8649b053be9de266c07, type: 2}
   - {fileID: 11400000, guid: fd164a1d6f05bda478dd90018ab02d46, type: 2}
   - {fileID: 11400000, guid: a864884746fe73f4a8f7470d75d141c2, type: 2}
+  headEquipment:
+  - {fileID: 11400000, guid: 47f13f873370962429349698168622e7, type: 2}
+  - {fileID: 11400000, guid: 9503e358cb28f1b4fa80d3a2476bac97, type: 2}
+  - {fileID: 11400000, guid: 00e9a9beff7e05a49baf85220cdd4cde, type: 2}
+  bodyEquipment:
+  - {fileID: 11400000, guid: 80ebf9e87d58d424a83bca9be888b238, type: 2}
+  - {fileID: 11400000, guid: 7a95f01b8c0fecf4abf88a9332bddde3, type: 2}
+  handEquipment:
+  - {fileID: 11400000, guid: 23a2e125ed5097747a3be1aacff1f99a, type: 2}
+  - {fileID: 11400000, guid: a2ca395773761c94da48b96a4dd93121, type: 2}
+  legEquipment:
+  - {fileID: 11400000, guid: 9b995ab3578771e479a97bb1b8703258, type: 2}
+  - {fileID: 11400000, guid: 6dd56d6bf3c4ad446bbc0445a026334f, type: 2}
+  weaponKey: 10000
+  headKey: 20000
+  bodyKey: 30000
+  handKey: 40000
+  legKey: 50000

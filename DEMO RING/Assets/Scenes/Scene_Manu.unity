@@ -281,6 +281,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: World Network Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 7062361885695448560, guid: c21c2e77eabcebc4bbaf920a8f877c99,
+        type: 3}
+      propertyPath: NetworkConfig.PlayerPrefab
+      value: 
+      objectReference: {fileID: 7303514040355241776, guid: 9e35c081c1441574e9c3b4e566acf7a6,
+        type: 3}
     - target: {fileID: 8840257876987035243, guid: c21c2e77eabcebc4bbaf920a8f877c99,
         type: 3}
       propertyPath: ConnectionData.ServerListenAddress
@@ -421,6 +427,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 5569815213192464941, guid: 7cd3f94f79b3e3944b8b9e4f99481b01,
+        type: 3}
+      propertyPath: player
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5569815213192464941, guid: 7cd3f94f79b3e3944b8b9e4f99481b01,
         type: 3}
@@ -1651,6 +1662,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: World Item Database
       objectReference: {fileID: 0}
+    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
+        type: 3}
+      propertyPath: legEquipment.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
+        type: 3}
+      propertyPath: bodyEquipment.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
+        type: 3}
+      propertyPath: handEquipment.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
+        type: 3}
+      propertyPath: headEquipment.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
+        type: 3}
+      propertyPath: headEquipment.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 00e9a9beff7e05a49baf85220cdd4cde,
+        type: 2}
+    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
+        type: 3}
+      propertyPath: headEquipment.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 00e9a9beff7e05a49baf85220cdd4cde,
+        type: 2}
     - target: {fileID: 7703937357132980738, guid: ba46be3c9ee99aa41971da263ce4d03b,
         type: 3}
       propertyPath: m_LocalPosition.x

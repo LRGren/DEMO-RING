@@ -227,6 +227,8 @@ public class PlayerInputManager : MonoBehaviour
         }
         else
         {
+            two_Hand_Right_Input = false;
+            two_Hand_Left_Input = false;
             return;
         }
 

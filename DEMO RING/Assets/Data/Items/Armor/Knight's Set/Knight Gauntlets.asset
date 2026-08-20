@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d593dd67f8ac01e4790e7e1a327de079, type: 3}
+  m_Name: Knight Gauntlets
+  m_EditorClassIdentifier: 
+  itemName: Knight Gauntlets
+  itemIcon: {fileID: 0}
+  itemDescription: 'Iron gauntlets of an unknown knight. It is made of thin iron
+    plate.
+
+    Such metal armor is heavy, but provides considerable damage negation.'
+  itemID: 40006
+  itemWeight: 3.5
+  physicalDamageAbsorption: 3.1
+  magicDamageAbsorption: 2.7
+  fireDamageAbsorption: 2.7
+  lightningDamageAbsorption: 2.3
+  holyDamageAbsorption: 2.1
+  immunity: 9
+  robustness: 17
+  focus: 6
+  vitality: 6
+  poise: 5
+  equipmentModels:
+  - {fileID: 11400000, guid: 1e041bcab2674654cabc51cb859ef5d3, type: 2}
+  - {fileID: 11400000, guid: 95f1c31276b421d47b103393b3342bed, type: 2}
+  - {fileID: 11400000, guid: 2d2cb0590a595e14eb1ec04001d3de2a, type: 2}
+  - {fileID: 11400000, guid: a873de638dafacc488b7c1972cc5ca13, type: 2}
+  - {fileID: 11400000, guid: 0de5930cc58d01f4c8359ecba1f3977c, type: 2}
+  - {fileID: 11400000, guid: f7462904921242340890dc0fe11761ed, type: 2}

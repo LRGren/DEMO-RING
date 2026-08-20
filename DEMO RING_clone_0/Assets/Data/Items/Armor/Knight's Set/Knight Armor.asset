@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f9ab1b34462d0c4b8e71ca7652dd823, type: 3}
+  m_Name: Knight Armor
+  m_EditorClassIdentifier: 
+  itemName: Knight Armor
+  itemIcon: {fileID: 0}
+  itemDescription: 'Iron armor of an unknown knight.
+
+    It is made of thin iron
+    plate.
+
+    Such metal armor is heavy, but provides considerable damage negation.'
+  itemID: 30005
+  itemWeight: 10.6
+  physicalDamageAbsorption: 12.4
+  magicDamageAbsorption: 10.9
+  fireDamageAbsorption: 10.9
+  lightningDamageAbsorption: 9.5
+  holyDamageAbsorption: 8.8
+  immunity: 28
+  robustness: 50
+  focus: 18
+  vitality: 18
+  poise: 24
+  equipmentModels:
+  - {fileID: 11400000, guid: 55e5ff14f79fb16458437e03fb6d9818, type: 2}
+  - {fileID: 11400000, guid: 0c4954e7050f12e429e650401ac73cf4, type: 2}
+  - {fileID: 11400000, guid: 3c3488e2e739f384ca05f6729869a098, type: 2}
+  - {fileID: 11400000, guid: eb1e03383a9daa246a513d5a104f15ff, type: 2}
+  - {fileID: 11400000, guid: 38e9e4aa8badce045840a8f782af1360, type: 2}

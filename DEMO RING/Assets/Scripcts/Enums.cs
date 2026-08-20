@@ -47,6 +47,41 @@ public enum WeaponClass
     MediumShield,
 }
 
+public enum EquipmentModelType
+{
+    FullHelmet,
+    Hat,
+    Hood,
+    HelmetAcessorie,
+    FaceCover,
+    Torso,
+    Back,
+    RightShoulder,
+    RightUpperArm,
+    RightElbow,
+    RightLowerArm,
+    RightHand,
+    LeftShoulder,
+    LeftUpperArm,
+    LeftElbow,
+    LeftLowerArm,
+    LeftHand,
+    Hips,
+    HipsAttachment,
+    RightLeg,
+    RightKnee,
+    LeftLeg,
+    LeftKnee
+}
+
+public enum HeadEquipmentType
+{
+    FullHelmet, //遮住全部
+    Hat,        //不遮挡
+    Hood,       //遮住头发
+    FaceCover   //遮住脸
+}
+
 public enum AttackType
 {
     LightAttack01,
@@ -72,3 +107,5 @@ public enum DamageIntensity
     Heavy,
     Colossal,
 }
+
+

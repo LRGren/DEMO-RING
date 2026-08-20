@@ -25,6 +25,13 @@ public class PlayerNetworkManager : CharacterNetworkManager
     public NetworkVariable<bool> isTwoHandingLeftWeapon = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> currentWeaponBeingTwoHanded = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
+    [Header("Armor")]
+    public NetworkVariable<bool> isMale = new NetworkVariable<bool>(true, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> headEquipmentID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> bodyEquipmentID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> handEquipmentID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> legEquipmentID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
     protected override void Awake()
     {
         base.Awake();
@@ -151,7 +158,6 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
         player.animator.SetBool("isTwoHandWeapon", isTwoHandingWeapon.Value);
     }
-
     public void OnIsTwoHandingRightWeaponChanged(bool old, bool isTwoHanding)
     {
         if (!isTwoHandingRightWeapon.Value)
@@ -166,7 +172,6 @@ public class PlayerNetworkManager : CharacterNetworkManager
         player.playerInventoryManager.currentTwoHandedWeapon = player.playerInventoryManager.currentRightHandWeapon;
         player.playerEquipmentManager.TwoHandRightWeapon();
     }
-
     public void OnIsTwoHandingLeftWeaponChanged(bool old, bool isTwoHanding)
     {
         if (!isTwoHandingLeftWeapon.Value)
@@ -182,6 +187,71 @@ public class PlayerNetworkManager : CharacterNetworkManager
         player.playerEquipmentManager.TwoHandLeftWeapon();
     }
 
+    // Armor
+    public void OnHeadEquipmentIDChanged(int oldID, int newID)
+    {
+        if (IsOwner)
+            return;
+
+        HeadEquipmentItem equipment = WorldItemDatabase.Instance.GetHeadEquipmentByID(headEquipmentID.Value);
+        if (equipment != null)
+        {
+            player.playerEquipmentManager.LoadHeadEquipment(Instantiate(equipment));
+        }
+        else
+        {
+            player.playerEquipmentManager.LoadHeadEquipment(null);
+        }
+
+    }
+
+    public void OnBodyEquipmentIDChanged(int oldID, int newID)
+    {
+        if (IsOwner)
+            return;
+
+        BodyEquipmentItem equipment = WorldItemDatabase.Instance.GetBodyEquipmentByID(bodyEquipmentID.Value);
+        if (equipment != null)
+        {
+            player.playerEquipmentManager.LoadBodyEquipment(Instantiate(equipment));
+        }
+        else
+        {
+            player.playerEquipmentManager.LoadBodyEquipment(null);
+        }
+    }
+
+    public void OnHandEquipmentIDChanged(int oldID, int newID)
+    {
+        if (IsOwner)
+            return;
+
+        HandEquipmentItem equipment = WorldItemDatabase.Instance.GetHandEquipmentByID(handEquipmentID.Value);
+        if (equipment != null)
+        {
+            player.playerEquipmentManager.LoadHandEquipment(Instantiate(equipment));
+        }
+        else
+        {
+            player.playerEquipmentManager.LoadHandEquipment(null);
+        }
+    }
+
+    public void OnLegEquipmentIDChanged(int oldID, int newID)
+    {
+        if (IsOwner)
+            return;
+
+        LegEquipmentItem equipment = WorldItemDatabase.Instance.GetLegEquipmentByID(legEquipmentID.Value);
+        if (equipment != null)
+        {
+            player.playerEquipmentManager.LoadLegEquipment(Instantiate(equipment));
+        }
+        else
+        {
+            player.playerEquipmentManager.LoadLegEquipment(null);
+        }
+    }
 
     // Rpc
     [ServerRpc]

@@ -19,6 +19,7 @@ public class PlayerManager : CharacterManager
     [HideInInspector] public PlayerCombatManager playerCombatManager;
     [HideInInspector] public PlayerInteractionManager playerInteractionManager;
     [HideInInspector] public PlayerEffectsManager playerEffectsManager;
+    [HideInInspector] public PlayerBodyManager playerBodyManager;
 
     protected override void Awake()
     {
@@ -33,6 +34,7 @@ public class PlayerManager : CharacterManager
         playerCombatManager = GetComponent<PlayerCombatManager>();
         playerInteractionManager = GetComponent<PlayerInteractionManager>();
         playerEffectsManager = GetComponent<PlayerEffectsManager>();
+        playerBodyManager = GetComponent<PlayerBodyManager>();
     }
 
     protected override void Update()
@@ -96,6 +98,12 @@ public class PlayerManager : CharacterManager
         playerNetworkManager.currentWeaponBeingUsed.OnValueChanged += playerNetworkManager.OnCurrentWeaponBedingUsedIDChanged;
         playerNetworkManager.isBlocking.OnValueChanged += playerNetworkManager.OnIsBlockingChanged;
 
+        //盔甲
+        playerNetworkManager.headEquipmentID.OnValueChanged += playerNetworkManager.OnHeadEquipmentIDChanged;
+        playerNetworkManager.bodyEquipmentID.OnValueChanged += playerNetworkManager.OnBodyEquipmentIDChanged;
+        playerNetworkManager.handEquipmentID.OnValueChanged += playerNetworkManager.OnHandEquipmentIDChanged;
+        playerNetworkManager.legEquipmentID.OnValueChanged += playerNetworkManager.OnLegEquipmentIDChanged;
+
         if (IsOwner)
         {
             playerNetworkManager.currentRightHandWeaponID.Value =
@@ -157,6 +165,12 @@ public class PlayerManager : CharacterManager
         playerNetworkManager.currentLeftHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentLeftHandWeaponIDChanged;
         playerNetworkManager.currentWeaponBeingUsed.OnValueChanged -= playerNetworkManager.OnCurrentWeaponBedingUsedIDChanged;
         playerNetworkManager.isBlocking.OnValueChanged -= playerNetworkManager.OnIsBlockingChanged;
+
+        //盔甲
+        playerNetworkManager.headEquipmentID.OnValueChanged -= playerNetworkManager.OnHeadEquipmentIDChanged;
+        playerNetworkManager.bodyEquipmentID.OnValueChanged -= playerNetworkManager.OnBodyEquipmentIDChanged;
+        playerNetworkManager.handEquipmentID.OnValueChanged -= playerNetworkManager.OnHandEquipmentIDChanged;
+        playerNetworkManager.legEquipmentID.OnValueChanged -= playerNetworkManager.OnLegEquipmentIDChanged;
 
         //锁定
         playerNetworkManager.isLockOn.OnValueChanged -= playerNetworkManager.OnIsLockOnChanged;
@@ -245,10 +259,6 @@ public class PlayerManager : CharacterManager
     /// <summary>
     /// (临时添加用以测试) 将当前boss的状态保存到当前角色数据中
     /// </summary>
-    /// <param name="currentCharacterSaveData"></param>
-    /// <param name="bossID"></param>
-    /// <param name="isAwakened"></param>
-    /// <param name="isDefeated"></param>
     public void SaveGameBossInfoToCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData, string bossID, bool isAwakened, bool isDefeated)
     {
         if (!currentCharacterSaveData.bossesAwakened.ContainsKey(bossID))
@@ -314,6 +324,12 @@ public class PlayerManager : CharacterManager
         playerNetworkManager.OnIsTwoHandingWeaponChanged(false, playerNetworkManager.isTwoHandingWeapon.Value);
         playerNetworkManager.OnIsTwoHandingRightWeaponChanged(false, playerNetworkManager.isTwoHandingRightWeapon.Value);
         playerNetworkManager.OnIsTwoHandingLeftWeaponChanged(false, playerNetworkManager.isTwoHandingLeftWeapon.Value);
+
+        //Armor
+        playerNetworkManager.OnHeadEquipmentIDChanged(0, playerNetworkManager.headEquipmentID.Value);
+        playerNetworkManager.OnBodyEquipmentIDChanged(0, playerNetworkManager.bodyEquipmentID.Value);
+        playerNetworkManager.OnHandEquipmentIDChanged(0, playerNetworkManager.handEquipmentID.Value);
+        playerNetworkManager.OnLegEquipmentIDChanged(0, playerNetworkManager.legEquipmentID.Value);
 
         //Lock On
         if (playerNetworkManager.isLockOn.Value)

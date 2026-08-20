@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponItem : Item
+public class WeaponItem : EquipmentItem
 {
     //ANIMATION CONTROLLE 覆盖（基于武器需要有不同的攻击模组）
     [Header("Weapon Animator Override Controller")]

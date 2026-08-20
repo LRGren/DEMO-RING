@@ -16,6 +16,7 @@ MonoBehaviour:
   itemIcon: {fileID: 21300114, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
   itemDescription: A straight sword
   itemID: 2
+  itemWeight: 4
   weaponAnimator: {fileID: 22100000, guid: 7233d515cbc095a44b72c59e7a1d72f8, type: 2}
   weaponType: 0
   weaponClass: 0
@@ -25,17 +26,17 @@ MonoBehaviour:
   dexterityREQ: 10
   intelligenceREQ: 0
   faithREQ: 0
-  physicalDamage: 126
+  physicalDamage: 117
   magicalDamage: 0
   fireDamage: 0
   holyDamage: 0
   lightningDamage: 0
   poiseDamage: 25
-  physicalDamageAbsorption: 80
-  magicalDamageAbsorption: 0
-  fireDamageAbsorption: 0
-  holyDamageAbsorption: 0
-  lightningDamageAbsorption: 0
+  physicalDamageAbsorption: 47
+  magicalDamageAbsorption: 31
+  fireDamageAbsorption: 31
+  holyDamageAbsorption: 31
+  lightningDamageAbsorption: 31
   staminaAbsorption: 10
   light_Attack_01_Modifier: 1.1
   light_Attack_02_Modifier: 1.2

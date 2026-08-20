@@ -80,6 +80,10 @@ public class CharacterAnimatorManager : MonoBehaviour
         character.characterLocomotionManager.canRotate = canRotate;
         character.characterLocomotionManager.canMove = canMove;
 
+        //只有拥有者（玩家）或服务器（AI）才能发送需要所有权的 ServerRpc
+        if (!character.IsOwner)
+            return;
+
         character.characterNetworkManager.NotifyTheServerOfActionAnimationServerRpc(
             NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
     }
@@ -102,6 +106,10 @@ public class CharacterAnimatorManager : MonoBehaviour
         character.isPerformingAction = isPerformingAction;
         character.characterLocomotionManager.canRotate = canRotate;
         character.characterLocomotionManager.canMove = canMove;
+
+        //只有拥有者（玩家）或服务器（AI）才能发送需要所有权的 ServerRpc
+        if (!character.IsOwner)
+            return;
 
         character.characterNetworkManager.NotifyTheServerOfAttackActionAnimationServerRpc(
             NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);

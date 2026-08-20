@@ -21,6 +21,19 @@ public class CharacterStatsManager : MonoBehaviour
     public float blockingHolyAbsorption;
     public float blockingStaminaAbsorption;
 
+    [Header("Armor Absorption")]
+    public float armorPhysicalDamageAbsorption;
+    public float armorMagicDamageAbsorption;
+    public float armorFireDamageAbsorption;
+    public float armorLightningDamageAbsorption;
+    public float armorHolyDamageAbsorption;
+
+    [Header("Armor Resistance Bonus")]
+    public float armorImmunity;      // RESISTANCE TO ROT AND POISON
+    public float armorRobustness;    // RESISTANCE TO BLEED AND FROST
+    public float armorFocus;         // RESISTANCE TO MADNESS AND SLEEP
+    public float armorVitality;      // RESISTANCE TO DEATH CURSE
+
     [Header("Poise")]
     public float totalPoiseDamage;              //一段时间内收到的削韧值总和
     public float offensivePoiseBonus;           //攻击时增加的韧性值
