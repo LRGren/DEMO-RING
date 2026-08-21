@@ -174,14 +174,19 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         {
             equip = false;
 
-            LoadHeadEquipment(player.playerInventoryManager.headEquipment);
-
-            LoadBodyEquipment(player.playerInventoryManager.bodyEquipment);
-
-            LoadHandEquipment(player.playerInventoryManager.handEquipment);
-
-            LoadLegEquipment(player.playerInventoryManager.legEquipment);
+            EquipArmor();
         }
+    }
+
+    public void EquipArmor()
+    {
+        LoadHeadEquipment(player.playerInventoryManager.headEquipment);
+
+        LoadBodyEquipment(player.playerInventoryManager.bodyEquipment);
+
+        LoadHandEquipment(player.playerInventoryManager.handEquipment);
+
+        LoadLegEquipment(player.playerInventoryManager.legEquipment);
     }
 
     // Equipment Slots

@@ -107,6 +107,8 @@ public class SiteOfGraceInteractable : Interactable
         player.playerNetworkManager.currentHealth.Value = player.playerNetworkManager.maxHealth.Value;
         player.playerNetworkManager.currentStamina.Value = player.playerNetworkManager.maxStamina.Value;
 
+        WorldSaveGameManager.instance.SaveGame();
+
         interactableCollider.enabled = true;
 
         WorldAIManager.instance.RestAllCharacters();

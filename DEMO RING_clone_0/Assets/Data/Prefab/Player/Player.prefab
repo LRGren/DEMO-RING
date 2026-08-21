@@ -56789,7 +56789,7 @@ GameObject:
   - component: {fileID: 1038852241200942007}
   - component: {fileID: 5032858769273185238}
   - component: {fileID: 8919372214322704883}
-  - component: {fileID: 5399709940398970962}
+  - component: {fileID: 4377681306869489964}
   - component: {fileID: 5431566457522526622}
   - component: {fileID: 6709915041529701715}
   - component: {fileID: 4094993497867899534}
@@ -56872,7 +56872,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &5399709940398970962
+--- !u!114 &4377681306869489964
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -56918,7 +56918,7 @@ MonoBehaviour:
   isChargingAttack:
     m_InternalValue: 0
   endurance:
-    m_InternalValue: 10
+    m_InternalValue: 1
   vitality:
     m_InternalValue: 1
   strength:
@@ -56930,9 +56930,9 @@ MonoBehaviour:
   maxStamina:
     m_InternalValue: 0
   currentHealth:
-    m_InternalValue: 0
+    m_InternalValue: 1000
   maxHealth:
-    m_InternalValue: 0
+    m_InternalValue: 1000
   characterName:
     m_InternalValue:
       utf8LengthInBytes: 11
@@ -57023,13 +57023,13 @@ MonoBehaviour:
   isMale:
     m_InternalValue: 1
   headEquipmentID:
-    m_InternalValue: 0
+    m_InternalValue: -1
   bodyEquipmentID:
-    m_InternalValue: 0
+    m_InternalValue: -1
   handEquipmentID:
-    m_InternalValue: 0
+    m_InternalValue: -1
   legEquipmentID:
-    m_InternalValue: 0
+    m_InternalValue: -1
 --- !u!114 &5431566457522526622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57246,13 +57246,13 @@ MonoBehaviour:
     type: 2}
   currentTwoHandedWeapon: {fileID: 0}
   weaponsInRightHand:
-  - {fileID: 11400000, guid: 5127d45e178cc8649b053be9de266c07, type: 2}
-  - {fileID: 11400000, guid: fd164a1d6f05bda478dd90018ab02d46, type: 2}
-  - {fileID: 11400000, guid: a864884746fe73f4a8f7470d75d141c2, type: 2}
+  - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
+  - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
+  - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   rightWeaponIndex: 0
   weaponsInLeftHand:
-  - {fileID: 11400000, guid: a864884746fe73f4a8f7470d75d141c2, type: 2}
-  - {fileID: 11400000, guid: fd164a1d6f05bda478dd90018ab02d46, type: 2}
+  - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
+  - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   leftWeaponIndex: 0
   headEquipment: {fileID: 0}
@@ -57538,6 +57538,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebb11bb7ec474914a8c9d5ab878f9c03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maleObject: {fileID: 1907980781447196418}
+  femaleObject: {fileID: 8658389041974437824}
   hair: {fileID: 740765748149725341}
   maleFacialHair: {fileID: 7930679284894636559}
   maleHead: {fileID: 2447244985000916034}

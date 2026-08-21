@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerBodyManager : MonoBehaviour
 {
+    [Header("Body Objects")]
+    public GameObject maleObject;
+    public GameObject femaleObject;
+
     [Header("Hair")]
     public GameObject hair;
     public GameObject maleFacialHair;
@@ -137,4 +141,19 @@ public class PlayerBodyManager : MonoBehaviour
             femaleLegs[i].SetActive(false);
         }
     }
+
+    public void ToggleBodyType(bool isMale)
+    {
+        if (isMale)
+        {
+            maleObject.SetActive(true);
+            femaleObject.SetActive(false);
+        }
+        else
+        {
+            maleObject.SetActive(false);
+            femaleObject.SetActive(true);
+        }
+    }
+
 }

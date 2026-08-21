@@ -158,8 +158,4 @@ public class CharacterManager : NetworkBehaviour
         }
     }
 
-    public void SetIsPerformingActionFalse()
-    {
-        isPerformingAction = false;
-    }
 }
