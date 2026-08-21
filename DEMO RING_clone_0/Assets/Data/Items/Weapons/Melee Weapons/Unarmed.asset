@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ca27b6157a4f4a81a71c9a439ee3af, type: 3}
   m_Name: Unarmed
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: Unarmed Weapon
   itemIcon: {fileID: 0}
   itemDescription: 
-  itemID: 0
+  itemID: 10000
+  itemWeight: 0
   weaponAnimator: {fileID: 22100000, guid: 830d08253f11c7d40a528b234b01be4b, type: 2}
+  weaponType: 0
+  weaponClass: 0
   weaponModel: {fileID: 1711130412322516538, guid: de72cad6e5e861844af06a53cdbdb2f3,
     type: 3}
   strengthREQ: 8
@@ -29,6 +32,12 @@ MonoBehaviour:
   holyDamage: 0
   lightningDamage: 0
   poiseDamage: 5
+  physicalDamageAbsorption: 100
+  magicalDamageAbsorption: 0
+  fireDamageAbsorption: 0
+  holyDamageAbsorption: 0
+  lightningDamageAbsorption: 0
+  staminaAbsorption: 0
   light_Attack_01_Modifier: 1.1
   light_Attack_02_Modifier: 1.2
   heavy_Attack_01_Modifier: 1.4
@@ -47,4 +56,6 @@ MonoBehaviour:
   backstepAttackStaminaModifier: 1
   oh_RB_Action: {fileID: 0}
   oh_RT_Action: {fileID: 0}
+  oh_LB_Action: {fileID: 0}
   wooshes: []
+  blocks: []

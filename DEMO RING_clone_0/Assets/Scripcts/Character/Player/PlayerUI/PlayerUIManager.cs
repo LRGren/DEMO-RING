@@ -13,6 +13,8 @@ public class PlayerUIManager : MonoBehaviour
 
     [HideInInspector] public PlayerUIHudManager playerUIHudManager;
     [HideInInspector] public PlayerUIPopUpManager playerUIPopUpManager;
+    [HideInInspector] public PlayerUICharacterMenuManager playerUICharacterMenuManager;
+    [HideInInspector] public PlayerUIEquipmentManager playerUIEquipmentManager;
 
     [Header("UI Flags")]
     public bool menuWindowIsOpen = false;
@@ -31,6 +33,8 @@ public class PlayerUIManager : MonoBehaviour
 
         playerUIHudManager = GetComponentInChildren<PlayerUIHudManager>();
         playerUIPopUpManager = GetComponentInChildren<PlayerUIPopUpManager>();
+        playerUICharacterMenuManager = GetComponentInChildren<PlayerUICharacterMenuManager>();
+        playerUIEquipmentManager = GetComponentInChildren<PlayerUIEquipmentManager>();
     }
 
     private void Start()
@@ -49,4 +53,14 @@ public class PlayerUIManager : MonoBehaviour
             NetworkManager.Singleton.StartClient();
         }
     }
+
+    public void CloseAllWindows()
+    {
+        if (menuWindowIsOpen)
+        {
+            playerUICharacterMenuManager.CloseCharacterMenu();
+            playerUIEquipmentManager.CloseEquipmentMenu();
+        }
+    }
+
 }

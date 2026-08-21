@@ -35,6 +35,12 @@ public class CharacterSaveData
     public SerializableDictionary<string, bool> bossesAwakened;
     public SerializableDictionary<string, bool> bossesDefeated;
 
+    [Header("Item")]
+    public SerializableDictionary<int, bool> worldItemsLooted;
+
+    [Header("Inventory")]
+    public List<Item> inventory;
+
     [Header("Equipment")]
     public int currentHeadEquipment;
     public int currentBodyEquipment;
@@ -58,6 +64,10 @@ public class CharacterSaveData
 
         bossesAwakened = new SerializableDictionary<string, bool>();
         bossesDefeated = new SerializableDictionary<string, bool>();
+
+        worldItemsLooted = new SerializableDictionary<int, bool>();
+
+        inventory = new List<Item>();
     }
 
 

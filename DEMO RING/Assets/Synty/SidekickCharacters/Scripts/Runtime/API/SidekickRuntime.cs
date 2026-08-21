@@ -14,6 +14,7 @@ using Synty.SidekickCharacters.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,8 +45,12 @@ namespace Synty.SidekickCharacters.API
         private static readonly int _EMISSION_MAP = Shader.PropertyToID("_EmissionMap");
         private static readonly int _OPACITY_MAP = Shader.PropertyToID("_OpacityMap");
 
+        private const string _BASE_MODEL_AVATAR_NAME = "SK_BaseModelAvatar";
+
         private DatabaseManager _dbManager;
         private GameObject _baseModel;
+        private GameObject _resolvedBaseModel;
+        private Avatar _resolvedAvatar;
         private Material _currentMaterial;
         private RuntimeAnimatorController _currentAnimationController;
         private List<Vector2> _currentUVList;
@@ -82,6 +87,33 @@ namespace Synty.SidekickCharacters.API
             get => _baseModel;
             set => _baseModel = value;
         }
+
+        /// <summary>
+        ///     The base model resolved by the most recent CreateCharacter call; falls back to the assigned base model.
+        /// </summary>
+        private GameObject EffectiveBaseModel => _resolvedBaseModel != null ? _resolvedBaseModel : _baseModel;
+
+        /// <summary>
+        ///     The avatar resolved by the most recent CreateCharacter call; falls back to the assigned base model's avatar.
+        /// </summary>
+        private Avatar EffectiveAvatar
+        {
+            get
+            {
+                if (_resolvedAvatar != null)
+                {
+                    return _resolvedAvatar;
+                }
+
+                Animator baseAnimator = _baseModel.GetComponentInChildren<Animator>();
+                return baseAnimator != null ? baseAnimator.avatar : null;
+            }
+        }
+
+        /// <summary>
+        ///     When true, characters are always built on the assigned BaseModel and head-part avatar auto-detection is skipped.
+        /// </summary>
+        public bool ForceAssignedBaseModel { get; set; }
 
         public Material CurrentMaterial
         {
@@ -265,15 +297,17 @@ namespace Synty.SidekickCharacters.API
         {
             PopulateUVDictionary(toCombine);
 
+            _resolvedBaseModel = ResolveBaseModel(toCombine);
+
             GameObject newSpawn;
 
             if (combineMesh)
             {
-                newSpawn = Combiner.CreateCombinedSkinnedMesh(toCombine, _baseModel, _currentMaterial);
+                newSpawn = Combiner.CreateCombinedSkinnedMesh(toCombine, EffectiveBaseModel, _currentMaterial);
             }
             else
             {
-                newSpawn = Combiner.CreateSeparateSkinnedMeshes(toCombine, _baseModel, _currentMaterial);
+                newSpawn = Combiner.CreateSeparateSkinnedMeshes(toCombine, EffectiveBaseModel, _currentMaterial);
             }
 
             newSpawn.name = modelName;
@@ -287,8 +321,7 @@ namespace Synty.SidekickCharacters.API
             if (newSpawn.GetComponent<Animator>() == null)
             {
                 Animator newModelAnimator = newSpawn.AddComponent<Animator>();
-                Animator baseModelAnimator = _baseModel.GetComponentInChildren<Animator>();
-                newModelAnimator.avatar = baseModelAnimator.avatar;
+                newModelAnimator.avatar = EffectiveAvatar;
                 newModelAnimator.Rebind();
 
                 if (_currentAnimationController != null)
@@ -836,11 +869,94 @@ namespace Synty.SidekickCharacters.API
         }
 
         /// <summary>
+        ///     Finds the head part in the given meshes and returns its source model root.
+        /// </summary>
+        /// <param name="toCombine">The list of part meshes being combined.</param>
+        /// <returns>The root GameObject of the head part's source model, or null if no head part exists.</returns>
+        public GameObject GetHeadPartModel(List<SkinnedMeshRenderer> toCombine)
+        {
+            foreach (SkinnedMeshRenderer mesh in toCombine)
+            {
+                if (mesh == null || mesh.name.Count(c => c == '_') < 2)
+                {
+                    continue;
+                }
+
+                if (ExtractPartType(mesh.name) == CharacterPartType.Head)
+                {
+                    return mesh.transform.root.gameObject;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        ///     Gets the avatar associated with the given model asset. Checks for an Animator first ("Create From This Model"
+        ///     imports), then falls back to the import settings ("Copy From Other Avatar" imports add no Animator component;
+        ///     their avatar only exists as the importer's source avatar, which is editor-only data).
+        /// </summary>
+        /// <param name="model">The model asset to get the avatar for.</param>
+        /// <returns>The avatar associated with the model, or null if it has none.</returns>
+        private static Avatar GetModelAvatar(GameObject model)
+        {
+            Animator animator = model.GetComponentInChildren<Animator>();
+            if (animator != null && animator.avatar != null)
+            {
+                return animator.avatar;
+            }
+
+#if UNITY_EDITOR
+            UnityEditor.ModelImporter importer =
+                UnityEditor.AssetImporter.GetAtPath(UnityEditor.AssetDatabase.GetAssetPath(model)) as UnityEditor.ModelImporter;
+            if (importer != null)
+            {
+                return importer.sourceAvatar;
+            }
+#endif
+
+            return null;
+        }
+
+        /// <summary>
+        ///     Resolves which base model to build a character on. If the head part's avatar is not the standard
+        ///     SK_BaseModelAvatar (e.g. Alien variants, which have a unique avatar per variant), the head's source model
+        ///     is used as the rig and avatar donor, unless <see cref="ForceAssignedBaseModel" /> is set.
+        ///     Also stores the resolved avatar for use when the donor model carries no Animator of its own.
+        /// </summary>
+        /// <param name="toCombine">The list of part meshes being combined.</param>
+        /// <returns>The model to use as the rig and avatar donor for the character.</returns>
+        public GameObject ResolveBaseModel(List<SkinnedMeshRenderer> toCombine)
+        {
+            _resolvedAvatar = null;
+
+            if (ForceAssignedBaseModel)
+            {
+                return _baseModel;
+            }
+
+            GameObject headModel = GetHeadPartModel(toCombine);
+            if (headModel == null)
+            {
+                return _baseModel;
+            }
+
+            Avatar headAvatar = GetModelAvatar(headModel);
+            if (headAvatar == null || headAvatar.name == _BASE_MODEL_AVATAR_NAME)
+            {
+                return _baseModel;
+            }
+
+            _resolvedAvatar = headAvatar;
+            return headModel;
+        }
+
+        /// <summary>
         ///     Processes the movement of rig joints based on blend shape changes.
         /// </summary>
         public void ProcessRigMovementOnBlendShapeChange(Dictionary<CharacterPartType, Dictionary<BlendShapeType, SidekickBlendShapeRigMovement>> offsetLibrary)
         {
-            Transform modelRootBone = _baseModel.transform.Find("root");
+            Transform modelRootBone = EffectiveBaseModel.transform.Find("root");
             Hashtable boneNameMap = Combiner.CreateBoneNameMap(modelRootBone.gameObject);
 
             _blendShapeRigMovement = new Dictionary<string, Vector3>();

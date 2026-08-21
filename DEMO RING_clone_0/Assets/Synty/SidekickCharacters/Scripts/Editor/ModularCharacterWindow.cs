@@ -54,6 +54,8 @@ namespace Synty.SidekickCharacters
         private const string _COMBINE_MESHES_STATE = "SK_Combine_meshes";
         private const string _COMBINE_BODY_BLENDS_STATE = "SK_Combine_body_blends";
         private const string _COMBINE_FACIAL_BLENDS_STATE = "SK_Combine_facial_blends";
+        private const string _FORCE_BASE_MODEL_STATE = "SK_Force_base_model";
+        private const string _VERSION_FILE_PATH = "Assets/Synty/SidekickCharacters/Scripts/Editor/version.txt";
         private const string _OUTPUT_MODEL_NAME = "Combined Character";
         private const string _PART_COUNT_BODY = " parts in library";
         private const string _TEXTURE_COLOR_NAME = "ColorMap.png";
@@ -72,6 +74,7 @@ namespace Synty.SidekickCharacters
         private static readonly int _OPACITY_MAP = Shader.PropertyToID("_OpacityMap");
         private static Queue<Action> _callbackQueue = new Queue<Action>();
         private static bool _openWindowOnStart = true;
+        private static string _pendingLoadFilePath;
         private readonly List<SidekickColorRow> _visibleColorRows = new List<SidekickColorRow>();
 
         private List<SidekickColorRow> _allColorRows = new List<SidekickColorRow>();
@@ -102,8 +105,11 @@ namespace Synty.SidekickCharacters
         private ScrollView _colorSelectionView;
         private DropdownField _colorSetsDropdown;
         private bool _combineBodyBlendShapes = true;
+        private Toggle _combineBodyBlendsToggle;
         private bool _combineFacialBlendShapes = true;
+        private Toggle _combineFacialBlendsToggle;
         private bool _combineMeshes = true;
+        private Toggle _combineMeshesToggle;
         private AnimatorController _currentAnimationController;
         private Dictionary<string, SidekickBodyShapePreset> _currentBodyPresetDictionary = new Dictionary<string, SidekickBodyShapePreset>();
         private Dictionary<CharacterPartType, SidekickPart> _currentCharacter = new Dictionary<CharacterPartType, SidekickPart>();
@@ -129,6 +135,7 @@ namespace Synty.SidekickCharacters
         private ToolbarToggle _decalSelectionTab;
         private ScrollView _decalSelectionView;
         private StyleSheet _editorStyle;
+        private bool _forceBaseModel = false;
         private bool _showAllColourProperties = false;
         private float _bodyTypeBlendValue;
         private bool _loadingCharacter = false;
@@ -530,6 +537,23 @@ namespace Synty.SidekickCharacters
                 }
             };
             bannerLayout.Add(bannerImage);
+
+            if (File.Exists(_VERSION_FILE_PATH))
+            {
+                Label versionLabel = new Label("v" + File.ReadAllText(_VERSION_FILE_PATH).Trim())
+                {
+                    style =
+                    {
+                        position = new StyleEnum<Position>(Position.Absolute),
+                        bottom = 4,
+                        right = 6,
+                        color = Color.white,
+                        fontSize = 10
+                    }
+                };
+                bannerLayout.Add(versionLabel);
+            }
+
             _root.Add(bannerLayout);
 
             _presetView = new ScrollView(ScrollViewMode.Vertical);
@@ -544,7 +568,9 @@ namespace Synty.SidekickCharacters
             {
                 style =
                 {
-                    display = DisplayStyle.None
+                    display = DisplayStyle.None,
+                    paddingLeft = 15,
+                    paddingRight = 15
                 }
             };
 
@@ -552,7 +578,10 @@ namespace Synty.SidekickCharacters
             {
                 style =
                 {
-                    display = DisplayStyle.None
+                    display = DisplayStyle.None,
+                    paddingTop = 5,
+                    paddingLeft = 15,
+                    paddingRight = 15
                 }
             };
 
@@ -723,6 +752,7 @@ namespace Synty.SidekickCharacters
             _currentCharacter = new Dictionary<CharacterPartType, SidekickPart>();
 
             _sidekickRuntime = new SidekickRuntime((GameObject) _baseModelField.value, (Material) _materialField.value, _currentAnimationController, _dbManager);
+            _sidekickRuntime.ForceAssignedBaseModel = _forceBaseModel;
 
             Label loadingLabel = new Label
             {
@@ -926,6 +956,12 @@ namespace Synty.SidekickCharacters
                 }
                 _loadingContent = false;
 
+                if (!string.IsNullOrEmpty(_pendingLoadFilePath))
+                {
+                    string pendingLoadPath = _pendingLoadFilePath;
+                    _pendingLoadFilePath = null;
+                    LoadCharacterFromPath(pendingLoadPath);
+                }
             }
         }
 
@@ -956,6 +992,7 @@ namespace Synty.SidekickCharacters
             _combineMeshes = EditorPrefs.GetBool(_COMBINE_MESHES_STATE, true);
             _combineBodyBlendShapes = EditorPrefs.GetBool(_COMBINE_BODY_BLENDS_STATE, true);
             _combineFacialBlendShapes = EditorPrefs.GetBool(_COMBINE_FACIAL_BLENDS_STATE, true);
+            _forceBaseModel = EditorPrefs.GetBool(_FORCE_BASE_MODEL_STATE, false);
         }
 
         /// <summary>
@@ -1226,6 +1263,7 @@ namespace Synty.SidekickCharacters
                     maxWidth = Length.Percent(65)
                 }
             };
+            ScrollableDropdown.Apply(_colorSetsDropdown);
 
             Label filterPartsLabel = new Label("Filter - Parts")
             {
@@ -1233,6 +1271,7 @@ namespace Synty.SidekickCharacters
             };
             view.Add(filterPartsLabel);
             DropdownField partTypeDropdown = new DropdownField();
+            ScrollableDropdown.Apply(partTypeDropdown);
             string[] colorPartTypes = Enum.GetNames(typeof(ColorPartType));
             // Enum names can't have spaces so we add in the space manually for display.
             for (int i = 0; i < colorPartTypes.Length; i++)
@@ -1569,12 +1608,21 @@ namespace Synty.SidekickCharacters
 
             view.Add(baseAssetLabel);
 
+            VisualElement baseModelRow = new VisualElement
+            {
+                style =
+                {
+                    flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row),
+                    marginLeft = 15,
+                    marginRight = 15
+                }
+            };
+
             _baseModelField = new ObjectField
             {
                 style =
                 {
-                    marginLeft = 15,
-                    marginRight = 15
+                    flexGrow = 1
                 },
                 tooltip = "The rigged character model used when constructing a character",
                 objectType = typeof(GameObject),
@@ -1585,9 +1633,43 @@ namespace Synty.SidekickCharacters
                 changeEvent =>
                 {
                     // TODO: Check the model has a minimum of 1 SkinnedMeshRenderer as a child.
+                    if (_sidekickRuntime != null && changeEvent.newValue is GameObject newBaseModel)
+                    {
+                        _sidekickRuntime.BaseModel = newBaseModel;
+                    }
+
+                    // passes the basemodel assigned in the UI into the object state, as it was being ignored.
+                    _baseModelField.value = changeEvent.newValue;
+
                 }
             );
-            view.Add(_baseModelField);
+            Toggle forceModelToggle = new Toggle
+            {
+                text = "Force Model",
+                value = _forceBaseModel,
+                style =
+                {
+                    marginLeft = 8
+                },
+                tooltip = "When enabled, characters are always built on the Model assigned above. When disabled, if the selected head part "
+                    + "uses a non-standard avatar (e.g. Alien variants), the head's source model is automatically used as the base rig instead."
+            };
+
+            forceModelToggle.RegisterValueChangedCallback(
+                changeEvent =>
+                {
+                    _forceBaseModel = changeEvent.newValue;
+                    EditorPrefs.SetBool(_FORCE_BASE_MODEL_STATE, _forceBaseModel);
+                    if (_sidekickRuntime != null)
+                    {
+                        _sidekickRuntime.ForceAssignedBaseModel = _forceBaseModel;
+                    }
+                }
+            );
+
+            baseModelRow.Add(_baseModelField);
+            baseModelRow.Add(forceModelToggle);
+            view.Add(baseModelRow);
 
             _baseModelField.value = Resources.Load<GameObject>(_BASE_MESH_NAME);
 
@@ -1681,7 +1763,7 @@ namespace Synty.SidekickCharacters
 
             view.Add(prefabOptions);
 
-            Toggle combineToggle = new Toggle("Combine Character Meshes")
+            _combineMeshesToggle = new Toggle("Combine Character Meshes")
             {
                 value = _combineMeshes,
                 style =
@@ -1692,7 +1774,7 @@ namespace Synty.SidekickCharacters
                 tooltip = "Whether or not to bake all the meshes down to a single mesh in the output model."
             };
 
-            combineToggle.RegisterValueChangedCallback(
+            _combineMeshesToggle.RegisterValueChangedCallback(
                 evt =>
                 {
                     _combineMeshes = evt.newValue;
@@ -1700,9 +1782,9 @@ namespace Synty.SidekickCharacters
                 }
             );
 
-            view.Add(combineToggle);
+            view.Add(_combineMeshesToggle);
 
-            Toggle bodyBlendsToggle = new Toggle("Combine Body Blend Shapes")
+            _combineBodyBlendsToggle = new Toggle("Combine Body Blend Shapes")
             {
                 value = _combineBodyBlendShapes,
                 style =
@@ -1714,7 +1796,7 @@ namespace Synty.SidekickCharacters
                     + "When disabled the current body shape is baked into the mesh and the blend shapes are removed."
             };
 
-            bodyBlendsToggle.RegisterValueChangedCallback(
+            _combineBodyBlendsToggle.RegisterValueChangedCallback(
                 evt =>
                 {
                     _combineBodyBlendShapes = evt.newValue;
@@ -1722,9 +1804,9 @@ namespace Synty.SidekickCharacters
                 }
             );
 
-            view.Add(bodyBlendsToggle);
+            view.Add(_combineBodyBlendsToggle);
 
-            Toggle facialBlendsToggle = new Toggle("Combine Facial Blend Shapes")
+            _combineFacialBlendsToggle = new Toggle("Combine Facial Blend Shapes")
             {
                 value = _combineFacialBlendShapes,
                 style =
@@ -1736,7 +1818,7 @@ namespace Synty.SidekickCharacters
                     + "When disabled the current facial blend shape values are baked into the mesh and the blend shapes are removed."
             };
 
-            facialBlendsToggle.RegisterValueChangedCallback(
+            _combineFacialBlendsToggle.RegisterValueChangedCallback(
                 evt =>
                 {
                     _combineFacialBlendShapes = evt.newValue;
@@ -1744,7 +1826,7 @@ namespace Synty.SidekickCharacters
                 }
             );
 
-            view.Add(facialBlendsToggle);
+            view.Add(_combineFacialBlendsToggle);
 
             Label toolOptions = new Label
             {
@@ -2757,11 +2839,13 @@ namespace Synty.SidekickCharacters
                 label = "Species",
                 style =
                 {
-                    unityFontStyleAndWeight = new StyleEnum<FontStyle>(FontStyle.Normal)
+                    unityFontStyleAndWeight = new StyleEnum<FontStyle>(FontStyle.Normal),
+                    marginRight = 20
                 },
                 tooltip = "Select the species of your character"
             };
             _speciesPresetField.choices = speciesNames;
+            ScrollableDropdown.Apply(_speciesPresetField);
             _speciesPresetField.RegisterValueChangedCallback(
                 evt =>
                 {
@@ -3352,10 +3436,14 @@ namespace Synty.SidekickCharacters
                 value = "None",
                 style =
                 {
-                    minWidth = 180
+                    minWidth = 180,
+                    flexGrow = 1,
+                    flexShrink = 1,
+                    marginRight = 20
                 },
                 tooltip = tooltipText
             };
+            ScrollableDropdown.Apply(partSelection);
 
             partSelection.RegisterValueChangedCallback(
                 evt =>
@@ -3701,6 +3789,7 @@ namespace Synty.SidekickCharacters
                 tooltip = "Select the species of your character"
             };
             _speciesField.choices = speciesNames;
+            ScrollableDropdown.Apply(_speciesField);
             _speciesField.RegisterValueChangedCallback(
                 evt =>
                 {
@@ -4029,11 +4118,6 @@ namespace Synty.SidekickCharacters
 
             List<string> popupValues = new List<string>();
 
-            if (type != CharacterPartType.Wrap)
-            {
-                popupValues.Add("None");
-            }
-
             foreach (SidekickPart part in partsList)
             {
                 SidekickPartSpeciesLink link = SidekickPartSpeciesLink.GetForSpeciesAndPart(_dbManager, _currentSpecies, part);
@@ -4041,6 +4125,13 @@ namespace Synty.SidekickCharacters
                 {
                     popupValues.Add(part.Name);
                 }
+            }
+
+            popupValues.Sort(StringComparer.OrdinalIgnoreCase);
+
+            if (type != CharacterPartType.Wrap)
+            {
+                popupValues.Insert(0, "None");
             }
 
             _currentCharacter.TryGetValue(type, out SidekickPart selectedPart);
@@ -4072,8 +4163,15 @@ namespace Synty.SidekickCharacters
 
             PopupField<string> partSelection = new PopupField<string>(popupValues, 0)
             {
-                value = currentSelection
+                value = currentSelection,
+                style =
+                {
+                    flexGrow = 1,
+                    flexShrink = 1,
+                    marginRight = 15
+                }
             };
+            ScrollableDropdown.Apply(partSelection);
 
             PartTypeControls controls = new PartTypeControls
             {
@@ -4189,17 +4287,18 @@ namespace Synty.SidekickCharacters
                 PartTypeControls controls = _partSelectionDictionary[type];
                 HashSet<string> popupItems = new HashSet<string>();
 
-                if (type != CharacterPartType.Wrap)
-                {
-                    popupItems.Add("None");
-                };
-
                 HashSet<string> itemList = baseParts.TryGetValue(type, out List<string> items) ? items.ToHashSet() : new HashSet<string>();
                 popupItems.UnionWith(itemList);
                 itemList = filteredParts.TryGetValue(type, out List<string> filteredItems) ? filteredItems.ToHashSet() : new HashSet<string>();
                 popupItems.UnionWith(itemList);
 
                 List<string> popupValues = popupItems.ToList();
+                popupValues.Sort(StringComparer.OrdinalIgnoreCase);
+
+                if (type != CharacterPartType.Wrap)
+                {
+                    popupValues.Insert(0, "None");
+                }
 
                 _currentCharacter.TryGetValue(type, out SidekickPart selectedPart);
                 string currentSelection = selectedPart?.Name ?? "None";
@@ -4620,16 +4719,25 @@ namespace Synty.SidekickCharacters
         /// </summary>
         private void LoadCharacter()
         {
-            _loadingCharacter = true;
-            bool showAllColors = _showAllColourProperties;
-            _showAllColourProperties = true;
-
             string filePath = EditorUtility.OpenFilePanel("Load Character", "", "sk");
             if (string.IsNullOrEmpty(filePath))
             {
                 EditorUtility.DisplayDialog("No File Chosen", "No file was chosen to load.", "OK");
                 return;
             }
+
+            LoadCharacterFromPath(filePath);
+        }
+
+        /// <summary>
+        ///     Loads a character (Parts and Colors) into the tool from a .sk file on disk.
+        /// </summary>
+        /// <param name="filePath">The path of the .sk file to load.</param>
+        private void LoadCharacterFromPath(string filePath)
+        {
+            _loadingCharacter = true;
+            bool showAllColors = _showAllColourProperties;
+            _showAllColourProperties = true;
 
             _bodyPartsTab.value = true;
             SwitchToTab(TabView.Parts);
@@ -4640,8 +4748,44 @@ namespace Synty.SidekickCharacters
             Deserializer deserializer = new Deserializer();
             SerializedCharacter savedCharacter = deserializer.Deserialize<SerializedCharacter>(data);
 
+            ForceCombineOptionsOn();
             LoadSerializedCharacter(savedCharacter, showAllColors);
             _loadingCharacter = false;
+        }
+
+        /// <summary>
+        ///     Turns on all the prefab options so a loaded .sk file generates a combined mesh with all blend shapes kept.
+        ///     Only the current session state and toggles are updated; the user's saved preferences in EditorPrefs are untouched.
+        /// </summary>
+        private void ForceCombineOptionsOn()
+        {
+            _combineMeshes = true;
+            _combineBodyBlendShapes = true;
+            _combineFacialBlendShapes = true;
+
+            _combineMeshesToggle?.SetValueWithoutNotify(true);
+            _combineBodyBlendsToggle?.SetValueWithoutNotify(true);
+            _combineFacialBlendsToggle?.SetValueWithoutNotify(true);
+        }
+
+        /// <summary>
+        ///     Opens the tool window (creating it if needed) and loads the given .sk file into it.
+        /// </summary>
+        /// <param name="filePath">The path of the .sk file to load.</param>
+        public static void OpenAndLoadCharacter(string filePath)
+        {
+            ModularCharacterWindow window = GetWindow<ModularCharacterWindow>("Sidekick Character Tool");
+            window.Show();
+
+            if (window._loadingContent)
+            {
+                // The window is still building its UI and populating tool data; the load runs at the end of AddAllTabContent.
+                _pendingLoadFilePath = filePath;
+            }
+            else
+            {
+                _callbackQueue.Enqueue(() => window.LoadCharacterFromPath(filePath));
+            }
         }
 
         /// <summary>
@@ -4812,7 +4956,19 @@ namespace Synty.SidekickCharacters
         private void UpdateColorTabContent()
         {
             PopulatePartColorRows();
-            UpdateAllVisibleColors();
+
+            // During a batch operation (e.g. loading a .sk file) defer the colour write to the single
+            // rebuild so colours don't apply to the old model as a separate visible stage before the
+            // parts swap in. DebouncedRegenerationTick reapplies them after the rebuild.
+            if (_applyingPreset)
+            {
+                _reapplyColorsOnRegen = true;
+            }
+            else
+            {
+                UpdateAllVisibleColors();
+            }
+
             RefreshVisibleColorRows();
         }
 
@@ -5249,7 +5405,7 @@ namespace Synty.SidekickCharacters
 
             // Rig / skinning
             importer.animationType = ModelImporterAnimationType.Human;
-            importer.skinWeights = ModelImporterSkinWeights.Standard;
+            importer.skinWeights = ModelImporterSkinWeights.Custom;
             importer.maxBonesPerVertex = 4;
             importer.minBoneWeight = 0.001f;
             importer.optimizeBones = true;

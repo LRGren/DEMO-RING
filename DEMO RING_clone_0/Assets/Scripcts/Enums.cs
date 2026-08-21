@@ -108,4 +108,9 @@ public enum DamageIntensity
     Colossal,
 }
 
+public enum PickUpItemType
+{
+    WorldSpawn,
+    CharacterDrop,
+}
 

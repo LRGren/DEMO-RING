@@ -21,10 +21,23 @@ public class PlayerInventoryManager : CharacterInventoryManager
     public HandEquipmentItem handEquipment;
     public LegEquipmentItem legEquipment;
 
+    [Header("Inventory")]
+    public List<Item> characterInventory = new List<Item>();
+
     //自己添加的
     override protected void Awake()
     {
         base.Awake();
+    }
+
+    public void AddItemToInventory(Item item)
+    {
+        characterInventory.Add(item);
+    }
+
+    public void RemoveItemFromInventory()
+    {
+
     }
 
 }

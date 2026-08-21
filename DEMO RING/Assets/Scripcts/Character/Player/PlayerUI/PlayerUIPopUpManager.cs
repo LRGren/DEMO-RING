@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class PlayerUIPopUpManager : MonoBehaviour
@@ -8,6 +9,12 @@ public class PlayerUIPopUpManager : MonoBehaviour
     [Header("Message Pop Up")]
     [SerializeField] private GameObject messagePopUpGameObject;
     [SerializeField] private TextMeshProUGUI messagePopUpText;
+
+    [Header("Item Pop Up")]
+    [SerializeField] GameObject itemPopUpGameObject;
+    [SerializeField] Image itemIcon;
+    [SerializeField] TextMeshProUGUI itemName;
+    [SerializeField] TextMeshProUGUI itemAmount;
 
     [Header("You Died Pop Up")]
     [SerializeField] private GameObject youDiedPopUpGameObject;
@@ -32,6 +39,7 @@ public class PlayerUIPopUpManager : MonoBehaviour
         PlayerUIManager.instance.popUpWindowIsOpen = false;
 
         messagePopUpGameObject.SetActive(false);
+        itemPopUpGameObject.SetActive(false);
     }
 
     public void SendMessagePopUp(string message)
@@ -39,6 +47,22 @@ public class PlayerUIPopUpManager : MonoBehaviour
         PlayerUIManager.instance.popUpWindowIsOpen = true;
         messagePopUpText.text = message;
         messagePopUpGameObject.SetActive(true);
+    }
+
+    public void SendItemPopUp(Item item, int amount)
+    {
+        itemAmount.enabled = false;
+        itemIcon.sprite = item.itemIcon;
+        itemName.text = item.itemName;
+
+        if (amount > 1)
+        {
+            itemAmount.enabled = true;
+            itemAmount.text = "x" + amount.ToString();
+        }
+
+        itemPopUpGameObject.SetActive(true);
+        PlayerUIManager.instance.popUpWindowIsOpen = true;
     }
 
     public void SendYouDiedPopUp()

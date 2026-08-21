@@ -62,6 +62,9 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private bool que_RB_Input = false;
     [SerializeField] private bool que_RT_Input = false;
 
+    [Header("UI Inputs")]
+    [SerializeField] private bool openCharacterMenuInput = false;
+    [SerializeField] private bool closeMenuInput = false;
 
     private void Awake()
     {
@@ -161,6 +164,12 @@ public class PlayerInputManager : MonoBehaviour
 
             //Interaction
             playerControls.PlayerActions.Interaction.performed += i => interaction_Input = true;
+
+            //UI Inputs
+            playerControls.UI.B.performed += i => closeMenuInput = true;
+
+            playerControls.UI.Start.performed += i => openCharacterMenuInput = true;
+
         }
 
         playerControls.Enable();
@@ -216,7 +225,12 @@ public class PlayerInputManager : MonoBehaviour
         HandleInteractionInput();
 
         HandleQueInput();
+
+        // UI
+        HandleCloseMenuInput();
+        HandleOpenCharacterMenuInput();
     }
+
 
     private void HandleTwoHandWeaponInput()
     {
@@ -438,12 +452,15 @@ public class PlayerInputManager : MonoBehaviour
             jump_Input = false;
 
             //有UI，不反应
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                return;
+            }
 
             //尝试跳跃
             player.playerLocomotionManager.AttemptToPerformJump();
         }
     }
-
 
 
     private void HandleRBInput()
@@ -527,6 +544,11 @@ public class PlayerInputManager : MonoBehaviour
         {
             switch_Right_Weapons_Input = false;
 
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                return;
+            }
+
             if (player.playerNetworkManager.isTwoHandingWeapon.Value)
             {
                 player.playerNetworkManager.isTwoHandingWeapon.Value = false;
@@ -540,6 +562,11 @@ public class PlayerInputManager : MonoBehaviour
         if (switch_Leftt_Weapons_Input)
         {
             switch_Leftt_Weapons_Input = false;
+
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                return;
+            }
 
             if (player.playerNetworkManager.isTwoHandingWeapon.Value)
             {
@@ -611,4 +638,33 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
     }
+
+    private void HandleOpenCharacterMenuInput()
+    {
+        if (openCharacterMenuInput)
+        {
+            openCharacterMenuInput = false;
+
+            PlayerUIManager.instance.CloseAllWindows();
+            PlayerUIManager.instance.playerUIPopUpManager.CloseAllPopUps();
+
+            if (!PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                PlayerUIManager.instance.playerUICharacterMenuManager.OpenCharacterMenu();
+            }
+        }
+    }
+
+    private void HandleCloseMenuInput()
+    {
+        if (closeMenuInput)
+        {
+            closeMenuInput = false;
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                PlayerUIManager.instance.CloseAllWindows();
+            }
+        }
+    }
+
 }

@@ -90,6 +90,8 @@ public class SiteOfGraceInteractable : Interactable
         //Player An Animation
         player.playerAnimatorManager.PlayerTargetActionAnimation("Activate_Site_Of_Grace_01", true);
 
+        player.characterSoundFXManager.PlaySoundFX(player.characterSoundFXManager.restoreSiteOfGraceSFX);
+
         //Sends A Pop Up To The Player Saying "Site Of Grace Restored"
         PlayerUIManager.instance.playerUIPopUpManager.SendSiteOfGraceActivatedPopUp("Site Of Grace Restored");
 

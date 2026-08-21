@@ -652,6 +652,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Tap"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""B"",
+                    ""type"": ""Button"",
+                    ""id"": ""39a33c01-f378-4782-b27c-b0e7f1fc7f01"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Start"",
+                    ""type"": ""Button"",
+                    ""id"": ""2ff62e21-6574-40be-ad77-7898e871dbec"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -663,6 +681,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""X"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e3fa770-2a4f-434f-97d2-5d0985f831a9"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""B"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5bfa6ca1-1e2f-4e02-9fb3-f05cbbe512ac"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Start"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -702,6 +742,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_X = m_UI.FindAction("X", throwIfNotFound: true);
+        m_UI_B = m_UI.FindAction("B", throwIfNotFound: true);
+        m_UI_Start = m_UI.FindAction("Start", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -1283,6 +1325,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
     private readonly InputAction m_UI_X;
+    private readonly InputAction m_UI_B;
+    private readonly InputAction m_UI_Start;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1298,6 +1342,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/X".
         /// </summary>
         public InputAction @X => m_Wrapper.m_UI_X;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/B".
+        /// </summary>
+        public InputAction @B => m_Wrapper.m_UI_B;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Start".
+        /// </summary>
+        public InputAction @Start => m_Wrapper.m_UI_Start;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1327,6 +1379,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @X.started += instance.OnX;
             @X.performed += instance.OnX;
             @X.canceled += instance.OnX;
+            @B.started += instance.OnB;
+            @B.performed += instance.OnB;
+            @B.canceled += instance.OnB;
+            @Start.started += instance.OnStart;
+            @Start.performed += instance.OnStart;
+            @Start.canceled += instance.OnStart;
         }
 
         /// <summary>
@@ -1341,6 +1399,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @X.started -= instance.OnX;
             @X.performed -= instance.OnX;
             @X.canceled -= instance.OnX;
+            @B.started -= instance.OnB;
+            @B.performed -= instance.OnB;
+            @B.canceled -= instance.OnB;
+            @Start.started -= instance.OnStart;
+            @Start.performed -= instance.OnStart;
+            @Start.canceled -= instance.OnStart;
         }
 
         /// <summary>
@@ -1566,5 +1630,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnX(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "B" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnB(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Start" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnStart(InputAction.CallbackContext context);
     }
 }

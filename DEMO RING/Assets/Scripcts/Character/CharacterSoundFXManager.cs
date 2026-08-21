@@ -18,6 +18,14 @@ public class CharacterSoundFXManager : MonoBehaviour
     public AudioClip[] footstepSFXDirt;
     public AudioClip[] footstepSFXStone;
 
+    [Header("Pick Up Item SFX")]
+    public AudioClip pickUpItemSFX;
+
+    [Header("Restore Site Of Grace SFX")]
+    public AudioClip restoreSiteOfGraceSFX;
+
+    [Space(10)]
+
     [SerializeField] private AudioSource audioSource;
 
     private void Awake()

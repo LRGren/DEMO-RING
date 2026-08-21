@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Wooden Shield
   m_EditorClassIdentifier: 
   itemName: Broadsword
-  itemIcon: {fileID: 21300114, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  itemIcon: {fileID: 21300088, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
   itemDescription: A straight sword
-  itemID: 3
+  itemID: 10003
+  itemWeight: 0
   weaponAnimator: {fileID: 22100000, guid: 9be177efe1fcba84294f9aff999f6bfe, type: 2}
   weaponType: 1
   weaponClass: 1

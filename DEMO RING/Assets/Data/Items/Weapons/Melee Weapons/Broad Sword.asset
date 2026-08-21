@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Broad Sword
   m_EditorClassIdentifier: 
   itemName: Broadsword
-  itemIcon: {fileID: 21300114, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  itemIcon: {fileID: 21300078, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
   itemDescription: A straight sword
-  itemID: 2
+  itemID: 10002
   itemWeight: 4
   weaponAnimator: {fileID: 22100000, guid: 7233d515cbc095a44b72c59e7a1d72f8, type: 2}
   weaponType: 0

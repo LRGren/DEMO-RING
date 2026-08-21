@@ -56863,7 +56863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2685673625
+  GlobalObjectIdHash: 2978010494
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -57246,12 +57246,12 @@ MonoBehaviour:
     type: 2}
   currentTwoHandedWeapon: {fileID: 0}
   weaponsInRightHand:
-  - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
+  - {fileID: 11400000, guid: fd164a1d6f05bda478dd90018ab02d46, type: 2}
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   rightWeaponIndex: 0
   weaponsInLeftHand:
-  - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
+  - {fileID: 11400000, guid: 5127d45e178cc8649b053be9de266c07, type: 2}
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   leftWeaponIndex: 0
@@ -57259,6 +57259,7 @@ MonoBehaviour:
   bodyEquipment: {fileID: 0}
   handEquipment: {fileID: 0}
   legEquipment: {fileID: 0}
+  characterInventory: []
 --- !u!114 &7701256391751851654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57333,6 +57334,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fa16bd6cbe8bcba40ad0f5c9644c9607, type: 3}
   footstepSFXStone:
   - {fileID: 8300000, guid: 29536eb6a0b57b04596917e9e6193bcb, type: 3}
+  pickUpItemSFX: {fileID: 8300000, guid: 3f097eedb077f004f914f2c46573e2ae, type: 3}
+  restoreSiteOfGraceSFX: {fileID: 8300000, guid: 3019f0ef412825045a9160a4cc3900cf,
+    type: 3}
   audioSource: {fileID: 6761140775019134779}
 --- !u!114 &6251675675731569420
 MonoBehaviour:

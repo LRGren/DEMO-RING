@@ -39,9 +39,12 @@ public class WorldAIManager : MonoBehaviour
         }
 
         AIBossCharacterManager bossCharacter = character as AIBossCharacterManager;
-        if (bossCharacter != null && !spawnedInBossCharacters.Contains(bossCharacter))
+        if (bossCharacter != null)
         {
-            spawnedInBossCharacters.Add(bossCharacter);
+            if (!spawnedInBossCharacters.Contains(bossCharacter))
+            {
+                spawnedInBossCharacters.Add(bossCharacter);
+            }
         }
     }
 
@@ -71,6 +74,7 @@ public class WorldAIManager : MonoBehaviour
         }
 
         spawnedInCharacters.Clear();
+        spawnedInBossCharacters.Clear();
 
         foreach (var spawner in aiCharacterSpawners)
         {

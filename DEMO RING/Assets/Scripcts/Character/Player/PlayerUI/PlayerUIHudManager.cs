@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerUIHudManager : MonoBehaviour
 {
+    [Header("Canvas Groups")]
+    public CanvasGroup[] canvasGroups;
+
     [Header("Stat Bar")]
     [SerializeField] private UI_StatBar healthBar;
     [SerializeField] private UI_StatBar staminaBar;
@@ -16,6 +19,24 @@ public class PlayerUIHudManager : MonoBehaviour
     [Header("Boss HP Bar")]
     public Transform bossHPBarParent;
     public GameObject bossHPBarObject;
+
+    public void ToggleHUD(bool status)
+    {
+        if (status)
+        {
+            foreach (CanvasGroup canvasGroup in canvasGroups)
+            {
+                canvasGroup.alpha = 1f;
+            }
+        }
+        else
+        {
+            foreach (CanvasGroup canvasGroup in canvasGroups)
+            {
+                canvasGroup.alpha = 0f;
+            }
+        }
+    }
 
     public void RefreshHUD()
     {
@@ -52,7 +73,7 @@ public class PlayerUIHudManager : MonoBehaviour
 
         if (weapon == null)
         {
-            Debug.Log("Weapon not found in database for ID: " + weaponID);
+            //Debug.Log("Weapon not found in database for ID: " + weaponID);
             rightWeaponQuickSlotUI.enabled = false;
             rightWeaponQuickSlotUI.sprite = null;
             return;
@@ -60,7 +81,7 @@ public class PlayerUIHudManager : MonoBehaviour
 
         if (weapon.itemIcon == null)
         {
-            Debug.Log("Weapon icon not found for weapon: " + weapon.itemName);
+            //Debug.Log("Weapon icon not found for weapon: " + weapon.itemName);
             rightWeaponQuickSlotUI.enabled = false;
             rightWeaponQuickSlotUI.sprite = null;
             return;

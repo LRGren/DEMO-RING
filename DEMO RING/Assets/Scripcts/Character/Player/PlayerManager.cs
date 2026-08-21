@@ -276,6 +276,9 @@ public class PlayerManager : CharacterManager
         currentCharacterSaveData.leftWeapon01 = playerInventoryManager.weaponsInLeftHand[0].itemID;
         currentCharacterSaveData.leftWeapon02 = playerInventoryManager.weaponsInLeftHand[1].itemID;
         currentCharacterSaveData.leftWeapon03 = playerInventoryManager.weaponsInLeftHand[2].itemID;
+
+        // Inventory
+        currentCharacterSaveData.inventory = playerInventoryManager.characterInventory;
     }
 
     /// <summary>
@@ -392,6 +395,7 @@ public class PlayerManager : CharacterManager
         playerNetworkManager.currentRightHandWeaponID.Value = playerInventoryManager.weaponsInRightHand[playerInventoryManager.rightWeaponIndex].itemID;
         playerNetworkManager.currentLeftHandWeaponID.Value = playerInventoryManager.weaponsInLeftHand[playerInventoryManager.leftWeaponIndex].itemID;
 
+        playerInventoryManager.characterInventory = currentCharacterSaveData.inventory;
 
     }
 
