@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Knight Gauntlets
   m_EditorClassIdentifier: 
   itemName: Knight Gauntlets
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300080, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
   itemDescription: 'Iron gauntlets of an unknown knight. It is made of thin iron
     plate.
 

@@ -32,12 +32,20 @@ public class PlayerInventoryManager : CharacterInventoryManager
 
     public void AddItemToInventory(Item item)
     {
-        characterInventory.Add(item);
+        characterInventory.Add(Instantiate(item));
     }
 
-    public void RemoveItemFromInventory()
+    public void RemoveItemFromInventory(Item item)
     {
+        characterInventory.Remove(item);
 
+        for (int i = characterInventory.Count - 1; i >= 0; i--)
+        {
+            if (characterInventory[i] == null)
+            {
+                characterInventory.RemoveAt(i);
+            }
+        }
     }
 
 }

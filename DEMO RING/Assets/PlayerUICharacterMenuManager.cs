@@ -26,7 +26,7 @@ public class PlayerUICharacterMenuManager : MonoBehaviour
 
     private IEnumerator CloseMenuCoroutine()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.15f);
 
         PlayerUIManager.instance.menuWindowIsOpen = false;
         menu.SetActive(false);

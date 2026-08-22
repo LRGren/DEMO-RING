@@ -97,7 +97,7 @@ public class PlayerUIHudManager : MonoBehaviour
 
         if (weapon == null)
         {
-            Debug.Log("Weapon not found in database for ID: " + weaponID);
+            //Debug.Log("Weapon not found in database for ID: " + weaponID);
             leftWeaponQuickSlotUI.enabled = false;
             leftWeaponQuickSlotUI.sprite = null;
             return;
@@ -105,7 +105,7 @@ public class PlayerUIHudManager : MonoBehaviour
 
         if (weapon.itemIcon == null)
         {
-            Debug.Log("Weapon icon not found for weapon: " + weapon.itemName);
+            //Debug.Log("Weapon icon not found for weapon: " + weapon.itemName);
             leftWeaponQuickSlotUI.enabled = false;
             leftWeaponQuickSlotUI.sprite = null;
             return;

@@ -9,6 +9,7 @@ TagManager:
   - Stone
   - FxTemporaire
   - Collide
+  - Equipment Slot
   layers:
   - Default
   - TransparentFX

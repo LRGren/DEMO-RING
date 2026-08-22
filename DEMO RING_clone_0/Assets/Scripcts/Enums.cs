@@ -74,6 +74,20 @@ public enum EquipmentModelType
     LeftKnee
 }
 
+public enum EquipmentType
+{
+    RightWeapon01,
+    RightWeapon02,
+    RightWeapon03,
+    LeftWeapon01,
+    LeftWeapon02,
+    LeftWeapon03,
+    Head,
+    Body,
+    Legs,
+    Hands,
+}
+
 public enum HeadEquipmentType
 {
     FullHelmet, //遮住全部

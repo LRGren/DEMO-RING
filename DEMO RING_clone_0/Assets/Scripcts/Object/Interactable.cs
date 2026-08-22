@@ -25,7 +25,7 @@ public class Interactable : NetworkBehaviour
         if (!player.IsOwner)
             return;
 
-        Debug.Log("Interacting with " + gameObject.name);
+        //Debug.Log("Interacting with " + gameObject.name);
         interactableCollider.enabled = false;
         player.playerInteractionManager.RemoveInteractable(this);
         PlayerUIManager.instance.playerUIPopUpManager.CloseAllPopUps();

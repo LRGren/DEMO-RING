@@ -64,7 +64,6 @@ public class PlayerInputManager : MonoBehaviour
 
     [Header("UI Inputs")]
     [SerializeField] private bool openCharacterMenuInput = false;
-    [SerializeField] private bool closeMenuInput = false;
 
     private void Awake()
     {
@@ -166,8 +165,6 @@ public class PlayerInputManager : MonoBehaviour
             playerControls.PlayerActions.Interaction.performed += i => interaction_Input = true;
 
             //UI Inputs
-            playerControls.UI.B.performed += i => closeMenuInput = true;
-
             playerControls.UI.Start.performed += i => openCharacterMenuInput = true;
 
         }
@@ -227,8 +224,7 @@ public class PlayerInputManager : MonoBehaviour
         HandleQueInput();
 
         // UI
-        HandleCloseMenuInput();
-        HandleOpenCharacterMenuInput();
+        HandleCharacterMenuInput();
     }
 
 
@@ -293,6 +289,7 @@ public class PlayerInputManager : MonoBehaviour
         //时刻检测锁定状态，如果有目标死亡，取消锁定
         if (player.playerNetworkManager.isLockOn.Value)
         {
+
             //如果没有目标，取消锁定
             if (player.playerCombatManager.currentTarget == null)
                 return;
@@ -313,6 +310,7 @@ public class PlayerInputManager : MonoBehaviour
         if (lock_On_Input)
         {
             lock_On_Input = false;
+
 
             if (player.playerNetworkManager.isLockOn.Value)
             {
@@ -428,6 +426,11 @@ public class PlayerInputManager : MonoBehaviour
         {
             dodge_Input = false;
 
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                return;
+            }
+
             //后跳或者翻滚
             player.playerLocomotionManager.AttemptToPerformDodge();
         }
@@ -435,6 +438,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleSprintInput()
     {
+
         if (sprint_Input)
         {
             player.playerLocomotionManager.HandleSprinting();
@@ -476,6 +480,10 @@ public class PlayerInputManager : MonoBehaviour
             RB_Input = false;
 
             //如果有UI，不反应
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                return;
+            }
 
             player.playerNetworkManager.SetCharacterActionHand(true);
 
@@ -496,7 +504,10 @@ public class PlayerInputManager : MonoBehaviour
         {
             LB_Shield_Input = false;
 
-            //如果有UI，不反应
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                return;
+            }
 
             player.playerNetworkManager.SetCharacterActionHand(false);
 
@@ -517,6 +528,11 @@ public class PlayerInputManager : MonoBehaviour
         {
             RT_Input = false;
             //如果有UI，不反应
+
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                return;
+            }
 
             player.playerNetworkManager.SetCharacterActionHand(true);
 
@@ -583,6 +599,11 @@ public class PlayerInputManager : MonoBehaviour
         {
             interaction_Input = false;
 
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                return;
+            }
+
             player.playerInteractionManager.Interact();
         }
     }
@@ -591,6 +612,15 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (two_Hand_Input)
         {
+            que_RB_Input = false;
+            que_RT_Input = false;
+            return;
+        }
+
+        if (PlayerUIManager.instance.menuWindowIsOpen)
+        {
+            que_RB_Input = false;
+            que_RT_Input = false;
             return;
         }
 
@@ -609,6 +639,9 @@ public class PlayerInputManager : MonoBehaviour
     private void ProcessQueInput()
     {
         if (player.isDead.Value)
+            return;
+
+        if (PlayerUIManager.instance.menuWindowIsOpen)
             return;
 
         if (que_RB_Input)
@@ -639,32 +672,24 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    private void HandleOpenCharacterMenuInput()
+    private void HandleCharacterMenuInput()
     {
+        //手柄 Start：打开与关闭都参与
         if (openCharacterMenuInput)
         {
             openCharacterMenuInput = false;
 
-            PlayerUIManager.instance.CloseAllWindows();
-            PlayerUIManager.instance.playerUIPopUpManager.CloseAllPopUps();
-
-            if (!PlayerUIManager.instance.menuWindowIsOpen)
+            if (PlayerUIManager.instance.menuWindowIsOpen)
             {
+                //已打开 → 关闭
+                PlayerUIManager.instance.CloseAllWindows();
+            }
+            else
+            {
+                //未打开 → 打开（顺手清掉可能残留的弹窗）
+                PlayerUIManager.instance.playerUIPopUpManager.CloseAllPopUps();
                 PlayerUIManager.instance.playerUICharacterMenuManager.OpenCharacterMenu();
             }
         }
     }
-
-    private void HandleCloseMenuInput()
-    {
-        if (closeMenuInput)
-        {
-            closeMenuInput = false;
-            if (PlayerUIManager.instance.menuWindowIsOpen)
-            {
-                PlayerUIManager.instance.CloseAllWindows();
-            }
-        }
-    }
-
 }
