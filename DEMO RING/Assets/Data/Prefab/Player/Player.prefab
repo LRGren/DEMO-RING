@@ -20934,7 +20934,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6726898963494584348}
   - component: {fileID: 1187991113102823987}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hand_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56863,7 +56863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2978010494
+  GlobalObjectIdHash: 2685673625
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -56916,6 +56916,10 @@ MonoBehaviour:
   isJumping:
     m_InternalValue: 0
   isChargingAttack:
+    m_InternalValue: 0
+  isRipostable:
+    m_InternalValue: 0
+  isBeingRiposted:
     m_InternalValue: 0
   endurance:
     m_InternalValue: 1
@@ -57273,12 +57277,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTarget: {fileID: 0}
+  previousPoiseDamageTaken: 0
   lastAttackAnimation: 
   currentAttackType: 0
   lockOnTransform: {fileID: 6956602849538390822}
   canPerformRollingAttack: 0
   canPerformBackstepAttack: 0
   canBlock: 1
+  canBeBackstabbed: 1
+  riposteReceiverTransform: {fileID: 0}
+  backstabReceiverTransform: {fileID: 0}
+  criticalAttackMaxDistance: 0.7
+  pendingCriticalAttackDamage: 0
   currentWeaponBedingUsed: {fileID: 0}
   canComboWithMainHandWeapon: 0
 --- !u!114 &3399047118958252384
@@ -57335,6 +57345,7 @@ MonoBehaviour:
   footstepSFXStone:
   - {fileID: 8300000, guid: 29536eb6a0b57b04596917e9e6193bcb, type: 3}
   pickUpItemSFX: {fileID: 8300000, guid: 3f097eedb077f004f914f2c46573e2ae, type: 3}
+  stanceBreakSFX: {fileID: 0}
   restoreSiteOfGraceSFX: {fileID: 8300000, guid: 3019f0ef412825045a9160a4cc3900cf,
     type: 3}
   audioSource: {fileID: 6761140775019134779}
@@ -57351,6 +57362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bloodSplatterVFX: {fileID: 0}
+  criticalBloodSplatterVFX: {fileID: 0}
   staticEffects: []
   effectToTest: {fileID: 0}
   processEffect: 0
@@ -59959,7 +59971,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5742471835531070394}
   - component: {fileID: 3848757816103713694}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Spine_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}

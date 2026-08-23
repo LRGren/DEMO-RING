@@ -103,4 +103,71 @@ public class WorldUtilityManager : MonoBehaviour
             return DamageIntensity.Colossal;
         }
     }
+
+    public float GetCriticalAttackDamageMultiplierBasedOnWeaponClass(WeaponClass weaponClass)
+    {
+        switch (weaponClass)
+        {
+            case WeaponClass.StraightSword:
+                return 3.45f;
+            case WeaponClass.MediumShield:
+                return 2.0f;
+            default:
+                return 2f;
+        }
+    }
+
+    public float GetBackstabAttackDamageMultiplierBasedOnWeaponClass(WeaponClass weaponClass)
+    {
+        switch (weaponClass)
+        {
+            case WeaponClass.StraightSword:
+                return 2.3f;
+            case WeaponClass.MediumShield:
+                return 1.0f;
+            default:
+                return 2f;
+        }
+    }
+
+
+    public Vector3 GetRipostingPositionBasedOnWeaponClass(WeaponClass weaponClass)
+    {
+
+        Vector3 position = new Vector3(0.11f, 0, 0.7f);
+
+        switch (weaponClass)
+        {
+            case WeaponClass.StraightSword:
+                break;
+            case WeaponClass.MediumShield:
+                break;
+            default:
+                break;
+
+        }
+
+        return position;
+    }
+
+    public Vector3 GetBackstabbingPositionBasedOnWeaponClass(WeaponClass weaponClass)
+    {
+
+        Vector3 position = new Vector3(0.12f, 0, 0.74f);
+
+        switch (weaponClass)
+        {
+            case WeaponClass.StraightSword:
+                break;
+            case WeaponClass.MediumShield:
+                break;
+            default:
+                break;
+
+        }
+
+        return position;
+    }
+
 }
+

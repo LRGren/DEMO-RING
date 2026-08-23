@@ -1219,6 +1219,9 @@ MonoBehaviour:
   footstepSFXGrass: []
   footstepSFXDirt: []
   footstepSFXStone: []
+  pickUpItemSFX: {fileID: 0}
+  stanceBreakSFX: {fileID: 0}
+  restoreSiteOfGraceSFX: {fileID: 0}
   audioSource: {fileID: 0}
 --- !u!114 &-6051730209635047487
 MonoBehaviour:
@@ -1240,6 +1243,15 @@ MonoBehaviour:
   blockingLightningAbsorption: 0
   blockingHolyAbsorption: 0
   blockingStaminaAbsorption: 0
+  armorPhysicalDamageAbsorption: 0
+  armorMagicDamageAbsorption: 0
+  armorFireDamageAbsorption: 0
+  armorLightningDamageAbsorption: 0
+  armorHolyDamageAbsorption: 0
+  armorImmunity: 0
+  armorRobustness: 0
+  armorFocus: 0
+  armorVitality: 0
   totalPoiseDamage: 0
   offensivePoiseBonus: 0
   basePoiseDefense: 0
@@ -1423,6 +1435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTarget: {fileID: 0}
+  previousPoiseDamageTaken: 0
   lastAttackAnimation: 
   currentAttackType: 0
   lockOnTransform: {fileID: 6598238437659444050}
@@ -1438,6 +1451,12 @@ MonoBehaviour:
   minimumFOV: -35
   maximumFOV: 35
   attackRotationSpeed: 180
+  maxStance: 30
+  currentStance: 30
+  stanceRegenRationPerSecond: 15
+  ignoreStanceBreak: 0
+  stanceRegenerationTimer: 15
+  defaultTimeUntilStanceRegenerationBegins: 15
   rightHandUndeadDamageCollider: {fileID: 6356024641420292441}
   leftHandUndeadDamageCollider: {fileID: 3005679609566684791}
   baseDamage: 25
@@ -1502,6 +1521,8 @@ MonoBehaviour:
   isJumping:
     m_InternalValue: 0
   isChargingAttack:
+    m_InternalValue: 0
+  isRipostable:
     m_InternalValue: 0
   endurance:
     m_InternalValue: 1

@@ -472,8 +472,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
         type: 3}
+      propertyPath: takeCriticalDamageEffect
+      value: 
+      objectReference: {fileID: 11400000, guid: d367d1b4d660b4444b136397f4530c2d,
+        type: 2}
+    - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
+        type: 3}
       propertyPath: instantEffects.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
         type: 3}
@@ -498,6 +504,12 @@ PrefabInstance:
       propertyPath: instantEffects.Array.data[2]
       value: 
       objectReference: {fileID: 11400000, guid: 55d23956ad00a4a459f94133c2c7008b,
+        type: 2}
+    - target: {fileID: 9145235232422123188, guid: eeb7ddbefe3349e4dbe6bd8cc50a619e,
+        type: 3}
+      propertyPath: instantEffects.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: d367d1b4d660b4444b136397f4530c2d,
         type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -891,9 +903,19 @@ PrefabInstance:
       objectReference: {fileID: 899262622}
     - target: {fileID: 1066246126990578679, guid: 5f125074f08c19f448b034f5130eb50c,
         type: 3}
+      propertyPath: stanceBreakSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: f484424462fac5e47ac8907ef8facec7, type: 3}
+    - target: {fileID: 1066246126990578679, guid: 5f125074f08c19f448b034f5130eb50c,
+        type: 3}
       propertyPath: bossIntroPlayer
       value: 
       objectReference: {fileID: 899262623}
+    - target: {fileID: 1066246126990578679, guid: 5f125074f08c19f448b034f5130eb50c,
+        type: 3}
+      propertyPath: criticalStrikeSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 3516c279da18eaa40b97de96d4d0356d, type: 3}
     - target: {fileID: 1066246126990578679, guid: 5f125074f08c19f448b034f5130eb50c,
         type: 3}
       propertyPath: physicalDamageSFX.Array.size

@@ -2362,7 +2362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 6309587
+  GlobalObjectIdHash: 3963331255
   InScenePlacedSourceGlobalObjectIdHash: 1732247804
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -2406,6 +2406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bloodSplatterVFX: {fileID: 0}
+  staticEffects: []
 --- !u!114 &5766027131290333020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2475,6 +2476,15 @@ MonoBehaviour:
   blockingLightningAbsorption: 0
   blockingHolyAbsorption: 0
   blockingStaminaAbsorption: 0
+  armorPhysicalDamageAbsorption: 0
+  armorMagicDamageAbsorption: 0
+  armorFireDamageAbsorption: 0
+  armorLightningDamageAbsorption: 0
+  armorHolyDamageAbsorption: 0
+  armorImmunity: 0
+  armorRobustness: 0
+  armorFocus: 0
+  armorVitality: 0
   totalPoiseDamage: 0
   offensivePoiseBonus: 0
   basePoiseDefense: 120
@@ -2688,9 +2698,15 @@ MonoBehaviour:
     m_InternalValue: 0
   isChargingAttack:
     m_InternalValue: 0
+  isRipostable:
+    m_InternalValue: 0
   endurance:
     m_InternalValue: 1
   vitality:
+    m_InternalValue: 1
+  strength:
+    m_InternalValue: 1
+  strengthModifiers:
     m_InternalValue: 1
   currentStamina:
     m_InternalValue: 0
@@ -2713,6 +2729,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTarget: {fileID: 0}
+  previousPoiseDamageTaken: 0
   lastAttackAnimation: 
   currentAttackType: 0
   lockOnTransform: {fileID: 1484316845855349640}
@@ -2728,6 +2745,12 @@ MonoBehaviour:
   minimumFOV: -35
   maximumFOV: 35
   attackRotationSpeed: 240
+  maxStance: 80
+  currentStance: 80
+  stanceRegenRationPerSecond: 15
+  ignoreStanceBreak: 0
+  stanceRegenerationTimer: 15
+  defaultTimeUntilStanceRegenerationBegins: 15
   swordDamageCollider: {fileID: 7589180796454479796}
   earthquakeAttackPoint: {fileID: 5167568855406675212}
   earthquakeAttackRadius: 3
@@ -2833,6 +2856,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fa16bd6cbe8bcba40ad0f5c9644c9607, type: 3}
   footstepSFXStone:
   - {fileID: 8300000, guid: 29536eb6a0b57b04596917e9e6193bcb, type: 3}
+  pickUpItemSFX: {fileID: 0}
+  stanceBreakSFX: {fileID: 0}
+  restoreSiteOfGraceSFX: {fileID: 0}
   audioSource: {fileID: 0}
   wooshes:
   - {fileID: 8300000, guid: 4e7a9f408abdba8459fdccbeaea95215, type: 3}

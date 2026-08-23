@@ -21,6 +21,9 @@ public class CharacterSoundFXManager : MonoBehaviour
     [Header("Pick Up Item SFX")]
     public AudioClip pickUpItemSFX;
 
+    [Header("Stance Break SFX")]
+    public AudioClip stanceBreakSFX;
+
     [Header("Restore Site Of Grace SFX")]
     public AudioClip restoreSiteOfGraceSFX;
 
@@ -78,8 +81,19 @@ public class CharacterSoundFXManager : MonoBehaviour
         PlaySoundFX(footstepClip, 0.2f);
     }
 
+    public virtual void PlayStanceBreakSFX()
+    {
+        audioSource.PlayOneShot(WorldSoundFXManager.instance.stanceBreakSFX);
+    }
+
+    public virtual void PlayCriticalSrikeSoundFX()
+    {
+        audioSource.PlayOneShot(WorldSoundFXManager.instance.criticalStrikeSFX);
+    }
+
     public virtual void PlayBlockSFX()
     {
 
     }
+
 }

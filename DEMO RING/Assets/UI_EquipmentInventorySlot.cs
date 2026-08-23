@@ -43,7 +43,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
             case EquipmentType.RightWeapon01:
                 equipedItem = player.playerInventoryManager.weaponsInRightHand[0];
 
-                if (equipedItem.itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                if (equipedItem.itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                 {
                     player.playerInventoryManager.AddItemToInventory(equipedItem);
                 }
@@ -59,7 +59,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 break;
             case EquipmentType.RightWeapon02:
                 equipedItem = player.playerInventoryManager.weaponsInRightHand[1];
-                if (equipedItem.itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                if (equipedItem.itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                 {
                     player.playerInventoryManager.AddItemToInventory(equipedItem);
                 }
@@ -74,7 +74,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 break;
             case EquipmentType.RightWeapon03:
                 equipedItem = player.playerInventoryManager.weaponsInRightHand[2];
-                if (equipedItem.itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                if (equipedItem.itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                 {
                     player.playerInventoryManager.AddItemToInventory(equipedItem);
                 }
@@ -87,7 +87,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 break;
             case EquipmentType.LeftWeapon01:
                 equipedItem = player.playerInventoryManager.weaponsInLeftHand[0];
-                if (equipedItem.itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                if (equipedItem.itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                 {
                     player.playerInventoryManager.AddItemToInventory(equipedItem);
                 }
@@ -101,7 +101,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 break;
             case EquipmentType.LeftWeapon02:
                 equipedItem = player.playerInventoryManager.weaponsInLeftHand[1];
-                if (equipedItem.itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                if (equipedItem.itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                 {
                     player.playerInventoryManager.AddItemToInventory(equipedItem);
                 }
@@ -114,7 +114,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 break;
             case EquipmentType.LeftWeapon03:
                 equipedItem = player.playerInventoryManager.weaponsInLeftHand[2];
-                if (equipedItem.itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                if (equipedItem.itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                 {
                     player.playerInventoryManager.AddItemToInventory(equipedItem);
                 }

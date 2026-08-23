@@ -31,6 +31,7 @@ MonoBehaviour:
   fireDamage: 0
   holyDamage: 0
   lightningDamage: 0
+  criticalDamage: 100
   poiseDamage: 5
   physicalDamageAbsorption: 100
   magicalDamageAbsorption: 0
@@ -54,8 +55,9 @@ MonoBehaviour:
   runningAttackStaminaModifier: 1
   rollingAttackStaminaModifier: 1
   backstepAttackStaminaModifier: 1
-  oh_RB_Action: {fileID: 0}
-  oh_RT_Action: {fileID: 0}
-  oh_LB_Action: {fileID: 0}
-  wooshes: []
+  oh_RB_Action: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b, type: 2}
+  oh_RT_Action: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8, type: 2}
+  oh_LB_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
+  wooshes:
+  - {fileID: 8300000, guid: 2b019c6187fca1e48b47e28c891dc66c, type: 3}
   blocks: []

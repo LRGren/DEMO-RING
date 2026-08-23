@@ -15,8 +15,8 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     public WeaponModelInstantiationSlot backSlot;
 
     [Header("Weapon Managers")]
-    [SerializeField] WeaponManager rightHandWeaponManager;
-    [SerializeField] WeaponManager leftHandWeaponManager;
+    public WeaponManager rightHandWeaponManager;
+    public WeaponManager leftHandWeaponManager;
 
     [Header("Weapon Models")]
     public GameObject rightWeaponModel;
@@ -605,7 +605,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
             for (int i = 0; i < player.playerInventoryManager.weaponsInRightHand.Length; i++)
             {
-                if (player.playerInventoryManager.weaponsInRightHand[i].itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                if (player.playerInventoryManager.weaponsInRightHand[i].itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                 {
                     weaponCount++;
                     if (firstWeapon == null)
@@ -619,7 +619,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             if (weaponCount <= 1)
             {
                 player.playerInventoryManager.rightWeaponIndex = -1;
-                selectedWeapon = WorldItemDatabase.Instance.unarmedWeapon;
+                selectedWeapon = WorldItemDatabase.instance.unarmedWeapon;
                 player.playerNetworkManager.currentRightHandWeaponID.Value = selectedWeapon.itemID;
             }
             else
@@ -635,7 +635,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         foreach (WeaponItem weaponItem in player.playerInventoryManager.weaponsInRightHand)
         {
             //Debug.Log(player.playerInventoryManager.rightWeaponIndex + " and " + player.playerInventoryManager.weaponsInRightHand.Length);
-            if (player.playerInventoryManager.weaponsInRightHand[player.playerInventoryManager.rightWeaponIndex].itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+            if (player.playerInventoryManager.weaponsInRightHand[player.playerInventoryManager.rightWeaponIndex].itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
             {
                 selectedWeapon = player.playerInventoryManager.weaponsInRightHand[player.playerInventoryManager.rightWeaponIndex];
 
@@ -705,7 +705,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
             for (int i = 0; i < player.playerInventoryManager.weaponsInLeftHand.Length; i++)
             {
-                if (player.playerInventoryManager.weaponsInLeftHand[i].itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                if (player.playerInventoryManager.weaponsInLeftHand[i].itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                 {
                     weaponCount++;
                     if (firstWeapon == null)
@@ -719,7 +719,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             if (weaponCount <= 1)
             {
                 player.playerInventoryManager.leftWeaponIndex = -1;
-                selectedWeapon = WorldItemDatabase.Instance.unarmedWeapon;
+                selectedWeapon = WorldItemDatabase.instance.unarmedWeapon;
                 player.playerNetworkManager.currentLeftHandWeaponID.Value = selectedWeapon.itemID;
             }
             else
@@ -735,7 +735,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         foreach (WeaponItem weaponItem in player.playerInventoryManager.weaponsInLeftHand)
         {
             //Debug.Log(player.playerInventoryManager.leftWeaponIndex + " and " + player.playerInventoryManager.weaponsInLeftHand.Length);
-            if (player.playerInventoryManager.weaponsInLeftHand[player.playerInventoryManager.leftWeaponIndex].itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+            if (player.playerInventoryManager.weaponsInLeftHand[player.playerInventoryManager.leftWeaponIndex].itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
             {
                 selectedWeapon = player.playerInventoryManager.weaponsInLeftHand[player.playerInventoryManager.leftWeaponIndex];
 
@@ -794,7 +794,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     public void TwoHandRightWeapon()
     {
         //检查是否可以双持
-        if (player.playerInventoryManager.currentRightHandWeapon == WorldItemDatabase.Instance.unarmedWeapon)
+        if (player.playerInventoryManager.currentRightHandWeapon == WorldItemDatabase.instance.unarmedWeapon)
         {
 
             //如果RETURNING 或者 NOT TWO HANDING，直接RESET BOOL
@@ -825,7 +825,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     public void TwoHandLeftWeapon()
     {
         //检查是否可以双持
-        if (player.playerInventoryManager.currentLeftHandWeapon == WorldItemDatabase.Instance.unarmedWeapon)
+        if (player.playerInventoryManager.currentLeftHandWeapon == WorldItemDatabase.instance.unarmedWeapon)
         {
 
             //如果RETURNING 或者 NOT TWO HANDING，直接RESET BOOL
@@ -857,31 +857,57 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     // Damage Colliders
     public void OpenDamageCollider()
     {
-        if (player.playerNetworkManager.isUsingRightHand.Value)
-        {
-            rightHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
-            player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(player.playerInventoryManager.currentRightHandWeapon.wooshes));
-        }
-        else if (player.playerNetworkManager.isUsingLeftHand.Value)
-        {
-            leftHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
-            player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(player.playerInventoryManager.currentLeftHandWeapon.wooshes));
-        }
-
         //双手共持
+        if (player.playerNetworkManager.isTwoHandingWeapon.Value)
+        {
+            if (player.playerInventoryManager.currentTwoHandedWeapon == player.playerInventoryManager.currentRightHandWeapon)
+            {
+                rightHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
+            }
+            else if (player.playerInventoryManager.currentTwoHandedWeapon == player.playerInventoryManager.currentLeftHandWeapon)
+            {
+                leftHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
+            }
+            player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(player.playerInventoryManager.currentTwoHandedWeapon.wooshes));
+        }
+        else
+
+            if (player.playerNetworkManager.isUsingRightHand.Value)
+            {
+                rightHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
+                player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(player.playerInventoryManager.currentRightHandWeapon.wooshes));
+            }
+            else if (player.playerNetworkManager.isUsingLeftHand.Value)
+            {
+                leftHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
+                player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(player.playerInventoryManager.currentLeftHandWeapon.wooshes));
+            }
     }
 
     public void CloseDamageCollider()
     {
-        if (player.playerNetworkManager.isUsingRightHand.Value)
+        if (player.playerNetworkManager.isTwoHandingWeapon.Value)
         {
-            rightHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
+            if (player.playerInventoryManager.currentTwoHandedWeapon == player.playerInventoryManager.currentRightHandWeapon)
+            {
+                rightHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
+            }
+            else if (player.playerInventoryManager.currentTwoHandedWeapon == player.playerInventoryManager.currentLeftHandWeapon)
+            {
+                leftHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
+            }
         }
-        else if (player.playerNetworkManager.isUsingLeftHand.Value)
+        else
         {
-            leftHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
+            if (player.playerNetworkManager.isUsingRightHand.Value)
+            {
+                rightHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
+            }
+            else if (player.playerNetworkManager.isUsingLeftHand.Value)
+            {
+                leftHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
+            }
         }
-        //双手共持
     }
 
 }

@@ -9,11 +9,13 @@ public class WorldCharacterEffectsManager : MonoBehaviour
 
     [Header("VFX")]
     public GameObject bloodSplatterVFX;
+    public GameObject criticalBloodSplatterVFX;
 
     [Header("Damage")]
     public TakeStaminaDamageEffect takeStaminaDamageEffect;
     public TakeDamageEffect takeDamageEffect;
     public TakeBlockedDamageEffect takeBlockedDamageEffect;
+    public TakeCriticalDamageEffect takeCriticalDamageEffect;
 
     [Header("Two Handing")]
     public TwoHandingEffect twoHandingEffect;

@@ -56,6 +56,7 @@ public class CharacterManager : NetworkBehaviour
 
         characterNetworkManager.isMoving.OnValueChanged += characterNetworkManager.OnIsMovingChanged;
         characterNetworkManager.isActive.OnValueChanged += characterNetworkManager.OnIsActiveChanged;
+        isDead.OnValueChanged += characterNetworkManager.OnIsDeadChanged;
     }
 
     public override void OnNetworkDespawn()
@@ -64,6 +65,7 @@ public class CharacterManager : NetworkBehaviour
 
         characterNetworkManager.isMoving.OnValueChanged -= characterNetworkManager.OnIsMovingChanged;
         characterNetworkManager.isActive.OnValueChanged -= characterNetworkManager.OnIsActiveChanged;
+        isDead.OnValueChanged -= characterNetworkManager.OnIsDeadChanged;
     }
 
     protected virtual void Update()
@@ -118,7 +120,7 @@ public class CharacterManager : NetworkBehaviour
 
             //如果在空中，选择播放其他动画
 
-            if (!manuallySelectedDeathAnimation)
+            if (!manuallySelectedDeathAnimation && !characterNetworkManager.isBeingRiposted.Value)
             {
                 characterAnimatorManager.PlayerTargetActionAnimation("Death_01", true);
             }

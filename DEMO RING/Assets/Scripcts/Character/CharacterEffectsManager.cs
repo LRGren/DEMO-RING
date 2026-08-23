@@ -16,6 +16,8 @@ public class CharacterEffectsManager : MonoBehaviour
     [Header("VFX")]
     [SerializeField] private GameObject bloodSplatterVFX;
 
+    [SerializeField] private GameObject criticalBloodSplatterVFX;
+
     [Header("Static Effects")]
     [SerializeField] private List<StaticCharacterEffect> staticEffects;
 
@@ -40,6 +42,20 @@ public class CharacterEffectsManager : MonoBehaviour
         {
             //如果没有血迹特效预设，则尝试从世界角色效果管理器中获取并实例化它
             GameObject bloodSplatter = Instantiate(WorldCharacterEffectsManager.instance.bloodSplatterVFX, contactPoint, Quaternion.identity);
+        }
+    }
+
+    public void PlayCriticalBloodSplatterVFX(Vector3 contactPoint)
+    {
+        if (criticalBloodSplatterVFX != null)
+        {
+            //如果有血迹特效预设，则实例化它
+            GameObject bloodSplatter = Instantiate(criticalBloodSplatterVFX, contactPoint, Quaternion.identity);
+        }
+        else
+        {
+            //如果没有血迹特效预设，则尝试从世界角色效果管理器中获取并实例化它
+            GameObject bloodSplatter = Instantiate(WorldCharacterEffectsManager.instance.criticalBloodSplatterVFX, contactPoint, Quaternion.identity);
         }
     }
 

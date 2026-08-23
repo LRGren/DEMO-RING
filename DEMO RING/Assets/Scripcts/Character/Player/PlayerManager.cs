@@ -337,48 +337,48 @@ public class PlayerManager : CharacterManager
         PlayerUIManager.instance.playerUIHudManager.SetNewStaminaValue(playerNetworkManager.currentStamina.Value, playerNetworkManager.maxStamina.Value);
 
         // Equipment
-        if (WorldItemDatabase.Instance.GetHeadEquipmentByID(currentCharacterSaveData.currentHeadEquipment) != null)
-            playerInventoryManager.headEquipment = Instantiate(WorldItemDatabase.Instance.GetHeadEquipmentByID(currentCharacterSaveData.currentHeadEquipment));
+        if (WorldItemDatabase.instance.GetHeadEquipmentByID(currentCharacterSaveData.currentHeadEquipment) != null)
+            playerInventoryManager.headEquipment = Instantiate(WorldItemDatabase.instance.GetHeadEquipmentByID(currentCharacterSaveData.currentHeadEquipment));
         else
             playerInventoryManager.headEquipment = null;
-        if (WorldItemDatabase.Instance.GetBodyEquipmentByID(currentCharacterSaveData.currentBodyEquipment) != null)
-            playerInventoryManager.bodyEquipment = Instantiate(WorldItemDatabase.Instance.GetBodyEquipmentByID(currentCharacterSaveData.currentBodyEquipment));
+        if (WorldItemDatabase.instance.GetBodyEquipmentByID(currentCharacterSaveData.currentBodyEquipment) != null)
+            playerInventoryManager.bodyEquipment = Instantiate(WorldItemDatabase.instance.GetBodyEquipmentByID(currentCharacterSaveData.currentBodyEquipment));
         else
             playerInventoryManager.bodyEquipment = null;
-        if (WorldItemDatabase.Instance.GetLegEquipmentByID(currentCharacterSaveData.currentLegsEquipment) != null)
-            playerInventoryManager.legEquipment = Instantiate(WorldItemDatabase.Instance.GetLegEquipmentByID(currentCharacterSaveData.currentLegsEquipment));
+        if (WorldItemDatabase.instance.GetLegEquipmentByID(currentCharacterSaveData.currentLegsEquipment) != null)
+            playerInventoryManager.legEquipment = Instantiate(WorldItemDatabase.instance.GetLegEquipmentByID(currentCharacterSaveData.currentLegsEquipment));
         else
             playerInventoryManager.legEquipment = null;
-        if (WorldItemDatabase.Instance.GetHandEquipmentByID(currentCharacterSaveData.currentHandEquipment) != null)
-            playerInventoryManager.handEquipment = Instantiate(WorldItemDatabase.Instance.GetHandEquipmentByID(currentCharacterSaveData.currentHandEquipment));
+        if (WorldItemDatabase.instance.GetHandEquipmentByID(currentCharacterSaveData.currentHandEquipment) != null)
+            playerInventoryManager.handEquipment = Instantiate(WorldItemDatabase.instance.GetHandEquipmentByID(currentCharacterSaveData.currentHandEquipment));
         else
             playerInventoryManager.handEquipment = null;
 
-        if (WorldItemDatabase.Instance.GetWeaponByID(currentCharacterSaveData.rightWeapon01) != null)
-            playerInventoryManager.weaponsInRightHand[0] = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(currentCharacterSaveData.rightWeapon01));
+        if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon01) != null)
+            playerInventoryManager.weaponsInRightHand[0] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon01));
         else
-            playerInventoryManager.weaponsInRightHand[0] = Instantiate(WorldItemDatabase.Instance.unarmedWeapon);
-        if (WorldItemDatabase.Instance.GetWeaponByID(currentCharacterSaveData.rightWeapon02) != null)
-            playerInventoryManager.weaponsInRightHand[1] = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(currentCharacterSaveData.rightWeapon02));
+            playerInventoryManager.weaponsInRightHand[0] = Instantiate(WorldItemDatabase.instance.unarmedWeapon);
+        if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon02) != null)
+            playerInventoryManager.weaponsInRightHand[1] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon02));
         else
-            playerInventoryManager.weaponsInRightHand[1] = Instantiate(WorldItemDatabase.Instance.unarmedWeapon); ;
-        if (WorldItemDatabase.Instance.GetWeaponByID(currentCharacterSaveData.rightWeapon03) != null)
-            playerInventoryManager.weaponsInRightHand[2] = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(currentCharacterSaveData.rightWeapon03));
+            playerInventoryManager.weaponsInRightHand[1] = Instantiate(WorldItemDatabase.instance.unarmedWeapon); ;
+        if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon03) != null)
+            playerInventoryManager.weaponsInRightHand[2] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon03));
         else
-            playerInventoryManager.weaponsInRightHand[2] = Instantiate(WorldItemDatabase.Instance.unarmedWeapon); ;
+            playerInventoryManager.weaponsInRightHand[2] = Instantiate(WorldItemDatabase.instance.unarmedWeapon); ;
 
-        if (WorldItemDatabase.Instance.GetWeaponByID(currentCharacterSaveData.leftWeapon01) != null)
-            playerInventoryManager.weaponsInLeftHand[0] = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(currentCharacterSaveData.leftWeapon01));
+        if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon01) != null)
+            playerInventoryManager.weaponsInLeftHand[0] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon01));
         else
-            playerInventoryManager.weaponsInLeftHand[0] = Instantiate(WorldItemDatabase.Instance.unarmedWeapon); ;
-        if (WorldItemDatabase.Instance.GetWeaponByID(currentCharacterSaveData.leftWeapon02) != null)
-            playerInventoryManager.weaponsInLeftHand[1] = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(currentCharacterSaveData.leftWeapon02));
+            playerInventoryManager.weaponsInLeftHand[0] = Instantiate(WorldItemDatabase.instance.unarmedWeapon); ;
+        if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon02) != null)
+            playerInventoryManager.weaponsInLeftHand[1] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon02));
         else
-            playerInventoryManager.weaponsInLeftHand[1] = Instantiate(WorldItemDatabase.Instance.unarmedWeapon); ;
-        if (WorldItemDatabase.Instance.GetWeaponByID(currentCharacterSaveData.leftWeapon03) != null)
-            playerInventoryManager.weaponsInLeftHand[2] = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(currentCharacterSaveData.leftWeapon03));
+            playerInventoryManager.weaponsInLeftHand[1] = Instantiate(WorldItemDatabase.instance.unarmedWeapon); ;
+        if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon03) != null)
+            playerInventoryManager.weaponsInLeftHand[2] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon03));
         else
-            playerInventoryManager.weaponsInLeftHand[2] = Instantiate(WorldItemDatabase.Instance.unarmedWeapon); ;
+            playerInventoryManager.weaponsInLeftHand[2] = Instantiate(WorldItemDatabase.instance.unarmedWeapon); ;
 
         playerEquipmentManager.EquipArmor();
 

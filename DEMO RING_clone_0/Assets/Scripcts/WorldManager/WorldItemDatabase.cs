@@ -5,7 +5,7 @@ using System.Linq;
 
 public class WorldItemDatabase : MonoBehaviour
 {
-    public static WorldItemDatabase Instance;
+    public static WorldItemDatabase instance;
 
     public WeaponItem unarmedWeapon;
 
@@ -36,8 +36,8 @@ public class WorldItemDatabase : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-            Instance = this;
+        if (instance == null)
+            instance = this;
         else
             Destroy(gameObject);
 

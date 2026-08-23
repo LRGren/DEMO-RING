@@ -33,6 +33,115 @@ public class PlayerCombatManager : CharacterCombatManager
         }
     }
 
+    public override void AttemptRiposte(RaycastHit hit)
+    {
+        //base.AttemptRiposte(hit);
+        CharacterManager targetCharacter = hit.transform.GetComponentInParent<CharacterManager>();
+
+        if (targetCharacter == null)
+            return;
+
+        if (!targetCharacter.characterNetworkManager.isRipostable.Value)
+            return;
+
+        if (targetCharacter.characterNetworkManager.isBeingRiposted.Value)
+            return;
+
+        MeleeWeaponItem riposteWeapon;
+        if (player.playerNetworkManager.isTwoHandingLeftWeapon.Value)
+        {
+            riposteWeapon = player.playerInventoryManager.currentLeftHandWeapon as MeleeWeaponItem;
+        }
+        else
+        {
+            riposteWeapon = player.playerInventoryManager.currentRightHandWeapon as MeleeWeaponItem;
+        }
+
+        characterManager.characterAnimatorManager.PlayerTargetActionAnimationInstantly("Riposte_01", true);
+
+        if (player.IsOwner)
+        {
+            player.playerNetworkManager.isInvulnerable.Value = true;
+        }
+
+        // Take Critical Damage Effect
+        TakeCriticalDamageEffect damageEffect = WorldCharacterEffectsManager.instance.takeCriticalDamageEffect;
+
+        // Apply All Stats From The Collider To The Damage Effect
+        damageEffect.physicalDamage = riposteWeapon.physicalDamage;
+        damageEffect.magicalDamage = riposteWeapon.magicalDamage;
+        damageEffect.fireDamage = riposteWeapon.fireDamage;
+        damageEffect.lightningDamage = riposteWeapon.lightningDamage;
+        damageEffect.holyDamage = riposteWeapon.holyDamage;
+        damageEffect.poiseDamage = riposteWeapon.poiseDamage;
+
+        float modifier = (float)(riposteWeapon.criticalDamage / 100f) * WorldUtilityManager.instance.GetCriticalAttackDamageMultiplierBasedOnWeaponClass(riposteWeapon.weaponClass);
+
+        damageEffect.physicalDamage *= modifier;
+        damageEffect.magicalDamage *= modifier;
+        damageEffect.fireDamage *= modifier;
+        damageEffect.lightningDamage *= modifier;
+        damageEffect.holyDamage *= modifier;
+
+        // Using A Server RPC
+        targetCharacter.characterNetworkManager.NotifyTheServerOfRiposteServerRpc(targetCharacter.NetworkObjectId, characterManager.NetworkObjectId, "Riposted_01", riposteWeapon.itemID, damageEffect.physicalDamage, damageEffect.magicalDamage, damageEffect.fireDamage, damageEffect.lightningDamage, damageEffect.holyDamage, damageEffect.poiseDamage);
+
+    }
+
+    public override void AttemptBackstab(RaycastHit hit)
+    {
+        CharacterManager targetCharacter = hit.transform.GetComponentInParent<CharacterManager>();
+
+        if (targetCharacter == null)
+            return;
+
+        if (!targetCharacter.characterCombatManager.canBeBackstabbed)
+            return;
+
+        if (targetCharacter.characterNetworkManager.isBeingRiposted.Value)
+            return;
+
+        MeleeWeaponItem riposteWeapon;
+        if (player.playerNetworkManager.isTwoHandingLeftWeapon.Value)
+        {
+            riposteWeapon = player.playerInventoryManager.currentLeftHandWeapon as MeleeWeaponItem;
+        }
+        else
+        {
+            riposteWeapon = player.playerInventoryManager.currentRightHandWeapon as MeleeWeaponItem;
+        }
+
+        characterManager.characterAnimatorManager.PlayerTargetActionAnimationInstantly("Backstab_01", true);
+
+        if (player.IsOwner)
+        {
+            player.playerNetworkManager.isInvulnerable.Value = true;
+        }
+
+        // Take Critical Damage Effect
+        TakeCriticalDamageEffect damageEffect = WorldCharacterEffectsManager.instance.takeCriticalDamageEffect;
+
+        // Apply All Stats From The Collider To The Damage Effect
+        damageEffect.physicalDamage = riposteWeapon.physicalDamage;
+        damageEffect.magicalDamage = riposteWeapon.magicalDamage;
+        damageEffect.fireDamage = riposteWeapon.fireDamage;
+        damageEffect.lightningDamage = riposteWeapon.lightningDamage;
+        damageEffect.holyDamage = riposteWeapon.holyDamage;
+        damageEffect.poiseDamage = riposteWeapon.poiseDamage;
+
+        float modifier = (float)(riposteWeapon.criticalDamage / 100f) * WorldUtilityManager.instance.GetBackstabAttackDamageMultiplierBasedOnWeaponClass(riposteWeapon.weaponClass);
+
+        damageEffect.physicalDamage *= modifier;
+        damageEffect.magicalDamage *= modifier;
+        damageEffect.fireDamage *= modifier;
+        damageEffect.lightningDamage *= modifier;
+        damageEffect.holyDamage *= modifier;
+        damageEffect.poiseDamage *= modifier;
+
+        // Using A Server RPC
+        targetCharacter.characterNetworkManager.NotifyTheServerOfBackstabServerRpc(targetCharacter.NetworkObjectId, characterManager.NetworkObjectId, "Backstabbed_01", riposteWeapon.itemID, damageEffect.physicalDamage, damageEffect.magicalDamage, damageEffect.fireDamage, damageEffect.lightningDamage, damageEffect.holyDamage, damageEffect.poiseDamage);
+    }
+
     public virtual void DrainStaminaBasedOnAttack()
     {
         if (!player.IsOwner)

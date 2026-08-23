@@ -499,9 +499,9 @@ public class PlayerUIEquipmentManager : MonoBehaviour
 
                 if (unequippedWeapon != null)
                 {
-                    player.playerInventoryManager.weaponsInRightHand[0] = Instantiate(WorldItemDatabase.Instance.unarmedWeapon);
+                    player.playerInventoryManager.weaponsInRightHand[0] = Instantiate(WorldItemDatabase.instance.unarmedWeapon);
 
-                    if (unequippedWeapon.itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                    if (unequippedWeapon.itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                     {
                         player.playerInventoryManager.AddItemToInventory(unequippedWeapon);
                     }
@@ -509,87 +509,87 @@ public class PlayerUIEquipmentManager : MonoBehaviour
 
                 if (player.playerInventoryManager.rightWeaponIndex == 0)
                 {
-                    player.playerNetworkManager.currentRightHandWeaponID.Value = WorldItemDatabase.Instance.unarmedWeapon.itemID;
+                    player.playerNetworkManager.currentRightHandWeaponID.Value = WorldItemDatabase.instance.unarmedWeapon.itemID;
                 }
                 break;
             case EquipmentType.RightWeapon02:
                 unequippedWeapon = player.playerInventoryManager.weaponsInRightHand[1];
                 if (unequippedWeapon != null)
                 {
-                    player.playerInventoryManager.weaponsInRightHand[1] = Instantiate(WorldItemDatabase.Instance.unarmedWeapon);
+                    player.playerInventoryManager.weaponsInRightHand[1] = Instantiate(WorldItemDatabase.instance.unarmedWeapon);
 
-                    if (unequippedWeapon.itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                    if (unequippedWeapon.itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                     {
                         player.playerInventoryManager.AddItemToInventory(unequippedWeapon);
                     }
                 }
                 if (player.playerInventoryManager.rightWeaponIndex == 1)
                 {
-                    player.playerNetworkManager.currentRightHandWeaponID.Value = WorldItemDatabase.Instance.unarmedWeapon.itemID;
+                    player.playerNetworkManager.currentRightHandWeaponID.Value = WorldItemDatabase.instance.unarmedWeapon.itemID;
                 }
                 break;
             case EquipmentType.RightWeapon03:
                 unequippedWeapon = player.playerInventoryManager.weaponsInRightHand[2];
                 if (unequippedWeapon != null)
                 {
-                    player.playerInventoryManager.weaponsInRightHand[2] = Instantiate(WorldItemDatabase.Instance.unarmedWeapon);
+                    player.playerInventoryManager.weaponsInRightHand[2] = Instantiate(WorldItemDatabase.instance.unarmedWeapon);
 
-                    if (unequippedWeapon.itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                    if (unequippedWeapon.itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                     {
                         player.playerInventoryManager.AddItemToInventory(unequippedWeapon);
                     }
                 }
                 if (player.playerInventoryManager.rightWeaponIndex == 2)
                 {
-                    player.playerNetworkManager.currentRightHandWeaponID.Value = WorldItemDatabase.Instance.unarmedWeapon.itemID;
+                    player.playerNetworkManager.currentRightHandWeaponID.Value = WorldItemDatabase.instance.unarmedWeapon.itemID;
                 }
                 break;
             case EquipmentType.LeftWeapon01:
                 unequippedWeapon = player.playerInventoryManager.weaponsInLeftHand[0];
                 if (unequippedWeapon != null)
                 {
-                    player.playerInventoryManager.weaponsInLeftHand[0] = Instantiate(WorldItemDatabase.Instance.unarmedWeapon);
+                    player.playerInventoryManager.weaponsInLeftHand[0] = Instantiate(WorldItemDatabase.instance.unarmedWeapon);
 
-                    if (unequippedWeapon.itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                    if (unequippedWeapon.itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                     {
                         player.playerInventoryManager.AddItemToInventory(unequippedWeapon);
                     }
                 }
                 if (player.playerInventoryManager.leftWeaponIndex == 0)
                 {
-                    player.playerNetworkManager.currentLeftHandWeaponID.Value = WorldItemDatabase.Instance.unarmedWeapon.itemID;
+                    player.playerNetworkManager.currentLeftHandWeaponID.Value = WorldItemDatabase.instance.unarmedWeapon.itemID;
                 }
                 break;
             case EquipmentType.LeftWeapon02:
                 unequippedWeapon = player.playerInventoryManager.weaponsInLeftHand[1];
                 if (unequippedWeapon != null)
                 {
-                    player.playerInventoryManager.weaponsInLeftHand[1] = Instantiate(WorldItemDatabase.Instance.unarmedWeapon);
+                    player.playerInventoryManager.weaponsInLeftHand[1] = Instantiate(WorldItemDatabase.instance.unarmedWeapon);
 
-                    if (unequippedWeapon.itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                    if (unequippedWeapon.itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                     {
                         player.playerInventoryManager.AddItemToInventory(unequippedWeapon);
                     }
                 }
                 if (player.playerInventoryManager.leftWeaponIndex == 1)
                 {
-                    player.playerNetworkManager.currentLeftHandWeaponID.Value = WorldItemDatabase.Instance.unarmedWeapon.itemID;
+                    player.playerNetworkManager.currentLeftHandWeaponID.Value = WorldItemDatabase.instance.unarmedWeapon.itemID;
                 }
                 break;
             case EquipmentType.LeftWeapon03:
                 unequippedWeapon = player.playerInventoryManager.weaponsInLeftHand[2];
                 if (unequippedWeapon != null)
                 {
-                    player.playerInventoryManager.weaponsInLeftHand[2] = Instantiate(WorldItemDatabase.Instance.unarmedWeapon);
+                    player.playerInventoryManager.weaponsInLeftHand[2] = Instantiate(WorldItemDatabase.instance.unarmedWeapon);
 
-                    if (unequippedWeapon.itemID != WorldItemDatabase.Instance.unarmedWeapon.itemID)
+                    if (unequippedWeapon.itemID != WorldItemDatabase.instance.unarmedWeapon.itemID)
                     {
                         player.playerInventoryManager.AddItemToInventory(unequippedWeapon);
                     }
                 }
                 if (player.playerInventoryManager.leftWeaponIndex == 2)
                 {
-                    player.playerNetworkManager.currentLeftHandWeaponID.Value = WorldItemDatabase.Instance.unarmedWeapon.itemID;
+                    player.playerNetworkManager.currentLeftHandWeaponID.Value = WorldItemDatabase.instance.unarmedWeapon.itemID;
                 }
                 break;
             case EquipmentType.Head:

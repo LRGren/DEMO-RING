@@ -25,12 +25,90 @@ public class AICharacterCombatManager : CharacterCombatManager
     [Header("Attack Rotation Speed")]
     public float attackRotationSpeed = 180;
 
+    [Header("Stance Settings")]
+    public float maxStance = 100f;
+    public float currentStance;
+    [SerializeField] float stanceRegenRationPerSecond = 15f;
+    [SerializeField] bool ignoreStanceBreak = false;
+
+    [Header("Stance Timer")]
+    private float stanceTickTimer = 0f;
+    [SerializeField] float stanceRegenerationTimer = 15f;
+    [SerializeField] float defaultTimeUntilStanceRegenerationBegins = 15f;
+
+
     protected override void Awake()
     {
         base.Awake();
         aiCharacterManager = GetComponent<AICharacterManager>();
         lockOnTransform = GetComponentInChildren<LockOnTransform>().transform;
 
+        currentStance = maxStance;
+    }
+
+    private void FixedUpdate()
+    {
+        HandleStanceBreak();
+    }
+
+    public void HandleStanceBreak()
+    {
+        if (!aiCharacterManager.IsOwner)
+            return;
+
+        if (aiCharacterManager.isDead.Value)
+            return;
+
+        if (stanceRegenerationTimer > 0)
+        {
+            stanceRegenerationTimer -= Time.deltaTime;
+        }
+        else
+        {
+            stanceRegenerationTimer = 0;
+            if (currentStance < maxStance)
+            {
+                stanceTickTimer += Time.deltaTime;
+
+                if (stanceTickTimer >= 1f)
+                {
+                    currentStance += stanceRegenRationPerSecond;
+                    stanceTickTimer = 0f;
+                }
+            }
+            else
+            {
+                currentStance = maxStance;
+            }
+        }
+
+        if (currentStance <= 0)
+        {
+            DamageIntensity damageIntensity = WorldUtilityManager.instance.GetDamageIntensityBasedOnPoiseDamage(previousPoiseDamageTaken);
+
+            if (damageIntensity == DamageIntensity.Colossal)
+            {
+                currentStance = 1;
+                return;
+            }
+
+            currentStance = maxStance;
+
+            if (ignoreStanceBreak)
+            {
+                return;
+            }
+
+            aiCharacterManager.characterAnimatorManager.PlayerTargetActionAnimationInstantly("Stance_Break_01", true);
+
+        }
+    }
+
+    public void DamageStance(int stanceDamage)
+    {
+        stanceRegenerationTimer = defaultTimeUntilStanceRegenerationBegins;
+
+        currentStance -= stanceDamage;
     }
 
     public void FindATargetViaLineOfSight(AICharacterManager aiCharacter)

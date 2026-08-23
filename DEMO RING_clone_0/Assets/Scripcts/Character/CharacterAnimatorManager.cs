@@ -88,6 +88,24 @@ public class CharacterAnimatorManager : MonoBehaviour
             NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
     }
 
+    public virtual void PlayerTargetActionAnimationInstantly(string targetAnimation, bool isPerformingAction, bool applyRootMotion = true, bool canRotate = false, bool canMove = false)
+    {
+        //Debug.Log("Playing Target Action Animation: " + targetAnimation);
+
+        character.characterAnimatorManager.applyRootMotion = applyRootMotion;
+        character.animator.Play(targetAnimation);
+        character.isPerformingAction = isPerformingAction;
+        character.characterLocomotionManager.canRotate = canRotate;
+        character.characterLocomotionManager.canMove = canMove;
+
+        //只有拥有者（玩家）或服务器（AI）才能发送需要所有权的 ServerRpc
+        if (!character.IsOwner)
+            return;
+
+        character.characterNetworkManager.NotifyTheServerOfActionAnimationInstantlyServerRpc(
+            NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
+    }
+
     public virtual void PlayerTargetAttackActionAnimation(WeaponItem weapon, AttackType attackType, string targetAnimation, bool isPerformingAction, bool applyRootMotion = true, bool canRotate = false, bool canMove = false)
     {
         //COMBOS

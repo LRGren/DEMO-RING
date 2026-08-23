@@ -46,6 +46,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bloodSplatterVFX: {fileID: 4553287630450876385, guid: 15483e51212e3d74886ea57291f4639a,
     type: 3}
+  criticalBloodSplatterVFX: {fileID: 4553287630450876385, guid: 3850006b06aefc04ea74d252fbaeac84,
+    type: 3}
+  takeStaminaDamageEffect: {fileID: 0}
   takeDamageEffect: {fileID: 0}
+  takeBlockedDamageEffect: {fileID: 0}
+  takeCriticalDamageEffect: {fileID: 0}
+  twoHandingEffect: {fileID: 0}
   instantEffects:
   - {fileID: 11400000, guid: ecce7b364c05f294a977a15279ac04a3, type: 2}
+  staticEffects: []

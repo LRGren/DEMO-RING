@@ -146,7 +146,7 @@ public class AIBossCharacterManager : AICharacterManager
 
             //如果在空中，选择播放其他动画
 
-            if (!manuallySelectedDeathAnimation)
+            if (!manuallySelectedDeathAnimation && !characterNetworkManager.isBeingRiposted.Value)
             {
                 characterAnimatorManager.PlayerTargetActionAnimation("Death_01", true);
             }

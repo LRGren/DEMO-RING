@@ -31,6 +31,7 @@ MonoBehaviour:
   fireDamage: 0
   holyDamage: 0
   lightningDamage: 0
+  criticalDamage: 100
   poiseDamage: 25
   physicalDamageAbsorption: 100
   magicalDamageAbsorption: 0

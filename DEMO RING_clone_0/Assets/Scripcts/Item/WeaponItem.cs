@@ -29,6 +29,7 @@ public class WeaponItem : EquipmentItem
     public int fireDamage = 0;
     public int holyDamage = 0;
     public int lightningDamage = 0;
+    public int criticalDamage = 100;
 
     //武器格挡强度
 

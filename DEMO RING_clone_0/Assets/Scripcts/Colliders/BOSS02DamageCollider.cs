@@ -48,7 +48,7 @@ public class BOSS02DamageCollider : DamageCollider
 
         //damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);
 
-        Debug.Log($"Damage applied to {damageTarget.name}: Physical={damageEffect.physicalDamage}, Magical={damageEffect.magicalDamage}, Fire={damageEffect.fireDamage}, Lightning={damageEffect.lightningDamage}, Holy={damageEffect.holyDamage}, Poise={damageEffect.poiseDamage}");
+        //Debug.Log($"Damage applied to {damageTarget.name}: Physical={damageEffect.physicalDamage}, Magical={damageEffect.magicalDamage}, Fire={damageEffect.fireDamage}, Lightning={damageEffect.lightningDamage}, Holy={damageEffect.holyDamage}, Poise={damageEffect.poiseDamage}");
     }
 }
 

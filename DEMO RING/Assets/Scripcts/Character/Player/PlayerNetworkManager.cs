@@ -72,7 +72,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
     // Weapon
     public void OnCurrentRightHandWeaponIDChanged(int oldWeaponID, int newWeaponID)
     {
-        WeaponItem newWeapon = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(newWeaponID));
+        WeaponItem newWeapon = Instantiate(WorldItemDatabase.instance.GetWeaponByID(newWeaponID));
         player.playerInventoryManager.currentRightHandWeapon = newWeapon;
         player.playerEquipmentManager.LoadRightWeapon();
 
@@ -84,7 +84,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
     public void OnCurrentLeftHandWeaponIDChanged(int oldWeaponID, int newWeaponID)
     {
-        WeaponItem newWeapon = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(newWeaponID));
+        WeaponItem newWeapon = Instantiate(WorldItemDatabase.instance.GetWeaponByID(newWeaponID));
         player.playerInventoryManager.currentLeftHandWeapon = newWeapon;
         player.playerEquipmentManager.LoadLeftWeapon();
 
@@ -96,7 +96,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
     public void OnCurrentWeaponBedingUsedIDChanged(int oldWeaponID, int newWeaponID)
     {
-        WeaponItem newWeapon = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(newWeaponID));
+        WeaponItem newWeapon = Instantiate(WorldItemDatabase.instance.GetWeaponByID(newWeaponID));
         player.playerCombatManager.currentWeaponBedingUsed = newWeapon;
 
         if (!IsOwner)
@@ -193,7 +193,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
         if (IsOwner)
             return;
 
-        HeadEquipmentItem equipment = WorldItemDatabase.Instance.GetHeadEquipmentByID(headEquipmentID.Value);
+        HeadEquipmentItem equipment = WorldItemDatabase.instance.GetHeadEquipmentByID(headEquipmentID.Value);
         if (equipment != null)
         {
             player.playerEquipmentManager.LoadHeadEquipment(Instantiate(equipment));
@@ -210,7 +210,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
         if (IsOwner)
             return;
 
-        BodyEquipmentItem equipment = WorldItemDatabase.Instance.GetBodyEquipmentByID(bodyEquipmentID.Value);
+        BodyEquipmentItem equipment = WorldItemDatabase.instance.GetBodyEquipmentByID(bodyEquipmentID.Value);
         if (equipment != null)
         {
             player.playerEquipmentManager.LoadBodyEquipment(Instantiate(equipment));
@@ -226,7 +226,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
         if (IsOwner)
             return;
 
-        HandEquipmentItem equipment = WorldItemDatabase.Instance.GetHandEquipmentByID(handEquipmentID.Value);
+        HandEquipmentItem equipment = WorldItemDatabase.instance.GetHandEquipmentByID(handEquipmentID.Value);
         if (equipment != null)
         {
             player.playerEquipmentManager.LoadHandEquipment(Instantiate(equipment));
@@ -242,7 +242,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
         if (IsOwner)
             return;
 
-        LegEquipmentItem equipment = WorldItemDatabase.Instance.GetLegEquipmentByID(legEquipmentID.Value);
+        LegEquipmentItem equipment = WorldItemDatabase.instance.GetLegEquipmentByID(legEquipmentID.Value);
         if (equipment != null)
         {
             player.playerEquipmentManager.LoadLegEquipment(Instantiate(equipment));
@@ -286,7 +286,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
         if (weaponAction != null)
         {
-            player.playerCombatManager.PerformWeaponBasedAction(weaponAction, WorldItemDatabase.Instance.GetWeaponByID(weaponID));
+            player.playerCombatManager.PerformWeaponBasedAction(weaponAction, WorldItemDatabase.instance.GetWeaponByID(weaponID));
         }
         else
         {

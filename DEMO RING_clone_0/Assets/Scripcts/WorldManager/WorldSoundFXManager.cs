@@ -17,6 +17,12 @@ public class WorldSoundFXManager : MonoBehaviour
     [Header("Action Sounds")]
     public AudioClip rollSFX;
 
+    [Header("Stance Break SFX")]
+    public AudioClip stanceBreakSFX;
+
+    [Header("Critical Strike SFX")]
+    public AudioClip criticalStrikeSFX;
+
     private void Awake()
     {
         if (instance == null)

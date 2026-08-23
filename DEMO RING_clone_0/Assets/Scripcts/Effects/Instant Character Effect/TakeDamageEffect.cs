@@ -6,7 +6,7 @@ using UnityEngine;
 public class TakeDamageEffect : InstantCharacterEffect
 {
     [Header("Character Causing Damage")]
-    CharacterManager characterCausingDamage;
+    public CharacterManager characterCausingDamage;
 
     [Header("Damage")]
     public float physicalDamage = 0;
@@ -16,7 +16,7 @@ public class TakeDamageEffect : InstantCharacterEffect
     public float holyDamage = 0;
 
     [Header("Final Damage")]
-    private int finalDamageDealt = 0;
+    protected int finalDamageDealt = 0;
 
     [Header("Poise")]
     public float poiseDamage = 0;//削韧
@@ -54,21 +54,20 @@ public class TakeDamageEffect : InstantCharacterEffect
         //计算伤害
         CalculteDamage(character);
 
-        //Debug.Log("Final Damage Dealt: " + finalDamageDealt);
-
         //确认受击方向
         PlayDirectionalBasedDamageAnimation(character);
-        //受击动画
         //确认累计效果 如 毒
         //SOUND FX
         PlayDamageSFX(character);
         //VFX 溅血效果
         PlayDamageVFX(character);
 
+        CalculateStanceDamage(character);
+
         //如果是 AI 将敌人设置为发动攻击的人
     }
 
-    private void CalculteDamage(CharacterManager character)
+    protected virtual void CalculteDamage(CharacterManager character)
     {
         if (!character.IsOwner)
             return;
@@ -94,6 +93,7 @@ public class TakeDamageEffect : InstantCharacterEffect
 
         //计算削韧值
         character.characterStatsManager.totalPoiseDamage -= poiseDamage;
+        character.characterCombatManager.previousPoiseDamageTaken = poiseDamage;
         //Debug.Log("Poise Damage Taken: " + poiseDamage + " Total Poise Damage: " + character.characterStatsManager.totalPoiseDamage);
 
         float remainingPoise = character.characterStatsManager.basePoiseDefense + character.characterStatsManager.offensivePoiseBonus + character.characterStatsManager.totalPoiseDamage;
@@ -101,12 +101,27 @@ public class TakeDamageEffect : InstantCharacterEffect
         if (remainingPoise <= 0)
         {
             poiseIsBroken = true;
+            character.characterStatsManager.totalPoiseDamage = 0;
         }
 
         character.characterStatsManager.poiseResetTimer = character.characterStatsManager.defaultPoiseResetTimer;
     }
 
-    private void PlayDamageVFX(CharacterManager character)
+    protected void CalculateStanceDamage(CharacterManager character)
+    {
+        AICharacterManager aiCharacter = character as AICharacterManager;
+
+        //自定义削韧值
+        int stanceDamage = Mathf.RoundToInt(poiseDamage);
+
+        if (aiCharacter != null)
+        {
+            aiCharacter.aiCharacterCombatManager.DamageStance(stanceDamage);
+        }
+
+    }
+
+    protected void PlayDamageVFX(CharacterManager character)
     {
         //火焰伤害特效
         //雷电伤害特效
@@ -115,7 +130,7 @@ public class TakeDamageEffect : InstantCharacterEffect
         character.characterEffectsManager.PlayBloodSplatterVFX(contactPoint);
     }
 
-    private void PlayDamageSFX(CharacterManager character)
+    protected void PlayDamageSFX(CharacterManager character)
     {
         AudioClip physicalSFX = WorldSoundFXManager.instance.ChooseRandomSFXFromArray(WorldSoundFXManager.instance.physicalDamageSFX);
 
@@ -123,7 +138,7 @@ public class TakeDamageEffect : InstantCharacterEffect
         character.characterSoundFXManager.PlayDamageGruntSFX();
     }
 
-    private void PlayDirectionalBasedDamageAnimation(CharacterManager character)
+    protected void PlayDirectionalBasedDamageAnimation(CharacterManager character)
     {
         if (!character.IsOwner)
             return;

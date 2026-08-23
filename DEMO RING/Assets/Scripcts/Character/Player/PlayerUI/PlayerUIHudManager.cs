@@ -69,7 +69,7 @@ public class PlayerUIHudManager : MonoBehaviour
 
     public void SetRightWeaponQuickSlot(int weaponID)
     {
-        WeaponItem weapon = WorldItemDatabase.Instance.GetWeaponByID(weaponID);
+        WeaponItem weapon = WorldItemDatabase.instance.GetWeaponByID(weaponID);
 
         if (weapon == null)
         {
@@ -93,7 +93,7 @@ public class PlayerUIHudManager : MonoBehaviour
 
     public void SetLeftWeaponQuickSlot(int weaponID)
     {
-        WeaponItem weapon = WorldItemDatabase.Instance.GetWeaponByID(weaponID);
+        WeaponItem weapon = WorldItemDatabase.instance.GetWeaponByID(weaponID);
 
         if (weapon == null)
         {

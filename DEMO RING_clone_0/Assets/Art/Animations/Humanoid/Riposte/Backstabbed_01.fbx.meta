@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d722e5f042ff00d44a9d73c16000caf8
+guid: 87a3b3384ec2add468e8d82bfe88e929
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -19,7 +19,7 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'core_main_riposte_01' has import animation
+    animationImportWarnings: "\nClip 'core_main_backstab_victim_01' has import animation
       warnings that might lower retargeting quality:\nNote: Activate translation
       DOF on avatar to improve retargeting quality.\n\t'Ball_R' is inbetween humanoid
       transforms and has rotation animation that will be discarded.\n\t'Ball_L' is
@@ -37,11 +37,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: core_main_riposte_01
-      takeName: core_main_riposte_01
-      internalID: 2241361648400260794
+      name: Backstabbed_01
+      takeName: core_main_backstab_victim_01
+      internalID: 104474999294911555
       firstFrame: 0
-      lastFrame: 114
+      lastFrame: 100
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -60,7 +60,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.25700366
+        functionName: ApplyCriticalDamage
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -753,7 +760,8 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 0ad932253e8dc8841948afa5d1a0d051, type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 0ad932253e8dc8841948afa5d1a0d051,
+    type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
