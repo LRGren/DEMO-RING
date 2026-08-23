@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ca27b6157a4f4a81a71c9a439ee3af, type: 3}
   m_Name: Wooden Shield
   m_EditorClassIdentifier: 
-  itemName: Broadsword
+  itemName: Wooden Shield
   itemIcon: {fileID: 21300088, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
   itemDescription: A straight sword
   itemID: 10003
@@ -58,6 +58,7 @@ MonoBehaviour:
   oh_RB_Action: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b, type: 2}
   oh_RT_Action: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8, type: 2}
   oh_LB_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
+  ashOfWar_Action: {fileID: 11400000, guid: a8febb1882335494a9a95b6a52d154f3, type: 2}
   wooshes:
   - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
   - {fileID: 8300000, guid: 4d4ef7516a431934681038a3dc391e55, type: 3}

@@ -45,9 +45,15 @@ public class PlayerUIEquipmentManagerInputManager : MonoBehaviour
         if (unequipedWeapon)
         {
             unequipedWeapon = false;
+
             GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
             if (currentSelected == null || currentSelected.CompareTag("Equipment Slot") == false)
             {
+                if (PlayerUIManager.instance.playerUIEquipmentManager.equipmentInventoryWindow.activeSelf)
+                {
+                    playerUIEquipmentManager.FromEquipmentInventoryWindowBackToEquipmentMenu();
+                    playerUIEquipmentManager.RefreshMenu();
+                }
                 return;
             }
 

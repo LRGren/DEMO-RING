@@ -45,6 +45,7 @@ public enum WeaponClass
 {
     StraightSword,
     MediumShield,
+    LightShield,
 }
 
 public enum EquipmentModelType

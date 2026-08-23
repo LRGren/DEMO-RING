@@ -50,6 +50,7 @@ public class PlayerInputManager : MonoBehaviour
     [Header("Trigger Inputs")]
     [SerializeField] private bool RT_Input = false;
     [SerializeField] private bool Hold_RT_Input = false;
+    [SerializeField] private bool LT_Input = false;
 
     [Header("D-pad Inputs")]
     [SerializeField] private bool switch_Right_Weapons_Input = false;
@@ -130,8 +131,8 @@ public class PlayerInputManager : MonoBehaviour
             //Bumpers
             playerControls.PlayerActions.RB.performed += i => RB_Input = true;
 
-            playerControls.PlayerActions.LBShield.performed += i => LB_Shield_Input = true;
-            playerControls.PlayerActions.LBShield.canceled += i => player.characterNetworkManager.isBlocking.Value = false;
+            playerControls.PlayerActions.LB.performed += i => LB_Shield_Input = true;
+            playerControls.PlayerActions.LB.canceled += i => player.characterNetworkManager.isBlocking.Value = false;
 
             //Two Hand Weapon
             playerControls.PlayerActions.TwoHandWeapon.performed += i => two_Hand_Input = true;
@@ -147,6 +148,8 @@ public class PlayerInputManager : MonoBehaviour
             playerControls.PlayerActions.RT.started += i => RT_Input = true;
             playerControls.PlayerActions.HoldRT.performed += i => Hold_RT_Input = true;
             playerControls.PlayerActions.HoldRT.canceled += i => Hold_RT_Input = false;
+
+            playerControls.PlayerActions.LT.performed += i => LT_Input = true;
 
             //Lock On
             playerControls.PlayerActions.LockOn.performed += i => lock_On_Input = true;
@@ -215,6 +218,7 @@ public class PlayerInputManager : MonoBehaviour
         HandleLBInput();
         HandleRTInput();
         HandleHoldRTInput();
+        HandleHoldLTInput();
 
         HandleSwitchRightWeaponsInput();
         HandleSwitchLeftWeaponsInput();
@@ -466,7 +470,7 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-
+    // Bumpers And Trigger Inputs
     private void HandleRBInput()
     {
         if (two_Hand_Input)
@@ -552,6 +556,23 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    private void HandleHoldLTInput()
+    {
+        if (LT_Input)
+        {
+            LT_Input = false;
+            //如果有UI，不反应
+
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                return;
+            }
+
+            WeaponItem selectedWeapon = player.playerCombatManager.SelectWeaponToPerformAshOfWar();
+
+            selectedWeapon.ashOfWar_Action.AttemptToPerformAction(player);
+        }
+    }
 
 
     private void HandleSwitchRightWeaponsInput()

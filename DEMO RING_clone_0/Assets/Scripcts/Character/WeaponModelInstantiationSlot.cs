@@ -40,6 +40,7 @@ public class WeaponModelInstantiationSlot : MonoBehaviour
                 weaponModel.transform.localRotation = Quaternion.Euler(194, 90, -0.22f);
                 break;
             case WeaponClass.MediumShield:
+            case WeaponClass.LightShield:
                 weaponModel.transform.localPosition = new Vector3(0.219f, -0.036f, 0.017f);
                 weaponModel.transform.localRotation = Quaternion.Euler(-12.423f, -44.594f, 147.319f);
                 break;

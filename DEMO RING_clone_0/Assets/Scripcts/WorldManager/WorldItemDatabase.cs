@@ -24,6 +24,9 @@ public class WorldItemDatabase : MonoBehaviour
     [Header("Leg Equipment")]
     [SerializeField] List<LegEquipmentItem> legEquipment = new List<LegEquipmentItem>();
 
+    [Header("Ashes Of War")]
+    [SerializeField] List<AshOfWar> ashesOfWar = new List<AshOfWar>();
+
     [Header("Items")]
     private List<Item> items = new List<Item>();
 
@@ -33,6 +36,7 @@ public class WorldItemDatabase : MonoBehaviour
     public int bodyKey = 30000;
     public int handKey = 40000;
     public int legKey = 50000;
+    public int ashOfWarKey = 60000;
 
     private void Awake()
     {
@@ -61,6 +65,10 @@ public class WorldItemDatabase : MonoBehaviour
         {
             items.Add(leg);
         }
+        foreach (var ash in ashesOfWar)
+        {
+            items.Add(ash);
+        }
 
         for (int i = 0; i < items.Count; i++)
         {
@@ -80,10 +88,15 @@ public class WorldItemDatabase : MonoBehaviour
             {
                 items[i].itemID = i + handKey;
             }
-            else
+            else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count + handEquipment.Count + legEquipment.Count)
             {
                 items[i].itemID = i + legKey;
             }
+            else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count + handEquipment.Count + legEquipment.Count + ashesOfWar.Count)
+            {
+                items[i].itemID = i + ashOfWarKey;
+            }
+
         }
     }
 
@@ -111,4 +124,10 @@ public class WorldItemDatabase : MonoBehaviour
     {
         return legEquipment.FirstOrDefault(l => l.itemID == id);
     }
+
+    public AshOfWar GetAshOfWarByID(int id)
+    {
+        return ashesOfWar.FirstOrDefault(a => a.itemID == id);
+    }
+
 }

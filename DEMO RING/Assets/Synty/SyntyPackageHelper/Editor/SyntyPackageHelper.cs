@@ -21,18 +21,18 @@ public class SyntyPackageHelper
     //Non async way of quickly checking a package is added to the package manager
     public static bool IsPackageInstalled(string packageId)
     {
-        if ( !File.Exists("Packages/manifest.json") )
+        if (!File.Exists("Packages/manifest.json"))
             return false;
 
         string jsonText = File.ReadAllText("Packages/manifest.json");
-        return jsonText.Contains( packageId );
+        return jsonText.Contains(packageId);
     }
 
     private static SyntyPackageHelperConfig[] LoadSyntyPackageHelperConfigs()
     {
         List<SyntyPackageHelperConfig> configs = new List<SyntyPackageHelperConfig>();
         string[] assetGuids = AssetDatabase.FindAssets("t:SyntyPackageHelperConfig");
-        
+
         foreach (string guid in assetGuids)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
@@ -43,7 +43,7 @@ public class SyntyPackageHelper
             }
         }
 
-        Debug.Log($"Loaded {configs.Count} ExamplePackConfig assets");
+        //Debug.Log($"Loaded {configs.Count} ExamplePackConfig assets");
 
         return configs.ToArray();
     }
@@ -65,7 +65,7 @@ public class SyntyPackageHelper
     static int requiredPackageCount = 0;
     public static void ProcessConfigs(SyntyPackageHelperConfig[] configs, bool forceInstall = false)
     {
-        if(Request != null)
+        if (Request != null)
         {
             EditorUtility.DisplayDialog(
                 "Synty Package Helper",
@@ -77,7 +77,7 @@ public class SyntyPackageHelper
         packagesToInstall.Clear();
         requiredPackageCount = 0;
 
-        foreach(var config in configs)
+        foreach (var config in configs)
         {
             BuildInstallList(config, forceInstall);
             config.hasPromptedUser = true;
@@ -86,11 +86,11 @@ public class SyntyPackageHelper
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 
-        if(packagesToInstall.Count == 0)
+        if (packagesToInstall.Count == 0)
         {
-            if(requiredPackageCount == 0)
+            if (requiredPackageCount == 0)
             {
-                if(forceInstall)
+                if (forceInstall)
                 {
                     EditorUtility.DisplayDialog(
                         "Synty Package Helper",
@@ -112,21 +112,21 @@ public class SyntyPackageHelper
         InstallPackages(packagesToInstall.ToArray());
     }
 
-    public static void BuildInstallList( SyntyPackageHelperConfig config, bool forceInstall = false )
+    public static void BuildInstallList(SyntyPackageHelperConfig config, bool forceInstall = false)
     {
-        if(!forceInstall && config.hasPromptedUser)
+        if (!forceInstall && config.hasPromptedUser)
         {
             return;
         }
 
-        foreach(var packageId in config.packageIds)
+        foreach (var packageId in config.packageIds)
         {
-            if(IsPackageInstalled(packageId))
+            if (IsPackageInstalled(packageId))
             {
                 continue;
             }
 
-            if(packagesToInstall.Contains(packageId))
+            if (packagesToInstall.Contains(packageId))
             {
                 continue;
             }
@@ -134,7 +134,7 @@ public class SyntyPackageHelper
             requiredPackageCount++;
             bool addPackage = PromptPackageInstall(config.assetPackDisplayName, packageId);
 
-            if(addPackage)
+            if (addPackage)
             {
                 packagesToInstall.Add(packageId);
             }
@@ -147,14 +147,14 @@ public class SyntyPackageHelper
                 "Synty Package Helper",
                 packName + " requires the package " + packageName + " to function correctly. Do you want to install this package now?",
                 "Install", "Skip");
-    } 
-    
+    }
+
     static string[] requestPackages = null;
     static void InstallPackages(string[] packagesToInstall)
     {
-        if(Request != null)
+        if (Request != null)
         {
-            Debug.LogError( "Trying to install a packages when when packages are already being installed." );
+            Debug.LogError("Trying to install a packages when when packages are already being installed.");
             return;
         }
 
@@ -167,17 +167,17 @@ public class SyntyPackageHelper
 
     static void Progress()
     {
-        if(Request == null)
+        if (Request == null)
         {
             EditorApplication.update -= Progress;
         }
 
-        if(requestPackages != null)
+        if (requestPackages != null)
         {
             int installed = 0;
-            foreach(var package in requestPackages)
+            foreach (var package in requestPackages)
             {
-                if(IsPackageInstalled(package))
+                if (IsPackageInstalled(package))
                 {
                     installed++;
                 }
@@ -193,7 +193,7 @@ public class SyntyPackageHelper
             {
                 string message = requestPackages.Length + " packages installed successfully!";
                 int skipped = requiredPackageCount - requestPackages.Length;
-                if(skipped > 0)
+                if (skipped > 0)
                 {
                     message = message + "\n" + (requiredPackageCount - requestPackages.Length) + " were skipped.";
                 }

@@ -151,15 +151,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "LB Shield",
-                    "type": "Button",
-                    "id": "68ecacd1-1d9d-4429-913a-28f8372f831e",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Que RB",
                     "type": "Button",
                     "id": "9c042a08-562d-49d3-8695-61b9ef7c2f08",
@@ -175,6 +166,15 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Tap(pressPoint=0.1)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LT",
+                    "type": "Button",
+                    "id": "1cc90de6-8d1d-4e07-aab1-c9f7c14d7563",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
                     "initialStateCheck": false
                 },
                 {
@@ -319,17 +319,6 @@
                 },
                 {
                     "name": "",
-                    "id": "41530976-0511-426b-9dd5-987b1e6a8523",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LB Shield",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "127950d1-df05-43d6-938b-433b9d526dd6",
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
@@ -391,6 +380,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "RT",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "43ce5d5d-fa10-4364-bcae-a8cf7732b4bc",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LT",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

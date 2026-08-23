@@ -79,6 +79,7 @@ public class WeaponItem : EquipmentItem
     public WeaponItemAction oh_RB_Action;//oh for one hand
     public WeaponItemAction oh_RT_Action;//oh for one hand
     public WeaponItemAction oh_LB_Action;//oh for one hand
+    public AshOfWar ashOfWar_Action;//ash of war
 
     //ASH OF WAR
 

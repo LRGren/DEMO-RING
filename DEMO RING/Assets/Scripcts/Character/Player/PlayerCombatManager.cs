@@ -209,4 +209,13 @@ public class PlayerCombatManager : CharacterCombatManager
         player.playerCombatManager.canComboWithMainHandWeapon = false;
     }
 
+    public WeaponItem SelectWeaponToPerformAshOfWar()
+    {
+        WeaponItem selectedWeapon = player.playerInventoryManager.currentLeftHandWeapon;
+        player.playerNetworkManager.SetCharacterActionHand(false);
+        player.playerCombatManager.currentWeaponBedingUsed = selectedWeapon;
+
+        return selectedWeapon;
+    }
+
 }
