@@ -217,6 +217,18 @@ public class CharacterCombatManager : NetworkBehaviour
             characterManager.characterNetworkManager.isInvulnerable.Value = false;
     }
 
+    public void EnableIsParrying()
+    {
+        if (characterManager.IsOwner)
+            characterManager.characterNetworkManager.isParrying.Value = true;
+    }
+
+    public void DisableIsParrying()
+    {
+        if (characterManager.IsOwner)
+            characterManager.characterNetworkManager.isParrying.Value = false;
+    }
+
     public void EnableCanPerformRollingAttack()
     {
         canPerformRollingAttack = true;
@@ -243,5 +255,10 @@ public class CharacterCombatManager : NetworkBehaviour
 
     public virtual void DisableDoCombo()
     {
+    }
+
+    public virtual void CloseAllDamageColliders()
+    {
+
     }
 }

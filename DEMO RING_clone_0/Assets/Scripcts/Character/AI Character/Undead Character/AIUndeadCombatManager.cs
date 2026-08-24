@@ -53,4 +53,12 @@ public class AIUndeadCombatManager : AICharacterCombatManager
     {
         leftHandUndeadDamageCollider.DisableDamageCollider();
     }
+
+    public override void CloseAllDamageColliders()
+    {
+        base.CloseAllDamageColliders();
+
+        DisableRightHandDamageCollider();
+        DisableLeftHandDamageCollider();
+    }
 }

@@ -27,6 +27,8 @@ public class CharacterNetworkManager : NetworkBehaviour
     public NetworkVariable<ulong> currentTargetNetworkObjectID = new NetworkVariable<ulong>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("Flags")]
+    public NetworkVariable<bool> isParrying = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<bool> isParryable = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isBlocking = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isAttacking = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isInvulnerable = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -404,6 +406,37 @@ public class CharacterNetworkManager : NetworkBehaviour
 
         StartCoroutine(characterCausingDamage.characterCombatManager.ForceMoveEnemyCharacterToBackstabPosition
         (damageCharacter, WorldUtilityManager.instance.GetBackstabbingPositionBasedOnWeaponClass(weapon.weaponClass)));
+    }
+
+    #endregion
+
+    #region Parry
+    [ServerRpc(RequireOwnership = false)]
+    public void NotifyTheServerOfCharacterParriedServerRpc(ulong charcterCausingDamageID)
+    {
+        if (IsServer)
+        {
+            NotifyTheServerOfCharacterParriedClientRpc(charcterCausingDamageID);
+        }
+    }
+
+    [ClientRpc]
+    private void NotifyTheServerOfCharacterParriedClientRpc(ulong charcterCausingDamageID)
+    {
+        ProcessCharacterParriedFromServer(charcterCausingDamageID);
+    }
+
+    private void ProcessCharacterParriedFromServer(ulong charcterCausingDamageID)
+    {
+        CharacterManager characterCausingDamage = NetworkManager.SpawnManager.SpawnedObjects[charcterCausingDamageID].gameObject.GetComponent<CharacterManager>();
+
+        if (characterCausingDamage == null)
+            return;
+
+        if (characterCausingDamage.IsOwner)
+        {
+            characterCausingDamage.characterAnimatorManager.PlayerTargetActionAnimationInstantly("Parried_01", true);
+        }
     }
 
     #endregion

@@ -137,9 +137,11 @@ public class AIBOSS01CharacterCombatManager : AICharacterCombatManager
         }
     }
 
-    void OnDrawGizmos()
+    public override void CloseAllDamageColliders()
     {
-        Gizmos.DrawWireSphere(earthquakeAttackPoint.position, earthquakeAttackRadius);
+        base.CloseAllDamageColliders();
+
+        swordDamageCollider.DisableDamageCollider();
     }
 
 }

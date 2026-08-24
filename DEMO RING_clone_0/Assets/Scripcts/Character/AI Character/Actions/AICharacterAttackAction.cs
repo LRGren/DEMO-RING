@@ -11,6 +11,7 @@ public class AICharacterAttackAction : ScriptableObject
 
     [Header("Combo Attack Action")]
     public AICharacterAttackAction comboAction;
+    public bool isParryableAttack = false;
 
     [Header("Attack Values")]
     [SerializeField] private AttackType attackType;
@@ -24,7 +25,10 @@ public class AICharacterAttackAction : ScriptableObject
 
     public void AttemptToPerformAction(AICharacterManager aiCharacter)
     {
+
+        aiCharacter.characterNetworkManager.isParryable.Value = isParryableAttack;
         aiCharacter.characterAnimatorManager.PlayerTargetActionAnimation(actionAnimation, true);
+
     }
 
 }

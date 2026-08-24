@@ -218,4 +218,15 @@ public class PlayerCombatManager : CharacterCombatManager
         return selectedWeapon;
     }
 
+    public override void CloseAllDamageColliders()
+    {
+        base.CloseAllDamageColliders();
+
+        if (player.IsOwner)
+        {
+            player.playerEquipmentManager.rightHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
+            player.playerEquipmentManager.leftHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
+        }
+    }
+
 }

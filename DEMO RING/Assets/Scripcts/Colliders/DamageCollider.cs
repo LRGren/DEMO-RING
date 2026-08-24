@@ -44,6 +44,9 @@ public class DamageCollider : MonoBehaviour
 
             //友军
 
+            //弹反
+            CheckForParry(damageTarget);
+
             //格挡
             CheckForBlocking(damageTarget);
 
@@ -80,6 +83,11 @@ public class DamageCollider : MonoBehaviour
 
             damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);
         }
+    }
+
+    protected virtual void CheckForParry(CharacterManager damageTarget)
+    {
+
     }
 
     protected virtual void CalculateDirectionToAttacker(CharacterManager damageTarget)

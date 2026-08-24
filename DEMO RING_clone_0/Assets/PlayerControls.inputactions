@@ -11,7 +11,7 @@
                     "type": "PassThrough",
                     "id": "a646391a-f92d-4bd5-8ff2-50a66d75d8de",
                     "expectedControlType": "",
-                    "processors": "",
+                    "processors": "StickDeadzone",
                     "interactions": "",
                     "initialStateCheck": false
                 }
@@ -148,6 +148,15 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LBShield",
+                    "type": "Button",
+                    "id": "c6666525-d6d6-4dfb-9cb4-99de104b2dae",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -303,6 +312,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "LB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bdefe75c-7a12-4993-913f-c00510883679",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LBShield",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

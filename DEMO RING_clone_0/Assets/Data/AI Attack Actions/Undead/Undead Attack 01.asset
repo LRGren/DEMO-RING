@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionAnimation: Attack_01
   comboAction: {fileID: 0}
+  isParryableAttack: 1
   attackType: 0
   attackWeight: 50
   attackRecoveryTime: 1

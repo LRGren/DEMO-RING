@@ -43,10 +43,10 @@ public class ParryAshOfWar : AshOfWar
         switch (currentWeapon.weaponClass)
         {
             case WeaponClass.MediumShield:
-                playerPerformingAction.playerAnimatorManager.PlayerTargetActionAnimation("Slow_Parry_01", true);
+                playerPerformingAction.playerAnimatorManager.PlayerTargetActionAnimationInstantly("Slow_Parry_01", true);
                 break;
             case WeaponClass.LightShield:
-                playerPerformingAction.playerAnimatorManager.PlayerTargetActionAnimation("Light_Parry_01", true);
+                playerPerformingAction.playerAnimatorManager.PlayerTargetActionAnimationInstantly("Light_Parry_01", true);
                 break;
             default:
                 break;

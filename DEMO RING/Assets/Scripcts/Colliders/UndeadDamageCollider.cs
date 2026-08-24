@@ -50,4 +50,33 @@ public class UndeadDamageCollider : DamageCollider
 
         //damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);
     }
+
+    protected override void CheckForParry(CharacterManager damageTarget)
+    {
+        if (characterDamaged.Contains(damageTarget))
+            return;
+
+        if (!undeadCharacter.characterNetworkManager.isParryable.Value)
+            return;
+
+        if (!damageTarget.IsOwner)
+        {
+            // 只有被攻击者的客户端才会处理弹反逻辑，其他客户端通过网络同步弹反结果
+            return;
+        }
+
+        if (damageTarget.characterNetworkManager.isParrying.Value)
+        {
+            // 如果被攻击者正在进行弹反，则触发弹反效果
+            characterDamaged.Add(damageTarget);
+
+            // 触发弹反效果
+
+            // 通知服务器处理弹反结果
+            damageTarget.characterNetworkManager.NotifyTheServerOfCharacterParriedServerRpc(undeadCharacter.NetworkObjectId);
+            damageTarget.characterCombatManager.CloseAllDamageColliders();
+        }
+
+    }
+
 }

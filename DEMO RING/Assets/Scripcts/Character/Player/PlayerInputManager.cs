@@ -131,8 +131,8 @@ public class PlayerInputManager : MonoBehaviour
             //Bumpers
             playerControls.PlayerActions.RB.performed += i => RB_Input = true;
 
-            playerControls.PlayerActions.LB.performed += i => LB_Shield_Input = true;
-            playerControls.PlayerActions.LB.canceled += i => player.characterNetworkManager.isBlocking.Value = false;
+            playerControls.PlayerActions.LBShield.performed += i => LB_Shield_Input = true;
+            playerControls.PlayerActions.LBShield.canceled += i => player.playerNetworkManager.isBlocking.Value = false;
 
             //Two Hand Weapon
             playerControls.PlayerActions.TwoHandWeapon.performed += i => two_Hand_Input = true;

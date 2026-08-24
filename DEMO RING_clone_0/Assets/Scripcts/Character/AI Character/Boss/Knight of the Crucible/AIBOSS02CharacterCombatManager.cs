@@ -162,4 +162,13 @@ public class AIBOSS02CharacterCombatManager : AICharacterCombatManager
         Gizmos.DrawWireSphere(stumpAttackPoint.position, stumpAttackRadius);
     }
 
+    public override void CloseAllDamageColliders()
+    {
+        base.CloseAllDamageColliders();
+
+        DisableSwordDamageCollider();
+        DisableShieldDamageCollider();
+        DisableWholeBodyDamageCollider();
+    }
+
 }
