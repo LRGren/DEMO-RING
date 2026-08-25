@@ -9,8 +9,9 @@ public class AICharacterManager : CharacterManager
     public string characterName = "AI Character";
 
     [HideInInspector] public AICharacterCombatManager aiCharacterCombatManager;
-    [HideInInspector] public AIChracterNetworkManager aiCharacterNetworkManager;
+    [HideInInspector] public AICharacterNetworkManager aiCharacterNetworkManager;
     [HideInInspector] public AICharacterLocomotionManager aiCharacterLocomotionManager;
+    [HideInInspector] public AICharacterInventoryManager aiCharacterInventoryManager;
 
     [Header("AI State")]
     public AIState currentState;
@@ -29,8 +30,10 @@ public class AICharacterManager : CharacterManager
     {
         base.Awake();
         aiCharacterCombatManager = GetComponent<AICharacterCombatManager>();
-        aiCharacterNetworkManager = GetComponent<AIChracterNetworkManager>();
+        aiCharacterNetworkManager = GetComponent<AICharacterNetworkManager>();
         aiCharacterLocomotionManager = GetComponent<AICharacterLocomotionManager>();
+        aiCharacterInventoryManager = GetComponent<AICharacterInventoryManager>();
+
         navMeshAgent = GetComponentInChildren<NavMeshAgent>();
 
     }

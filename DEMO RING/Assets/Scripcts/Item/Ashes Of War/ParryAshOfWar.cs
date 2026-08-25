@@ -30,7 +30,7 @@ public class ParryAshOfWar : AshOfWar
         if (playerPerformingAction.playerNetworkManager.isJumping.Value)
             return false;
 
-        if (playerPerformingAction.playerNetworkManager.currentStamina.Value < staminaCost)
+        if (playerPerformingAction.playerNetworkManager.currentStamina.Value <= 0)
             return false;
 
         return true;

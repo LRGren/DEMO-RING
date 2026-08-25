@@ -19,7 +19,7 @@ MonoBehaviour:
   itemWeight: 4
   weaponAnimator: {fileID: 22100000, guid: 7233d515cbc095a44b72c59e7a1d72f8, type: 2}
   weaponType: 0
-  weaponClass: 0
+  weaponClass: 1
   weaponModel: {fileID: 1711130412322516538, guid: ac1c0c907d9ebf4499db0b6721bf1ee3,
     type: 3}
   strengthREQ: 10
@@ -58,6 +58,7 @@ MonoBehaviour:
   oh_RB_Action: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b, type: 2}
   oh_RT_Action: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8, type: 2}
   oh_LB_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
+  ashOfWar_Action: {fileID: 0}
   wooshes:
   - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
   - {fileID: 8300000, guid: 4d4ef7516a431934681038a3dc391e55, type: 3}

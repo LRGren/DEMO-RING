@@ -117,6 +117,27 @@ public class CharacterNetworkManager : NetworkBehaviour
         character.animator.SetBool("isDead", character.isDead.Value);
     }
 
+    #region Cancel All Attempted Actions
+    [ServerRpc]
+    public void DestoryAllAttemptedActionsServerRpc()
+    {
+        if (IsServer)
+        {
+            DestoryAllAttemptedActionsClientRpc();
+        }
+    }
+
+    [ClientRpc]
+    public void DestoryAllAttemptedActionsClientRpc()
+    {
+        if (character.characterEffectsManager.activeSpellWarmUpFX != null)
+        {
+            Destroy(character.characterEffectsManager.activeSpellWarmUpFX);
+            character.characterEffectsManager.activeSpellWarmUpFX = null;
+        }
+    }
+    #endregion
+
     #region Action Animation
     [ServerRpc]
     public void NotifyTheServerOfActionAnimationServerRpc(ulong clientId, string animationName, bool applyRootMotion)
@@ -331,7 +352,9 @@ public class CharacterNetworkManager : NetworkBehaviour
         damageEffect.poiseDamage = poiseDamage;
 
         damageCharacter.characterEffectsManager.ProcessInstantEffect(damageEffect);
-        damageCharacter.characterAnimatorManager.PlayerTargetActionAnimationInstantly(criticalDamageAnimation, true);
+
+        if (damageCharacter.IsOwner)
+            damageCharacter.characterAnimatorManager.PlayerTargetActionAnimationInstantly(criticalDamageAnimation, true);
 
         StartCoroutine(characterCausingDamage.characterCombatManager.ForceMoveEnemyCharacterToRipostePosition
         (damageCharacter, WorldUtilityManager.instance.GetRipostingPositionBasedOnWeaponClass(weapon.weaponClass)));
@@ -402,7 +425,9 @@ public class CharacterNetworkManager : NetworkBehaviour
         damageEffect.poiseDamage = poiseDamage;
 
         damageCharacter.characterEffectsManager.ProcessInstantEffect(damageEffect);
-        damageCharacter.characterAnimatorManager.PlayerTargetActionAnimationInstantly(criticalDamageAnimation, true);
+
+        if (damageCharacter.IsOwner)
+            damageCharacter.characterAnimatorManager.PlayerTargetActionAnimationInstantly(criticalDamageAnimation, true);
 
         StartCoroutine(characterCausingDamage.characterCombatManager.ForceMoveEnemyCharacterToBackstabPosition
         (damageCharacter, WorldUtilityManager.instance.GetBackstabbingPositionBasedOnWeaponClass(weapon.weaponClass)));

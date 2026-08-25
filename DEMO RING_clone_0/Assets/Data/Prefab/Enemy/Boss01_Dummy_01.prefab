@@ -2292,7 +2292,6 @@ GameObject:
   - component: {fileID: 4264454895461412249}
   - component: {fileID: 8348419834664082542}
   - component: {fileID: 5766027131290333020}
-  - component: {fileID: 7132560717083368243}
   - component: {fileID: 5804182300970313103}
   - component: {fileID: 7190445280894901129}
   - component: {fileID: 5828806300916637300}
@@ -2303,6 +2302,7 @@ GameObject:
   - component: {fileID: 649129733402237863}
   - component: {fileID: 2239858814955359206}
   - component: {fileID: 4966367541513654335}
+  - component: {fileID: -3008421279890881074}
   m_Layer: 6
   m_Name: Boss01_Dummy_01
   m_TagString: Untagged
@@ -2362,7 +2362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3963331255
+  GlobalObjectIdHash: 6309587
   InScenePlacedSourceGlobalObjectIdHash: 1732247804
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -2406,6 +2406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bloodSplatterVFX: {fileID: 0}
+  criticalBloodSplatterVFX: {fileID: 0}
   staticEffects: []
 --- !u!114 &5766027131290333020
 MonoBehaviour:
@@ -2417,18 +2418,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ee76c9564f877d4991832fae3c9b4db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7132560717083368243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6199065445168199212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 231a50fd25ede1942809b4c5915465db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &5804182300970313103
@@ -2682,6 +2671,10 @@ MonoBehaviour:
     m_InternalValue: 0
   currentTargetNetworkObjectID:
     m_InternalValue: 0
+  isParrying:
+    m_InternalValue: 0
+  isParryable:
+    m_InternalValue: 0
   isBlocking:
     m_InternalValue: 0
   isAttacking:
@@ -2699,6 +2692,8 @@ MonoBehaviour:
   isChargingAttack:
     m_InternalValue: 0
   isRipostable:
+    m_InternalValue: 0
+  isBeingRiposted:
     m_InternalValue: 0
   endurance:
     m_InternalValue: 1
@@ -2736,6 +2731,11 @@ MonoBehaviour:
   canPerformRollingAttack: 0
   canPerformBackstepAttack: 0
   canBlock: 1
+  canBeBackstabbed: 1
+  riposteReceiverTransform: {fileID: 0}
+  backstabReceiverTransform: {fileID: 0}
+  criticalAttackMaxDistance: 0.7
+  pendingCriticalAttackDamage: 0
   actionRecoveryTimer: 0
   enablePivot: 1
   distanceFromTarget: 0
@@ -2864,6 +2864,20 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4e7a9f408abdba8459fdccbeaea95215, type: 3}
   - {fileID: 8300000, guid: e4b229d1cd4c5954c982c44b6f42eb27, type: 3}
   earthquakeSFX: {fileID: 8300000, guid: e7cb68da88d8b274eb008f9a214589d8, type: 3}
+--- !u!114 &-3008421279890881074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6199065445168199212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6773fdbe533779e43906528e59f090ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItemChance: 50
+  lootItems: []
 --- !u!1 &6245145032224923085
 GameObject:
   m_ObjectHideFlags: 0
@@ -3750,6 +3764,7 @@ MonoBehaviour:
   holyDamage: 0
   poiseDamage: 0
   contactPoint: {x: 0, y: 0, z: 0}
+  characterDamaged: []
   bossCharacter: {fileID: 0}
 --- !u!1001 &3997725098807351300
 PrefabInstance:

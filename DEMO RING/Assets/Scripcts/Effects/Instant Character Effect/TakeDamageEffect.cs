@@ -198,6 +198,7 @@ public class TakeDamageEffect : InstantCharacterEffect
         if (poiseIsBroken)
         {
             character.characterAnimatorManager.PlayerTargetActionAnimation(damageAnimation, true);
+            character.characterCombatManager.DestoryAllAttemptedActions();
         }
         else
         {

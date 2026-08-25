@@ -8,6 +8,7 @@ public class WorldItemDatabase : MonoBehaviour
     public static WorldItemDatabase instance;
 
     public WeaponItem unarmedWeapon;
+    public GameObject characterDropPickUpItemPrefab;
 
     [Header("Weapons")]
     [SerializeField] List<WeaponItem> weapons = new List<WeaponItem>();
@@ -27,6 +28,9 @@ public class WorldItemDatabase : MonoBehaviour
     [Header("Ashes Of War")]
     [SerializeField] List<AshOfWar> ashesOfWar = new List<AshOfWar>();
 
+    [Header("Spells")]
+    [SerializeField] List<SpellItem> spells = new List<SpellItem>();
+
     [Header("Items")]
     private List<Item> items = new List<Item>();
 
@@ -37,6 +41,7 @@ public class WorldItemDatabase : MonoBehaviour
     public int handKey = 40000;
     public int legKey = 50000;
     public int ashOfWarKey = 60000;
+    public int spellKey = 70000;
 
     private void Awake()
     {
@@ -69,6 +74,10 @@ public class WorldItemDatabase : MonoBehaviour
         {
             items.Add(ash);
         }
+        foreach (var spell in spells)
+        {
+            items.Add(spell);
+        }
 
         for (int i = 0; i < items.Count; i++)
         {
@@ -96,8 +105,17 @@ public class WorldItemDatabase : MonoBehaviour
             {
                 items[i].itemID = i + ashOfWarKey;
             }
+            else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count + handEquipment.Count + legEquipment.Count + ashesOfWar.Count + spells.Count)
+            {
+                items[i].itemID = i + spellKey;
+            }
 
         }
+    }
+
+    public Item GetItemByID(int id)
+    {
+        return items.FirstOrDefault(i => i.itemID == id);
     }
 
     public WeaponItem GetWeaponByID(int id)
@@ -128,6 +146,11 @@ public class WorldItemDatabase : MonoBehaviour
     public AshOfWar GetAshOfWarByID(int id)
     {
         return ashesOfWar.FirstOrDefault(a => a.itemID == id);
+    }
+
+    public SpellItem GetSpellByID(int id)
+    {
+        return spells.FirstOrDefault(s => s.itemID == id);
     }
 
 }

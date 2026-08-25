@@ -6,7 +6,7 @@ using UnityEngine;
 public class DamageCollider : MonoBehaviour
 {
     [Header("Collider")]
-    [SerializeField] protected Collider damageCollider;
+    public Collider damageCollider;
 
     [Header("Damage")]
     public float physicalDamage = 0;
@@ -22,7 +22,7 @@ public class DamageCollider : MonoBehaviour
     public Vector3 contactPoint;
 
     [Header("Character Damaged")]
-    protected List<CharacterManager> characterDamaged = new List<CharacterManager>();
+    public List<CharacterManager> characterDamaged = new List<CharacterManager>();
 
     [Header("Direction To Attacker")]
     protected Vector3 directionToAttacker;
@@ -119,6 +119,7 @@ public class DamageCollider : MonoBehaviour
 
     public virtual void EnableDamageCollider()
     {
+        characterDamaged.Clear();
         damageCollider.enabled = true;
     }
 

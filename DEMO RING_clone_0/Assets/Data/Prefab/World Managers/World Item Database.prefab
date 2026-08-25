@@ -45,30 +45,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unarmedWeapon: {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
+  characterDropPickUpItemPrefab: {fileID: 1590415177872986601, guid: eaae3f86bdc5abf4d95b3c9f310c1ac0,
+    type: 3}
   weapons:
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   - {fileID: 11400000, guid: 5127d45e178cc8649b053be9de266c07, type: 2}
   - {fileID: 11400000, guid: fd164a1d6f05bda478dd90018ab02d46, type: 2}
   - {fileID: 11400000, guid: a864884746fe73f4a8f7470d75d141c2, type: 2}
   - {fileID: 11400000, guid: cda573b7888932947ad828b9a17c0add, type: 2}
+  - {fileID: 11400000, guid: 6d5004223b4f5b4428a2734068010c59, type: 2}
   headEquipment:
-  - {fileID: 11400000, guid: 47f13f873370962429349698168622e7, type: 2}
-  - {fileID: 11400000, guid: 9503e358cb28f1b4fa80d3a2476bac97, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 00e9a9beff7e05a49baf85220cdd4cde, type: 2}
   bodyEquipment:
   - {fileID: 11400000, guid: 80ebf9e87d58d424a83bca9be888b238, type: 2}
-  - {fileID: 0}
   handEquipment:
   - {fileID: 11400000, guid: 23a2e125ed5097747a3be1aacff1f99a, type: 2}
-  - {fileID: 0}
   legEquipment:
   - {fileID: 11400000, guid: 9b995ab3578771e479a97bb1b8703258, type: 2}
-  - {fileID: 0}
   ashesOfWar:
   - {fileID: 11400000, guid: a8febb1882335494a9a95b6a52d154f3, type: 2}
+  spells:
+  - {fileID: 11400000, guid: 63bc88de29f5e0347ac9eba3758c76e6, type: 2}
   weaponKey: 10000
   headKey: 20000
   bodyKey: 30000
   handKey: 40000
   legKey: 50000
   ashOfWarKey: 60000
+  spellKey: 70000

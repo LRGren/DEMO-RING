@@ -6,11 +6,17 @@ using Unity.Netcode;
 public class PickUpItemInteractable : Interactable
 {
     public PickUpItemType pickUpType;
+    public Item item;
 
-    public int itemID;
+    [Header("World Spawned Item")]
+    public int worldSpawnedLootedItemID;
     public bool hasBeenLooted = false;
 
-    public Item item;
+    [Header("Character Drop Item")]
+    public NetworkVariable<int> itemID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<Vector3> itemPosition = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<ulong> droppingCreatureID = new NetworkVariable<ulong>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public bool trackDroppingCreaturePosition = true;
 
     protected override void Start()
     {
@@ -22,6 +28,29 @@ public class PickUpItemInteractable : Interactable
         }
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        itemID.OnValueChanged += OnItemIDChanged;
+        itemPosition.OnValueChanged += OnItemPositionChanged;
+        droppingCreatureID.OnValueChanged += OnDroppingCreatureIDChanged;
+
+        if (!IsOwner)
+        {
+            OnItemIDChanged(0, itemID.Value);
+            OnItemPositionChanged(Vector3.zero, itemPosition.Value);
+            OnDroppingCreatureIDChanged(0, droppingCreatureID.Value);
+        }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        itemID.OnValueChanged -= OnItemIDChanged;
+        itemPosition.OnValueChanged -= OnItemPositionChanged;
+        droppingCreatureID.OnValueChanged -= OnDroppingCreatureIDChanged;
+    }
+
     private void CheckIfItemWasAlreadyLooted()
     {
         if (!NetworkManager.Singleton.IsHost)
@@ -30,12 +59,12 @@ public class PickUpItemInteractable : Interactable
             return;
         }
 
-        if (!WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.ContainsKey(itemID))
+        if (!WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.ContainsKey(worldSpawnedLootedItemID))
         {
-            WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.Add(itemID, false);
+            WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.Add(worldSpawnedLootedItemID, false);
         }
 
-        hasBeenLooted = WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted[itemID];
+        hasBeenLooted = WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted[worldSpawnedLootedItemID];
 
         if (hasBeenLooted)
         {
@@ -45,6 +74,9 @@ public class PickUpItemInteractable : Interactable
 
     public override void Interact(PlayerManager player)
     {
+        if (player.isPerformingAction)
+            return;
+
         base.Interact(player);
 
         player.playerAnimatorManager.PlayerTargetActionAnimation("Pick_Up_Item_01", true);
@@ -58,14 +90,67 @@ public class PickUpItemInteractable : Interactable
 
         if (pickUpType == PickUpItemType.WorldSpawn)
         {
-            if (WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.ContainsKey(itemID))
+            if (WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.ContainsKey(worldSpawnedLootedItemID))
             {
-                WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.Remove(itemID);
+                WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.Remove(worldSpawnedLootedItemID);
             }
-            WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.Add(itemID, true);
+            WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.Add(worldSpawnedLootedItemID, true);
         }
 
-        Destroy(gameObject);
+        DestroyItemServerRpc();
+    }
+
+    private void OnItemIDChanged(int previousValue, int newValue)
+    {
+        if (pickUpType != PickUpItemType.CharacterDrop)
+            return;
+
+        item = WorldItemDatabase.instance.GetItemByID(itemID.Value);
+    }
+
+    private void OnItemPositionChanged(Vector3 previousValue, Vector3 newValue)
+    {
+        if (pickUpType != PickUpItemType.CharacterDrop)
+            return;
+
+        transform.position = itemPosition.Value;
+    }
+
+    private void OnDroppingCreatureIDChanged(ulong previousValue, ulong newValue)
+    {
+        if (pickUpType != PickUpItemType.CharacterDrop)
+            return;
+
+        StartCoroutine(TrackDroppingCreaturePosition());
+    }
+
+    private IEnumerator TrackDroppingCreaturePosition()
+    {
+        AICharacterManager droppingCreature = NetworkManager.Singleton.SpawnManager.SpawnedObjects[droppingCreatureID.Value].GetComponent<AICharacterManager>();
+        bool tracking = false;
+
+        if (droppingCreature != null)
+            tracking = true;
+
+        if (tracking)
+        {
+            while (gameObject.activeSelf)
+            {
+                transform.position = droppingCreature.characterCombatManager.lockOnTransform.position;
+                yield return null;
+            }
+        }
+
+        yield return null;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DestroyItemServerRpc()
+    {
+        if (!IsServer)
+            return;
+
+        GetComponent<NetworkObject>().Despawn();
     }
 
 }

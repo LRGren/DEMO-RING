@@ -13,6 +13,9 @@ public class CharacterEffectsManager : MonoBehaviour
 
     private CharacterManager character;
 
+    [Header("Current Active FX")]
+    public GameObject activeSpellWarmUpFX;
+
     [Header("VFX")]
     [SerializeField] private GameObject bloodSplatterVFX;
 

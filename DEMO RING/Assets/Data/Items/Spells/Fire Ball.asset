@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f39b8ad8b1d518468789fdadca4cc7a, type: 3}
+  m_Name: Fire Ball
+  m_EditorClassIdentifier: 
+  itemName: Fire Ball
+  itemIcon: {fileID: 0}
+  itemDescription: 
+  itemID: 0
+  spellClass: 0
+  fullChargeModifier: 2
+  spellCastWarmUpFX: {fileID: 7360890951204890652, guid: 7e2766f54b4daff489e2342e91f7c0d1,
+    type: 3}
+  spellChargeFX: {fileID: 7360890951204890652, guid: b24f60f03816a254fbfaf7484ad693e0,
+    type: 3}
+  spellCastReleaseFX: {fileID: 2479329178434569337, guid: 4a3c5136ced08ef4f97f601b6534e77e,
+    type: 3}
+  spellCastReleaseFXFullCharge: {fileID: 2479329178434569337, guid: 4576be9427f11564a848e3aa44ce0f02,
+    type: 3}
+  mainHandSpellAnimtion: Spell_Main_Fire_Ball_Start
+  offHandSpellAnimtion: Spell_Off_Fire_Ball_Start
+  spellCastWarmUpSound: {fileID: 0}
+  spellCastReleaseSound: {fileID: 0}
+  upwardForce: 10
+  forwardForce: 5

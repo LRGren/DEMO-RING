@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2405ee6274666c4fa5961abce226fe4, type: 3}
+  m_Name: Charm
+  m_EditorClassIdentifier: 
+  itemName: Charm
+  itemIcon: {fileID: 21300128, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  itemDescription: 
+  itemID: 10005
+  itemWeight: 0
+  weaponAnimator: {fileID: 22100000, guid: 830d08253f11c7d40a528b234b01be4b, type: 2}
+  weaponType: 0
+  weaponClass: 0
+  weaponModel: {fileID: 1711130412322516538, guid: de72cad6e5e861844af06a53cdbdb2f3,
+    type: 3}
+  strengthREQ: 0
+  dexterityREQ: 0
+  intelligenceREQ: 0
+  faithREQ: 0
+  physicalDamage: 0
+  magicalDamage: 0
+  fireDamage: 0
+  holyDamage: 0
+  lightningDamage: 0
+  criticalDamage: 100
+  poiseDamage: 10
+  physicalDamageAbsorption: 100
+  magicalDamageAbsorption: 0
+  fireDamageAbsorption: 0
+  holyDamageAbsorption: 0
+  lightningDamageAbsorption: 0
+  staminaAbsorption: 0
+  light_Attack_01_Modifier: 0.9
+  light_Attack_02_Modifier: 1.2
+  heavy_Attack_01_Modifier: 1.4
+  heavy_Attack_02_Modifier: 1.6
+  charged_Attack_01_Modifier: 2.2
+  charged_Attack_02_Modifier: 2.5
+  run_Attack_01_Modifier: 1
+  roll_Attack_01_Modifier: 1
+  backstep_Attack_01_Modifier: 1
+  basicStaminaCost: 0
+  lightAttackStaminaModifier: 0.9
+  heavyAttackStaminaModifier: 1.2
+  chargedAttackStaminaModifier: 1.5
+  runningAttackStaminaModifier: 1
+  rollingAttackStaminaModifier: 1
+  backstepAttackStaminaModifier: 1
+  oh_RB_Action: {fileID: 11400000, guid: 1423e33dc8661584fa58b3ad6c1a8066, type: 2}
+  oh_RT_Action: {fileID: 11400000, guid: 1423e33dc8661584fa58b3ad6c1a8066, type: 2}
+  oh_LB_Action: {fileID: 11400000, guid: 1423e33dc8661584fa58b3ad6c1a8066, type: 2}
+  ashOfWar_Action: {fileID: 11400000, guid: a8febb1882335494a9a95b6a52d154f3, type: 2}
+  wooshes: []
+  blocks: []

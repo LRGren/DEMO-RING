@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIBossCharacterNetworkManager : AIChracterNetworkManager
+public class AIBossCharacterNetworkManager : AICharacterNetworkManager
 {
     AIBossCharacterManager aiBossCharacter;
 

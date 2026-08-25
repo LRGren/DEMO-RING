@@ -1667,38 +1667,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: World Item Database
       objectReference: {fileID: 0}
-    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
-        type: 3}
-      propertyPath: legEquipment.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
-        type: 3}
-      propertyPath: bodyEquipment.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
-        type: 3}
-      propertyPath: handEquipment.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
-        type: 3}
-      propertyPath: headEquipment.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
-        type: 3}
-      propertyPath: headEquipment.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 00e9a9beff7e05a49baf85220cdd4cde,
-        type: 2}
-    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
-        type: 3}
-      propertyPath: headEquipment.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 00e9a9beff7e05a49baf85220cdd4cde,
-        type: 2}
     - target: {fileID: 7703937357132980738, guid: ba46be3c9ee99aa41971da263ce4d03b,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -13,7 +13,7 @@ public class AshOfWar : Item
 
     public virtual void AttemptToPerformAction(PlayerManager playerPerformingAction)
     {
-        Debug.Log("Attempting to perform action with Ash of War: " + itemName);
+        //Debug.Log("Attempting to perform action with Ash of War: " + itemName);
     }
 
     public virtual bool CanIUseThisAbility(PlayerManager playerPerformingAction)

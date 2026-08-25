@@ -56901,6 +56901,10 @@ MonoBehaviour:
     m_InternalValue: 0
   currentTargetNetworkObjectID:
     m_InternalValue: 0
+  isParrying:
+    m_InternalValue: 0
+  isParryable:
+    m_InternalValue: 0
   isBlocking:
     m_InternalValue: 0
   isAttacking:
@@ -57011,6 +57015,8 @@ MonoBehaviour:
   currentRightHandWeaponID:
     m_InternalValue: 0
   currentLeftHandWeaponID:
+    m_InternalValue: 0
+  currentSpellID:
     m_InternalValue: 0
   isUsingRightHand:
     m_InternalValue: 0
@@ -57251,7 +57257,7 @@ MonoBehaviour:
   currentTwoHandedWeapon: {fileID: 0}
   weaponsInRightHand:
   - {fileID: 11400000, guid: fd164a1d6f05bda478dd90018ab02d46, type: 2}
-  - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
+  - {fileID: 11400000, guid: 6d5004223b4f5b4428a2734068010c59, type: 2}
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   rightWeaponIndex: 0
   weaponsInLeftHand:
@@ -57259,6 +57265,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cda573b7888932947ad828b9a17c0add, type: 2}
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   leftWeaponIndex: 0
+  currentSpell: {fileID: 11400000, guid: 26979afd063ecee4fb4309c827b28997, type: 2}
   headEquipment: {fileID: 0}
   bodyEquipment: {fileID: 0}
   handEquipment: {fileID: 0}
@@ -57367,11 +57374,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9777077a2a37b924d8f930a0062936ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeSpellWarmUpFX: {fileID: 0}
   bloodSplatterVFX: {fileID: 0}
   criticalBloodSplatterVFX: {fileID: 0}
   staticEffects: []
-  effectToTest: {fileID: 0}
-  processEffect: 0
 --- !u!143 &6217595443796292079
 CharacterController:
   m_ObjectHideFlags: 0

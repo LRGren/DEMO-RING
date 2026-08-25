@@ -261,4 +261,9 @@ public class CharacterCombatManager : NetworkBehaviour
     {
 
     }
+
+    public virtual void DestoryAllAttemptedActions()
+    {
+        characterManager.characterNetworkManager.DestoryAllAttemptedActionsServerRpc();
+    }
 }

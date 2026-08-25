@@ -228,12 +228,30 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Hold RB"",
+                    ""type"": ""Button"",
+                    ""id"": ""5e3e071d-5690-43d2-b1de-1feabb93e03b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(pressPoint=0.1)"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""LB"",
                     ""type"": ""Button"",
                     ""id"": ""d1eeb4d6-ff1b-492c-8496-6d5d69c60560"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hold LB"",
+                    ""type"": ""Button"",
+                    ""id"": ""e4cd44d8-f996-4864-ac3a-d5c05f07493d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(pressPoint=0.1)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -381,6 +399,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""26222cab-7c59-4be5-b992-564669563a85"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hold RB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""1749e175-de47-463d-a5a8-92693c8d3967"",
                     ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
@@ -398,6 +427,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""LB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c00c512-f3df-47be-a077-097d31180eaa"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hold LB"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1105,7 +1145,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActions_TwoHandRightWeapon = m_PlayerActions.FindAction("Two Hand Right Weapon", throwIfNotFound: true);
         m_PlayerActions_TwoHandLeftWeapon = m_PlayerActions.FindAction("Two Hand Left Weapon", throwIfNotFound: true);
         m_PlayerActions_RB = m_PlayerActions.FindAction("RB", throwIfNotFound: true);
+        m_PlayerActions_HoldRB = m_PlayerActions.FindAction("Hold RB", throwIfNotFound: true);
         m_PlayerActions_LB = m_PlayerActions.FindAction("LB", throwIfNotFound: true);
+        m_PlayerActions_HoldLB = m_PlayerActions.FindAction("Hold LB", throwIfNotFound: true);
         m_PlayerActions_LBShield = m_PlayerActions.FindAction("LBShield", throwIfNotFound: true);
         m_PlayerActions_QueRB = m_PlayerActions.FindAction("Que RB", throwIfNotFound: true);
         m_PlayerActions_RT = m_PlayerActions.FindAction("RT", throwIfNotFound: true);
@@ -1326,7 +1368,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_TwoHandRightWeapon;
     private readonly InputAction m_PlayerActions_TwoHandLeftWeapon;
     private readonly InputAction m_PlayerActions_RB;
+    private readonly InputAction m_PlayerActions_HoldRB;
     private readonly InputAction m_PlayerActions_LB;
+    private readonly InputAction m_PlayerActions_HoldLB;
     private readonly InputAction m_PlayerActions_LBShield;
     private readonly InputAction m_PlayerActions_QueRB;
     private readonly InputAction m_PlayerActions_RT;
@@ -1379,9 +1423,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @RB => m_Wrapper.m_PlayerActions_RB;
         /// <summary>
+        /// Provides access to the underlying input action "PlayerActions/HoldRB".
+        /// </summary>
+        public InputAction @HoldRB => m_Wrapper.m_PlayerActions_HoldRB;
+        /// <summary>
         /// Provides access to the underlying input action "PlayerActions/LB".
         /// </summary>
         public InputAction @LB => m_Wrapper.m_PlayerActions_LB;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerActions/HoldLB".
+        /// </summary>
+        public InputAction @HoldLB => m_Wrapper.m_PlayerActions_HoldLB;
         /// <summary>
         /// Provides access to the underlying input action "PlayerActions/LBShield".
         /// </summary>
@@ -1477,9 +1529,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RB.started += instance.OnRB;
             @RB.performed += instance.OnRB;
             @RB.canceled += instance.OnRB;
+            @HoldRB.started += instance.OnHoldRB;
+            @HoldRB.performed += instance.OnHoldRB;
+            @HoldRB.canceled += instance.OnHoldRB;
             @LB.started += instance.OnLB;
             @LB.performed += instance.OnLB;
             @LB.canceled += instance.OnLB;
+            @HoldLB.started += instance.OnHoldLB;
+            @HoldLB.performed += instance.OnHoldLB;
+            @HoldLB.canceled += instance.OnHoldLB;
             @LBShield.started += instance.OnLBShield;
             @LBShield.performed += instance.OnLBShield;
             @LBShield.canceled += instance.OnLBShield;
@@ -1548,9 +1606,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RB.started -= instance.OnRB;
             @RB.performed -= instance.OnRB;
             @RB.canceled -= instance.OnRB;
+            @HoldRB.started -= instance.OnHoldRB;
+            @HoldRB.performed -= instance.OnHoldRB;
+            @HoldRB.canceled -= instance.OnHoldRB;
             @LB.started -= instance.OnLB;
             @LB.performed -= instance.OnLB;
             @LB.canceled -= instance.OnLB;
+            @HoldLB.started -= instance.OnHoldLB;
+            @HoldLB.performed -= instance.OnHoldLB;
+            @HoldLB.canceled -= instance.OnHoldLB;
             @LBShield.started -= instance.OnLBShield;
             @LBShield.performed -= instance.OnLBShield;
             @LBShield.canceled -= instance.OnLBShield;
@@ -2112,12 +2176,26 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRB(InputAction.CallbackContext context);
         /// <summary>
+        /// Method invoked when associated input action "Hold RB" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHoldRB(InputAction.CallbackContext context);
+        /// <summary>
         /// Method invoked when associated input action "LB" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLB(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Hold LB" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHoldLB(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "LBShield" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

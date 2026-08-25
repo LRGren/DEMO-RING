@@ -43,11 +43,17 @@ public enum WeaponType
 
 public enum WeaponClass
 {
+    Fist,
     StraightSword,
     MediumShield,
     LightShield,
 }
 
+public enum SpellClass
+{
+    Incantation,
+    Sorcery,
+}
 public enum EquipmentModelType
 {
     FullHelmet,

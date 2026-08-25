@@ -22,7 +22,7 @@ public class ResetActionFlags : StateMachineBehaviour
         character.characterCombatManager.canPerformRollingAttack = false;
         character.characterCombatManager.canPerformBackstepAttack = false;
 
-
+        character.characterCombatManager.DestoryAllAttemptedActions();
 
         if (character.IsOwner)
         {

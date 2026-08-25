@@ -16,8 +16,14 @@ public class PlayerNetworkManager : CharacterNetworkManager
     public NetworkVariable<int> currentWeaponBeingUsed = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> currentRightHandWeaponID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> currentLeftHandWeaponID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> currentSpellID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isUsingRightHand = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isUsingLeftHand = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+    [Header("Spells")]
+    public NetworkVariable<bool> isChargingRightSpell = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<bool> isChargingLeftSpell = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
 
     [Header("Two Hand Weapon")]
     public NetworkVariable<bool> isTwoHandingWeapon = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -106,6 +112,28 @@ public class PlayerNetworkManager : CharacterNetworkManager
             player.playerAnimatorManager.UpdateAnimatorController(player.playerCombatManager.currentWeaponBedingUsed.weaponAnimator);
     }
 
+
+    // Spell
+    public void OnCurrentSpellIDChanged(int oldSpellID, int newSpellID)
+    {
+        SpellItem newSpell = Instantiate(WorldItemDatabase.instance.GetSpellByID(newSpellID));
+
+        if (newSpell == null)
+        {
+            return;
+        }
+        player.playerInventoryManager.currentSpell = newSpell;
+    }
+
+    public void OnIsChargingRightSpellChanged(bool old, bool isCharging)
+    {
+        player.animator.SetBool("isChargingRightSpell", isChargingRightSpell.Value);
+    }
+
+    public void OnIsChargingLeftSpellChanged(bool old, bool isCharging)
+    {
+        player.animator.SetBool("isChargingLeftSpell", isChargingLeftSpell.Value);
+    }
 
     // Blocking
     public override void OnIsBlockingChanged(bool old, bool isLockedOn)

@@ -27,8 +27,10 @@ public class PlayerCombatManager : CharacterCombatManager
 
             weaponAction.AttemptToPerformAction(player, weaponPerformingAction);
 
+            //应该在↑↑↑↑↑↑↑↑↑↑ （AttemptToPerformAction）中实现
             //执行对应的动画
-            player.playerNetworkManager.NotifyTheServerOfWeaponActionServerRpc(NetworkManager.Singleton.LocalClientId, weaponAction.actionID, weaponPerformingAction.itemID); ;
+            //不应该在这里发送RPC，这会导致不必要的浪费，应该在排除所有情况后再发送RPC，确保发送次数最少
+            //player.playerNetworkManager.NotifyTheServerOfWeaponActionServerRpc(NetworkManager.Singleton.LocalClientId, weaponAction.actionID, weaponPerformingAction.itemID);
 
         }
     }
@@ -207,6 +209,38 @@ public class PlayerCombatManager : CharacterCombatManager
     public override void DisableDoCombo()
     {
         player.playerCombatManager.canComboWithMainHandWeapon = false;
+    }
+
+    public void InstantiateSpellCastWarmUpFX()
+    {
+        if (player.playerInventoryManager.currentSpell == null)
+            return;
+
+        player.playerInventoryManager.currentSpell.InstantiateSpellCastWarmUpFX(player);
+    }
+
+    public void SuccessfullyCastSpell()
+    {
+        if (player.playerInventoryManager.currentSpell == null)
+            return;
+
+        player.playerInventoryManager.currentSpell.SuccessfullyCastSpell(player);
+    }
+
+    public void SuccessfullyCastSpellFull()
+    {
+        if (player.playerInventoryManager.currentSpell == null)
+            return;
+
+        player.playerInventoryManager.currentSpell.SuccessfullyCastSpellFull(player);
+    }
+
+    public void SuccessfullyChargeSpell()
+    {
+        if (player.playerInventoryManager.currentSpell == null)
+            return;
+
+        player.playerInventoryManager.currentSpell.SuccessfullyChargeSpell(player);
     }
 
     public WeaponItem SelectWeaponToPerformAshOfWar()

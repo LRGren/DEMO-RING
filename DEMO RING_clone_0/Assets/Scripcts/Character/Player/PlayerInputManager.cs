@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR;
 
 public class PlayerInputManager : MonoBehaviour
 {
@@ -40,7 +43,9 @@ public class PlayerInputManager : MonoBehaviour
 
     [Header("Bumper Inputs")]
     [SerializeField] private bool RB_Input = false;
+    [SerializeField] private bool hold_RB_Input = false;
     [SerializeField] private bool LB_Shield_Input = false;
+    [SerializeField] private bool hold_LB_Input = false;
 
     [Header("Two Hand Weapon Inputs")]
     [SerializeField] private bool two_Hand_Input = false;
@@ -49,7 +54,7 @@ public class PlayerInputManager : MonoBehaviour
 
     [Header("Trigger Inputs")]
     [SerializeField] private bool RT_Input = false;
-    [SerializeField] private bool Hold_RT_Input = false;
+    [SerializeField] private bool hold_RT_Input = false;
     [SerializeField] private bool LT_Input = false;
 
     [Header("D-pad Inputs")]
@@ -129,10 +134,16 @@ public class PlayerInputManager : MonoBehaviour
             playerControls.PlayerActions.Sprint.canceled += i => sprint_Input = false;
 
             //Bumpers
-            playerControls.PlayerActions.RB.performed += i => RB_Input = true;
+            playerControls.PlayerActions.RB.started += i => RB_Input = true;
 
             playerControls.PlayerActions.LBShield.performed += i => LB_Shield_Input = true;
             playerControls.PlayerActions.LBShield.canceled += i => player.playerNetworkManager.isBlocking.Value = false;
+
+            playerControls.PlayerActions.HoldRB.performed += i => hold_RB_Input = true;
+            playerControls.PlayerActions.HoldRB.canceled += i => hold_RB_Input = false;
+
+            playerControls.PlayerActions.HoldLB.performed += i => hold_LB_Input = true;
+            playerControls.PlayerActions.HoldLB.canceled += i => hold_LB_Input = false;
 
             //Two Hand Weapon
             playerControls.PlayerActions.TwoHandWeapon.performed += i => two_Hand_Input = true;
@@ -146,8 +157,8 @@ public class PlayerInputManager : MonoBehaviour
 
             //Triggers
             playerControls.PlayerActions.RT.started += i => RT_Input = true;
-            playerControls.PlayerActions.HoldRT.performed += i => Hold_RT_Input = true;
-            playerControls.PlayerActions.HoldRT.canceled += i => Hold_RT_Input = false;
+            playerControls.PlayerActions.HoldRT.performed += i => hold_RT_Input = true;
+            playerControls.PlayerActions.HoldRT.canceled += i => hold_RT_Input = false;
 
             playerControls.PlayerActions.LT.performed += i => LT_Input = true;
 
@@ -215,7 +226,9 @@ public class PlayerInputManager : MonoBehaviour
         HandleJumpInput();
 
         HandleRBInput();
+        HandleHoldRBInput();
         HandleLBInput();
+        HandleHoldLBInput();
         HandleRTInput();
         HandleHoldRTInput();
         HandleHoldLTInput();
@@ -496,6 +509,11 @@ public class PlayerInputManager : MonoBehaviour
 
     }
 
+    private void HandleHoldRBInput()
+    {
+        player.playerNetworkManager.isChargingRightSpell.Value = hold_RB_Input;
+    }
+
     private void HandleLBInput()
     {
         if (two_Hand_Input)
@@ -518,6 +536,11 @@ public class PlayerInputManager : MonoBehaviour
             player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftHandWeapon.oh_LB_Action, player.playerInventoryManager.currentLeftHandWeapon);
         }
 
+    }
+
+    private void HandleHoldLBInput()
+    {
+        player.playerNetworkManager.isChargingLeftSpell.Value = hold_LB_Input;
     }
 
     private void HandleRTInput()
@@ -551,7 +574,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (player.playerNetworkManager.isUsingRightHand.Value)
             {
-                player.playerNetworkManager.isChargingAttack.Value = Hold_RT_Input;
+                player.playerNetworkManager.isChargingAttack.Value = hold_RT_Input;
             }
         }
     }

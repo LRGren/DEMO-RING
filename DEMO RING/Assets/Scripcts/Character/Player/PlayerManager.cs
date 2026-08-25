@@ -94,11 +94,13 @@ public class PlayerManager : CharacterManager
         //状态
         playerNetworkManager.currentHealth.OnValueChanged += playerNetworkManager.CheckHP;
 
-        //装备
+        //武器
         playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChanged;
         playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChanged;
         playerNetworkManager.currentWeaponBeingUsed.OnValueChanged += playerNetworkManager.OnCurrentWeaponBedingUsedIDChanged;
         playerNetworkManager.isBlocking.OnValueChanged += playerNetworkManager.OnIsBlockingChanged;
+
+        playerNetworkManager.currentSpellID.OnValueChanged += playerNetworkManager.OnCurrentSpellIDChanged;
 
         //盔甲
         playerNetworkManager.headEquipmentID.OnValueChanged += playerNetworkManager.OnHeadEquipmentIDChanged;
@@ -120,6 +122,10 @@ public class PlayerManager : CharacterManager
 
         //FLAGS
         playerNetworkManager.isChargingAttack.OnValueChanged += playerNetworkManager.OnIsChargingAttackChanged;
+
+        //Spell
+        playerNetworkManager.isChargingRightSpell.OnValueChanged += playerNetworkManager.OnIsChargingRightSpellChanged;
+        playerNetworkManager.isChargingLeftSpell.OnValueChanged += playerNetworkManager.OnIsChargingLeftSpellChanged;
 
         //Two Handed
         playerNetworkManager.isTwoHandingWeapon.OnValueChanged += playerNetworkManager.OnIsTwoHandingWeaponChanged;
@@ -164,11 +170,13 @@ public class PlayerManager : CharacterManager
         //状态
         playerNetworkManager.currentHealth.OnValueChanged -= playerNetworkManager.CheckHP;
 
-        //装备
+        //武器
         playerNetworkManager.currentRightHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentRightHandWeaponIDChanged;
         playerNetworkManager.currentLeftHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentLeftHandWeaponIDChanged;
         playerNetworkManager.currentWeaponBeingUsed.OnValueChanged -= playerNetworkManager.OnCurrentWeaponBedingUsedIDChanged;
         playerNetworkManager.isBlocking.OnValueChanged -= playerNetworkManager.OnIsBlockingChanged;
+
+        playerNetworkManager.currentSpellID.OnValueChanged -= playerNetworkManager.OnCurrentSpellIDChanged;
 
         //盔甲
         playerNetworkManager.headEquipmentID.OnValueChanged -= playerNetworkManager.OnHeadEquipmentIDChanged;
@@ -179,6 +187,10 @@ public class PlayerManager : CharacterManager
         //锁定
         playerNetworkManager.isLockOn.OnValueChanged -= playerNetworkManager.OnIsLockOnChanged;
         playerNetworkManager.currentTargetNetworkObjectID.OnValueChanged -= playerNetworkManager.OnLockOnTargetIDChange;
+
+        //Spell
+        playerNetworkManager.isChargingRightSpell.OnValueChanged -= playerNetworkManager.OnIsChargingRightSpellChanged;
+        playerNetworkManager.isChargingLeftSpell.OnValueChanged -= playerNetworkManager.OnIsChargingLeftSpellChanged;
 
         //Two Handed
         playerNetworkManager.isTwoHandingWeapon.OnValueChanged -= playerNetworkManager.OnIsTwoHandingWeaponChanged;
@@ -407,6 +419,8 @@ public class PlayerManager : CharacterManager
         // Equipment
         playerNetworkManager.OnCurrentRightHandWeaponIDChanged(0, playerNetworkManager.currentRightHandWeaponID.Value);
         playerNetworkManager.OnCurrentLeftHandWeaponIDChanged(0, playerNetworkManager.currentLeftHandWeaponID.Value);
+
+        playerNetworkManager.OnCurrentSpellIDChanged(0, playerNetworkManager.currentSpellID.Value);
 
         //Block
         playerNetworkManager.OnIsBlockingChanged(false, playerNetworkManager.isBlocking.Value);
