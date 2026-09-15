@@ -36,13 +36,13 @@ public class FireBallManager : SpellManager
         base.Update();
 
         if (spellTarget != null)
-            transform.LookAt(spellTarget.transform);
+            transform.LookAt(spellTarget.characterCombatManager.lockOnTransform.position);
 
-        if (fireBallRigidbody != null)
+        /*if (fireBallRigidbody != null)
         {
             Vector3 currentVelocity = fireBallRigidbody.velocity;
             fireBallRigidbody.velocity = transform.forward + currentVelocity;
-        }
+        }*/
     }
 
     void OnCollisionEnter(Collision collision)

@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Parry
   itemIcon: {fileID: 0}
   itemDescription: 
-  itemID: 0
-  usableWeaponClasses: 01000000
+  itemID: 60010
+  usableWeaponClasses: 0200000003000000
   focusPointsCost: 0
   staminaCost: 20

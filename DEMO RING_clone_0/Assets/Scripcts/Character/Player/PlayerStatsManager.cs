@@ -20,6 +20,7 @@ public class PlayerStatsManager : CharacterStatsManager
         //创建角色时 没有计算过 要先行计算第一次
         CalculateHealthBasedOnVitalityLevel(player.playerNetworkManager.vitality.Value);
         CalculateStaminaBasedOnEnduranceLevel(player.playerNetworkManager.endurance.Value);
+        CalculateFocusBasedOnMindLevel(player.playerNetworkManager.mind.Value);
     }
 
     public void CaculateTotalCharacterAborption()

@@ -910,4 +910,14 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         }
     }
 
+    // Unhide Weapon Models
+    public void UnhideWeaponModels()
+    {
+        if (player.playerEquipmentManager.rightWeaponModel != null)
+            player.playerEquipmentManager.rightWeaponModel.SetActive(true);
+
+        if (player.playerEquipmentManager.leftWeaponModel != null)
+            player.playerEquipmentManager.leftWeaponModel.SetActive(true);
+    }
+
 }

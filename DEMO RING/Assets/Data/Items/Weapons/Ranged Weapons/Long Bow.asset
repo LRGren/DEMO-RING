@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3303c759ba2cc4c41904704b2e783400, type: 3}
+  m_Name: Long Bow
+  m_EditorClassIdentifier: 
+  itemName: Long Bow
+  itemIcon: {fileID: 21300122, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  itemDescription: 'Longbow made to fire arrows over great distances. Compared to
+    a shortbow, arrows fired reach further and deal more damage.
+
+
+
+    To use a
+    bow, arrows must also be equipped.'
+  itemID: 10006
+  itemWeight: 4
+  weaponAnimator: {fileID: 22100000, guid: f184761e52b1beb419a85d927bd2d19a, type: 2}
+  weaponType: 0
+  weaponClass: 4
+  weaponModel: {fileID: 2694263985928079331, guid: a2138fd829ded984f848dd4924449ba5,
+    type: 3}
+  strengthREQ: 9
+  dexterityREQ: 0
+  intelligenceREQ: 14
+  faithREQ: 0
+  physicalDamage: 80
+  magicalDamage: 0
+  fireDamage: 0
+  holyDamage: 0
+  lightningDamage: 0
+  criticalDamage: 100
+  poiseDamage: 10
+  physicalDamageAbsorption: 100
+  magicalDamageAbsorption: 0
+  fireDamageAbsorption: 0
+  holyDamageAbsorption: 0
+  lightningDamageAbsorption: 0
+  staminaAbsorption: 0
+  light_Attack_01_Modifier: 0.9
+  light_Attack_02_Modifier: 1.2
+  heavy_Attack_01_Modifier: 1.4
+  heavy_Attack_02_Modifier: 1.6
+  charged_Attack_01_Modifier: 2.2
+  charged_Attack_02_Modifier: 2.5
+  run_Attack_01_Modifier: 1
+  roll_Attack_01_Modifier: 1
+  backstep_Attack_01_Modifier: 1
+  jump_Light_Attack_01_Modifier: 1.2
+  jump_Heavy_Attack_01_Modifier: 1.8
+  basicStaminaCost: 0
+  lightAttackStaminaModifier: 0.9
+  heavyAttackStaminaModifier: 1.2
+  chargedAttackStaminaModifier: 1.5
+  runningAttackStaminaModifier: 1
+  rollingAttackStaminaModifier: 1
+  backstepAttackStaminaModifier: 1
+  jumpLightAttackStaminaModifier: 1
+  jumpHeavyAttackStaminaModifier: 1.5
+  oh_RB_Action: {fileID: 11400000, guid: 4c40dc9bf2c1568478f2791f8f3a8a26, type: 2}
+  oh_RT_Action: {fileID: 11400000, guid: 38dd6ddd9679b0e44b15018bc02c2af1, type: 2}
+  oh_LB_Action: {fileID: 11400000, guid: 6d3caa2988221874f96a4bd1a0717927, type: 2}
+  ashOfWar_Action: {fileID: 0}
+  wooshes: []
+  blocks: []
+  bowDrawSounds: []
+  bowReleaseSounds: []

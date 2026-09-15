@@ -10,6 +10,8 @@ public class WorldCharacterEffectsManager : MonoBehaviour
     [Header("VFX")]
     public GameObject bloodSplatterVFX;
     public GameObject criticalBloodSplatterVFX;
+    public GameObject healthFlaskDrinkVFX;
+    public GameObject manaFlaskDrinkVFX;
 
     [Header("Damage")]
     public TakeStaminaDamageEffect takeStaminaDamageEffect;

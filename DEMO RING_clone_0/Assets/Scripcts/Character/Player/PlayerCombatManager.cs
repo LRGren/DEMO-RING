@@ -7,10 +7,15 @@ public class PlayerCombatManager : CharacterCombatManager
 {
     PlayerManager player;
     public WeaponItem currentWeaponBedingUsed;
+    public ProjectileSlot currentProjectileSlotBeingUsed;
+
+    [Header("Projectile")]
+    public Vector3 projectileAimDirection;
 
     [Header("Flags")]
     public bool canComboWithMainHandWeapon = false;
     //public bool canComboWithOffHandWeapon = false;
+    public bool isUsingItem = false;
 
     protected override void Awake()
     {
@@ -177,6 +182,12 @@ public class PlayerCombatManager : CharacterCombatManager
             case AttackType.BackstepAttack01:
                 staminaCost *= currentWeaponBedingUsed.backstepAttackStaminaModifier;
                 break;
+            case AttackType.JumpLightAttack01:
+                staminaCost *= currentWeaponBedingUsed.jumpLightAttackStaminaModifier;
+                break;
+            case AttackType.JumpHeavyAttack01:
+                staminaCost *= currentWeaponBedingUsed.jumpHeavyAttackStaminaModifier;
+                break;
             default:
                 break;
         }
@@ -194,6 +205,8 @@ public class PlayerCombatManager : CharacterCombatManager
         }
     }
 
+
+    // Combo
     public override void EnableDoCombo()
     {
         if (player.playerNetworkManager.isUsingRightHand.Value)
@@ -211,6 +224,104 @@ public class PlayerCombatManager : CharacterCombatManager
         player.playerCombatManager.canComboWithMainHandWeapon = false;
     }
 
+    // Projectile
+    public void ReleaseArrow()
+    {
+        if (!player.IsOwner)
+            return;
+
+        // 播放射箭音效
+        player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(WorldSoundFXManager.instance.releaseArrowSFX));
+
+        player.playerNetworkManager.hasArrowNotched.Value = false;
+
+        // 删掉手中的箭矢
+        if (player.playerEffectsManager.activeProjectileFX != null)
+        {
+            Destroy(player.playerEffectsManager.activeProjectileFX.gameObject);
+            player.playerEffectsManager.activeProjectileFX = null;
+        }
+
+        RangedProjectileItem projectileToFire = null;
+        switch (currentProjectileSlotBeingUsed)
+        {
+            case ProjectileSlot.MainProjectileSlot:
+                projectileToFire = player.playerInventoryManager.mainProjectile;
+                break;
+            case ProjectileSlot.SecondaryProjectileSlot:
+                projectileToFire = player.playerInventoryManager.secondaryProjectile;
+                break;
+        }
+
+        if (projectileToFire == null)
+            return;
+
+        if (projectileToFire.currentAmmoAmount <= 0)
+            return;
+
+        Transform projectileInstantiatePoint = player.playerCombatManager.lockOnTransform;
+        GameObject liveProjectileGameObject = Instantiate(projectileToFire.releaseProjectileModel, projectileInstantiatePoint);
+        RangedProjectileDamageCollider liveProjectileDamageCollider = liveProjectileGameObject.GetComponent<RangedProjectileDamageCollider>();
+        Rigidbody liveProjectileRigidbody = liveProjectileDamageCollider.projectileRigidbody;
+
+        // (TODO:) 伤害计算，距离衰减
+        liveProjectileDamageCollider.physicalDamage = projectileToFire.physicalDamage;
+        liveProjectileDamageCollider.characterShootingProjectile = player;
+
+        // 三种发射方式
+        if (player.playerNetworkManager.isAiming.Value)
+        {
+            // 瞄准
+            // 3. 不锁定 瞄准
+            Ray ray = new Ray(lockOnTransform.position, PlayerCamera.instance.aimDirection);
+            projectileAimDirection = ray.GetPoint(5000);
+            liveProjectileGameObject.transform.LookAt(projectileAimDirection);
+        }
+        else
+        {
+            // 不瞄准
+            // // 1. 锁定
+            if (player.playerCombatManager.currentTarget != null)
+            {
+                liveProjectileGameObject.transform.rotation = Quaternion.LookRotation(player.playerCombatManager.currentTarget.characterCombatManager.lockOnTransform.position - liveProjectileGameObject.transform.position);
+            }
+            // 2. 不锁定 但是 不瞄准
+            else
+            {
+                liveProjectileGameObject.transform.rotation = Quaternion.LookRotation(player.transform.forward);
+            }
+        }
+
+        // 无视碰撞
+        Collider[] collisions = player.GetComponentsInChildren<Collider>();
+        List<Collider> collisionList = new List<Collider>(collisions);
+        foreach (var col in collisions)
+            collisionList.Add(col);
+
+        foreach (var col in collisionList)
+            Physics.IgnoreCollision(liveProjectileDamageCollider.damageCollider, col, true);
+
+        // 减少箭矢数量
+        //projectileToFire.currentAmmoAmount--;
+
+        // 动量
+        //liveProjectileRigidbody.mass = projectileToFire.ammoMass;
+
+        liveProjectileRigidbody.AddForce(liveProjectileGameObject.transform.forward * projectileToFire.forwardVelocity);
+        liveProjectileRigidbody.AddForce(liveProjectileGameObject.transform.up * projectileToFire.upwardVelocity);
+
+        liveProjectileGameObject.transform.parent = null;
+
+        // RPC
+        player.playerNetworkManager.NotifyTheServerOfReleasedProjectileServerRpc(
+            player.OwnerClientId,
+            projectileToFire.itemID, liveProjectileGameObject.transform.position.x, liveProjectileGameObject.transform.position.y, liveProjectileGameObject.transform.position.z,
+            liveProjectileGameObject.transform.rotation.eulerAngles.y);
+
+    }
+
+
+    // Spell Casting
     public void InstantiateSpellCastWarmUpFX()
     {
         if (player.playerInventoryManager.currentSpell == null)
@@ -243,6 +354,16 @@ public class PlayerCombatManager : CharacterCombatManager
         player.playerInventoryManager.currentSpell.SuccessfullyChargeSpell(player);
     }
 
+    // Quick Slot Item
+    public void SuccessfullyUseQuickSlotItem()
+    {
+        if (player.playerInventoryManager.currentQuickSlotItem == null)
+            return;
+
+        player.playerInventoryManager.currentQuickSlotItem.SuccessfullyUsedItem(player);
+    }
+
+    // Ash of War
     public WeaponItem SelectWeaponToPerformAshOfWar()
     {
         WeaponItem selectedWeapon = player.playerInventoryManager.currentLeftHandWeapon;

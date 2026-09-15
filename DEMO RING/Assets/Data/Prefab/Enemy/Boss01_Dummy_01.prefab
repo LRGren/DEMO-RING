@@ -2405,6 +2405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f7919885e9d7b4d8a99e57b18ce505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeSpellWarmUpFX: {fileID: 0}
   bloodSplatterVFX: {fileID: 0}
   criticalBloodSplatterVFX: {fileID: 0}
   staticEffects: []
@@ -2476,7 +2477,7 @@ MonoBehaviour:
   armorVitality: 0
   totalPoiseDamage: 0
   offensivePoiseBonus: 0
-  basePoiseDefense: 120
+  basePoiseDefense: 40
   defaultPoiseResetTimer: 8
   poiseResetTimer: 0
 --- !u!143 &5828806300916637300
@@ -2697,6 +2698,8 @@ MonoBehaviour:
     m_InternalValue: 0
   endurance:
     m_InternalValue: 1
+  mind:
+    m_InternalValue: 1
   vitality:
     m_InternalValue: 1
   strength:
@@ -2711,6 +2714,10 @@ MonoBehaviour:
     m_InternalValue: 1600
   maxHealth:
     m_InternalValue: 1600
+  currentFocus:
+    m_InternalValue: 0
+  maxFocus:
+    m_InternalValue: 0
 --- !u!114 &649129733402237863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2730,6 +2737,7 @@ MonoBehaviour:
   lockOnTransform: {fileID: 1484316845855349640}
   canPerformRollingAttack: 0
   canPerformBackstepAttack: 0
+  canPerformJumpAttack: 0
   canBlock: 1
   canBeBackstabbed: 1
   riposteReceiverTransform: {fileID: 0}
@@ -2795,6 +2803,7 @@ MonoBehaviour:
   aiCharacterCombatManager: {fileID: 0}
   aiCharacterNetworkManager: {fileID: 0}
   aiCharacterLocomotionManager: {fileID: 0}
+  aiCharacterInventoryManager: {fileID: 0}
   currentState: {fileID: 0}
   navMeshAgent: {fileID: 8201334019433091815}
   idle: {fileID: 11400000, guid: a6b7ab525bb930a4bac25b3412c45d88, type: 2}

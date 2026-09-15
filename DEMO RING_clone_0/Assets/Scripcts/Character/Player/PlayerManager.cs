@@ -75,13 +75,16 @@ public class PlayerManager : CharacterManager
 
             //更新状态条最大值
             playerNetworkManager.vitality.OnValueChanged += playerNetworkManager.SetNewMaxHealthValue;
+            playerNetworkManager.mind.OnValueChanged += playerNetworkManager.SetNewMaxFocusValue;
             playerNetworkManager.endurance.OnValueChanged += playerNetworkManager.SetNewMaxStaminaValue;
 
             //更新状态条
             playerNetworkManager.currentHealth.OnValueChanged += PlayerUIManager.instance.playerUIHudManager.SetNewHealthValue;
             playerNetworkManager.currentStamina.OnValueChanged += PlayerUIManager.instance.playerUIHudManager.SetNewStaminaValue;
+            playerNetworkManager.currentFocusPoints.OnValueChanged += PlayerUIManager.instance.playerUIHudManager.SetNewFocusValue;
             playerNetworkManager.currentStamina.OnValueChanged += playerStatsManager.ResetStaminaTimer;
 
+            playerNetworkManager.isAiming.OnValueChanged += playerNetworkManager.OnIsAimingChanged;
         }
 
         if (!IsOwner)
@@ -93,6 +96,7 @@ public class PlayerManager : CharacterManager
 
         //状态
         playerNetworkManager.currentHealth.OnValueChanged += playerNetworkManager.CheckHP;
+        playerNetworkManager.currentFocusPoints.OnValueChanged += playerNetworkManager.CheckFP;
 
         //武器
         playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChanged;
@@ -107,6 +111,11 @@ public class PlayerManager : CharacterManager
         playerNetworkManager.bodyEquipmentID.OnValueChanged += playerNetworkManager.OnBodyEquipmentIDChanged;
         playerNetworkManager.handEquipmentID.OnValueChanged += playerNetworkManager.OnHandEquipmentIDChanged;
         playerNetworkManager.legEquipmentID.OnValueChanged += playerNetworkManager.OnLegEquipmentIDChanged;
+
+        if (!IsOwner)
+        {
+            SyncRemoteArmorFromNetworkVariables();
+        }
 
         if (IsOwner)
         {
@@ -127,10 +136,19 @@ public class PlayerManager : CharacterManager
         playerNetworkManager.isChargingRightSpell.OnValueChanged += playerNetworkManager.OnIsChargingRightSpellChanged;
         playerNetworkManager.isChargingLeftSpell.OnValueChanged += playerNetworkManager.OnIsChargingLeftSpellChanged;
 
+        //QuickSlotItem
+        playerNetworkManager.currentQuickSlotItemID.OnValueChanged += playerNetworkManager.OnCurrentQuickSlotItemIDChanged;
+        playerNetworkManager.isChugging.OnValueChanged += playerNetworkManager.OnIsChuggingChanged;
+
         //Two Handed
         playerNetworkManager.isTwoHandingWeapon.OnValueChanged += playerNetworkManager.OnIsTwoHandingWeaponChanged;
         playerNetworkManager.isTwoHandingRightWeapon.OnValueChanged += playerNetworkManager.OnIsTwoHandingRightWeaponChanged;
         playerNetworkManager.isTwoHandingLeftWeapon.OnValueChanged += playerNetworkManager.OnIsTwoHandingLeftWeaponChanged;
+
+        //Projectile
+        playerNetworkManager.mainProjectileID.OnValueChanged += playerNetworkManager.OnMainProjectileIDChanged;
+        playerNetworkManager.secondaryProjectileID.OnValueChanged += playerNetworkManager.OnSecondaryProjectileIDChanged;
+        playerNetworkManager.isHoldingArrow.OnValueChanged += playerNetworkManager.OnIsHoldingArrowChanged;
 
         //如果不是房主，本地玩家需要重新设置状态条最大值和当前值 因为房主的数值会同步过来
         //否则会导致Player Network Manager的数据不会更新
@@ -151,13 +169,16 @@ public class PlayerManager : CharacterManager
         {
             //更新状态条最大值
             playerNetworkManager.vitality.OnValueChanged -= playerNetworkManager.SetNewMaxHealthValue;
+            playerNetworkManager.mind.OnValueChanged -= playerNetworkManager.SetNewMaxFocusValue;
             playerNetworkManager.endurance.OnValueChanged -= playerNetworkManager.SetNewMaxStaminaValue;
 
             //更新状态条
             playerNetworkManager.currentHealth.OnValueChanged -= PlayerUIManager.instance.playerUIHudManager.SetNewHealthValue;
             playerNetworkManager.currentStamina.OnValueChanged -= PlayerUIManager.instance.playerUIHudManager.SetNewStaminaValue;
+            playerNetworkManager.currentFocusPoints.OnValueChanged -= PlayerUIManager.instance.playerUIHudManager.SetNewFocusValue;
             playerNetworkManager.currentStamina.OnValueChanged -= playerStatsManager.ResetStaminaTimer;
 
+            playerNetworkManager.isAiming.OnValueChanged -= playerNetworkManager.OnIsAimingChanged;
         }
 
         if (!IsOwner)
@@ -169,6 +190,7 @@ public class PlayerManager : CharacterManager
 
         //状态
         playerNetworkManager.currentHealth.OnValueChanged -= playerNetworkManager.CheckHP;
+        playerNetworkManager.currentFocusPoints.OnValueChanged -= playerNetworkManager.CheckFP;
 
         //武器
         playerNetworkManager.currentRightHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentRightHandWeaponIDChanged;
@@ -192,10 +214,19 @@ public class PlayerManager : CharacterManager
         playerNetworkManager.isChargingRightSpell.OnValueChanged -= playerNetworkManager.OnIsChargingRightSpellChanged;
         playerNetworkManager.isChargingLeftSpell.OnValueChanged -= playerNetworkManager.OnIsChargingLeftSpellChanged;
 
+        //QuickSlotItem
+        playerNetworkManager.currentQuickSlotItemID.OnValueChanged -= playerNetworkManager.OnCurrentQuickSlotItemIDChanged;
+        playerNetworkManager.isChugging.OnValueChanged -= playerNetworkManager.OnIsChuggingChanged;
+
         //Two Handed
         playerNetworkManager.isTwoHandingWeapon.OnValueChanged -= playerNetworkManager.OnIsTwoHandingWeaponChanged;
         playerNetworkManager.isTwoHandingRightWeapon.OnValueChanged -= playerNetworkManager.OnIsTwoHandingRightWeaponChanged;
         playerNetworkManager.isTwoHandingLeftWeapon.OnValueChanged -= playerNetworkManager.OnIsTwoHandingLeftWeaponChanged;
+
+        //Projectile
+        playerNetworkManager.mainProjectileID.OnValueChanged -= playerNetworkManager.OnMainProjectileIDChanged;
+        playerNetworkManager.secondaryProjectileID.OnValueChanged -= playerNetworkManager.OnSecondaryProjectileIDChanged;
+        playerNetworkManager.isHoldingArrow.OnValueChanged -= playerNetworkManager.OnIsHoldingArrowChanged;
 
         //FLAGS
         playerNetworkManager.isChargingAttack.OnValueChanged -= playerNetworkManager.OnIsChargingAttackChanged;
@@ -267,6 +298,7 @@ public class PlayerManager : CharacterManager
 
         currentCharacterSaveData.vitality = playerNetworkManager.vitality.Value;
         currentCharacterSaveData.endurance = playerNetworkManager.endurance.Value;
+        currentCharacterSaveData.mind = playerNetworkManager.mind.Value;
 
         currentCharacterSaveData.siteOfGraceActivated = WorldSaveGameManager.instance.currentCharacterData.siteOfGraceActivated;
 
@@ -288,6 +320,12 @@ public class PlayerManager : CharacterManager
         currentCharacterSaveData.leftWeapon01 = playerInventoryManager.weaponsInLeftHand[0].itemID;
         currentCharacterSaveData.leftWeapon02 = playerInventoryManager.weaponsInLeftHand[1].itemID;
         currentCharacterSaveData.leftWeapon03 = playerInventoryManager.weaponsInLeftHand[2].itemID;
+
+        // Spell
+        if (playerInventoryManager.currentSpell != null)
+            currentCharacterSaveData.currentSpell = playerInventoryManager.currentSpell.itemID;
+        else
+            currentCharacterSaveData.currentSpell = -1;
 
         // Inventory
         currentCharacterSaveData.inventory = playerInventoryManager.characterInventory;
@@ -335,9 +373,11 @@ public class PlayerManager : CharacterManager
 
         playerNetworkManager.vitality.Value = currentCharacterSaveData.vitality;
         playerNetworkManager.endurance.Value = currentCharacterSaveData.endurance;
+        playerNetworkManager.mind.Value = currentCharacterSaveData.mind;
 
         playerNetworkManager.maxHealth.Value = playerStatsManager.CalculateHealthBasedOnVitalityLevel(playerNetworkManager.vitality.Value);
         playerNetworkManager.maxStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
+        playerNetworkManager.maxFocus.Value = playerStatsManager.CalculateFocusBasedOnMindLevel(playerNetworkManager.mind.Value);
 
         playerNetworkManager.currentHealth.Value = currentCharacterSaveData.currentHealth;
         playerNetworkManager.currentStamina.Value = playerNetworkManager.maxStamina.Value;
@@ -366,6 +406,8 @@ public class PlayerManager : CharacterManager
         else
             playerInventoryManager.handEquipment = null;
 
+
+        // Weapons Right Hand
         if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon01) != null)
             playerInventoryManager.weaponsInRightHand[0] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon01));
         else
@@ -379,6 +421,8 @@ public class PlayerManager : CharacterManager
         else
             playerInventoryManager.weaponsInRightHand[2] = Instantiate(WorldItemDatabase.instance.unarmedWeapon); ;
 
+
+        // Weapons Left Hand
         if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon01) != null)
             playerInventoryManager.weaponsInLeftHand[0] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon01));
         else
@@ -391,6 +435,15 @@ public class PlayerManager : CharacterManager
             playerInventoryManager.weaponsInLeftHand[2] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon03));
         else
             playerInventoryManager.weaponsInLeftHand[2] = Instantiate(WorldItemDatabase.instance.unarmedWeapon); ;
+
+
+        // Spell
+        if (WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell) != null)
+            playerNetworkManager.currentSpellID.Value = Instantiate(WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell)).itemID;
+        else
+            playerNetworkManager.currentSpellID.Value = -1;
+
+
 
         playerEquipmentManager.EquipArmor();
 
@@ -430,17 +483,24 @@ public class PlayerManager : CharacterManager
         playerNetworkManager.OnIsTwoHandingRightWeaponChanged(false, playerNetworkManager.isTwoHandingRightWeapon.Value);
         playerNetworkManager.OnIsTwoHandingLeftWeaponChanged(false, playerNetworkManager.isTwoHandingLeftWeapon.Value);
 
-        //Armor
-        playerNetworkManager.OnHeadEquipmentIDChanged(0, playerNetworkManager.headEquipmentID.Value);
-        playerNetworkManager.OnBodyEquipmentIDChanged(0, playerNetworkManager.bodyEquipmentID.Value);
-        playerNetworkManager.OnHandEquipmentIDChanged(0, playerNetworkManager.handEquipmentID.Value);
-        playerNetworkManager.OnLegEquipmentIDChanged(0, playerNetworkManager.legEquipmentID.Value);
+        //Projectile
+        playerNetworkManager.OnMainProjectileIDChanged(0, playerNetworkManager.mainProjectileID.Value);
+        playerNetworkManager.OnSecondaryProjectileIDChanged(0, playerNetworkManager.secondaryProjectileID.Value);
+        playerNetworkManager.OnIsHoldingArrowChanged(false, playerNetworkManager.isHoldingArrow.Value);
 
         //Lock On
         if (playerNetworkManager.isLockOn.Value)
         {
             playerNetworkManager.OnLockOnTargetIDChange(0, playerNetworkManager.currentTargetNetworkObjectID.Value);
         }
+    }
+
+    private void SyncRemoteArmorFromNetworkVariables()
+    {
+        playerNetworkManager.OnHeadEquipmentIDChanged(-1, playerNetworkManager.headEquipmentID.Value);
+        playerNetworkManager.OnBodyEquipmentIDChanged(-1, playerNetworkManager.bodyEquipmentID.Value);
+        playerNetworkManager.OnHandEquipmentIDChanged(-1, playerNetworkManager.handEquipmentID.Value);
+        playerNetworkManager.OnLegEquipmentIDChanged(-1, playerNetworkManager.legEquipmentID.Value);
     }
 
     public void DebugMenu()

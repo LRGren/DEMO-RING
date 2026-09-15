@@ -24,6 +24,9 @@ public class CastIncantationAction : WeaponItemAction
         if (playerPerformingAction.playerInventoryManager.currentSpell.spellClass != SpellClass.Incantation)
             return;
 
+        if (playerPerformingAction.playerCombatManager.isUsingItem)
+            return;
+
         if (playerPerformingAction.IsOwner)
             playerPerformingAction.playerNetworkManager.isAttacking.Value = true;
 

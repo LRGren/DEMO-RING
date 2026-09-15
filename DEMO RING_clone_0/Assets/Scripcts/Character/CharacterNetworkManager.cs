@@ -42,6 +42,7 @@ public class CharacterNetworkManager : NetworkBehaviour
 
     [Header("Stats")]
     public NetworkVariable<int> endurance = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> mind = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> vitality = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> strength = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
@@ -52,8 +53,10 @@ public class CharacterNetworkManager : NetworkBehaviour
     [Header("Resources")]
     public NetworkVariable<float> currentStamina = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> maxStamina = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    public NetworkVariable<int> currentHealth = new NetworkVariable<int>(1000, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    public NetworkVariable<int> maxHealth = new NetworkVariable<int>(1000, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> currentHealth = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> maxHealth = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> currentFocusPoints = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> maxFocus = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     protected virtual void Awake()
     {
@@ -76,6 +79,17 @@ public class CharacterNetworkManager : NetworkBehaviour
         }
     }
 
+    public virtual void CheckFP(int oldValue, int newValue)
+    {
+        if (!character.IsOwner)
+            return;
+
+        if (currentFocusPoints.Value >= maxFocus.Value)
+        {
+            currentFocusPoints.Value = maxFocus.Value;
+        }
+    }
+
     public void OnLockOnTargetIDChange(ulong oldID, ulong newID)
     {
         if (!IsOwner)
@@ -89,6 +103,11 @@ public class CharacterNetworkManager : NetworkBehaviour
         if (!isLockedOn)
         {
             character.characterCombatManager.currentTarget = null;
+
+            if (IsOwner && PlayerCamera.instance != null)
+            {
+                PlayerCamera.instance.SetLockOnCameraHeight();
+            }
         }
     }
 
@@ -117,7 +136,7 @@ public class CharacterNetworkManager : NetworkBehaviour
         character.animator.SetBool("isDead", character.isDead.Value);
     }
 
-    #region Cancel All Attempted Actions
+    #region Cancel All Attempted Actions (FX, Animations, etc.)
     [ServerRpc]
     public void DestoryAllAttemptedActionsServerRpc()
     {
@@ -127,14 +146,32 @@ public class CharacterNetworkManager : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    public void DestoryAllAttemptedActionsClientRpc()
+    // 清理所有尝试中的动作特效（普通方法，不是 RPC，可以在子类 override 里安全调用）
+    protected void ClearAllAttemptedActionsFX()
     {
+        if (character.characterEffectsManager.activeQuickSlotItemFX != null)
+        {
+            Destroy(character.characterEffectsManager.activeQuickSlotItemFX.gameObject);
+            character.characterEffectsManager.activeQuickSlotItemFX = null;
+        }
+
         if (character.characterEffectsManager.activeSpellWarmUpFX != null)
         {
-            Destroy(character.characterEffectsManager.activeSpellWarmUpFX);
+            Destroy(character.characterEffectsManager.activeSpellWarmUpFX.gameObject);
             character.characterEffectsManager.activeSpellWarmUpFX = null;
         }
+
+        if (character.characterEffectsManager.activeProjectileFX != null)
+        {
+            Destroy(character.characterEffectsManager.activeProjectileFX.gameObject);
+            character.characterEffectsManager.activeProjectileFX = null;
+        }
+    }
+
+    [ClientRpc]
+    public virtual void DestoryAllAttemptedActionsClientRpc()
+    {
+        ClearAllAttemptedActionsFX();
     }
     #endregion
 

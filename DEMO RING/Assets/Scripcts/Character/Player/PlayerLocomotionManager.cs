@@ -96,11 +96,23 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         if (!player.characterLocomotionManager.canMove)
             return;
 
-        moveDirection =
-            PlayerCamera.instance.transform.forward * verticalMovement +
-            PlayerCamera.instance.transform.right * horizontalMovement;
-        moveDirection.Normalize();
-        moveDirection.y = 0;
+
+        if (player.playerNetworkManager.isAiming.Value)
+        {
+            moveDirection =
+                player.transform.forward * verticalMovement +
+                player.transform.right * horizontalMovement;
+            moveDirection.Normalize();
+            moveDirection.y = 0;
+        }
+        else
+        {
+            moveDirection =
+                PlayerCamera.instance.transform.forward * verticalMovement +
+                PlayerCamera.instance.transform.right * horizontalMovement;
+            moveDirection.Normalize();
+            moveDirection.y = 0;
+        }
 
         if (player.playerNetworkManager.isSprinting.Value)
         {
@@ -151,6 +163,36 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         if (!player.characterLocomotionManager.canRotate)
             return;
 
+        if (player.playerNetworkManager.isAiming.Value)
+        {
+            HandleAimingRotation();
+        }
+        else
+        {
+            HandleStandardRotation();
+        }
+    }
+
+    public void HandleAimingRotation()
+    {
+        targetRotationDirection = Vector3.zero;
+        targetRotationDirection = PlayerCamera.instance.cameraObject.transform.forward;
+
+        targetRotationDirection.Normalize();
+        targetRotationDirection.y = 0;
+
+        if (targetRotationDirection == Vector3.zero)
+        {
+            targetRotationDirection = transform.forward;
+        }
+
+        Quaternion newRotation = Quaternion.LookRotation(targetRotationDirection);
+        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
+        transform.rotation = targetRotation;
+    }
+
+    private void HandleStandardRotation()
+    {
         if (player.playerNetworkManager.isLockOn.Value)
         {
             if (player.playerNetworkManager.isSprinting.Value || player.playerLocomotionManager.isRolling)
@@ -205,11 +247,12 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
             Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
             transform.rotation = targetRotation;
         }
+
     }
 
     public void AttemptToPerformDodge()
     {
-        if (player.isPerformingAction)
+        if (!canRoll)
             return;
 
         //如果当前体力小于等于0，那么无法翻滚
@@ -239,6 +282,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         }
 
         player.playerNetworkManager.currentStamina.Value -= dodgeStaminaCost;
+        player.playerCombatManager.DestoryAllAttemptedActions();
     }
 
     public void HandleSprinting()
@@ -282,7 +326,11 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
             return;
 
         //注意是单手跳跃，还是双持跳跃
-        player.playerAnimatorManager.PlayerTargetActionAnimation("Main_Jump_01", false, true, true, false);
+
+        if (player.playerNetworkManager.isTwoHandingWeapon.Value)
+            player.playerAnimatorManager.PlayerTargetActionAnimation("TH_Jump_01", false);
+        else
+            player.playerAnimatorManager.PlayerTargetActionAnimation("Main_Jump_01", false);
 
         player.playerNetworkManager.isJumping.Value = true;
 
@@ -313,6 +361,8 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
 
     public void ApplyJumpVelocity()
     {
+        player.playerCombatManager.EnableCanPerformJumpAttack();
+
         yVelocity.y = Mathf.Sqrt(jumpHeight * -2 * gravityForce);
     }
 }

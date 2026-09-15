@@ -54,6 +54,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a864884746fe73f4a8f7470d75d141c2, type: 2}
   - {fileID: 11400000, guid: cda573b7888932947ad828b9a17c0add, type: 2}
   - {fileID: 11400000, guid: 6d5004223b4f5b4428a2734068010c59, type: 2}
+  - {fileID: 11400000, guid: 3c972ae58e78a864bb5afaf012a4d215, type: 2}
   headEquipment:
   - {fileID: 11400000, guid: 00e9a9beff7e05a49baf85220cdd4cde, type: 2}
   bodyEquipment:
@@ -66,6 +67,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a8febb1882335494a9a95b6a52d154f3, type: 2}
   spells:
   - {fileID: 11400000, guid: 63bc88de29f5e0347ac9eba3758c76e6, type: 2}
+  - {fileID: 11400000, guid: 26979afd063ecee4fb4309c827b28997, type: 2}
+  projectiles:
+  - {fileID: 11400000, guid: 662a833b9b6fde149b2c7492bf21ab86, type: 2}
+  quickSlotItems:
+  - {fileID: 11400000, guid: f571f742dac8c2845ae72dec2ddbd06e, type: 2}
+  - {fileID: 11400000, guid: 8fc4faae818fe52428576c4e5d338102, type: 2}
   weaponKey: 10000
   headKey: 20000
   bodyKey: 30000
@@ -73,3 +80,5 @@ MonoBehaviour:
   legKey: 50000
   ashOfWarKey: 60000
   spellKey: 70000
+  projectileKey: 80000
+  quickSlotItemKey: 90000

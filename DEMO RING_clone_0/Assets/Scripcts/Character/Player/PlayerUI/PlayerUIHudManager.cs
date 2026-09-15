@@ -11,14 +11,20 @@ public class PlayerUIHudManager : MonoBehaviour
     [Header("Stat Bar")]
     [SerializeField] private UI_StatBar healthBar;
     [SerializeField] private UI_StatBar staminaBar;
+    [SerializeField] private UI_StatBar focusBar;
 
     [Header("Quick Slots")]
     [SerializeField] private Image rightWeaponQuickSlotUI;
     [SerializeField] private Image leftWeaponQuickSlotUI;
+    [SerializeField] private Image spellQuickSlotUI;
+    [SerializeField] private Image quickSlotItemUI;
 
     [Header("Boss HP Bar")]
     public Transform bossHPBarParent;
     public GameObject bossHPBarObject;
+
+    [Header("Crosshair")]
+    public GameObject crosshair;
 
     public void ToggleHUD(bool status)
     {
@@ -67,7 +73,17 @@ public class PlayerUIHudManager : MonoBehaviour
         staminaBar.SetMaxStat(maxStamina);
     }
 
-    public void SetRightWeaponQuickSlot(int weaponID)
+    public void SetNewFocusValue(int oldValue, int newValue)
+    {
+        focusBar.SetStat(newValue);
+    }
+
+    public void SetMaxFocusValue(int maxFocus)
+    {
+        focusBar.SetMaxStat(maxFocus);
+    }
+
+    public void SetRightWeaponQuickSlotIcon(int weaponID)
     {
         WeaponItem weapon = WorldItemDatabase.instance.GetWeaponByID(weaponID);
 
@@ -91,7 +107,7 @@ public class PlayerUIHudManager : MonoBehaviour
         rightWeaponQuickSlotUI.enabled = true;
     }
 
-    public void SetLeftWeaponQuickSlot(int weaponID)
+    public void SetLeftWeaponQuickSlotIcon(int weaponID)
     {
         WeaponItem weapon = WorldItemDatabase.instance.GetWeaponByID(weaponID);
 
@@ -115,5 +131,52 @@ public class PlayerUIHudManager : MonoBehaviour
         leftWeaponQuickSlotUI.enabled = true;
     }
 
+    public void SetSpellItemQuickSlotIcon(int spellID)
+    {
+        SpellItem spell = WorldItemDatabase.instance.GetSpellByID(spellID);
+
+        if (spell == null)
+        {
+            //Debug.Log("Spell not found in database for ID: " + spellID);
+            spellQuickSlotUI.enabled = false;
+            spellQuickSlotUI.sprite = null;
+            return;
+        }
+
+        if (spell.itemIcon == null)
+        {
+            //Debug.Log("Spell icon not found for spell: " + spell.itemName);
+            spellQuickSlotUI.enabled = false;
+            spellQuickSlotUI.sprite = null;
+            return;
+        }
+
+        spellQuickSlotUI.sprite = spell.itemIcon;
+        spellQuickSlotUI.enabled = true;
+    }
+
+    public void SetQuickSlotItemQuickSlotIcon(int quickSlotItemID)
+    {
+        QuickSlotItem quickSlotItem = WorldItemDatabase.instance.GetQuickSlotItemByID(quickSlotItemID);
+
+        if (quickSlotItem == null)
+        {
+            //Debug.Log("Quick Slot Item not found in database for ID: " + quickSlotItemID);
+            quickSlotItemUI.enabled = false;
+            quickSlotItemUI.sprite = null;
+            return;
+        }
+
+        if (quickSlotItem.itemIcon == null)
+        {
+            //Debug.Log("Quick Slot Item icon not found for item: " + quickSlotItem.itemName);
+            quickSlotItemUI.enabled = false;
+            quickSlotItemUI.sprite = null;
+            return;
+        }
+
+        quickSlotItemUI.sprite = quickSlotItem.itemIcon;
+        quickSlotItemUI.enabled = true;
+    }
 
 }

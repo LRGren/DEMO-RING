@@ -9,6 +9,9 @@ public class OffHandMeleeAction : WeaponItemAction
     {
         base.AttemptToPerformAction(playerPerformingAction, weaponPerformingAction);
 
+        if (playerPerformingAction.playerCombatManager.isUsingItem)
+            return;
+
         if (!playerPerformingAction.playerCombatManager.canBlock)
             return;
 

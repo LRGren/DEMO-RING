@@ -59,22 +59,85 @@ public class CharacterStatsManager : MonoBehaviour
 
     public int CalculateStaminaBasedOnEnduranceLevel(int endurance)
     {
-        float stamina = 0;
+        endurance = System.Math.Clamp(endurance, 1, 99);
 
-        //耐力计算公式
-        stamina = endurance * 15;
+        if (endurance <= 15)
+        {
+            // 1 - 15: 基础递增 (+1.0 ~ +1.1 精力/点)
+            return 80 + (int)System.Math.Round((endurance - 1) * 1.07f);
+        }
+        else if (endurance <= 30)
+        {
+            // 16 - 30: 高收益区 (+1.3 ~ +2.0 精力/点)
+            return 95 + (int)System.Math.Round((endurance - 15) * 2.33f);
+        }
+        else if (endurance <= 50)
+        {
+            // 31 - 50: 软上限过渡 (+1.0 精力/点)
+            return 130 + (int)System.Math.Round((endurance - 30) * 1.0f);
+        }
+        else
+        {
+            // 51 - 99: 硬上限极低收益 (平均每 2~3 级才 +1 点精力)
+            return 150 + (int)System.Math.Round((endurance - 50) * 0.408f);
+        }
+    }
 
-        return Mathf.RoundToInt(stamina);
+    public int CalculateFocusBasedOnMindLevel(int mind)
+    {
+        mind = System.Math.Clamp(mind, 1, 99);
+
+        if (mind <= 15)
+        {
+            // 1 - 15: Low scaling (+3 to +4 FP per point)
+            return 50 + (int)System.Math.Round((mind - 1) * 3.214f);
+        }
+        else if (mind <= 35)
+        {
+            // 16 - 35: High scaling (+5 to +6 FP per point)
+            return 95 + (int)System.Math.Round((mind - 15) * 5.25f);
+        }
+        else if (mind <= 50)
+        {
+            // 36 - 50: Peak scaling (+6 to +7 FP per point, Cap at 300)
+            return 200 + (int)System.Math.Round((mind - 35) * 6.667f);
+        }
+        else if (mind <= 60)
+        {
+            // 51 - 60: Soft Cap 1 (+5 FP per point)
+            return 300 + (mind - 50) * 5;
+        }
+        else
+        {
+            // 61 - 99: Soft Cap 2 / Hard Cap (+2 to +3 FP per point)
+            return 350 + (int)System.Math.Round((mind - 60) * 2.564f);
+        }
     }
 
     public int CalculateHealthBasedOnVitalityLevel(int vitality)
     {
-        float health = 0;
+        vitality = System.Math.Clamp(vitality, 1, 99);
 
-        //耐力计算公式
-        health = vitality * 15;
-
-        return Mathf.RoundToInt(health);
+        if (vitality <= 25)
+        {
+            // 1 - 25: 低收益期 (+20 ~ +26 HP/点)
+            return 300 + (int)System.Math.Round((vitality - 1) * 20.83f);
+        }
+        else if (vitality <= 40)
+        {
+            // 26 - 40: 高收益黄金区 (+35 ~ +48 HP/点)
+            return 800 + (int)System.Math.Round((vitality - 25) * 43.33f);
+        }
+        else if (vitality <= 60)
+        {
+            // 41 - 60: 第一软上限衰减 (+15 ~ +26 HP/点)
+            return 1450 + (int)System.Math.Round((vitality - 40) * 22.5f);
+        }
+        else
+        {
+            // 61 - 99: 硬上限极低收益 (+1 ~ +3 HP/点)
+            return 1900 + (int)System.Math.Round((vitality - 60) * 5.128f);
+        }
     }
 
     public void StaminaRegeneration()

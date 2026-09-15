@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba77e338041bb71439074a77e0b73bff, type: 3}
+  m_Name: Arrow
+  m_EditorClassIdentifier: 
+  itemName: Arrow
+  itemIcon: {fileID: 0}
+  itemDescription: 'Arrows used with small and long bows.
+
+    Unremarkable in any
+    way, shape or form.'
+  itemID: 0
+  projectileClass: 0
+  forwardVelocity: 2200
+  upwardVelocity: 0
+  ammoMass: 0.01
+  maxAmmoAmount: 1
+  currentAmmoAmount: 1
+  physicalDamage: 45
+  magicalDamage: 0
+  fireDamage: 0
+  holyDamage: 0
+  lightningDamage: 0
+  criticalDamage: 100
+  drawProjectileModel: {fileID: 6897855347600363424, guid: 30d82f93f2565e64591b8df4dcef7fdb,
+    type: 3}
+  releaseProjectileModel: {fileID: 6897855347600363424, guid: 5de9e0482410d604d95b5180d23d6dcf,
+    type: 3}

@@ -48,6 +48,10 @@ MonoBehaviour:
     type: 3}
   criticalBloodSplatterVFX: {fileID: 4553287630450876385, guid: 3850006b06aefc04ea74d252fbaeac84,
     type: 3}
+  healthFlaskDrinkVFX: {fileID: 8205706795460263314, guid: b60a4c501f9f56f48babc315d1b93905,
+    type: 3}
+  manaFlaskDrinkVFX: {fileID: 8205706795460263314, guid: 483e46d0862b8a7428ac5dff199dc96a,
+    type: 3}
   takeStaminaDamageEffect: {fileID: 0}
   takeDamageEffect: {fileID: 0}
   takeBlockedDamageEffect: {fileID: 0}

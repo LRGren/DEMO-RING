@@ -25,6 +25,7 @@ public class CharacterCombatManager : NetworkBehaviour
     [Header("Attack Flags")]
     public bool canPerformRollingAttack = false;
     public bool canPerformBackstepAttack = false;
+    public bool canPerformJumpAttack = false;
     public bool canBlock = true;
     public bool canBeBackstabbed = true;
 
@@ -249,6 +250,16 @@ public class CharacterCombatManager : NetworkBehaviour
         canPerformBackstepAttack = false;
     }
 
+    public void EnableCanPerformJumpAttack()
+    {
+        canPerformJumpAttack = true;
+    }
+
+    public void DisableCanPerformJumpAttack()
+    {
+        canPerformJumpAttack = false;
+    }
+
     public virtual void EnableDoCombo()
     {
     }
@@ -264,6 +275,9 @@ public class CharacterCombatManager : NetworkBehaviour
 
     public virtual void DestoryAllAttemptedActions()
     {
-        characterManager.characterNetworkManager.DestoryAllAttemptedActionsServerRpc();
+        if (characterManager.IsOwner)
+        {
+            characterManager.characterNetworkManager.DestoryAllAttemptedActionsServerRpc();
+        }
     }
 }

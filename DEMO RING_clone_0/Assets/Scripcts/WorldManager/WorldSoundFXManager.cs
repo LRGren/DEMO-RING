@@ -10,12 +10,14 @@ public class WorldSoundFXManager : MonoBehaviour
     public AudioSource bossIntroPlayer;
     public AudioSource bossLoopPlayer;
 
-
     [Header("Damage Sounds")]
     public AudioClip[] physicalDamageSFX;
 
     [Header("Action Sounds")]
     public AudioClip rollSFX;
+    public AudioClip[] releaseArrowSFX;
+    public AudioClip[] notchArrowSFX;
+    public AudioClip flaskDrinkSFX;
 
     [Header("Stance Break SFX")]
     public AudioClip stanceBreakSFX;

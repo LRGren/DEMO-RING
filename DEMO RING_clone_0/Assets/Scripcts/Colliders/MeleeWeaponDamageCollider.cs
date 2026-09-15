@@ -17,6 +17,8 @@ public class MeleeWeaponDamageCollider : DamageCollider
     public float run_Attack_01_Modifier;
     public float roll_Attack_01_Modifier;
     public float backstep_Attack_01_Modifier;
+    public float jump_Light_Attack_01_Modifier;
+    public float jump_Heavy_Attack_01_Modifier;
 
     protected override void Awake()
     {
@@ -141,6 +143,12 @@ public class MeleeWeaponDamageCollider : DamageCollider
                 break;
             case AttackType.BackstepAttack01:
                 ApplyAttackModifier(backstep_Attack_01_Modifier, damageEffect);
+                break;
+            case AttackType.JumpLightAttack01:
+                ApplyAttackModifier(jump_Light_Attack_01_Modifier, damageEffect);
+                break;
+            case AttackType.JumpHeavyAttack01:
+                ApplyAttackModifier(jump_Heavy_Attack_01_Modifier, damageEffect);
                 break;
             default:
                 break;

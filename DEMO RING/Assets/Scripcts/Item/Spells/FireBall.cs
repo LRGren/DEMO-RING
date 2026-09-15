@@ -87,36 +87,6 @@ public class FireBall : SpellItem
         spellRigidbody.velocity = totalVelocity;
     }
 
-    public override void InstantiateSpellCastWarmUpFX(PlayerManager player)
-    {
-        base.InstantiateSpellCastWarmUpFX(player);
-
-        Debug.Log("InstantiateSpellCastWarmUpFX");
-
-        // 1. 确定现在施法的是哪个手的法术
-        SpellInstantiationLocation spellInstantiationLocation;
-
-        // 2. 根据施法手或者是法杖的不同，确定不同的WarmUpFX的生成位置和旋转角度
-        if (player.playerNetworkManager.isUsingRightHand.Value)
-        {
-            spellInstantiationLocation = player.playerEquipmentManager.rightHandWeaponManager.GetComponentInChildren<SpellInstantiationLocation>();
-        }
-        else
-        {
-            spellInstantiationLocation = player.playerEquipmentManager.leftHandWeaponManager.GetComponentInChildren<SpellInstantiationLocation>();
-        }
-
-
-        // 3. 生成WarmUpFX
-        GameObject instantiatedWarmUpFX = Instantiate(spellCastWarmUpFX);
-        instantiatedWarmUpFX.transform.parent = spellInstantiationLocation.transform;
-        instantiatedWarmUpFX.transform.localPosition = Vector3.zero;
-        instantiatedWarmUpFX.transform.localRotation = Quaternion.identity;
-
-        // 4. 将WarmUpFX保存为一个遍历，以便在施法结束后或者被打断时销毁WarmUpFX
-        player.characterEffectsManager.activeSpellWarmUpFX = instantiatedWarmUpFX;
-    }
-
     public override void SuccessfullyCastSpellFull(PlayerManager player)
     {
         base.SuccessfullyCastSpellFull(player);
@@ -178,6 +148,36 @@ public class FireBall : SpellItem
         spellRigidbody.velocity = totalVelocity;
     }
 
+    public override void InstantiateSpellCastWarmUpFX(PlayerManager player)
+    {
+        base.InstantiateSpellCastWarmUpFX(player);
+
+        //Debug.Log("InstantiateSpellCastWarmUpFX");
+
+        // 1. 确定现在施法的是哪个手的法术
+        SpellInstantiationLocation spellInstantiationLocation;
+
+        // 2. 根据施法手或者是法杖的不同，确定不同的WarmUpFX的生成位置和旋转角度
+        if (player.playerNetworkManager.isUsingRightHand.Value)
+        {
+            spellInstantiationLocation = player.playerEquipmentManager.rightHandWeaponManager.GetComponentInChildren<SpellInstantiationLocation>();
+        }
+        else
+        {
+            spellInstantiationLocation = player.playerEquipmentManager.leftHandWeaponManager.GetComponentInChildren<SpellInstantiationLocation>();
+        }
+
+
+        // 3. 生成WarmUpFX
+        GameObject instantiatedWarmUpFX = Instantiate(spellCastWarmUpFX);
+        instantiatedWarmUpFX.transform.parent = spellInstantiationLocation.transform;
+        instantiatedWarmUpFX.transform.localPosition = Vector3.zero;
+        instantiatedWarmUpFX.transform.localRotation = Quaternion.identity;
+
+        // 4. 将WarmUpFX保存为一个遍历，以便在施法结束后或者被打断时销毁WarmUpFX
+        player.characterEffectsManager.activeSpellWarmUpFX = instantiatedWarmUpFX;
+    }
+
     public override void SuccessfullyChargeSpell(PlayerManager player)
     {
         base.SuccessfullyChargeSpell(player);
@@ -203,23 +203,4 @@ public class FireBall : SpellItem
         player.characterEffectsManager.activeSpellWarmUpFX = instantiatedChargeFX;
     }
 
-    public override bool CanICastSpell(PlayerManager player)
-    {
-        if (player.isPerformingAction)
-        {
-            return false;
-        }
-
-        if (player.playerNetworkManager.isJumping.Value)
-        {
-            return false;
-        }
-
-        if (player.playerNetworkManager.currentStamina.Value <= 0)
-        {
-            return false;
-        }
-
-        return true;
-    }
 }

@@ -27,6 +27,9 @@ public class CharacterSoundFXManager : MonoBehaviour
     [Header("Restore Site Of Grace SFX")]
     public AudioClip restoreSiteOfGraceSFX;
 
+    [Header("Flasks SFX")]
+    public AudioClip flaskDrinkSFX;
+
     [Space(10)]
 
     [SerializeField] private AudioSource audioSource;

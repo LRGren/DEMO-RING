@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Fire Ball
   m_EditorClassIdentifier: 
   itemName: Fire Ball
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 07caf3d1930bab14aa8f6dcdf2db871a, type: 3}
   itemDescription: 
-  itemID: 0
+  itemID: 70012
   spellClass: 0
-  fullChargeModifier: 2
+  fullCastStaminaCostModifier: 1.32
+  staminaCost: 25
+  focusCost: 18
   spellCastWarmUpFX: {fileID: 7360890951204890652, guid: 7e2766f54b4daff489e2342e91f7c0d1,
     type: 3}
   spellChargeFX: {fileID: 7360890951204890652, guid: b24f60f03816a254fbfaf7484ad693e0,
@@ -30,5 +32,5 @@ MonoBehaviour:
   offHandSpellAnimtion: Spell_Off_Fire_Ball_Start
   spellCastWarmUpSound: {fileID: 0}
   spellCastReleaseSound: {fileID: 0}
-  upwardForce: 10
-  forwardForce: 5
+  upwardForce: 5
+  forwardForce: 15

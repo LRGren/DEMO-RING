@@ -48,6 +48,8 @@ MonoBehaviour:
   run_Attack_01_Modifier: 1
   roll_Attack_01_Modifier: 1
   backstep_Attack_01_Modifier: 1
+  jump_Light_Attack_01_Modifier: 1.2
+  jump_Heavy_Attack_01_Modifier: 1.8
   basicStaminaCost: 20
   lightAttackStaminaModifier: 0.9
   heavyAttackStaminaModifier: 0.9
@@ -55,6 +57,8 @@ MonoBehaviour:
   runningAttackStaminaModifier: 1
   rollingAttackStaminaModifier: 1
   backstepAttackStaminaModifier: 1
+  jumpLightAttackStaminaModifier: 1
+  jumpHeavyAttackStaminaModifier: 1.5
   oh_RB_Action: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b, type: 2}
   oh_RT_Action: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8, type: 2}
   oh_LB_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}

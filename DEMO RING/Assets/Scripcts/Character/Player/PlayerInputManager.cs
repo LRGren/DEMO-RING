@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR;
+using Unity.Netcode;
 
 public class PlayerInputManager : MonoBehaviour
 {
@@ -35,11 +36,12 @@ public class PlayerInputManager : MonoBehaviour
     public float horizontalInput;
     public float moveAmount;
 
-    [Header("Player Dodge Inputs")]
+    [Header("Player Action Inputs")]
     [SerializeField] private bool interaction_Input = false;
     [SerializeField] private bool dodge_Input = false;
     [SerializeField] private bool sprint_Input = false;
     [SerializeField] private bool jump_Input = false;
+    [SerializeField] private bool use_Item_Input = false;
 
     [Header("Bumper Inputs")]
     [SerializeField] private bool RB_Input = false;
@@ -138,6 +140,7 @@ public class PlayerInputManager : MonoBehaviour
 
             playerControls.PlayerActions.LBShield.performed += i => LB_Shield_Input = true;
             playerControls.PlayerActions.LBShield.canceled += i => player.playerNetworkManager.isBlocking.Value = false;
+            playerControls.PlayerActions.LBShield.canceled += i => player.playerNetworkManager.isAiming.Value = false;
 
             playerControls.PlayerActions.HoldRB.performed += i => hold_RB_Input = true;
             playerControls.PlayerActions.HoldRB.canceled += i => hold_RB_Input = false;
@@ -177,6 +180,7 @@ public class PlayerInputManager : MonoBehaviour
 
             //Interaction
             playerControls.PlayerActions.Interaction.performed += i => interaction_Input = true;
+            playerControls.PlayerActions.X.performed += i => use_Item_Input = true;
 
             //UI Inputs
             playerControls.UI.Start.performed += i => openCharacterMenuInput = true;
@@ -212,6 +216,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (player == null)
             return;
+        HandleUseItemInput();
 
         HandleTwoHandWeaponInput();
 
@@ -244,6 +249,27 @@ public class PlayerInputManager : MonoBehaviour
         HandleCharacterMenuInput();
     }
 
+    private void HandleUseItemInput()
+    {
+        if (use_Item_Input)
+        {
+            use_Item_Input = false;
+
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                return;
+            }
+
+            if (player.playerInventoryManager.currentQuickSlotItem == null)
+            {
+                return;
+            }
+
+            player.playerInventoryManager.currentQuickSlotItem.AttemptToUseItem(player);
+
+            player.playerNetworkManager.NotifyTheServerOfQuickSlotItemActionServerRpc(NetworkManager.Singleton.LocalClientId, player.playerInventoryManager.currentQuickSlotItem.itemID);
+        }
+    }
 
     private void HandleTwoHandWeaponInput()
     {
@@ -420,15 +446,38 @@ public class PlayerInputManager : MonoBehaviour
             player.playerNetworkManager.isMoving.Value = false;
         }
 
-        if (!player.playerNetworkManager.isLockOn.Value || player.playerNetworkManager.isSprinting.Value)
+        if (!player.playerLocomotionManager.canRun)
         {
-            //未锁定时只需要前进的动作 或者疾跑
-            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
+            if (moveAmount > 0.5f)
+            {
+                moveAmount = 0.5f;
+            }
+
+            if (verticalInput > 0.5f)
+            {
+                verticalInput = 0.5f;
+            }
+
+            if (horizontalInput > 0.5f)
+            {
+                horizontalInput = 0.5f;
+            }
         }
-        else
+
+        if (player.playerNetworkManager.isLockOn.Value && !player.playerNetworkManager.isSprinting.Value)
         {
             player.playerAnimatorManager.UpdateAnimatorMovementParameters(horizontalInput, verticalInput, player.playerNetworkManager.isSprinting.Value);
+            return;
         }
+
+        if (player.playerNetworkManager.isAiming.Value)
+        {
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(horizontalInput, verticalInput, player.playerNetworkManager.isSprinting.Value);
+            return;
+        }
+
+        //未锁定时只需要前进的动作 或者疾跑
+        player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
     }
 
     private void HandleCameraMovementInput()
@@ -512,6 +561,7 @@ public class PlayerInputManager : MonoBehaviour
     private void HandleHoldRBInput()
     {
         player.playerNetworkManager.isChargingRightSpell.Value = hold_RB_Input;
+        player.playerNetworkManager.isHoldingArrow.Value = hold_RB_Input;
     }
 
     private void HandleLBInput()
@@ -533,7 +583,14 @@ public class PlayerInputManager : MonoBehaviour
 
             player.playerNetworkManager.SetCharacterActionHand(false);
 
-            player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftHandWeapon.oh_LB_Action, player.playerInventoryManager.currentLeftHandWeapon);
+            if (player.playerNetworkManager.isTwoHandingRightWeapon.Value)
+            {
+                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_LB_Action, player.playerInventoryManager.currentRightHandWeapon);
+            }
+            else
+            {
+                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftHandWeapon.oh_LB_Action, player.playerInventoryManager.currentLeftHandWeapon);
+            }
         }
 
     }

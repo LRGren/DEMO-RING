@@ -15,12 +15,17 @@ public class PlayerInventoryManager : CharacterInventoryManager
     public WeaponItem[] weaponsInLeftHand = new WeaponItem[3];
     public int leftWeaponIndex = 0;
     public SpellItem currentSpell;
+    public QuickSlotItem currentQuickSlotItem;
 
     [Header("Equipment Slots")]
     public HeadEquipmentItem headEquipment;
     public BodyEquipmentItem bodyEquipment;
     public HandEquipmentItem handEquipment;
     public LegEquipmentItem legEquipment;
+
+    [Header("Projectile Slots")]
+    public RangedProjectileItem mainProjectile;
+    public RangedProjectileItem secondaryProjectile;
 
     [Header("Inventory")]
     public List<Item> characterInventory = new List<Item>();

@@ -12,11 +12,19 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
     public NetworkVariable<FixedString64Bytes> characterName = new NetworkVariable<FixedString64Bytes>("sereinjians", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
+    [Header("Flasks")]
+    public NetworkVariable<int> remainingHealthFlasks = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> remainingManaFlasks = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<bool> isChugging = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
     [Header("Equipment")]
     public NetworkVariable<int> currentWeaponBeingUsed = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> currentRightHandWeaponID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> currentLeftHandWeaponID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> currentSpellID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> currentQuickSlotItemID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+
     public NetworkVariable<bool> isUsingRightHand = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isUsingLeftHand = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
@@ -37,6 +45,13 @@ public class PlayerNetworkManager : CharacterNetworkManager
     public NetworkVariable<int> bodyEquipmentID = new NetworkVariable<int>(-1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> handEquipmentID = new NetworkVariable<int>(-1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> legEquipmentID = new NetworkVariable<int>(-1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+    [Header("Projectiles")]
+    public NetworkVariable<int> mainProjectileID = new NetworkVariable<int>(-1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> secondaryProjectileID = new NetworkVariable<int>(-1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<bool> hasArrowNotched = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<bool> isHoldingArrow = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<bool> isAiming = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     protected override void Awake()
     {
@@ -74,6 +89,43 @@ public class PlayerNetworkManager : CharacterNetworkManager
         currentStamina.Value = maxStamina.Value;
     }
 
+    public void SetNewMaxFocusValue(int oldMind, int newMind)
+    {
+        maxFocus.Value = player.playerStatsManager.CalculateFocusBasedOnMindLevel(newMind);
+        PlayerUIManager.instance.playerUIHudManager.SetMaxFocusValue(maxFocus.Value);
+        currentFocusPoints.Value = maxFocus.Value;
+    }
+
+
+    // Aiming
+    public void OnIsAimingChanged(bool old, bool isAiming)
+    {
+        if (!isAiming)
+        {
+            PlayerCamera.instance.cameraObject.transform.localEulerAngles = Vector3.zero;
+
+            PlayerCamera.instance.cameraObject.fieldOfView = 60f;
+            PlayerCamera.instance.cameraObject.nearClipPlane = .3f;
+
+            PlayerCamera.instance.cameraPivotTransform.localPosition = new Vector3(0, PlayerCamera.instance.aimingFollowCameraYPositionOffset, 0);
+
+            PlayerUIManager.instance.playerUIHudManager.crosshair.SetActive(false);
+        }
+        else
+        {
+            PlayerCamera.instance.StopCameraHeightCoroutine();
+
+            PlayerCamera.instance.gameObject.transform.eulerAngles = Vector3.zero;
+            PlayerCamera.instance.cameraPivotTransform.localEulerAngles = Vector3.zero;
+
+            PlayerCamera.instance.cameraObject.fieldOfView = 40f;
+            PlayerCamera.instance.cameraObject.nearClipPlane = 1.3f;
+
+            PlayerCamera.instance.cameraPivotTransform.transform.localPosition = Vector3.zero;
+
+            PlayerUIManager.instance.playerUIHudManager.crosshair.SetActive(true);
+        }
+    }
 
     // Weapon
     public void OnCurrentRightHandWeaponIDChanged(int oldWeaponID, int newWeaponID)
@@ -84,7 +136,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
         if (player.IsOwner)
         {
-            PlayerUIManager.instance.playerUIHudManager.SetRightWeaponQuickSlot(newWeaponID);
+            PlayerUIManager.instance.playerUIHudManager.SetRightWeaponQuickSlotIcon(newWeaponID);
         }
     }
 
@@ -96,7 +148,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
         if (player.IsOwner)
         {
-            PlayerUIManager.instance.playerUIHudManager.SetLeftWeaponQuickSlot(newWeaponID);
+            PlayerUIManager.instance.playerUIHudManager.SetLeftWeaponQuickSlotIcon(newWeaponID);
         }
     }
 
@@ -116,13 +168,24 @@ public class PlayerNetworkManager : CharacterNetworkManager
     // Spell
     public void OnCurrentSpellIDChanged(int oldSpellID, int newSpellID)
     {
+        if (newSpellID == -1)
+        {
+            player.playerInventoryManager.currentSpell = null;
+            PlayerUIManager.instance.playerUIHudManager.SetSpellItemQuickSlotIcon(-1);
+            return;
+        }
+
         SpellItem newSpell = Instantiate(WorldItemDatabase.instance.GetSpellByID(newSpellID));
 
         if (newSpell == null)
-        {
             return;
-        }
+
         player.playerInventoryManager.currentSpell = newSpell;
+
+        if (player.IsOwner)
+        {
+            PlayerUIManager.instance.playerUIHudManager.SetSpellItemQuickSlotIcon(newSpellID);
+        }
     }
 
     public void OnIsChargingRightSpellChanged(bool old, bool isCharging)
@@ -133,6 +196,71 @@ public class PlayerNetworkManager : CharacterNetworkManager
     public void OnIsChargingLeftSpellChanged(bool old, bool isCharging)
     {
         player.animator.SetBool("isChargingLeftSpell", isChargingLeftSpell.Value);
+    }
+
+    // Quick Slot Item
+    public void OnCurrentQuickSlotItemIDChanged(int oldQuickSlotItemID, int newQuickSlotItemID)
+    {
+        if (newQuickSlotItemID == -1)
+        {
+            player.playerInventoryManager.currentQuickSlotItem = null;
+            PlayerUIManager.instance.playerUIHudManager.SetQuickSlotItemQuickSlotIcon(-1);
+            return;
+        }
+
+        QuickSlotItem newQuickSlotItem = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(newQuickSlotItemID));
+
+        if (newQuickSlotItem == null)
+            return;
+
+        player.playerInventoryManager.currentQuickSlotItem = newQuickSlotItem;
+
+        if (player.IsOwner)
+        {
+            PlayerUIManager.instance.playerUIHudManager.SetQuickSlotItemQuickSlotIcon(newQuickSlotItemID);
+        }
+    }
+    public void OnIsChuggingChanged(bool old, bool isChugging)
+    {
+        player.animator.SetBool("isChuggingFlask", isChugging);
+    }
+
+    // Projectile
+    public void OnMainProjectileIDChanged(int oldProjectileID, int newProjectileID)
+    {
+        if (newProjectileID == -1)
+        {
+            player.playerInventoryManager.mainProjectile = null;
+            return;
+        }
+
+        RangedProjectileItem newProjectile = Instantiate(WorldItemDatabase.instance.GetProjectileByID(newProjectileID));
+
+        if (newProjectile == null)
+            return;
+
+        player.playerInventoryManager.mainProjectile = newProjectile;
+    }
+
+    public void OnSecondaryProjectileIDChanged(int oldProjectileID, int newProjectileID)
+    {
+        if (newProjectileID == -1)
+        {
+            player.playerInventoryManager.secondaryProjectile = null;
+            return;
+        }
+
+        RangedProjectileItem newProjectile = Instantiate(WorldItemDatabase.instance.GetProjectileByID(newProjectileID));
+
+        if (newProjectile == null)
+            return;
+
+        player.playerInventoryManager.secondaryProjectile = newProjectile;
+    }
+
+    public void OnIsHoldingArrowChanged(bool old, bool isHoldingArrow)
+    {
+        player.animator.SetBool("isHoldingArrow", isHoldingArrow);
     }
 
     // Blocking
@@ -322,5 +450,171 @@ public class PlayerNetworkManager : CharacterNetworkManager
         }
     }
 
+    [ServerRpc]
+    public void NotifyTheServerOfDrawnProjectileServerRpc(int projectileID)
+    {
+        if (IsServer)
+        {
+            NotifyTheClientsOfDrawnProjectileClientRpc(projectileID);
+        }
+    }
+
+    [ClientRpc]
+    private void NotifyTheClientsOfDrawnProjectileClientRpc(int projectileID)
+    {
+        // 如果弓有动画的话，在这里通过WeaponManager得到弓的动画并播放
+
+        // 生成投掷物
+        GameObject arrow = Instantiate(WorldItemDatabase.instance.GetProjectileByID(projectileID).drawProjectileModel, player.playerEquipmentManager.leftHandWeaponManager.transform);
+        player.playerEffectsManager.activeProjectileFX = arrow;
+
+        player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(WorldSoundFXManager.instance.notchArrowSFX));
+    }
+
+    [ServerRpc]
+    public void NotifyTheServerOfReleasedProjectileServerRpc(ulong clientID, int projectileID, float xPosition, float yPosition, float zPosition, float yRotation)
+    {
+        if (IsServer)
+        {
+            NotifyTheClientsOfReleasedProjectileClientRpc(clientID, projectileID, xPosition, yPosition, zPosition, yRotation);
+        }
+    }
+
+    [ClientRpc]
+    private void NotifyTheClientsOfReleasedProjectileClientRpc(ulong clientID, int projectileID, float xPosition, float yPosition, float zPosition, float yRotation)
+    {
+        if (clientID != NetworkManager.Singleton.LocalClientId)
+        {
+            PerformReleasedProjectileRpc(projectileID, xPosition, yPosition, zPosition, yRotation);
+        }
+    }
+
+    private void PerformReleasedProjectileRpc(int projectileID, float xPosition, float yPosition, float zPosition, float yRotation)
+    {
+        RangedProjectileItem projectileToFire = null;
+        if (WorldItemDatabase.instance.GetProjectileByID(projectileID) != null)
+        {
+            projectileToFire = Instantiate(WorldItemDatabase.instance.GetProjectileByID(projectileID));
+        }
+
+        if (projectileToFire == null)
+            return;
+
+        Transform projectileInstantiatePoint = player.playerCombatManager.lockOnTransform;
+        GameObject liveProjectileGameObject = Instantiate(projectileToFire.releaseProjectileModel, projectileInstantiatePoint);
+        RangedProjectileDamageCollider liveProjectileDamageCollider = liveProjectileGameObject.GetComponent<RangedProjectileDamageCollider>();
+        Rigidbody liveProjectileRigidbody = liveProjectileDamageCollider.projectileRigidbody;
+
+        // (TODO:) 伤害计算，距离衰减
+        liveProjectileDamageCollider.physicalDamage = projectileToFire.physicalDamage;
+        liveProjectileDamageCollider.characterShootingProjectile = player;
+
+        // 三种发射方式
+        if (player.playerNetworkManager.isAiming.Value)
+        {
+            // 瞄准
+            // 3. 不锁定 瞄准
+            liveProjectileGameObject.transform.LookAt(new Vector3(xPosition, yPosition, zPosition));
+        }
+        else
+        {
+            // 不瞄准
+            // // 1. 锁定
+            if (player.playerCombatManager.currentTarget != null)
+            {
+                liveProjectileGameObject.transform.rotation = Quaternion.LookRotation(player.playerCombatManager.currentTarget.characterCombatManager.lockOnTransform.position - liveProjectileGameObject.transform.position);
+            }
+            // 2. 不锁定 但是 不瞄准
+            else
+            {
+                player.transform.rotation = Quaternion.Euler(player.transform.rotation.eulerAngles.x, yRotation, player.transform.rotation.eulerAngles.z);
+                liveProjectileGameObject.transform.rotation = Quaternion.LookRotation(player.transform.forward);
+            }
+        }
+
+        // 无视碰撞
+        Collider[] collisions = player.GetComponentsInChildren<Collider>();
+        List<Collider> collisionList = new List<Collider>(collisions);
+        foreach (var col in collisions)
+            collisionList.Add(col);
+
+        foreach (var col in collisionList)
+            Physics.IgnoreCollision(liveProjectileDamageCollider.damageCollider, col, true);
+
+        // 减少箭矢数量
+        //projectileToFire.currentAmmoAmount--;
+
+        // 动量
+        //liveProjectileRigidbody.mass = projectileToFire.ammoMass;
+
+        liveProjectileRigidbody.AddForce(liveProjectileGameObject.transform.forward * projectileToFire.forwardVelocity);
+        liveProjectileRigidbody.AddForce(liveProjectileGameObject.transform.up * projectileToFire.upwardVelocity);
+
+        liveProjectileGameObject.transform.parent = null;
+    }
+
+
+    // Cancel All Attempted Actions (FX, Animations, etc.)
+    [ClientRpc]
+    public override void DestoryAllAttemptedActionsClientRpc()
+    {
+        // 不能调 base.DestoryAllAttemptedActionsClientRpc()，那是 [ClientRpc]，会再次发送 RPC 造成无限递归
+        ClearAllAttemptedActionsFX();
+
+        if (player.playerNetworkManager.hasArrowNotched.Value)
+        {
+            // 播放弓的动画
+
+            // 播放射箭音效
+            player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(WorldSoundFXManager.instance.releaseArrowSFX));
+        }
+
+        if (player.IsOwner)
+        {
+            player.playerNetworkManager.hasArrowNotched.Value = false;
+        }
+    }
+
+    // Hide Weapons
+    [ServerRpc]
+    public void HideWeaponsServerRpc()
+    {
+        if (IsServer)
+        {
+            HideWeaponsClientRpc();
+        }
+    }
+
+    [ClientRpc]
+    private void HideWeaponsClientRpc()
+    {
+        if (player.playerEquipmentManager.rightWeaponModel != null)
+            player.playerEquipmentManager.rightWeaponModel.SetActive(false);
+
+        if (player.playerEquipmentManager.leftWeaponModel != null)
+            player.playerEquipmentManager.leftWeaponModel.SetActive(false);
+    }
+
+    [ServerRpc]
+    public void NotifyTheServerOfQuickSlotItemActionServerRpc(ulong clientID, int quickSlotItemID)
+    {
+        if (IsServer)
+        {
+            NotifyTheClientsOfQuickSlotItemActionClientRpc(clientID, quickSlotItemID);
+        }
+    }
+
+    [ClientRpc]
+    private void NotifyTheClientsOfQuickSlotItemActionClientRpc(ulong clientID, int quickSlotItemID)
+    {
+        //如果不是本地玩家执行的动作，那么其他玩家需要在客户端执行对应的动作
+        if (clientID != NetworkManager.Singleton.LocalClientId)
+        {
+            QuickSlotItem quickSlotItem = WorldItemDatabase.instance.GetQuickSlotItemByID(quickSlotItemID);
+
+            if (quickSlotItem != null)
+                quickSlotItem.AttemptToUseItem(player);
+        }
+    }
 
 }

@@ -47,6 +47,7 @@ public enum WeaponClass
     StraightSword,
     MediumShield,
     LightShield,
+    Bow,
 }
 
 public enum SpellClass
@@ -54,6 +55,19 @@ public enum SpellClass
     Incantation,
     Sorcery,
 }
+
+public enum ProjectileClass
+{
+    Arrow,
+    Bolt,
+}
+
+public enum ProjectileSlot
+{
+    MainProjectileSlot,
+    SecondaryProjectileSlot,
+}
+
 public enum EquipmentModelType
 {
     FullHelmet,
@@ -118,6 +132,9 @@ public enum AttackType
     RunningAttack01,
     RollingAttack01,
     BackstepAttack01,
+
+    JumpLightAttack01,
+    JumpHeavyAttack01,
 }
 
 public enum DamageIntensity

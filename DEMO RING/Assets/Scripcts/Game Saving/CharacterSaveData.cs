@@ -23,10 +23,12 @@ public class CharacterSaveData
     [Header("Resources")]
     public int currentHealth;
     public float currentStamina;
+    public int currentFocus;
 
     [Header("Stats")]
     public int vitality;
     public int endurance;
+    public int mind;
 
     [Header("Site Of Grace")]
     public SerializableDictionary<int, bool> siteOfGraceActivated;
@@ -56,6 +58,8 @@ public class CharacterSaveData
     public int leftWeapon01;
     public int leftWeapon02;
     public int leftWeapon03;
+
+    public int currentSpell;
 
 
     public CharacterSaveData()

@@ -1098,6 +1098,7 @@ MonoBehaviour:
   aiCharacterCombatManager: {fileID: 0}
   aiCharacterNetworkManager: {fileID: 0}
   aiCharacterLocomotionManager: {fileID: 0}
+  aiCharacterInventoryManager: {fileID: 0}
   currentState: {fileID: 0}
   navMeshAgent: {fileID: 0}
   idle: {fileID: 11400000, guid: 9927f457ae17ff14f94577f4ade16d2d, type: 2}
@@ -1138,6 +1139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f7919885e9d7b4d8a99e57b18ce505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeSpellWarmUpFX: {fileID: 0}
   bloodSplatterVFX: {fileID: 0}
   criticalBloodSplatterVFX: {fileID: 0}
   staticEffects: []
@@ -1259,11 +1261,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9777077a2a37b924d8f930a0062936ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeSpellWarmUpFX: {fileID: 0}
   bloodSplatterVFX: {fileID: 0}
   criticalBloodSplatterVFX: {fileID: 0}
   staticEffects: []
-  effectToTest: {fileID: 0}
-  processEffect: 0
 --- !u!143 &6429170747300286532
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1432,6 +1433,7 @@ MonoBehaviour:
   lockOnTransform: {fileID: 6598238437659444050}
   canPerformRollingAttack: 0
   canPerformBackstepAttack: 0
+  canPerformJumpAttack: 0
   canBlock: 1
   canBeBackstabbed: 1
   riposteReceiverTransform: {fileID: 0}
@@ -1447,8 +1449,8 @@ MonoBehaviour:
   minimumFOV: -35
   maximumFOV: 35
   attackRotationSpeed: 180
-  maxStance: 30
-  currentStance: 30
+  maxStance: 40
+  currentStance: 40
   stanceRegenRationPerSecond: 15
   ignoreStanceBreak: 0
   stanceRegenerationTimer: 15
@@ -1528,6 +1530,8 @@ MonoBehaviour:
     m_InternalValue: 0
   endurance:
     m_InternalValue: 1
+  mind:
+    m_InternalValue: 1
   vitality:
     m_InternalValue: 1
   strength:
@@ -1542,6 +1546,10 @@ MonoBehaviour:
     m_InternalValue: 300
   maxHealth:
     m_InternalValue: 300
+  currentFocus:
+    m_InternalValue: 0
+  maxFocus:
+    m_InternalValue: 0
 --- !u!114 &-5109170956674349622
 MonoBehaviour:
   m_ObjectHideFlags: 0

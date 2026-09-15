@@ -22,7 +22,9 @@ public class CharacterLocomotionManager : MonoBehaviour
     public bool isRolling;
     public bool isGrounded = false;
     public bool canRotate = true;
+    public bool canRun = true;
     public bool canMove = true;
+    public bool canRoll = true;
 
     protected virtual void Awake()
     {
@@ -68,10 +70,11 @@ public class CharacterLocomotionManager : MonoBehaviour
         isGrounded = Physics.CheckSphere(character.transform.position, groundCheckSphereRadius, groundLayer);
     }
 
-    protected void OnDrawGizmosSelected()
+    /*void OnDrawGizmos()
     {
-        //Gizmos.DrawSphere(character.transform.position, groundCheckSphereRadius);
-    }
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, groundCheckSphereRadius);
+    }*/
 
     public void EnableRotate()
     {
@@ -82,4 +85,5 @@ public class CharacterLocomotionManager : MonoBehaviour
     {
         canRotate = false;
     }
+
 }

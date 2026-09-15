@@ -31,6 +31,12 @@ public class WorldItemDatabase : MonoBehaviour
     [Header("Spells")]
     [SerializeField] List<SpellItem> spells = new List<SpellItem>();
 
+    [Header("Projectiles")]
+    [SerializeField] List<RangedProjectileItem> projectiles = new List<RangedProjectileItem>();
+
+    [Header("QuickSlotItems")]
+    [SerializeField] List<QuickSlotItem> quickSlotItems = new List<QuickSlotItem>();
+
     [Header("Items")]
     private List<Item> items = new List<Item>();
 
@@ -42,6 +48,8 @@ public class WorldItemDatabase : MonoBehaviour
     public int legKey = 50000;
     public int ashOfWarKey = 60000;
     public int spellKey = 70000;
+    public int projectileKey = 80000;
+    public int quickSlotItemKey = 90000;
 
     private void Awake()
     {
@@ -78,6 +86,14 @@ public class WorldItemDatabase : MonoBehaviour
         {
             items.Add(spell);
         }
+        foreach (var projectile in projectiles)
+        {
+            items.Add(projectile);
+        }
+        foreach (var quickSlotItem in quickSlotItems)
+        {
+            items.Add(quickSlotItem);
+        }
 
         for (int i = 0; i < items.Count; i++)
         {
@@ -108,6 +124,14 @@ public class WorldItemDatabase : MonoBehaviour
             else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count + handEquipment.Count + legEquipment.Count + ashesOfWar.Count + spells.Count)
             {
                 items[i].itemID = i + spellKey;
+            }
+            else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count + handEquipment.Count + legEquipment.Count + ashesOfWar.Count + spells.Count + projectiles.Count)
+            {
+                items[i].itemID = i + projectileKey;
+            }
+            else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count + handEquipment.Count + legEquipment.Count + ashesOfWar.Count + spells.Count + projectiles.Count + quickSlotItems.Count)
+            {
+                items[i].itemID = i + quickSlotItemKey;
             }
 
         }
@@ -151,6 +175,16 @@ public class WorldItemDatabase : MonoBehaviour
     public SpellItem GetSpellByID(int id)
     {
         return spells.FirstOrDefault(s => s.itemID == id);
+    }
+
+    public RangedProjectileItem GetProjectileByID(int id)
+    {
+        return projectiles.FirstOrDefault(p => p.itemID == id);
+    }
+
+    public QuickSlotItem GetQuickSlotItemByID(int id)
+    {
+        return quickSlotItems.FirstOrDefault(q => q.itemID == id);
     }
 
 }

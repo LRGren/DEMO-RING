@@ -49,6 +49,7 @@
   <Project Path="Unity.Networking.Editor.csproj" />
   <Project Path="Unity.InputSystem.DocCodeSamples.csproj" />
   <Project Path="CFXRRuntime.csproj" />
+  <Project Path="OccaSoftware.Crosshairs.Editor.csproj" />
   <Project Path="Unity.InputSystem.ForUI.csproj" />
   <Project Path="CFXREditor.csproj" />
   <Project Path="Unity.Mathematics.Editor.csproj" />

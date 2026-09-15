@@ -4,6 +4,7 @@
   <Project Path="Unity.ShaderGraph.Editor.csproj" />
   <Project Path="Autodesk.Fbx.csproj" />
   <Project Path="Unity.InputSystem.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.VisualScripting.Flow.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Runtime.csproj" />
   <Project Path="UnityEditor.UI.csproj" />
@@ -24,7 +25,6 @@
   <Project Path="Unity.AI.Navigation.Editor.csproj" />
   <Project Path="Unity.Netcode.Runtime.csproj" />
   <Project Path="Unity.Collections.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.VisualStudio.Editor.csproj" />
   <Project Path="PPv2URPConverters.csproj" />
   <Project Path="Unity.Netcode.Components.csproj" />
@@ -49,6 +49,7 @@
   <Project Path="Unity.Networking.Editor.csproj" />
   <Project Path="Unity.InputSystem.DocCodeSamples.csproj" />
   <Project Path="CFXRRuntime.csproj" />
+  <Project Path="OccaSoftware.Crosshairs.Editor.csproj" />
   <Project Path="Unity.InputSystem.ForUI.csproj" />
   <Project Path="CFXREditor.csproj" />
   <Project Path="Unity.Mathematics.Editor.csproj" />

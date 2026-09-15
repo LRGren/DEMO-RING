@@ -214,10 +214,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 1.5
-  m_Height: 10
+  m_Radius: 2
+  m_Height: 12
   m_Direction: 1
-  m_Center: {x: -0.0000016639801, y: 3.3859677, z: 0.0000010962942}
+  m_Center: {x: -0.0000016639801, y: 4.63, z: 0.0000010962942}
 --- !u!114 &833904712389211299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,7 +236,9 @@ MonoBehaviour:
   fireDamage: 0
   lightningDamage: 0
   holyDamage: 0
+  poiseDamage: 0
   contactPoint: {x: 0, y: 0, z: 0}
+  characterDamaged: []
   characterCasuingDamage: {fileID: 0}
   light_Attack_01_Modifier: 0
   light_Attack_02_Modifier: 0

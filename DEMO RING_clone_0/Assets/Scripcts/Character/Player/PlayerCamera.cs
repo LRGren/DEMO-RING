@@ -8,7 +8,8 @@ public class PlayerCamera : MonoBehaviour
     public static PlayerCamera instance;
     public PlayerManager player;
     public Camera cameraObject;
-    [SerializeField] private Transform cameraPivotTransform;
+    public Transform cameraPivotTransform;
+    public float aimingFollowCameraYPositionOffset = 1.5f;
 
     [Header("Camera Settings")]
     public float cameraSmoothTime = 0.1f;
@@ -41,6 +42,10 @@ public class PlayerCamera : MonoBehaviour
     public CharacterManager nearestLockOnTarget;
     public CharacterManager leftLockOnTarget;
     public CharacterManager rightLockOnTarget;
+
+    [Header("Aiming")]
+    public Transform aimingFollowTransform;
+    public Vector3 aimDirection;
 
     private void Awake()
     {
@@ -75,12 +80,58 @@ public class PlayerCamera : MonoBehaviour
 
     private void HandleFollowTarget()
     {
-        Vector3 targetCameraPosition = Vector3.SmoothDamp(transform.position, player.transform.position,
+        if (player.playerNetworkManager.isAiming.Value)
+        {
+            Vector3 targetCameraPosition = Vector3.SmoothDamp(transform.position, player.playerCombatManager.lockOnTransform.position,
             ref cameraVelocity, cameraSmoothTime);
-        transform.position = targetCameraPosition;
+            transform.position = targetCameraPosition;
+        }
+        else
+        {
+            Vector3 targetCameraPosition = Vector3.SmoothDamp(transform.position, player.transform.position,
+            ref cameraVelocity, cameraSmoothTime);
+            transform.position = targetCameraPosition;
+        }
     }
 
     private void HandleRotation()
+    {
+        if (player.playerNetworkManager.isAiming.Value)
+        {
+            HandleAimingCameraRotation();
+        }
+        else
+        {
+            HandleStandardCameraRotation();
+        }
+    }
+
+    private void HandleAimingCameraRotation()
+    {
+        if (!player.playerLocomotionManager.isGrounded)
+            player.playerNetworkManager.isAiming.Value = false;
+
+        if (player.isPerformingAction)
+            return;
+
+        aimDirection = cameraObject.transform.forward.normalized;
+
+        // LEFT AND RIGHT LOOK
+        Vector3 cameraRotationY = Vector3.zero;
+        // UP AND DOWN LOOK
+        Vector3 cameraRotationX = Vector3.zero;
+
+        leftAndRightAngle += (PlayerInputManager.instance.cameraHorizontalInput * leftAndRightRotationSpeed) * Time.deltaTime;
+        upAndDownAngle -= (PlayerInputManager.instance.cameraVerticalInput * upAndDownRotationSpeed) * Time.deltaTime;
+        upAndDownAngle = Mathf.Clamp(upAndDownAngle, minimumPivot, maximumPivot);
+
+        cameraRotationY.y = leftAndRightAngle;
+        cameraRotationX.x = upAndDownAngle;
+
+        cameraObject.transform.localEulerAngles = new Vector3(upAndDownAngle, leftAndRightAngle, 0);
+    }
+
+    private void HandleStandardCameraRotation()
     {
         //锁定状态下，摄像机始终面向锁定目标
         if (player.playerNetworkManager.isLockOn.Value)
@@ -120,6 +171,7 @@ public class PlayerCamera : MonoBehaviour
             targetRotation = Quaternion.Euler(cameraRotation);
             cameraPivotTransform.rotation = targetRotation;
         }
+
     }
 
     private void HandleCollisions()
@@ -140,6 +192,14 @@ public class PlayerCamera : MonoBehaviour
         if (Mathf.Abs(targetCameraZPosition) < cameraCollisionRadius)
         {
             targetCameraZPosition = -cameraCollisionRadius;
+        }
+
+
+        if (player.playerNetworkManager.isAiming.Value)
+        {
+            cameraObjectPosition.z = 0;
+            cameraObject.transform.localPosition = cameraObjectPosition;
+            return;
         }
 
         cameraObjectPosition.z = Mathf.Lerp(cameraObject.transform.localPosition.z, targetCameraZPosition, 0.2f);
@@ -246,12 +306,29 @@ public class PlayerCamera : MonoBehaviour
 
     public void SetLockOnCameraHeight()
     {
-        if (cameraLockOnCoroutine != null)
-        {
-            StopCoroutine(cameraLockOnCoroutine);
-        }
+        StopCameraHeightCoroutine();
+
+        if (player == null)
+            return;
+
+        float targetHeight = player.playerCombatManager.currentTarget != null
+            ? lockedCameraHeight
+            : unlockedCameraHeight;
+        Vector3 targetLocalPosition = new Vector3(cameraPivotTransform.localPosition.x, targetHeight);
+
+        if (Vector3.Distance(cameraPivotTransform.localPosition, targetLocalPosition) <= 0.01f)
+            return;
 
         cameraLockOnCoroutine = StartCoroutine(SetCameraHeight());
+    }
+
+    public void StopCameraHeightCoroutine()
+    {
+        if (cameraLockOnCoroutine == null)
+            return;
+
+        StopCoroutine(cameraLockOnCoroutine);
+        cameraLockOnCoroutine = null;
     }
 
     public void ClearLockOnTargets()
@@ -283,38 +360,29 @@ public class PlayerCamera : MonoBehaviour
 
     private IEnumerator SetCameraHeight()
     {
-        /*float duration = 1f;
-        float timer = 0f;*/
-
         Vector3 velocity = Vector3.zero;
-        Vector3 newLockedCameraHeight = new Vector3(cameraPivotTransform.localPosition.x, lockedCameraHeight);
-        Vector3 newUnlockedCameraHeight = new Vector3(cameraPivotTransform.localPosition.x, unlockedCameraHeight);
 
-
-        var targetCameraHeight = player.playerCombatManager.currentTarget != null ? newLockedCameraHeight : newUnlockedCameraHeight;
-
-        while (Vector3.Distance(cameraPivotTransform.localEulerAngles, targetCameraHeight) > 0.01f)
-        //while (timer < duration)
+        while (player != null)
         {
-            //Debug.Log("Setting Camera Height");
+            float targetHeight = player.playerCombatManager.currentTarget != null
+                ? lockedCameraHeight
+                : unlockedCameraHeight;
+            Vector3 targetCameraHeight = new Vector3(cameraPivotTransform.localPosition.x, targetHeight);
 
-            //timer += Time.deltaTime;
+            if (Vector3.Distance(cameraPivotTransform.localPosition, targetCameraHeight) <= 0.01f)
+                break;
 
-
-            if (player != null)
+            if (player.playerCombatManager.currentTarget != null)
             {
-                if (player.playerCombatManager.currentTarget != null)
-                {
-                    cameraPivotTransform.localPosition =
-                        Vector3.SmoothDamp(cameraPivotTransform.localPosition, newLockedCameraHeight, ref velocity, setCameraHeightSpeed);
-                    cameraPivotTransform.localRotation =
-                        Quaternion.Slerp(cameraPivotTransform.localRotation, Quaternion.Euler(0, 0, 0), lockOnTargetFollowSpeed);
-                }
-                else
-                {
-                    cameraPivotTransform.localPosition =
-                        Vector3.SmoothDamp(cameraPivotTransform.localPosition, newUnlockedCameraHeight, ref velocity, setCameraHeightSpeed);
-                }
+                cameraPivotTransform.localPosition =
+                    Vector3.SmoothDamp(cameraPivotTransform.localPosition, targetCameraHeight, ref velocity, setCameraHeightSpeed);
+                cameraPivotTransform.localRotation =
+                    Quaternion.Slerp(cameraPivotTransform.localRotation, Quaternion.identity, lockOnTargetFollowSpeed);
+            }
+            else
+            {
+                cameraPivotTransform.localPosition =
+                    Vector3.SmoothDamp(cameraPivotTransform.localPosition, targetCameraHeight, ref velocity, setCameraHeightSpeed);
             }
 
             yield return null;
@@ -322,15 +390,13 @@ public class PlayerCamera : MonoBehaviour
 
         if (player != null)
         {
+            float finalHeight = player.playerCombatManager.currentTarget != null
+                ? lockedCameraHeight
+                : unlockedCameraHeight;
+            cameraPivotTransform.localPosition = new Vector3(cameraPivotTransform.localPosition.x, finalHeight);
+
             if (player.playerCombatManager.currentTarget != null)
-            {
-                cameraPivotTransform.localPosition = newLockedCameraHeight;
-                cameraPivotTransform.localRotation = Quaternion.Euler(0, 0, 0);
-            }
-            else
-            {
-                cameraPivotTransform.localPosition = newUnlockedCameraHeight;
-            }
+                cameraPivotTransform.localRotation = Quaternion.identity;
         }
 
         yield return null;

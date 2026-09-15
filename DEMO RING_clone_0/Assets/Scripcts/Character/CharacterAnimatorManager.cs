@@ -70,7 +70,7 @@ public class CharacterAnimatorManager : MonoBehaviour
         character.animator.SetFloat(vertical, snappedVertical, 0.1f, Time.deltaTime);
     }
 
-    public virtual void PlayerTargetActionAnimation(string targetAnimation, bool isPerformingAction, bool applyRootMotion = true, bool canRotate = false, bool canMove = false)
+    public virtual void PlayerTargetActionAnimation(string targetAnimation, bool isPerformingAction, bool applyRootMotion = true, bool canRotate = false, bool canMove = false, bool canRun = true, bool canRoll = false)
     {
         //Debug.Log("Playing Target Action Animation: " + targetAnimation);
 
@@ -79,6 +79,8 @@ public class CharacterAnimatorManager : MonoBehaviour
         character.isPerformingAction = isPerformingAction;
         character.characterLocomotionManager.canRotate = canRotate;
         character.characterLocomotionManager.canMove = canMove;
+        character.characterLocomotionManager.canRun = canRun;
+        character.characterLocomotionManager.canRoll = canRoll;
 
         //只有拥有者（玩家）或服务器（AI）才能发送需要所有权的 ServerRpc
         if (!character.IsOwner)
@@ -88,7 +90,7 @@ public class CharacterAnimatorManager : MonoBehaviour
             NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
     }
 
-    public virtual void PlayerTargetActionAnimationInstantly(string targetAnimation, bool isPerformingAction, bool applyRootMotion = true, bool canRotate = false, bool canMove = false)
+    public virtual void PlayerTargetActionAnimationInstantly(string targetAnimation, bool isPerformingAction, bool applyRootMotion = true, bool canRotate = false, bool canMove = false, bool canRun = true, bool canRoll = false)
     {
         //Debug.Log("Playing Target Action Animation: " + targetAnimation);
 
@@ -97,6 +99,8 @@ public class CharacterAnimatorManager : MonoBehaviour
         character.isPerformingAction = isPerformingAction;
         character.characterLocomotionManager.canRotate = canRotate;
         character.characterLocomotionManager.canMove = canMove;
+        character.characterLocomotionManager.canRun = canRun;
+        character.characterLocomotionManager.canRoll = canRoll;
 
         //只有拥有者（玩家）或服务器（AI）才能发送需要所有权的 ServerRpc
         if (!character.IsOwner)
@@ -124,6 +128,7 @@ public class CharacterAnimatorManager : MonoBehaviour
         character.isPerformingAction = isPerformingAction;
         character.characterLocomotionManager.canRotate = canRotate;
         character.characterLocomotionManager.canMove = canMove;
+        character.characterNetworkManager.isAttacking.Value = true;
 
         //只有拥有者（玩家）或服务器（AI）才能发送需要所有权的 ServerRpc
         if (!character.IsOwner)
@@ -132,6 +137,7 @@ public class CharacterAnimatorManager : MonoBehaviour
         character.characterNetworkManager.NotifyTheServerOfAttackActionAnimationServerRpc(
             NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
     }
+
 
     public void UpdateAnimatorController(AnimatorOverrideController weaponController)
     {

@@ -1,0 +1,45 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class WeaponManager : MonoBehaviour
+{
+    public MeleeWeaponDamageCollider meleeWeaponDamageCollider;
+
+    private void Awake()
+    {
+        meleeWeaponDamageCollider = GetComponentInChildren<MeleeWeaponDamageCollider>();
+    }
+
+    public void SetWeaponDamage(CharacterManager characterWeildingDamage, WeaponItem weaponItem)
+    {
+        if (meleeWeaponDamageCollider == null)
+            return;
+
+        meleeWeaponDamageCollider.characterCasuingDamage = characterWeildingDamage;
+        meleeWeaponDamageCollider.physicalDamage = weaponItem.physicalDamage;
+        meleeWeaponDamageCollider.magicalDamage = weaponItem.magicalDamage;
+        meleeWeaponDamageCollider.fireDamage = weaponItem.fireDamage;
+        meleeWeaponDamageCollider.holyDamage = weaponItem.holyDamage;
+        meleeWeaponDamageCollider.lightningDamage = weaponItem.lightningDamage;
+
+        meleeWeaponDamageCollider.poiseDamage = weaponItem.poiseDamage;
+
+        meleeWeaponDamageCollider.light_Attack_01_Modifier = weaponItem.light_Attack_01_Modifier;
+        meleeWeaponDamageCollider.light_Attack_02_Modifier = weaponItem.light_Attack_02_Modifier;
+
+        meleeWeaponDamageCollider.heavy_Attack_01_Modifier = weaponItem.heavy_Attack_01_Modifier;
+        meleeWeaponDamageCollider.heavy_Attack_02_Modifier = weaponItem.heavy_Attack_02_Modifier;
+
+        meleeWeaponDamageCollider.charged_Attack_01_Modifier = weaponItem.charged_Attack_01_Modifier;
+        meleeWeaponDamageCollider.charged_Attack_02_Modifier = weaponItem.charged_Attack_02_Modifier;
+
+        meleeWeaponDamageCollider.run_Attack_01_Modifier = weaponItem.run_Attack_01_Modifier;
+        meleeWeaponDamageCollider.roll_Attack_01_Modifier = weaponItem.roll_Attack_01_Modifier;
+        meleeWeaponDamageCollider.backstep_Attack_01_Modifier = weaponItem.backstep_Attack_01_Modifier;
+
+        meleeWeaponDamageCollider.jump_Light_Attack_01_Modifier = weaponItem.jump_Light_Attack_01_Modifier;
+        meleeWeaponDamageCollider.jump_Heavy_Attack_01_Modifier = weaponItem.jump_Heavy_Attack_01_Modifier;
+
+    }
+}

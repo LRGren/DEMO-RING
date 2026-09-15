@@ -20,6 +20,9 @@ public class LightAttackWeaponItemAction : WeaponItemAction
     [Header("Backstep Attack Animations")]
     [SerializeField] private string backstep_Attack_01 = "Main_Backstep_Attack_01";
 
+    [Header("Jump Attack Animations")]
+    [SerializeField] private string jump_Attack_01 = "Main_Jump_Light_Attack_01";
+
     [Header("Two Hand Animation Settings")]
     [Header("Light Attack Animations")]
     [SerializeField] private string th_light_Attack_01 = "TH_Light_Attack_01";
@@ -35,6 +38,9 @@ public class LightAttackWeaponItemAction : WeaponItemAction
     [Header("Backstep Attack Animations")]
     [SerializeField] private string th_backstep_Attack_01 = "TH_Backstep_Attack_01";
 
+    [Header("Jump Attack Animations")]
+    [SerializeField] private string th_jump_Attack_01 = "TH_Jump_Light_Attack_01";
+
     public override void AttemptToPerformAction(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
     {
         base.AttemptToPerformAction(playerPerformingAction, weaponPerformingAction);
@@ -42,14 +48,24 @@ public class LightAttackWeaponItemAction : WeaponItemAction
         if (!playerPerformingAction.IsOwner)
             return;
 
+        if (playerPerformingAction.playerCombatManager.isUsingItem)
+            return;
+
         //检查停止
         if (playerPerformingAction.playerNetworkManager.currentStamina.Value <= 0)
             return;
 
+        if (playerPerformingAction.playerCombatManager.canPerformJumpAttack && !playerPerformingAction.playerLocomotionManager.isGrounded)
+        {
+            PerformJumpAttack(playerPerformingAction, weaponPerformingAction);
+            return;
+        }
+
         if (!playerPerformingAction.playerLocomotionManager.isGrounded)
             return;
 
-        playerPerformingAction.playerNetworkManager.isAttacking.Value = true;
+        if (playerPerformingAction.playerNetworkManager.isJumping.Value)
+            return;
 
         if (playerPerformingAction.playerNetworkManager.isSprinting.Value)
         {
@@ -155,6 +171,17 @@ public class LightAttackWeaponItemAction : WeaponItemAction
             playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.BackstepAttack01, th_backstep_Attack_01, true);
         else
             playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.BackstepAttack01, backstep_Attack_01, true);
+    }
+
+    public void PerformJumpAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
+    {
+        if (playerPerformingAction.isPerformingAction)
+            return;
+
+        if (playerPerformingAction.playerNetworkManager.isTwoHandingWeapon.Value)
+            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.JumpLightAttack01, th_jump_Attack_01, true);
+        else
+            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.JumpLightAttack01, jump_Attack_01, true);
     }
 
 }

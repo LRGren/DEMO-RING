@@ -17,12 +17,19 @@ public class ResetActionFlags : StateMachineBehaviour
         character.characterAnimatorManager.applyRootMotion = false;
         character.characterLocomotionManager.canRotate = true;
         character.characterLocomotionManager.canMove = true;
+        character.characterLocomotionManager.canRun = true;
+        character.characterLocomotionManager.canRoll = true;
         character.characterLocomotionManager.isRolling = false;
         character.characterCombatManager.DisableDoCombo();
         character.characterCombatManager.canPerformRollingAttack = false;
         character.characterCombatManager.canPerformBackstepAttack = false;
+        character.characterCombatManager.canPerformJumpAttack = false;
 
-        character.characterCombatManager.DestoryAllAttemptedActions();
+        if (character.characterEffectsManager.activeSpellWarmUpFX != null)
+            Destroy(character.characterEffectsManager.activeSpellWarmUpFX.gameObject);
+
+        if (character.characterEffectsManager.activeQuickSlotItemFX != null)
+            Destroy(character.characterEffectsManager.activeQuickSlotItemFX.gameObject);
 
         if (character.IsOwner)
         {

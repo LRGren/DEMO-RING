@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e7697548fbb8804d9340f4ce0dda08c, type: 3}
+  m_Name: Health Flask
+  m_EditorClassIdentifier: 
+  itemName: Health Flask
+  itemIcon: {fileID: 21300074, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  itemDescription: 
+  itemID: 90015
+  itemModel: {fileID: 2029022393539099391, guid: 37b87c67c8fff5f43a40310bed828348,
+    type: 3}
+  useItemAnimation: Item_Flask_Drink_Start_01
+  isHealthFlask: 1
+  healthFlaskAmount: 50
+  manaFlaskAmount: 0
+  emptyFlaskPrefab: {fileID: 2029022393539099391, guid: 42791ea7ce4524e41973f66db47b3cb4,
+    type: 3}
+  useEmptyFlaskAnimation: Item_Flask_Empty_01

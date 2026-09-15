@@ -142,7 +142,7 @@ public class AICharacterCombatManager : CharacterCombatManager
                     if (WorldUtilityManager.instance.IsTargetBlockedByEnvironment(aiCharacter.characterCombatManager.lockOnTransform.position,
                         targetCharacter.transform.position))
                     {
-                        Debug.DrawLine(aiCharacter.characterCombatManager.lockOnTransform.position, targetCharacter.transform.position, Color.red, 0.1f);
+                        //Debug.DrawLine(aiCharacter.characterCombatManager.lockOnTransform.position, targetCharacter.transform.position, Color.red, 0.1f);
                         //Debug.Log("Blocked by environment");
                     }
                     else
@@ -154,6 +154,11 @@ public class AICharacterCombatManager : CharacterCombatManager
 
                         if (enablePivot)
                             PivotTowardsTarget(aiCharacter);
+
+                        Debug.Log($"{aiCharacter.name} -> {targetCharacter.name}, " +
+          $"aiGroup={aiCharacter.characterGroup}, " +
+          $"targetGroup={targetCharacter.characterGroup}, " +
+          $"canDamage={WorldUtilityManager.instance.CanIDamageThisTarget(aiCharacter.characterGroup, targetCharacter.characterGroup)}");
                     }
                 }
             }
