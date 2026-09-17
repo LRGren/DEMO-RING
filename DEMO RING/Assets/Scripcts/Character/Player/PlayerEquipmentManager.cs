@@ -404,6 +404,89 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             player.playerNetworkManager.handEquipmentID.Value = handEquipment.itemID;
     }
 
+    public void LoadMainProjectileEquipment(RangedProjectileItem mainProjectile)
+    {
+        // 1. UNLOAD OLD HAND EQUIPMENT MODELS (IF ANY)
+        // 箭袋之类的
+
+        // 2. IF EQUIPMENT IS NULL SIMPLY SET EQUIPMENT IN INVENTORY TO NULL AND RETURN
+        if (mainProjectile == null)
+        {
+            if (player.IsOwner)
+            {
+                player.playerNetworkManager.mainProjectileID.Value = -1;
+                PlayerUIManager.instance.playerUIEquipmentManager.SetMainProjectileCountText(0, false);
+            }
+            player.playerInventoryManager.mainProjectile = null;
+            return;
+        }
+
+        // 3. IF YOU HAVE AN "ONITEMEQUIPPED" CALL ON YOUR EQUIPMENT, RUN IT NOW
+        // 4. SET CURRENT HAND EQUIPMENT IN PLAYER INVENTORY TO THE EQUIPMENT THAT IS PASSED TO THIS FUNCTION
+        player.playerInventoryManager.mainProjectile = mainProjectile;
+
+        // 5. IF YOU NEED TO CHECK FOR HAND EQUIPMENT TYPE TO DISABLE CERTAIN BODY FEATURES DO IT NOW
+        //player.playerBodyManager.DisableArms();
+
+        // 6. LOAD HAND EQUIPMENT MODELS
+        /*foreach (var model in handEquipment.equipmentModels)
+        {
+            model.LoadEquipmentModel(player, player.playerNetworkManager.isMale.Value);
+        }*/
+
+        // 7. CALCULATE TOTAL EQUIPMENT LOAD (WEIGHT OF ALL YOUR WORN EQUIPMENT. THIS IMPACTS ROLL SPEED AND AT EXTREME WEIGHTS, MOVEMENT SPEED)
+        // 8. CALCULATE TOTAL ARMOR ABSORPTION
+        //player.playerStatsManager.CaculateTotalCharacterAborption();
+
+        if (player.IsOwner)
+        {
+            Debug.Log("Main Projectile ID: " + mainProjectile.itemID);
+            player.playerNetworkManager.mainProjectileID.Value = mainProjectile.itemID;
+            PlayerUIManager.instance.playerUIEquipmentManager.SetMainProjectileCountText(mainProjectile.currentAmmoAmount);
+        }
+    }
+
+    public void LoadSecondaryProjectileEquipment(RangedProjectileItem secondaryProjectile)
+    {
+        // 1. UNLOAD OLD HAND EQUIPMENT MODELS (IF ANY)
+        // 箭袋之类的
+
+        // 2. IF EQUIPMENT IS NULL SIMPLY SET EQUIPMENT IN INVENTORY TO NULL AND RETURN
+        if (secondaryProjectile == null)
+        {
+            if (player.IsOwner)
+            {
+                player.playerNetworkManager.secondaryProjectileID.Value = -1;
+                PlayerUIManager.instance.playerUIEquipmentManager.SetSecondaryProjectileCountText(0, false);
+            }
+            player.playerInventoryManager.secondaryProjectile = null;
+            return;
+        }
+
+        // 3. IF YOU HAVE AN "ONITEMEQUIPPED" CALL ON YOUR EQUIPMENT, RUN IT NOW
+        // 4. SET CURRENT HAND EQUIPMENT IN PLAYER INVENTORY TO THE EQUIPMENT THAT IS PASSED TO THIS FUNCTION
+        player.playerInventoryManager.secondaryProjectile = secondaryProjectile;
+
+        // 5. IF YOU NEED TO CHECK FOR HAND EQUIPMENT TYPE TO DISABLE CERTAIN BODY FEATURES DO IT NOW
+        //player.playerBodyManager.DisableArms();
+
+        // 6. LOAD HAND EQUIPMENT MODELS
+        /*foreach (var model in handEquipment.equipmentModels)
+        {
+            model.LoadEquipmentModel(player, player.playerNetworkManager.isMale.Value);
+        }*/
+
+        // 7. CALCULATE TOTAL EQUIPMENT LOAD (WEIGHT OF ALL YOUR WORN EQUIPMENT. THIS IMPACTS ROLL SPEED AND AT EXTREME WEIGHTS, MOVEMENT SPEED)
+        // 8. CALCULATE TOTAL ARMOR ABSORPTION
+        //player.playerStatsManager.CaculateTotalCharacterAborption();
+
+        if (player.IsOwner)
+        {
+            player.playerNetworkManager.secondaryProjectileID.Value = secondaryProjectile.itemID;
+            PlayerUIManager.instance.playerUIEquipmentManager.SetSecondaryProjectileCountText(secondaryProjectile.currentAmmoAmount);
+        }
+    }
+
     public void UnloadHandEquipment()
     {
         // 停用所有手部模型

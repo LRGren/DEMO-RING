@@ -139,7 +139,6 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
 
                 player.playerEquipmentManager.LoadHeadEquipment(player.playerInventoryManager.headEquipment);
                 break;
-
             case EquipmentType.Body:
                 BodyEquipmentItem currentBodyEquipment = player.playerInventoryManager.bodyEquipment;
                 if (currentBodyEquipment != null)
@@ -171,6 +170,27 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 player.playerEquipmentManager.LoadHandEquipment(player.playerInventoryManager.handEquipment);
                 break;
 
+            case EquipmentType.MainProjectile:
+                RangedProjectileItem currentMainProjectileEquipment = player.playerInventoryManager.mainProjectile;
+                if (currentMainProjectileEquipment != null)
+                {
+                    player.playerInventoryManager.AddItemToInventory(currentMainProjectileEquipment);
+                }
+                player.playerInventoryManager.mainProjectile = currentItem as RangedProjectileItem;
+                player.playerInventoryManager.RemoveItemFromInventory(currentItem);
+                player.playerEquipmentManager.LoadMainProjectileEquipment(player.playerInventoryManager.mainProjectile);
+                break;
+
+            case EquipmentType.SecondaryProjectile:
+                RangedProjectileItem currentSecondaryProjectileEquipment = player.playerInventoryManager.secondaryProjectile;
+                if (currentSecondaryProjectileEquipment != null)
+                {
+                    player.playerInventoryManager.AddItemToInventory(currentSecondaryProjectileEquipment);
+                }
+                player.playerInventoryManager.secondaryProjectile = currentItem as RangedProjectileItem;
+                player.playerInventoryManager.RemoveItemFromInventory(currentItem);
+                player.playerEquipmentManager.LoadSecondaryProjectileEquipment(player.playerInventoryManager.secondaryProjectile);
+                break;
         }
 
         PlayerUIManager.instance.playerUIEquipmentManager.RefreshMenu();

@@ -650,6 +650,8 @@ public class PlayerInputManager : MonoBehaviour
 
             WeaponItem selectedWeapon = player.playerCombatManager.SelectWeaponToPerformAshOfWar();
 
+            if (selectedWeapon.ashOfWar_Action == null)
+                return;
             selectedWeapon.ashOfWar_Action.AttemptToPerformAction(player);
         }
     }

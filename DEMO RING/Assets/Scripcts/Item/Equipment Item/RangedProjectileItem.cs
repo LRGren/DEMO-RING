@@ -14,7 +14,7 @@ public class RangedProjectileItem : Item
     public float ammoMass = 0.01f;
 
     [Header("Capacity")]
-    public int maxAmmoAmount = 1;
+    public int maxAmmoAmount = 999;
     public int currentAmmoAmount = 1;
 
     [Header("Damage")]

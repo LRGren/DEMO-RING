@@ -187,4 +187,5 @@ public class WorldItemDatabase : MonoBehaviour
         return quickSlotItems.FirstOrDefault(q => q.itemID == id);
     }
 
+
 }

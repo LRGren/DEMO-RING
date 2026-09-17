@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: Arrow
   m_EditorClassIdentifier: 
   itemName: Arrow
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300060, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
   itemDescription: 'Arrows used with small and long bows.
 
     Unremarkable in any
     way, shape or form.'
-  itemID: 0
+  itemID: 80014
   projectileClass: 0
   forwardVelocity: 2200
   upwardVelocity: 0
-  ammoMass: 0.01
-  maxAmmoAmount: 1
-  currentAmmoAmount: 1
+  ammoMass: 1
+  maxAmmoAmount: 999
+  currentAmmoAmount: 10
   physicalDamage: 45
   magicalDamage: 0
   fireDamage: 0

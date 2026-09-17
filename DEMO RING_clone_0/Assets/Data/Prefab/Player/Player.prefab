@@ -56863,7 +56863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2685673625
+  GlobalObjectIdHash: 2978010494
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -56981,7 +56981,7 @@ MonoBehaviour:
     m_InternalValue: 0
   maxHealth:
     m_InternalValue: 0
-  currentFocus:
+  currentFocusPoints:
     m_InternalValue: 0
   maxFocus:
     m_InternalValue: 0
@@ -57054,6 +57054,12 @@ MonoBehaviour:
         byte0059: 0
         byte0060: 0
         byte0061: 0
+  remainingHealthFlasks:
+    m_InternalValue: 0
+  remainingManaFlasks:
+    m_InternalValue: 0
+  isChugging:
+    m_InternalValue: 0
   currentWeaponBeingUsed:
     m_InternalValue: 0
   currentRightHandWeaponID:
@@ -57061,6 +57067,8 @@ MonoBehaviour:
   currentLeftHandWeaponID:
     m_InternalValue: 0
   currentSpellID:
+    m_InternalValue: 0
+  currentQuickSlotItemID:
     m_InternalValue: 0
   isUsingRightHand:
     m_InternalValue: 0
@@ -57157,6 +57165,7 @@ MonoBehaviour:
   canRotate: 1
   canRun: 1
   canMove: 1
+  canRoll: 1
   verticalMovement: 0
   horizontalMovement: 0
   moveAmount: 0
@@ -57287,13 +57296,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   leftWeaponIndex: 0
   currentSpell: {fileID: 11400000, guid: 26979afd063ecee4fb4309c827b28997, type: 2}
+  currentQuickSlotItem: {fileID: 0}
   headEquipment: {fileID: 0}
   bodyEquipment: {fileID: 0}
   handEquipment: {fileID: 0}
   legEquipment: {fileID: 0}
-  mainProjectile: {fileID: 11400000, guid: 662a833b9b6fde149b2c7492bf21ab86, type: 2}
-  secondaryProjectile: {fileID: 11400000, guid: 662a833b9b6fde149b2c7492bf21ab86,
-    type: 2}
+  mainProjectile: {fileID: 0}
+  secondaryProjectile: {fileID: 0}
   characterInventory:
   - {fileID: 11400000, guid: fd164a1d6f05bda478dd90018ab02d46, type: 2}
   - {fileID: 11400000, guid: caab14c2aa581924c8eab6272b89f59d, type: 2}
@@ -57331,6 +57340,7 @@ MonoBehaviour:
   currentProjectileSlotBeingUsed: 0
   projectileAimDirection: {x: 0, y: 0, z: 0}
   canComboWithMainHandWeapon: 0
+  isUsingItem: 0
 --- !u!114 &3399047118958252384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57388,6 +57398,7 @@ MonoBehaviour:
   stanceBreakSFX: {fileID: 0}
   restoreSiteOfGraceSFX: {fileID: 8300000, guid: 3019f0ef412825045a9160a4cc3900cf,
     type: 3}
+  flaskDrinkSFX: {fileID: 0}
   audioSource: {fileID: 6761140775019134779}
 --- !u!114 &6251675675731569420
 MonoBehaviour:
@@ -57401,6 +57412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9777077a2a37b924d8f930a0062936ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeQuickSlotItemFX: {fileID: 0}
   activeSpellWarmUpFX: {fileID: 0}
   activeProjectileFX: {fileID: 0}
   bloodSplatterVFX: {fileID: 0}

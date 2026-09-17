@@ -107,6 +107,8 @@ public enum EquipmentType
     Body,
     Legs,
     Hands,
+    MainProjectile,
+    SecondaryProjectile,
 }
 
 public enum HeadEquipmentType

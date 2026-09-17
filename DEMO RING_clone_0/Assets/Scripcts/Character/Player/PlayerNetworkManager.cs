@@ -137,6 +137,8 @@ public class PlayerNetworkManager : CharacterNetworkManager
         if (player.IsOwner)
         {
             PlayerUIManager.instance.playerUIHudManager.SetRightWeaponQuickSlotIcon(newWeaponID);
+
+            PlayerUIManager.instance.playerUIHudManager.ToggleProjectileSlotsGameobject(newWeapon.weaponClass == WeaponClass.Bow);
         }
     }
 
@@ -231,6 +233,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
         if (newProjectileID == -1)
         {
             player.playerInventoryManager.mainProjectile = null;
+            PlayerUIManager.instance.playerUIHudManager.SetMainProjectileItemQuickSlotIcon(null);
             return;
         }
 
@@ -240,6 +243,12 @@ public class PlayerNetworkManager : CharacterNetworkManager
             return;
 
         player.playerInventoryManager.mainProjectile = newProjectile;
+
+        if (player.IsOwner)
+        {
+            // Debug.Log("SSS");
+            PlayerUIManager.instance.playerUIHudManager.SetMainProjectileItemQuickSlotIcon(newProjectile);
+        }
     }
 
     public void OnSecondaryProjectileIDChanged(int oldProjectileID, int newProjectileID)
@@ -247,6 +256,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
         if (newProjectileID == -1)
         {
             player.playerInventoryManager.secondaryProjectile = null;
+            PlayerUIManager.instance.playerUIHudManager.SetSecondaryProjectileItemQuickSlotIcon(null);
             return;
         }
 
@@ -256,6 +266,11 @@ public class PlayerNetworkManager : CharacterNetworkManager
             return;
 
         player.playerInventoryManager.secondaryProjectile = newProjectile;
+
+        if (player.IsOwner)
+        {
+            PlayerUIManager.instance.playerUIHudManager.SetSecondaryProjectileItemQuickSlotIcon(newProjectile);
+        }
     }
 
     public void OnIsHoldingArrowChanged(bool old, bool isHoldingArrow)

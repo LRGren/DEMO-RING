@@ -302,10 +302,22 @@ public class PlayerCombatManager : CharacterCombatManager
             Physics.IgnoreCollision(liveProjectileDamageCollider.damageCollider, col, true);
 
         // 减少箭矢数量
-        //projectileToFire.currentAmmoAmount--;
+        projectileToFire.currentAmmoAmount--;
+
+        switch (currentProjectileSlotBeingUsed)
+        {
+            case ProjectileSlot.MainProjectileSlot:
+                PlayerUIManager.instance.playerUIHudManager.SetMainProjectileItemQuickSlotIcon(projectileToFire);
+                PlayerUIManager.instance.playerUIEquipmentManager.SetMainProjectileCountText(projectileToFire.currentAmmoAmount);
+                break;
+            case ProjectileSlot.SecondaryProjectileSlot:
+                PlayerUIManager.instance.playerUIHudManager.SetSecondaryProjectileItemQuickSlotIcon(projectileToFire);
+                PlayerUIManager.instance.playerUIEquipmentManager.SetSecondaryProjectileCountText(projectileToFire.currentAmmoAmount);
+                break;
+        }
 
         // 动量
-        //liveProjectileRigidbody.mass = projectileToFire.ammoMass;
+        liveProjectileRigidbody.mass = projectileToFire.ammoMass;
 
         liveProjectileRigidbody.AddForce(liveProjectileGameObject.transform.forward * projectileToFire.forwardVelocity);
         liveProjectileRigidbody.AddForce(liveProjectileGameObject.transform.up * projectileToFire.upwardVelocity);
@@ -366,9 +378,26 @@ public class PlayerCombatManager : CharacterCombatManager
     // Ash of War
     public WeaponItem SelectWeaponToPerformAshOfWar()
     {
-        WeaponItem selectedWeapon = player.playerInventoryManager.currentLeftHandWeapon;
-        player.playerNetworkManager.SetCharacterActionHand(false);
-        player.playerCombatManager.currentWeaponBedingUsed = selectedWeapon;
+        WeaponItem selectedWeapon;
+        if (player.playerNetworkManager.isTwoHandingWeapon.Value)
+        {
+            selectedWeapon = player.playerInventoryManager.currentTwoHandedWeapon;
+            if (player.playerNetworkManager.isUsingRightHand.Value)
+            {
+                player.playerNetworkManager.SetCharacterActionHand(true);
+            }
+            else
+            {
+                player.playerNetworkManager.SetCharacterActionHand(false);
+            }
+            player.playerCombatManager.currentWeaponBedingUsed = selectedWeapon;
+        }
+        else
+        {
+            selectedWeapon = player.playerInventoryManager.currentLeftHandWeapon;
+            player.playerNetworkManager.SetCharacterActionHand(false);
+            player.playerCombatManager.currentWeaponBedingUsed = selectedWeapon;
+        }
 
         return selectedWeapon;
     }

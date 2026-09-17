@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
+using TMPro;
 
 public class PlayerUIEquipmentManager : MonoBehaviour
 {
@@ -10,17 +11,22 @@ public class PlayerUIEquipmentManager : MonoBehaviour
     public GameObject menu;
 
     [Header("Equipment Slots")]
-    [SerializeField] private Image rightWeaponSlot01;
-    [SerializeField] private Image rightWeaponSlot02;
-    [SerializeField] private Image rightWeaponSlot03;
-    [SerializeField] private Image leftWeaponSlot01;
-    [SerializeField] private Image leftWeaponSlot02;
-    [SerializeField] private Image leftWeaponSlot03;
+    [SerializeField] Image rightWeaponSlot01;
+    [SerializeField] Image rightWeaponSlot02;
+    [SerializeField] Image rightWeaponSlot03;
+    [SerializeField] Image leftWeaponSlot01;
+    [SerializeField] Image leftWeaponSlot02;
+    [SerializeField] Image leftWeaponSlot03;
 
-    [SerializeField] private Image headSlot;
-    [SerializeField] private Image bodySlot;
-    [SerializeField] private Image legsSlot;
-    [SerializeField] private Image handSlot;
+    [SerializeField] Image headSlot;
+    [SerializeField] Image bodySlot;
+    [SerializeField] Image legsSlot;
+    [SerializeField] Image handSlot;
+
+    [SerializeField] Image MainProjectile;
+    [SerializeField] TextMeshProUGUI MainProjectileCount;
+    [SerializeField] Image SecondaryProjectile;
+    [SerializeField] TextMeshProUGUI SecondaryProjectileCount;
 
     [Header("Equipment Inventory Slots")]
     public GameObject equipmentInventoryWindow;
@@ -28,6 +34,11 @@ public class PlayerUIEquipmentManager : MonoBehaviour
     public GameObject equipmentInventorySlotPrefab;
     public Transform equipmentInventoryContentWindow;
     public Item currentlySelectedItem;
+
+    void Awake()
+    {
+
+    }
 
     public void OpenEquipmentMenu()
     {
@@ -44,6 +55,18 @@ public class PlayerUIEquipmentManager : MonoBehaviour
     {
         ClearEquipmentInventoryWindow();
         RefreshEquipmentSlotIcons();
+    }
+
+    public void SetMainProjectileCountText(int count, bool status = true)
+    {
+        MainProjectileCount.enabled = status;
+        MainProjectileCount.text = count.ToString();
+    }
+
+    public void SetSecondaryProjectileCountText(int count, bool status = true)
+    {
+        SecondaryProjectileCount.enabled = status;
+        SecondaryProjectileCount.text = count.ToString();
     }
 
     public void SelectLastSelectedEquipmentSlot()
@@ -80,6 +103,12 @@ public class PlayerUIEquipmentManager : MonoBehaviour
                 break;
             case EquipmentType.Legs:
                 buttonToSelect = legsSlot.GetComponentInParent<Button>();
+                break;
+            case EquipmentType.MainProjectile:
+                buttonToSelect = MainProjectile.GetComponentInParent<Button>();
+                break;
+            case EquipmentType.SecondaryProjectile:
+                buttonToSelect = SecondaryProjectile.GetComponentInParent<Button>();
                 break;
         }
 
@@ -221,6 +250,28 @@ public class PlayerUIEquipmentManager : MonoBehaviour
         {
             legsSlot.enabled = false;
         }
+
+        RangedProjectileItem mainProjectile = player.playerInventoryManager.mainProjectile;
+        if (mainProjectile != null)
+        {
+            MainProjectile.enabled = mainProjectile.itemIcon != null;
+            MainProjectile.sprite = mainProjectile.itemIcon;
+        }
+        else
+        {
+            MainProjectile.enabled = false;
+        }
+
+        RangedProjectileItem secondaryProjectile = player.playerInventoryManager.secondaryProjectile;
+        if (secondaryProjectile != null)
+        {
+            SecondaryProjectile.enabled = secondaryProjectile.itemIcon != null;
+            SecondaryProjectile.sprite = secondaryProjectile.itemIcon;
+        }
+        else
+        {
+            SecondaryProjectile.enabled = false;
+        }
     }
 
     public void ClearEquipmentInventoryWindow()
@@ -256,6 +307,10 @@ public class PlayerUIEquipmentManager : MonoBehaviour
                 break;
             case EquipmentType.Legs:
                 LoadLegEquipmentInventorySlots();
+                break;
+            case EquipmentType.MainProjectile:
+            case EquipmentType.SecondaryProjectile:
+                LoadProjectileEquipmentInventorySlots();
                 break;
             default:
                 Debug.LogWarning("Unhandled equipment type: " + currentSelectedEquipmentType);
@@ -480,6 +535,51 @@ public class PlayerUIEquipmentManager : MonoBehaviour
         }
     }
 
+    public void LoadProjectileEquipmentInventorySlots()
+    {
+        ClearEquipmentInventoryWindow();
+
+        PlayerManager player = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
+
+        List<RangedProjectileItem> projectileInventory = new List<RangedProjectileItem>();
+
+        foreach (Item item in player.playerInventoryManager.characterInventory)
+        {
+            RangedProjectileItem projectile = item as RangedProjectileItem;
+
+
+            if (projectile != null)
+            {
+                projectileInventory.Add(projectile);
+            }
+        }
+
+        if (projectileInventory.Count <= 0)
+        {
+            RefreshMenu();
+            return;
+        }
+
+        bool hasFirstSlotBeenSelected = false;
+
+        foreach (RangedProjectileItem projectile in projectileInventory)
+        {
+            GameObject slot = Instantiate(equipmentInventorySlotPrefab, equipmentInventoryContentWindow);
+            UI_EquipmentInventorySlot inventorySlot = slot.GetComponent<UI_EquipmentInventorySlot>();
+            inventorySlot.AddItem(projectile);
+
+            if (!hasFirstSlotBeenSelected)
+            {
+                Button button = slot.GetComponent<Button>();
+                button.Select();
+                button.OnSelect(null);
+
+                hasFirstSlotBeenSelected = true;
+            }
+        }
+
+    }
+
     public void SelectEquipmentSlot(int slotIndex)
     {
         currentSelectedEquipmentType = (EquipmentType)slotIndex;
@@ -487,8 +587,6 @@ public class PlayerUIEquipmentManager : MonoBehaviour
 
     public void UnequipItem()
     {
-
-
         PlayerManager player = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
         Item unequippedWeapon;
 
@@ -631,6 +729,28 @@ public class PlayerUIEquipmentManager : MonoBehaviour
                     player.playerInventoryManager.AddItemToInventory(unequippedLegEquipment);
                 }
                 player.playerEquipmentManager.LoadLegEquipment(null);
+                break;
+            case EquipmentType.MainProjectile:
+                RangedProjectileItem unequippedMainProjectile = player.playerInventoryManager.mainProjectile;
+                if (unequippedMainProjectile != null)
+                {
+                    player.playerInventoryManager.mainProjectile = null;
+
+                    player.playerInventoryManager.AddItemToInventory(unequippedMainProjectile);
+                }
+                SetMainProjectileCountText(0, false);
+                player.playerEquipmentManager.LoadMainProjectileEquipment(null);
+                break;
+            case EquipmentType.SecondaryProjectile:
+                RangedProjectileItem unequippedSecondaryProjectile = player.playerInventoryManager.secondaryProjectile;
+                if (unequippedSecondaryProjectile != null)
+                {
+                    player.playerInventoryManager.secondaryProjectile = null;
+
+                    player.playerInventoryManager.AddItemToInventory(unequippedSecondaryProjectile);
+                }
+                SetSecondaryProjectileCountText(0, false);
+                player.playerEquipmentManager.LoadSecondaryProjectileEquipment(null);
                 break;
         }
 

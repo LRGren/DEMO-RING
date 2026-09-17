@@ -1139,7 +1139,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f7919885e9d7b4d8a99e57b18ce505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeQuickSlotItemFX: {fileID: 0}
   activeSpellWarmUpFX: {fileID: 0}
+  activeProjectileFX: {fileID: 0}
   bloodSplatterVFX: {fileID: 0}
   criticalBloodSplatterVFX: {fileID: 0}
   staticEffects: []
@@ -1178,7 +1180,9 @@ MonoBehaviour:
   isRolling: 0
   isGrounded: 0
   canRotate: 1
+  canRun: 1
   canMove: 1
+  canRoll: 1
   agentRotationSpeed: 10
 --- !u!114 &1092894521891446041
 MonoBehaviour:
@@ -1214,6 +1218,7 @@ MonoBehaviour:
   pickUpItemSFX: {fileID: 0}
   stanceBreakSFX: {fileID: 0}
   restoreSiteOfGraceSFX: {fileID: 0}
+  flaskDrinkSFX: {fileID: 0}
   audioSource: {fileID: 0}
 --- !u!114 &-6051730209635047487
 MonoBehaviour:
@@ -1261,7 +1266,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9777077a2a37b924d8f930a0062936ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeQuickSlotItemFX: {fileID: 0}
   activeSpellWarmUpFX: {fileID: 0}
+  activeProjectileFX: {fileID: 0}
   bloodSplatterVFX: {fileID: 0}
   criticalBloodSplatterVFX: {fileID: 0}
   staticEffects: []
@@ -1546,7 +1553,7 @@ MonoBehaviour:
     m_InternalValue: 300
   maxHealth:
     m_InternalValue: 300
-  currentFocus:
+  currentFocusPoints:
     m_InternalValue: 0
   maxFocus:
     m_InternalValue: 0
@@ -1562,10 +1569,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6773fdbe533779e43906528e59f090ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropItemChance: 50
+  dropItemChance: 70
   lootItems:
   - {fileID: 11400000, guid: fd164a1d6f05bda478dd90018ab02d46, type: 2}
   - {fileID: 11400000, guid: 5127d45e178cc8649b053be9de266c07, type: 2}
+  - {fileID: 11400000, guid: 662a833b9b6fde149b2c7492bf21ab86, type: 2}
+  - {fileID: 11400000, guid: 662a833b9b6fde149b2c7492bf21ab86, type: 2}
+  - {fileID: 11400000, guid: 662a833b9b6fde149b2c7492bf21ab86, type: 2}
+  - {fileID: 11400000, guid: 662a833b9b6fde149b2c7492bf21ab86, type: 2}
 --- !u!1 &2461043163467848839 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3668086056121675338, guid: 0ad932253e8dc8841948afa5d1a0d051,

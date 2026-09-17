@@ -30,9 +30,12 @@ public class FireProjectileAction : WeaponItemAction
                 break;
         }
 
-        // 2. If that projectile == null, return
+        // 2. If that projectile == null, play out of ammo and return
         if (projectileToFire == null)
+        {
+            playerPerformingAction.playerAnimatorManager.PlayerTargetActionAnimation("Out_Of_Ammo_01", true);
             return;
+        }
 
         // 3. If the player is not two handing the weapon, make them two hand it now (Weapon must be two handed to fire projectile)
         if (!playerPerformingAction.playerNetworkManager.isTwoHandingWeapon.Value)
@@ -47,10 +50,10 @@ public class FireProjectileAction : WeaponItemAction
             }
         }
 
+
         // 4.If the player does not have an arrow notched, do so now
         if (!playerPerformingAction.playerNetworkManager.hasArrowNotched.Value)
         {
-            playerPerformingAction.playerNetworkManager.hasArrowNotched.Value = true;
             //bool canIDrawAProjectile;
             if (!CanIFireThisProjectile(playerPerformingAction, projectileToFire))
             {
@@ -58,11 +61,13 @@ public class FireProjectileAction : WeaponItemAction
                 return;
             }
 
-            if (projectileToFire.currentAmmoAmount < 0)
+            if (projectileToFire.currentAmmoAmount <= 0)
             {
                 playerPerformingAction.playerAnimatorManager.PlayerTargetActionAnimation("Out_Of_Ammo_01", true);
                 return;
             }
+
+            playerPerformingAction.playerNetworkManager.hasArrowNotched.Value = true;
 
             playerPerformingAction.playerCombatManager.currentProjectileSlotBeingUsed = projectileSlot;
             playerPerformingAction.playerAnimatorManager.PlayerTargetActionAnimation("Bow_Draw_01", true);

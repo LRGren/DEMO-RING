@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerUIHudManager : MonoBehaviour
 {
@@ -18,6 +19,13 @@ public class PlayerUIHudManager : MonoBehaviour
     [SerializeField] private Image leftWeaponQuickSlotUI;
     [SerializeField] private Image spellQuickSlotUI;
     [SerializeField] private Image quickSlotItemUI;
+
+    [Header("Projectile Slots")]
+    [SerializeField] GameObject projectileSlotsGameobject;
+    [SerializeField] Image mainProjectileQuickSlotUI;
+    [SerializeField] TextMeshProUGUI mainProjectileCount;
+    [SerializeField] Image secondaryProjectileQuickSlotUI;
+    [SerializeField] TextMeshProUGUI secondaryProjectileCount;
 
     [Header("Boss HP Bar")]
     public Transform bossHPBarParent;
@@ -177,6 +185,64 @@ public class PlayerUIHudManager : MonoBehaviour
 
         quickSlotItemUI.sprite = quickSlotItem.itemIcon;
         quickSlotItemUI.enabled = true;
+    }
+
+    public void SetMainProjectileItemQuickSlotIcon(RangedProjectileItem projectileSlotItem)
+    {
+        if (projectileSlotItem == null)
+        {
+            //Debug.Log("null");
+            mainProjectileQuickSlotUI.enabled = false;
+            mainProjectileQuickSlotUI.sprite = null;
+            mainProjectileCount.enabled = false;
+            return;
+        }
+
+        if (projectileSlotItem.itemIcon == null)
+        {
+            //Debug.Log("Main Projectile icon not found for item: " + projectileSlotItem.itemName);
+            mainProjectileQuickSlotUI.enabled = false;
+            mainProjectileQuickSlotUI.sprite = null;
+            mainProjectileCount.enabled = false;
+            return;
+        }
+
+        //Debug.Log("Main Projectile icon found for item: " + projectileSlotItem.itemName);
+        mainProjectileQuickSlotUI.sprite = projectileSlotItem.itemIcon;
+        mainProjectileQuickSlotUI.enabled = true;
+        mainProjectileCount.text = projectileSlotItem.currentAmmoAmount.ToString();
+        mainProjectileCount.enabled = true;
+    }
+
+    public void SetSecondaryProjectileItemQuickSlotIcon(RangedProjectileItem projectileSlotItem)
+    {
+        if (projectileSlotItem == null)
+        {
+            //Debug.Log("Quick Slot Item not found in database for ID: " + quickSlotItemID);
+            secondaryProjectileQuickSlotUI.enabled = false;
+            secondaryProjectileQuickSlotUI.sprite = null;
+            secondaryProjectileCount.enabled = false;
+            return;
+        }
+
+        if (projectileSlotItem.itemIcon == null)
+        {
+            //Debug.Log("Quick Slot Item icon not found for item: " + quickSlotItem.itemName);
+            secondaryProjectileQuickSlotUI.enabled = false;
+            secondaryProjectileQuickSlotUI.sprite = null;
+            secondaryProjectileCount.enabled = false;
+            return;
+        }
+
+        secondaryProjectileQuickSlotUI.sprite = projectileSlotItem.itemIcon;
+        secondaryProjectileQuickSlotUI.enabled = true;
+        secondaryProjectileCount.text = projectileSlotItem.currentAmmoAmount.ToString();
+        secondaryProjectileCount.enabled = true;
+    }
+
+    public void ToggleProjectileSlotsGameobject(bool status)
+    {
+        projectileSlotsGameobject.SetActive(status);
     }
 
 }
