@@ -325,6 +325,8 @@ public class WorldSaveGameManager : MonoBehaviour
 
     public void LoadWorldScene(int buildIndex)
     {
+        PlayerUIManager.instance.playerUILoadingScreenManager.ActivateLoadingScreen();
+
         string sceneName = SceneUtility.GetScenePathByBuildIndex(buildIndex);
 
         // 加载完成后再传送角色，否则地面碰撞体还没生成会掉出地图

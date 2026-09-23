@@ -19,8 +19,9 @@ MonoBehaviour:
   itemModel: {fileID: 2029022393539099391, guid: 37b87c67c8fff5f43a40310bed828348,
     type: 3}
   useItemAnimation: Item_Flask_Drink_Start_01
+  isConsumable: 1
   isHealthFlask: 1
-  healthFlaskAmount: 50
+  healthFlaskAmount: 250
   manaFlaskAmount: 0
   emptyFlaskPrefab: {fileID: 2029022393539099391, guid: 42791ea7ce4524e41973f66db47b3cb4,
     type: 3}

@@ -2405,7 +2405,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f7919885e9d7b4d8a99e57b18ce505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeQuickSlotItemFX: {fileID: 0}
   activeSpellWarmUpFX: {fileID: 0}
+  activeProjectileFX: {fileID: 0}
   bloodSplatterVFX: {fileID: 0}
   criticalBloodSplatterVFX: {fileID: 0}
   staticEffects: []
@@ -2436,7 +2438,7 @@ MonoBehaviour:
   gravityForce: -40
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 9
   groundCheckSphereRadius: 0.3
   yVelocity: {x: 0, y: 0, z: 0}
   groundedYVelocity: -20
@@ -2444,7 +2446,9 @@ MonoBehaviour:
   isRolling: 0
   isGrounded: 0
   canRotate: 1
+  canRun: 1
   canMove: 1
+  canRoll: 1
   agentRotationSpeed: 15
 --- !u!114 &7190445280894901129
 MonoBehaviour:
@@ -2714,7 +2718,7 @@ MonoBehaviour:
     m_InternalValue: 1600
   maxHealth:
     m_InternalValue: 1600
-  currentFocus:
+  currentFocusPoints:
     m_InternalValue: 0
   maxFocus:
     m_InternalValue: 0
@@ -2868,6 +2872,7 @@ MonoBehaviour:
   pickUpItemSFX: {fileID: 0}
   stanceBreakSFX: {fileID: 0}
   restoreSiteOfGraceSFX: {fileID: 0}
+  flaskDrinkSFX: {fileID: 0}
   audioSource: {fileID: 0}
   wooshes:
   - {fileID: 8300000, guid: 4e7a9f408abdba8459fdccbeaea95215, type: 3}

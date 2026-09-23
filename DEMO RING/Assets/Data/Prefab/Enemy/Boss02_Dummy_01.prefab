@@ -8990,6 +8990,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f7919885e9d7b4d8a99e57b18ce505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeQuickSlotItemFX: {fileID: 0}
+  activeSpellWarmUpFX: {fileID: 0}
+  activeProjectileFX: {fileID: 0}
   bloodSplatterVFX: {fileID: 0}
   criticalBloodSplatterVFX: {fileID: 0}
   staticEffects: []
@@ -9020,7 +9023,7 @@ MonoBehaviour:
   gravityForce: -40
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 8
   groundCheckSphereRadius: 0.3
   yVelocity: {x: 0, y: 0, z: 0}
   groundedYVelocity: -20
@@ -9028,7 +9031,9 @@ MonoBehaviour:
   isRolling: 0
   isGrounded: 0
   canRotate: 1
+  canRun: 1
   canMove: 1
+  canRoll: 1
   agentRotationSpeed: 15
 --- !u!114 &6107244034645661128
 MonoBehaviour:
@@ -9282,6 +9287,8 @@ MonoBehaviour:
     m_InternalValue: 0
   endurance:
     m_InternalValue: 1
+  mind:
+    m_InternalValue: 1
   vitality:
     m_InternalValue: 1
   strength:
@@ -9296,6 +9303,10 @@ MonoBehaviour:
     m_InternalValue: 1000
   maxHealth:
     m_InternalValue: 1000
+  currentFocusPoints:
+    m_InternalValue: 0
+  maxFocus:
+    m_InternalValue: 0
 --- !u!114 &7537269846766506621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9315,6 +9326,7 @@ MonoBehaviour:
   lockOnTransform: {fileID: 2901298811182511482}
   canPerformRollingAttack: 0
   canPerformBackstepAttack: 0
+  canPerformJumpAttack: 0
   canBlock: 1
   canBeBackstabbed: 1
   riposteReceiverTransform: {fileID: 2295708699609609093}
@@ -9379,6 +9391,7 @@ MonoBehaviour:
   aiCharacterCombatManager: {fileID: 0}
   aiCharacterNetworkManager: {fileID: 0}
   aiCharacterLocomotionManager: {fileID: 0}
+  aiCharacterInventoryManager: {fileID: 0}
   currentState: {fileID: 0}
   navMeshAgent: {fileID: 8365203840271491736}
   idle: {fileID: 11400000, guid: 3950407832589bd48b426df82db3ef51, type: 2}
@@ -9442,6 +9455,7 @@ MonoBehaviour:
   pickUpItemSFX: {fileID: 0}
   stanceBreakSFX: {fileID: 0}
   restoreSiteOfGraceSFX: {fileID: 0}
+  flaskDrinkSFX: {fileID: 0}
   audioSource: {fileID: 0}
   wooshes:
   - {fileID: 8300000, guid: 4e7a9f408abdba8459fdccbeaea95215, type: 3}

@@ -13,8 +13,8 @@ public class PlayerNetworkManager : CharacterNetworkManager
     public NetworkVariable<FixedString64Bytes> characterName = new NetworkVariable<FixedString64Bytes>("sereinjians", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("Flasks")]
-    public NetworkVariable<int> remainingHealthFlasks = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    public NetworkVariable<int> remainingManaFlasks = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> remainingHealthFlasks = new NetworkVariable<int>(3, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> remainingManaFlasks = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isChugging = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("Equipment")]
@@ -237,10 +237,16 @@ public class PlayerNetworkManager : CharacterNetworkManager
             return;
         }
 
-        RangedProjectileItem newProjectile = Instantiate(WorldItemDatabase.instance.GetProjectileByID(newProjectileID));
+        RangedProjectileItem projectileData = WorldItemDatabase.instance.GetProjectileByID(newProjectileID);
 
-        if (newProjectile == null)
+        if (projectileData == null)
             return;
+
+        RangedProjectileItem newProjectile = Instantiate(projectileData);
+        RangedProjectileItem currentProjectile = player.playerInventoryManager.mainProjectile;
+
+        if (currentProjectile != null && currentProjectile.itemID == newProjectileID)
+            newProjectile.SetAmmotAmount(currentProjectile.currentAmmoAmount);
 
         player.playerInventoryManager.mainProjectile = newProjectile;
 
@@ -260,10 +266,16 @@ public class PlayerNetworkManager : CharacterNetworkManager
             return;
         }
 
-        RangedProjectileItem newProjectile = Instantiate(WorldItemDatabase.instance.GetProjectileByID(newProjectileID));
+        RangedProjectileItem projectileData = WorldItemDatabase.instance.GetProjectileByID(newProjectileID);
 
-        if (newProjectile == null)
+        if (projectileData == null)
             return;
+
+        RangedProjectileItem newProjectile = Instantiate(projectileData);
+        RangedProjectileItem currentProjectile = player.playerInventoryManager.secondaryProjectile;
+
+        if (currentProjectile != null && currentProjectile.itemID == newProjectileID)
+            newProjectile.SetAmmotAmount(currentProjectile.currentAmmoAmount);
 
         player.playerInventoryManager.secondaryProjectile = newProjectile;
 
@@ -622,7 +634,6 @@ public class PlayerNetworkManager : CharacterNetworkManager
     [ClientRpc]
     private void NotifyTheClientsOfQuickSlotItemActionClientRpc(ulong clientID, int quickSlotItemID)
     {
-        //如果不是本地玩家执行的动作，那么其他玩家需要在客户端执行对应的动作
         if (clientID != NetworkManager.Singleton.LocalClientId)
         {
             QuickSlotItem quickSlotItem = WorldItemDatabase.instance.GetQuickSlotItemByID(quickSlotItemID);
@@ -630,6 +641,25 @@ public class PlayerNetworkManager : CharacterNetworkManager
             if (quickSlotItem != null)
                 quickSlotItem.AttemptToUseItem(player);
         }
+    }
+
+    [ServerRpc]
+    public void NotifyTheServerOfUnhideWeaponsServerRpc()
+    {
+        if (IsServer)
+        {
+            NotifyTheClientsOfUnhideWeaponsClientRpc();
+        }
+    }
+
+    [ClientRpc]
+    private void NotifyTheClientsOfUnhideWeaponsClientRpc()
+    {
+        if (player.playerEquipmentManager.rightWeaponModel != null)
+            player.playerEquipmentManager.rightWeaponModel.SetActive(true);
+
+        if (player.playerEquipmentManager.leftWeaponModel != null)
+            player.playerEquipmentManager.leftWeaponModel.SetActive(true);
     }
 
 }

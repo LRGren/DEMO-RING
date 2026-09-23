@@ -12,7 +12,7 @@ public class UI_Character_HP_Bar : UI_StatBar
     [SerializeField] private bool displayCharacterName = false;
     [SerializeField] private float defaultTimeBeforeBarHides = 3f;
     [SerializeField] private float hideTimer = 0f;
-    [SerializeField] private float currentDamageTaken = 0f;
+    public float currentDamageTaken = 0f;
     [SerializeField] private TextMeshProUGUI characterNameText;
     [SerializeField] private TextMeshProUGUI characterDamageText;
     [HideInInspector] public float oldHealthValue = 0f;

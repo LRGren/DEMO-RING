@@ -10,7 +10,7 @@ public class CharacterLocomotionManager : MonoBehaviour
 
     [Header("Ground Check & Jump")]
     [SerializeField] protected float gravityForce = -40f;
-    [SerializeField] LayerMask groundLayer;
+    [SerializeField] LayerMask groundLayer = 3;
     [SerializeField] float groundCheckSphereRadius = 0.3f;
     [SerializeField] protected Vector3 yVelocity;//用来观测是上升还是下降
     [SerializeField] protected float groundedYVelocity = -20;

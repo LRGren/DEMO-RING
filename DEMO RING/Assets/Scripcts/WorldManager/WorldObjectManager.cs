@@ -14,6 +14,9 @@ public class WorldObjectManager : MonoBehaviour
     [Header("Fog Walls")]
     public List<FogWallInteractable> fogWalls;
 
+    [Header("Site Of Grace")]
+    public List<SiteOfGraceInteractable> siteOfGraces;
+
     private void Awake()
     {
         if (instance == null)
@@ -47,4 +50,21 @@ public class WorldObjectManager : MonoBehaviour
             fogWalls.Remove(fogWall);
         }
     }
+
+    public void AddSiteOfGraceToList(SiteOfGraceInteractable siteOfGrace)
+    {
+        if (!siteOfGraces.Contains(siteOfGrace))
+        {
+            siteOfGraces.Add(siteOfGrace);
+        }
+    }
+
+    public void RemoveSiteOfGraceFromList(SiteOfGraceInteractable siteOfGrace)
+    {
+        if (siteOfGraces.Contains(siteOfGrace))
+        {
+            siteOfGraces.Remove(siteOfGrace);
+        }
+    }
+
 }

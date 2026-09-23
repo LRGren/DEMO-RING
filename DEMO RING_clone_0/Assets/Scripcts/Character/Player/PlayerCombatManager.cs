@@ -374,6 +374,37 @@ public class PlayerCombatManager : CharacterCombatManager
 
         player.playerInventoryManager.currentQuickSlotItem.SuccessfullyUsedItem(player);
     }
+    public void CancelUsingItem()
+    {
+        if (!isUsingItem && !player.playerNetworkManager.isChugging.Value)
+            return;
+
+        isUsingItem = false;
+
+        if (player.IsOwner && player.playerNetworkManager.isChugging.Value)
+        {
+            player.playerNetworkManager.isChugging.Value = false;
+        }
+
+        // 喝药动作可能在上半身层，直接切回 Upper Body Empty，确保动画不会继续播放
+        player.animator.SetBool("isChuggingFlask", false);
+
+        int upperBodyLayer = player.animator.GetLayerIndex("Upper Body Override");
+        if (upperBodyLayer >= 0)
+        {
+            player.animator.CrossFade("Upper Body Empty", 0.1f, upperBodyLayer, 0f);
+        }
+
+        if (player.playerEffectsManager.activeQuickSlotItemFX != null)
+        {
+            Destroy(player.playerEffectsManager.activeQuickSlotItemFX.gameObject);
+            player.playerEffectsManager.activeQuickSlotItemFX = null;
+        }
+
+        player.playerEquipmentManager.UnhideWeaponModels();
+        player.playerLocomotionManager.canRun = true;
+        player.playerLocomotionManager.canRoll = true;
+    }
 
     // Ash of War
     public WeaponItem SelectWeaponToPerformAshOfWar()
@@ -412,5 +443,7 @@ public class PlayerCombatManager : CharacterCombatManager
             player.playerEquipmentManager.leftHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
         }
     }
+
+
 
 }

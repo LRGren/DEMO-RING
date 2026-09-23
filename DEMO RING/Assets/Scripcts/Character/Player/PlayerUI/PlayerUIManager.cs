@@ -15,6 +15,8 @@ public class PlayerUIManager : MonoBehaviour
     [HideInInspector] public PlayerUIPopUpManager playerUIPopUpManager;
     [HideInInspector] public PlayerUICharacterMenuManager playerUICharacterMenuManager;
     [HideInInspector] public PlayerUIEquipmentManager playerUIEquipmentManager;
+    [HideInInspector] public PlayerUISiteOfGraceManager playerUISiteOfGraceManager;
+    [HideInInspector] public PlayerUILoadingScreenManager playerUILoadingScreenManager;
 
     [Header("UI Flags")]
     public bool menuWindowIsOpen = false;
@@ -35,6 +37,8 @@ public class PlayerUIManager : MonoBehaviour
         playerUIPopUpManager = GetComponentInChildren<PlayerUIPopUpManager>();
         playerUICharacterMenuManager = GetComponentInChildren<PlayerUICharacterMenuManager>();
         playerUIEquipmentManager = GetComponentInChildren<PlayerUIEquipmentManager>();
+        playerUISiteOfGraceManager = GetComponentInChildren<PlayerUISiteOfGraceManager>();
+        playerUILoadingScreenManager = GetComponentInChildren<PlayerUILoadingScreenManager>();
     }
 
     private void Start()
@@ -60,6 +64,7 @@ public class PlayerUIManager : MonoBehaviour
         {
             playerUICharacterMenuManager.CloseCharacterMenu();
             playerUIEquipmentManager.CloseEquipmentMenu();
+            playerUISiteOfGraceManager.CloseMainMenu();
         }
     }
 

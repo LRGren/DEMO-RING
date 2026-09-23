@@ -23,6 +23,9 @@ public class AICharacterInventoryManager : CharacterInventoryManager
         if (!aiCharacterManager.IsOwner)
             return;
 
+        if (lootItems == null || lootItems.Count == 0)
+            return;
+
         int randomChance = Random.Range(0, 100);
         if (randomChance > dropItemChance)
             return;

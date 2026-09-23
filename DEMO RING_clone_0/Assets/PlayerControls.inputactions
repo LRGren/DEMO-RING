@@ -268,6 +268,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Switch Quick Slots Item",
+                    "type": "Button",
+                    "id": "6d2a9997-2583-4949-b1ff-6bdac4720b35",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Seek Left Lock On Target",
                     "type": "Button",
                     "id": "9758e58d-d17a-4887-b14d-ceb457cdf238",
@@ -449,6 +458,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Switch Left Weapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b203f53c-08e7-408a-a978-d075ab13befa",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Switch Quick Slots Item",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

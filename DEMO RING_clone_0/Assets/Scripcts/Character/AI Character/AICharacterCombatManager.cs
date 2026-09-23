@@ -139,11 +139,11 @@ public class AICharacterCombatManager : CharacterCombatManager
 
                 if (angleToPotentialTarget >= minimumFOV && angleToPotentialTarget <= maximumFOV)
                 {
-                    if (WorldUtilityManager.instance.IsTargetBlockedByEnvironment(aiCharacter.characterCombatManager.lockOnTransform.position,
-                        targetCharacter.transform.position))
+                    if (WorldUtilityManager.instance.IsTargetBlockedByEnvironment(aiCharacter.characterCombatManager.lockOnTransform.position, targetCharacter.characterCombatManager.lockOnTransform.position))
                     {
                         //Debug.DrawLine(aiCharacter.characterCombatManager.lockOnTransform.position, targetCharacter.transform.position, Color.red, 0.1f);
                         //Debug.Log("Blocked by environment");
+                        Debug.Log("Target Blocked by Environment: " + targetCharacter.name);
                     }
                     else
                     {
@@ -155,10 +155,7 @@ public class AICharacterCombatManager : CharacterCombatManager
                         if (enablePivot)
                             PivotTowardsTarget(aiCharacter);
 
-                        Debug.Log($"{aiCharacter.name} -> {targetCharacter.name}, " +
-          $"aiGroup={aiCharacter.characterGroup}, " +
-          $"targetGroup={targetCharacter.characterGroup}, " +
-          $"canDamage={WorldUtilityManager.instance.CanIDamageThisTarget(aiCharacter.characterGroup, targetCharacter.characterGroup)}");
+                        Debug.Log("Target Found: " + targetCharacter.name);
                     }
                 }
             }

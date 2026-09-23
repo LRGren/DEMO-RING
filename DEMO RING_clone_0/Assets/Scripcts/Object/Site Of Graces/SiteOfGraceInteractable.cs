@@ -6,7 +6,7 @@ using Unity.Netcode;
 public class SiteOfGraceInteractable : Interactable
 {
     [Header("Site Of Grace Info")]
-    [SerializeField] private int siteOfGraceID;
+    public int siteOfGraceID;
     public NetworkVariable<bool> isActivated = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("Particle Effects")]
@@ -16,6 +16,9 @@ public class SiteOfGraceInteractable : Interactable
     [Header("Site Of Grace Text")]
     [SerializeField] private string unactivatedSiteOfGraceText = "Press Y To Restore The Site Of Grace";
     [SerializeField] private string activatedSiteOfGraceText = "Press Y To Rest At The Site Of Grace";
+
+    [Header("Teleport Position")]
+    public Transform teleportPosition;
 
     protected override void Start()
     {
@@ -55,6 +58,7 @@ public class SiteOfGraceInteractable : Interactable
         }
 
         isActivated.OnValueChanged += OnIsActivatedChanged;
+        WorldObjectManager.instance.AddSiteOfGraceToList(this);
     }
 
     public override void OnNetworkDespawn()
@@ -62,6 +66,7 @@ public class SiteOfGraceInteractable : Interactable
         base.OnNetworkDespawn();
 
         isActivated.OnValueChanged -= OnIsActivatedChanged;
+        WorldObjectManager.instance.RemoveSiteOfGraceFromList(this);
     }
 
     private void OnIsActivatedChanged(bool previousValue, bool newValue)
@@ -113,7 +118,10 @@ public class SiteOfGraceInteractable : Interactable
 
         interactableCollider.enabled = true;
 
-        WorldAIManager.instance.RestAllCharacters();
+        // TODO: 当这个站点被激活时，重置所有怪物和敌人，但是如果当人物太多的时候，可能会导致性能问题，所以需要优化
+        WorldAIManager.instance.ResetAllCharacters();
+
+        PlayerUIManager.instance.playerUISiteOfGraceManager.OpenMainMenu();
     }
 
     private IEnumerator WaitForAnimationToFinish(PlayerManager player)

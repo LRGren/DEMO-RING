@@ -16,7 +16,6 @@ public class PlayerInputManager : MonoBehaviour
 
     //从玩家输入中获取数据
     //按照数据移动
-
     private PlayerControls playerControls;
 
     [Header("Camera Movement Inputs")]
@@ -62,6 +61,7 @@ public class PlayerInputManager : MonoBehaviour
     [Header("D-pad Inputs")]
     [SerializeField] private bool switch_Right_Weapons_Input = false;
     [SerializeField] private bool switch_Leftt_Weapons_Input = false;
+    [SerializeField] private bool switch_Quick_Slots_Items_Input = false;
 
     [Header("Qued Inputs")]
     private bool que_Input_Is_Active = false;
@@ -173,6 +173,7 @@ public class PlayerInputManager : MonoBehaviour
             //D-Pad
             playerControls.PlayerActions.SwitchRightWeapon.performed += i => switch_Right_Weapons_Input = true;
             playerControls.PlayerActions.SwitchLeftWeapon.performed += i => switch_Leftt_Weapons_Input = true;
+            playerControls.PlayerActions.SwitchQuickSlotsItem.performed += i => switch_Quick_Slots_Items_Input = true;
 
             //Que Inputs
             playerControls.PlayerActions.QueRB.performed += i => QueInput(ref que_RB_Input);
@@ -240,6 +241,7 @@ public class PlayerInputManager : MonoBehaviour
 
         HandleSwitchRightWeaponsInput();
         HandleSwitchLeftWeaponsInput();
+        HandleSwitchQuickSlotsItemsInput();
 
         HandleInteractionInput();
 
@@ -521,6 +523,9 @@ public class PlayerInputManager : MonoBehaviour
         {
             jump_Input = false;
 
+            if (player.playerCombatManager.isUsingItem)
+                return;
+
             //有UI，不反应
             if (PlayerUIManager.instance.menuWindowIsOpen)
             {
@@ -545,6 +550,9 @@ public class PlayerInputManager : MonoBehaviour
         {
             RB_Input = false;
 
+            if (player.playerCombatManager.isUsingItem)
+                return;
+
             //如果有UI，不反应
             if (PlayerUIManager.instance.menuWindowIsOpen)
             {
@@ -560,6 +568,8 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleHoldRBInput()
     {
+        if (player.playerCombatManager.isUsingItem)
+            return;
         player.playerNetworkManager.isChargingRightSpell.Value = hold_RB_Input;
         player.playerNetworkManager.isHoldingArrow.Value = hold_RB_Input;
     }
@@ -575,6 +585,9 @@ public class PlayerInputManager : MonoBehaviour
         if (LB_Shield_Input)
         {
             LB_Shield_Input = false;
+
+            if (player.playerCombatManager.isUsingItem)
+                return;
 
             if (PlayerUIManager.instance.menuWindowIsOpen)
             {
@@ -597,6 +610,8 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleHoldLBInput()
     {
+        if (player.playerCombatManager.isUsingItem)
+            return;
         player.playerNetworkManager.isChargingLeftSpell.Value = hold_LB_Input;
     }
 
@@ -612,6 +627,9 @@ public class PlayerInputManager : MonoBehaviour
         {
             RT_Input = false;
             //如果有UI，不反应
+
+            if (player.playerCombatManager.isUsingItem)
+                return;
 
             if (PlayerUIManager.instance.menuWindowIsOpen)
             {
@@ -631,6 +649,12 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (player.playerNetworkManager.isUsingRightHand.Value)
             {
+                if (player.playerCombatManager.isUsingItem)
+                {
+                    player.playerNetworkManager.isChargingAttack.Value = false;
+                    return;
+                }
+
                 player.playerNetworkManager.isChargingAttack.Value = hold_RT_Input;
             }
         }
@@ -642,6 +666,9 @@ public class PlayerInputManager : MonoBehaviour
         {
             LT_Input = false;
             //如果有UI，不反应
+
+            if (player.playerCombatManager.isUsingItem)
+                return;
 
             if (PlayerUIManager.instance.menuWindowIsOpen)
             {
@@ -663,6 +690,9 @@ public class PlayerInputManager : MonoBehaviour
         {
             switch_Right_Weapons_Input = false;
 
+            if (player.playerCombatManager.isUsingItem)
+                return;
+
             if (PlayerUIManager.instance.menuWindowIsOpen)
             {
                 return;
@@ -682,6 +712,9 @@ public class PlayerInputManager : MonoBehaviour
         {
             switch_Leftt_Weapons_Input = false;
 
+            if (player.playerCombatManager.isUsingItem)
+                return;
+
             if (PlayerUIManager.instance.menuWindowIsOpen)
             {
                 return;
@@ -696,11 +729,32 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    private void HandleSwitchQuickSlotsItemsInput()
+    {
+        if (switch_Quick_Slots_Items_Input)
+        {
+            switch_Quick_Slots_Items_Input = false;
+
+            if (player.playerCombatManager.isUsingItem)
+                return;
+
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                return;
+            }
+
+            player.playerEquipmentManager.SwitchQuickSlotsItems();
+        }
+    }
+
     private void HandleInteractionInput()
     {
         if (interaction_Input)
         {
             interaction_Input = false;
+
+            if (player.playerCombatManager.isUsingItem)
+                return;
 
             if (PlayerUIManager.instance.menuWindowIsOpen)
             {
@@ -782,6 +836,9 @@ public class PlayerInputManager : MonoBehaviour
         {
             openCharacterMenuInput = false;
 
+            if (player.playerCombatManager.isUsingItem)
+                return;
+
             if (PlayerUIManager.instance.menuWindowIsOpen)
             {
                 //已打开 → 关闭
@@ -795,4 +852,5 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
     }
+
 }

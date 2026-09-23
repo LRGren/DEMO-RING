@@ -10,6 +10,9 @@ public class QuickSlotItem : Item
     [Header("Animation")]
     public string useItemAnimation;
 
+    [Header("Item Type")]
+    public bool isConsumable;
+
     public virtual void AttemptToUseItem(PlayerManager player)
     {
         if (!CanIUseThisItem(player))
@@ -20,10 +23,22 @@ public class QuickSlotItem : Item
 
     public virtual void SuccessfullyUsedItem(PlayerManager player)
     {
-
     }
     public virtual bool CanIUseThisItem(PlayerManager player)
     {
         return true;
+    }
+
+    public virtual int GetAmountOfItem(PlayerManager player)
+    {
+        return 0;
+    }
+
+    public virtual void SetAmountOfItem(PlayerManager player, int amount)
+    {
+        if (!player.IsOwner)
+            return;
+        if (!isConsumable)
+            return;
     }
 }

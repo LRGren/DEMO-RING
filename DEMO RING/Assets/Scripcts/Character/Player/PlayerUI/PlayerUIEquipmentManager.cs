@@ -11,22 +11,31 @@ public class PlayerUIEquipmentManager : MonoBehaviour
     public GameObject menu;
 
     [Header("Equipment Slots")]
+    [Header("Right Hand Weapon Slots")]
     [SerializeField] Image rightWeaponSlot01;
     [SerializeField] Image rightWeaponSlot02;
     [SerializeField] Image rightWeaponSlot03;
+
+    [Header("Left Hand Weapon Slots")]
     [SerializeField] Image leftWeaponSlot01;
     [SerializeField] Image leftWeaponSlot02;
     [SerializeField] Image leftWeaponSlot03;
 
+    [Header("Armor Slots")]
     [SerializeField] Image headSlot;
     [SerializeField] Image bodySlot;
     [SerializeField] Image legsSlot;
     [SerializeField] Image handSlot;
 
+    [Header("Projectile Slots")]
     [SerializeField] Image MainProjectile;
     [SerializeField] TextMeshProUGUI MainProjectileCount;
     [SerializeField] Image SecondaryProjectile;
     [SerializeField] TextMeshProUGUI SecondaryProjectileCount;
+
+    [Header("Quick Slots")]
+    [SerializeField] Image[] quickSlots;
+    [SerializeField] TextMeshProUGUI[] quickSlotCounts;
 
     [Header("Equipment Inventory Slots")]
     public GameObject equipmentInventoryWindow;
@@ -69,6 +78,14 @@ public class PlayerUIEquipmentManager : MonoBehaviour
         SecondaryProjectileCount.text = count.ToString();
     }
 
+    public void SetQuickSlotCountText(EquipmentType equipmentType, int count, bool status = true)
+    {
+        int slotIndex = (int)equipmentType - (int)EquipmentType.QuickSlot01;
+
+        quickSlotCounts[slotIndex].enabled = status;
+        quickSlotCounts[slotIndex].text = count.ToString();
+    }
+
     public void SelectLastSelectedEquipmentSlot()
     {
         Button buttonToSelect = null;
@@ -109,6 +126,19 @@ public class PlayerUIEquipmentManager : MonoBehaviour
                 break;
             case EquipmentType.SecondaryProjectile:
                 buttonToSelect = SecondaryProjectile.GetComponentInParent<Button>();
+                break;
+            case EquipmentType.QuickSlot01:
+            case EquipmentType.QuickSlot02:
+            case EquipmentType.QuickSlot03:
+            case EquipmentType.QuickSlot04:
+            case EquipmentType.QuickSlot05:
+            case EquipmentType.QuickSlot06:
+            case EquipmentType.QuickSlot07:
+            case EquipmentType.QuickSlot08:
+            case EquipmentType.QuickSlot09:
+            case EquipmentType.QuickSlot10:
+                int quickSlotIndex = (int)currentSelectedEquipmentType - (int)EquipmentType.QuickSlot01;
+                buttonToSelect = quickSlots[quickSlotIndex].GetComponentInParent<Button>();
                 break;
         }
 
@@ -256,10 +286,13 @@ public class PlayerUIEquipmentManager : MonoBehaviour
         {
             MainProjectile.enabled = mainProjectile.itemIcon != null;
             MainProjectile.sprite = mainProjectile.itemIcon;
+            SetMainProjectileCountText(mainProjectile.currentAmmoAmount, mainProjectile.itemIcon != null);
         }
         else
         {
             MainProjectile.enabled = false;
+            MainProjectile.sprite = null;
+            SetMainProjectileCountText(0, false);
         }
 
         RangedProjectileItem secondaryProjectile = player.playerInventoryManager.secondaryProjectile;
@@ -267,10 +300,34 @@ public class PlayerUIEquipmentManager : MonoBehaviour
         {
             SecondaryProjectile.enabled = secondaryProjectile.itemIcon != null;
             SecondaryProjectile.sprite = secondaryProjectile.itemIcon;
+            SetSecondaryProjectileCountText(secondaryProjectile.currentAmmoAmount, secondaryProjectile.itemIcon != null);
         }
         else
         {
             SecondaryProjectile.enabled = false;
+            SecondaryProjectile.sprite = null;
+            SetSecondaryProjectileCountText(0, false);
+        }
+
+        foreach (EquipmentType equipmentType in System.Enum.GetValues(typeof(EquipmentType)))
+        {
+            if (equipmentType >= EquipmentType.QuickSlot01 && equipmentType <= EquipmentType.QuickSlot10)
+            {
+                int slotIndex = (int)equipmentType - (int)EquipmentType.QuickSlot01;
+                QuickSlotItem quickSlotItem = player.playerInventoryManager.quickSlotItemInventory[slotIndex];
+
+                if (quickSlotItem != null)
+                {
+                    quickSlots[slotIndex].enabled = quickSlotItem.itemIcon != null;
+                    quickSlots[slotIndex].sprite = quickSlotItem.itemIcon;
+                    SetQuickSlotCountText(equipmentType, quickSlotItem.GetAmountOfItem(player), true);
+                }
+                else
+                {
+                    quickSlots[slotIndex].enabled = false;
+                    SetQuickSlotCountText(equipmentType, 0, false);
+                }
+            }
         }
     }
 
@@ -311,6 +368,18 @@ public class PlayerUIEquipmentManager : MonoBehaviour
             case EquipmentType.MainProjectile:
             case EquipmentType.SecondaryProjectile:
                 LoadProjectileEquipmentInventorySlots();
+                break;
+            case EquipmentType.QuickSlot01:
+            case EquipmentType.QuickSlot02:
+            case EquipmentType.QuickSlot03:
+            case EquipmentType.QuickSlot04:
+            case EquipmentType.QuickSlot05:
+            case EquipmentType.QuickSlot06:
+            case EquipmentType.QuickSlot07:
+            case EquipmentType.QuickSlot08:
+            case EquipmentType.QuickSlot09:
+            case EquipmentType.QuickSlot10:
+                LoadQuickSlotInventorySlots();
                 break;
             default:
                 Debug.LogWarning("Unhandled equipment type: " + currentSelectedEquipmentType);
@@ -580,6 +649,51 @@ public class PlayerUIEquipmentManager : MonoBehaviour
 
     }
 
+
+    public void LoadQuickSlotInventorySlots()
+    {
+        ClearEquipmentInventoryWindow();
+
+        PlayerManager player = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
+
+        List<QuickSlotItem> quickSlotsInventory = new List<QuickSlotItem>();
+
+        foreach (Item item in player.playerInventoryManager.characterInventory)
+        {
+            QuickSlotItem quickSlotsItem = item as QuickSlotItem;
+
+
+            if (quickSlotsItem != null)
+            {
+                quickSlotsInventory.Add(quickSlotsItem);
+            }
+        }
+
+        if (quickSlotsInventory.Count <= 0)
+        {
+            RefreshMenu();
+            return;
+        }
+
+        bool hasFirstSlotBeenSelected = false;
+
+        foreach (QuickSlotItem quickSlotsItem in quickSlotsInventory)
+        {
+            GameObject slot = Instantiate(equipmentInventorySlotPrefab, equipmentInventoryContentWindow);
+            UI_EquipmentInventorySlot inventorySlot = slot.GetComponent<UI_EquipmentInventorySlot>();
+            inventorySlot.AddItem(quickSlotsItem);
+
+            if (!hasFirstSlotBeenSelected)
+            {
+                Button button = slot.GetComponent<Button>();
+                button.Select();
+                button.OnSelect(null);
+
+                hasFirstSlotBeenSelected = true;
+            }
+        }
+    }
+
     public void SelectEquipmentSlot(int slotIndex)
     {
         currentSelectedEquipmentType = (EquipmentType)slotIndex;
@@ -751,6 +865,33 @@ public class PlayerUIEquipmentManager : MonoBehaviour
                 }
                 SetSecondaryProjectileCountText(0, false);
                 player.playerEquipmentManager.LoadSecondaryProjectileEquipment(null);
+                break;
+            case EquipmentType.QuickSlot01:
+            case EquipmentType.QuickSlot02:
+            case EquipmentType.QuickSlot03:
+            case EquipmentType.QuickSlot04:
+            case EquipmentType.QuickSlot05:
+            case EquipmentType.QuickSlot06:
+            case EquipmentType.QuickSlot07:
+            case EquipmentType.QuickSlot08:
+            case EquipmentType.QuickSlot09:
+            case EquipmentType.QuickSlot10:
+                int quickSlotIndex = (int)currentSelectedEquipmentType - (int)EquipmentType.QuickSlot01;
+                QuickSlotItem unequippedQuickSlotItem = player.playerInventoryManager.quickSlotItemInventory[quickSlotIndex];
+                if (unequippedQuickSlotItem != null)
+                {
+                    player.playerInventoryManager.quickSlotItemInventory[quickSlotIndex] = null;
+
+                    player.playerInventoryManager.AddItemToInventory(unequippedQuickSlotItem);
+                }
+
+                SetQuickSlotCountText(currentSelectedEquipmentType, 0, false);
+
+                if (player.playerInventoryManager.currentQuickSlotItemIndex == quickSlotIndex)
+                {
+                    player.playerNetworkManager.currentQuickSlotItemID.Value = -1;
+                }
+                player.playerInventoryManager.SetItemInQuickSlot(null, quickSlotIndex);
                 break;
         }
 

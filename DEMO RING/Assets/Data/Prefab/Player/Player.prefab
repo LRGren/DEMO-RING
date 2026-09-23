@@ -56789,8 +56789,8 @@ GameObject:
   - component: {fileID: 1038852241200942007}
   - component: {fileID: 5032858769273185238}
   - component: {fileID: 8919372214322704883}
+  - component: {fileID: 3119115024965186299}
   - component: {fileID: 5431566457522526622}
-  - component: {fileID: -3884643468844033294}
   - component: {fileID: 6709915041529701715}
   - component: {fileID: 4094993497867899534}
   - component: {fileID: 2031708461828761784}
@@ -56863,7 +56863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2978010494
+  GlobalObjectIdHash: 2685673625
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -56872,45 +56872,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &5431566457522526622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7303514040355241776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a5a0b5a08aea23409ca07caf16b83be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDead:
-    m_InternalValue: 0
-  characterController: {fileID: 0}
-  characterNetworkManager: {fileID: 0}
-  animator: {fileID: 0}
-  characterEffectsManager: {fileID: 0}
-  characterAnimatorManager: {fileID: 0}
-  characterStatsManager: {fileID: 0}
-  characterCombatManager: {fileID: 0}
-  characterSoundFXManager: {fileID: 0}
-  characterLocomotionManager: {fileID: 0}
-  characterUIManager: {fileID: 0}
-  characterGroup: 0
-  isPerformingAction: 0
-  respawnCharacter: 0
-  switchRightWeapon: 0
-  playerLocomotionManager: {fileID: 0}
-  playerAnimatorManager: {fileID: 0}
-  playerNetworkManager: {fileID: 0}
-  playerStatsManager: {fileID: 0}
-  playerInventoryManager: {fileID: 0}
-  playerEquipmentManager: {fileID: 0}
-  playerCombatManager: {fileID: 0}
-  playerInteractionManager: {fileID: 0}
-  playerEffectsManager: {fileID: 0}
-  playerBodyManager: {fileID: 0}
---- !u!114 &-3884643468844033294
+--- !u!114 &3119115024965186299
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57055,9 +57017,9 @@ MonoBehaviour:
         byte0060: 0
         byte0061: 0
   remainingHealthFlasks:
-    m_InternalValue: 0
+    m_InternalValue: 3
   remainingManaFlasks:
-    m_InternalValue: 0
+    m_InternalValue: 1
   isChugging:
     m_InternalValue: 0
   currentWeaponBeingUsed:
@@ -57106,6 +57068,44 @@ MonoBehaviour:
     m_InternalValue: 0
   isAiming:
     m_InternalValue: 0
+--- !u!114 &5431566457522526622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7303514040355241776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a5a0b5a08aea23409ca07caf16b83be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDead:
+    m_InternalValue: 0
+  characterController: {fileID: 0}
+  characterNetworkManager: {fileID: 0}
+  animator: {fileID: 0}
+  characterEffectsManager: {fileID: 0}
+  characterAnimatorManager: {fileID: 0}
+  characterStatsManager: {fileID: 0}
+  characterCombatManager: {fileID: 0}
+  characterSoundFXManager: {fileID: 0}
+  characterLocomotionManager: {fileID: 0}
+  characterUIManager: {fileID: 0}
+  characterGroup: 0
+  isPerformingAction: 0
+  respawnCharacter: 0
+  switchRightWeapon: 0
+  playerLocomotionManager: {fileID: 0}
+  playerAnimatorManager: {fileID: 0}
+  playerNetworkManager: {fileID: 0}
+  playerStatsManager: {fileID: 0}
+  playerInventoryManager: {fileID: 0}
+  playerEquipmentManager: {fileID: 0}
+  playerCombatManager: {fileID: 0}
+  playerInteractionManager: {fileID: 0}
+  playerEffectsManager: {fileID: 0}
+  playerBodyManager: {fileID: 0}
 --- !u!114 &6709915041529701715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57155,7 +57155,7 @@ MonoBehaviour:
   gravityForce: -40
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 8
   groundCheckSphereRadius: 0.2
   yVelocity: {x: 0, y: 0, z: 0}
   groundedYVelocity: -20
@@ -57296,13 +57296,25 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   leftWeaponIndex: 0
   currentSpell: {fileID: 11400000, guid: 26979afd063ecee4fb4309c827b28997, type: 2}
-  currentQuickSlotItem: {fileID: 0}
   headEquipment: {fileID: 0}
   bodyEquipment: {fileID: 0}
   handEquipment: {fileID: 0}
   legEquipment: {fileID: 0}
   mainProjectile: {fileID: 0}
   secondaryProjectile: {fileID: 0}
+  currentQuickSlotItem: {fileID: 0}
+  currentQuickSlotItemIndex: 0
+  quickSlotItemInventory:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   characterInventory:
   - {fileID: 11400000, guid: fd164a1d6f05bda478dd90018ab02d46, type: 2}
   - {fileID: 11400000, guid: caab14c2aa581924c8eab6272b89f59d, type: 2}
@@ -57310,6 +57322,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9b995ab3578771e479a97bb1b8703258, type: 2}
   - {fileID: 11400000, guid: 23a2e125ed5097747a3be1aacff1f99a, type: 2}
   - {fileID: 11400000, guid: 00e9a9beff7e05a49baf85220cdd4cde, type: 2}
+  - {fileID: 11400000, guid: f571f742dac8c2845ae72dec2ddbd06e, type: 2}
+  - {fileID: 11400000, guid: 8fc4faae818fe52428576c4e5d338102, type: 2}
+  - {fileID: 11400000, guid: 662a833b9b6fde149b2c7492bf21ab86, type: 2}
+  - {fileID: 11400000, guid: 662a833b9b6fde149b2c7492bf21ab86, type: 2}
 --- !u!114 &7701256391751851654
 MonoBehaviour:
   m_ObjectHideFlags: 0

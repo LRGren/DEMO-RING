@@ -65,11 +65,12 @@ public class CharacterNetworkManager : NetworkBehaviour
 
     public virtual void CheckHP(int oldValue, int newValue)
     {
-        if (!character.IsOwner)
+        if (!character.IsOwner || character.isDead.Value)
             return;
 
         if (currentHealth.Value <= 0)
         {
+            character.isDead.Value = true;
             StartCoroutine(character.ProcessDeathEvent());
         }
 
@@ -414,6 +415,11 @@ public class CharacterNetworkManager : NetworkBehaviour
         if (IsServer)
         {
             NotifyTheServerOfBackstabClientRpc(damageCharacterID, charcterCausingDamageID, criticalDamageAnimation, weaponID, physicalDamage, magicalDamage, fireDamage, holyDamage, lightningDamage, poiseDamage);
+
+            if (WorldAIManager.instance != null)
+            {
+                WorldAIManager.instance.ForceAllAIToReevaluateTargets();
+            }
         }
     }
 

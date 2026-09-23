@@ -65,6 +65,13 @@ public class TakeDamageEffect : InstantCharacterEffect
         CalculateStanceDamage(character);
 
         //如果是 AI 将敌人设置为发动攻击的人
+        if (character is AICharacterManager aiCharacter)
+        {
+            if (characterCausingDamage != null)
+            {
+                aiCharacter.aiCharacterCombatManager.currentTarget = characterCausingDamage;
+            }
+        }
     }
 
     protected virtual void CalculteDamage(CharacterManager character)
@@ -145,6 +152,12 @@ public class TakeDamageEffect : InstantCharacterEffect
 
         if (character.isDead.Value)
             return;
+
+        // 喝药时被打，先取消喝药状态
+        if (character is PlayerManager playerManager)
+        {
+            playerManager.playerCombatManager.CancelUsingItem();
+        }
 
         //失衡
         if (poiseIsBroken)

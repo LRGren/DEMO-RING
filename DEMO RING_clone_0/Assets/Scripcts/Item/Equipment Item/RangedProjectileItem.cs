@@ -29,4 +29,9 @@ public class RangedProjectileItem : Item
     public GameObject drawProjectileModel;
     public GameObject releaseProjectileModel;
 
+    public virtual void SetAmmotAmount(int amount)
+    {
+        currentAmmoAmount = amount;
+    }
+
 }

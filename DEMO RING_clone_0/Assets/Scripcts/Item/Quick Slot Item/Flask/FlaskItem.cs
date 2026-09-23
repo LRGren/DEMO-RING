@@ -107,6 +107,11 @@ public class FlaskItem : QuickSlotItem
                 player.playerNetworkManager.remainingManaFlasks.Value--;
                 player.playerNetworkManager.currentFocusPoints.Value += manaFlaskAmount;
             }
+
+            if (isConsumable)
+            {
+                PlayerUIManager.instance.playerUIHudManager.SetQuickSlotCountText(GetAmountOfItem(player), true);
+            }
         }
 
         if (isHealthFlask && player.playerNetworkManager.remainingHealthFlasks.Value <= 0)
@@ -140,6 +145,32 @@ public class FlaskItem : QuickSlotItem
 
         if (player.characterSoundFXManager != null)
             player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.flaskDrinkSFX);
+    }
+
+    public override int GetAmountOfItem(PlayerManager player)
+    {
+        if (isHealthFlask)
+        {
+            return player.playerNetworkManager.remainingHealthFlasks.Value;
+        }
+        else
+        {
+            return player.playerNetworkManager.remainingManaFlasks.Value;
+        }
+    }
+
+    public override void SetAmountOfItem(PlayerManager player, int amount)
+    {
+        base.SetAmountOfItem(player, amount);
+
+        if (isHealthFlask)
+        {
+            player.playerNetworkManager.remainingHealthFlasks.Value = amount;
+        }
+        else
+        {
+            player.playerNetworkManager.remainingManaFlasks.Value = amount;
+        }
     }
 
 }

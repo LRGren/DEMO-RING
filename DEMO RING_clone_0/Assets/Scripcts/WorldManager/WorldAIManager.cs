@@ -8,6 +8,12 @@ public class WorldAIManager : MonoBehaviour
 {
     public static WorldAIManager instance;
 
+    [Header("Spawning")]
+    public bool isPerformingLoadingScreenSpawn = false;
+    private Coroutine spawnCoroutine;
+    private Coroutine despawnCoroutine;
+    private Coroutine resetCoroutine;
+
     [Header("Characters")]
     [SerializeField] private List<AICharacterSpawner> aiCharacterSpawners;
     public List<AICharacterManager> spawnedInCharacters;
@@ -53,39 +59,113 @@ public class WorldAIManager : MonoBehaviour
         return spawnedInBossCharacters.FirstOrDefault(boss => boss.bossID == bossID);
     }
 
-    public void RestAllCharacters()
+    public void SpawnAllCharacters()
     {
-        DespawnAllCharacters();
+        isPerformingLoadingScreenSpawn = true;
 
-        foreach (var spawner in aiCharacterSpawners)
+        if (spawnCoroutine != null)
         {
-            spawner.AttemptToSpawnAICharacter();
+            StopCoroutine(spawnCoroutine);
+        }
+
+        spawnCoroutine = StartCoroutine(SpawnAllCharactersCoroutine());
+    }
+
+    private IEnumerator SpawnAllCharactersCoroutine()
+    {
+        for (int i = 0; i < aiCharacterSpawners.Count; i++)
+        {
+            AICharacterSpawner spawner = aiCharacterSpawners[i];
+            if (spawner != null)
+            {
+                yield return new WaitForFixedUpdate(); // Wait for the next fixed update before spawning the next character
+                spawner.AttemptToSpawnAICharacter();
+                yield return null;
+            }
+        }
+
+        isPerformingLoadingScreenSpawn = false;
+
+        yield return null;
+    }
+
+    public void ForceAllAIToReevaluateTargets()
+    {
+        foreach (var character in spawnedInCharacters)
+        {
+            if (character == null || character.isDead.Value)
+                continue;
+
+            character.aiCharacterCombatManager.currentTarget = null;
+            character.currentState = character.idle;
         }
     }
 
-    private void DespawnAllCharacters()
+    public void DespawnAllCharacters()
+    {
+        isPerformingLoadingScreenSpawn = true;
+
+        if (despawnCoroutine != null)
+        {
+            StopCoroutine(despawnCoroutine);
+        }
+
+        despawnCoroutine = StartCoroutine(DespawnAllCharactersCoroutine());
+    }
+
+    private IEnumerator DespawnAllCharactersCoroutine()
     {
         foreach (var character in spawnedInCharacters)
         {
             if (character != null)
             {
+                yield return new WaitForFixedUpdate(); // Wait for the next fixed update before despawning the next character
                 character.GetComponent<NetworkObject>().Despawn();
+                yield return null; // Wait for the next frame before despawning the next character
             }
         }
 
         spawnedInCharacters.Clear();
         spawnedInBossCharacters.Clear();
 
-        foreach (var spawner in aiCharacterSpawners)
-        {
-            spawner.ResetSpawnedCharacter();
-        }
+        yield return null;
     }
 
-
-    private void DisableAllCharacters()
+    public void DisableAllCharacters()
     {
 
+    }
+
+    public void ResetAllCharacters()
+    {
+        isPerformingLoadingScreenSpawn = true;
+
+        if (resetCoroutine != null)
+        {
+            StopCoroutine(resetCoroutine);
+        }
+
+        resetCoroutine = StartCoroutine(ResetAllCharactersCoroutine());
+    }
+
+    private IEnumerator ResetAllCharactersCoroutine()
+    {
+        isPerformingLoadingScreenSpawn = true;
+
+        for (int i = 0; i < aiCharacterSpawners.Count; i++)
+        {
+            AICharacterSpawner spawner = aiCharacterSpawners[i];
+            if (spawner != null)
+            {
+                yield return new WaitForFixedUpdate(); // Wait for the next fixed update before spawning the next character
+                spawner.ResetSpawnedCharacter();
+                yield return null;
+            }
+        }
+
+        isPerformingLoadingScreenSpawn = false;
+
+        yield return null;
     }
 
 }

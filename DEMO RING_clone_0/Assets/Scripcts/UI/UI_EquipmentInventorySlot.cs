@@ -180,7 +180,6 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 player.playerInventoryManager.RemoveItemFromInventory(currentItem);
                 player.playerEquipmentManager.LoadMainProjectileEquipment(player.playerInventoryManager.mainProjectile);
                 break;
-
             case EquipmentType.SecondaryProjectile:
                 RangedProjectileItem currentSecondaryProjectileEquipment = player.playerInventoryManager.secondaryProjectile;
                 if (currentSecondaryProjectileEquipment != null)
@@ -190,6 +189,33 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 player.playerInventoryManager.secondaryProjectile = currentItem as RangedProjectileItem;
                 player.playerInventoryManager.RemoveItemFromInventory(currentItem);
                 player.playerEquipmentManager.LoadSecondaryProjectileEquipment(player.playerInventoryManager.secondaryProjectile);
+                break;
+
+            case EquipmentType.QuickSlot01:
+            case EquipmentType.QuickSlot02:
+            case EquipmentType.QuickSlot03:
+            case EquipmentType.QuickSlot04:
+            case EquipmentType.QuickSlot05:
+            case EquipmentType.QuickSlot06:
+            case EquipmentType.QuickSlot07:
+            case EquipmentType.QuickSlot08:
+            case EquipmentType.QuickSlot09:
+            case EquipmentType.QuickSlot10:
+                int quickSlotIndex = (int)PlayerUIManager.instance.playerUIEquipmentManager.currentSelectedEquipmentType - (int)EquipmentType.QuickSlot01;
+                QuickSlotItem currentQuickSlotItem = player.playerInventoryManager.quickSlotItemInventory[quickSlotIndex];
+                if (currentQuickSlotItem != null)
+                {
+                    player.playerInventoryManager.AddItemToInventory(currentQuickSlotItem);
+                }
+
+                player.playerInventoryManager.quickSlotItemInventory[quickSlotIndex] = currentItem as QuickSlotItem;
+                player.playerInventoryManager.RemoveItemFromInventory(currentItem);
+                player.playerInventoryManager.SetItemInQuickSlot(currentItem as QuickSlotItem, quickSlotIndex);
+
+                if (player.playerInventoryManager.currentQuickSlotItemIndex == quickSlotIndex)
+                {
+                    player.playerNetworkManager.currentQuickSlotItemID.Value = currentItem.itemID;
+                }
                 break;
         }
 

@@ -109,6 +109,16 @@ public enum EquipmentType
     Hands,
     MainProjectile,
     SecondaryProjectile,
+    QuickSlot01,
+    QuickSlot02,
+    QuickSlot03,
+    QuickSlot04,
+    QuickSlot05,
+    QuickSlot06,
+    QuickSlot07,
+    QuickSlot08,
+    QuickSlot09,
+    QuickSlot10,
 }
 
 public enum HeadEquipmentType

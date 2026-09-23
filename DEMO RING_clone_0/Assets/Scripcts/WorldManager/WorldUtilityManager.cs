@@ -77,7 +77,17 @@ public class WorldUtilityManager : MonoBehaviour
 
     public bool IsTargetBlockedByEnvironment(Vector3 fromPosition, Vector3 toPosition)
     {
-        return Physics.Linecast(fromPosition, toPosition, enviroLayers);
+        Vector3 direction = toPosition - fromPosition;
+        if (direction.sqrMagnitude <= 0.0001f)
+            return false;
+
+        if (Physics.Linecast(fromPosition, toPosition, out RaycastHit hit, enviroLayers))
+        {
+            CharacterManager hitCharacter = hit.collider.GetComponentInParent<CharacterManager>();
+            return hitCharacter == null;
+        }
+
+        return false;
     }
 
     public DamageIntensity GetDamageIntensityBasedOnPoiseDamage(float poiseDamage)

@@ -61,6 +61,34 @@ public class CharacterSaveData
 
     public int currentSpell;
 
+    public int currentQuickSlotItemIndex;
+    public int quickSlotItem01;
+    public int quickSlotItem02;
+    public int quickSlotItem03;
+    public int quickSlotItem04;
+    public int quickSlotItem05;
+    public int quickSlotItem06;
+    public int quickSlotItem07;
+    public int quickSlotItem08;
+    public int quickSlotItem09;
+    public int quickSlotItem10;
+
+    public int quickSlotItem01Amount;
+    public int quickSlotItem02Amount;
+    public int quickSlotItem03Amount;
+    public int quickSlotItem04Amount;
+    public int quickSlotItem05Amount;
+    public int quickSlotItem06Amount;
+    public int quickSlotItem07Amount;
+    public int quickSlotItem08Amount;
+    public int quickSlotItem09Amount;
+    public int quickSlotItem10Amount;
+
+    public int currentMainProjectile;
+    public int currentSecondaryProjectile;
+
+    public int currentMainAmmoAmount;
+    public int currentSecondaryAmmoAmount;
 
     public CharacterSaveData()
     {
