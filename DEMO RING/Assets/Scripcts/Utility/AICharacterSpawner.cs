@@ -43,8 +43,15 @@ public class AICharacterSpawner : MonoBehaviour
 
         spawnedAICharacter.transform.position = transform.position;
         spawnedAICharacter.transform.rotation = transform.rotation;
-        aiCharacrer.aiCharacterNetworkManager.currentHealth = aiCharacrer.aiCharacterNetworkManager.maxHealth;
+
+        aiCharacrer.aiCharacterNetworkManager.currentHealth.Value = aiCharacrer.aiCharacterNetworkManager.maxHealth.Value;
+
         aiCharacrer.currentState = aiCharacrer.idle;
+        aiCharacrer.navMeshAgent.Warp(transform.position);
+
+        aiCharacrer.aiCharacterNetworkManager.isMoving.Value = false;
+
+        aiCharacrer.aiCharacterCombatManager.currentTarget = null;
 
         if (aiCharacrer.isDead.Value)
         {

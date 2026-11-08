@@ -16,6 +16,10 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
     public List<GameObject> teleportButtons;
     public GameObject teleportButtonParent;
 
+    [Header("Site of Grace Info")]
+    public int currentSiteOfGraceID = -1; // Initialize with an invalid ID
+    public Button teleportReturnButton;
+
     void Awake()
     {
         if (teleportButtons.Count > 0)
@@ -26,6 +30,11 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
         {
             teleportButtons.Add(button.gameObject);
         }
+    }
+
+    public void UpdateCurrentSiteOfGraceID(int siteOfGraceID)
+    {
+        currentSiteOfGraceID = siteOfGraceID;
     }
 
     public void OpenMainMenu()
@@ -45,6 +54,8 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
         mainMenu.SetActive(false);
         teleportMenu.SetActive(true);
 
+        teleportReturnButton.Select();
+
         ToggleTeleportMenuButtons();
     }
 
@@ -57,6 +68,8 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
     public void TeleportToSiteOfGrace(int siteOfGraceID)
     {
         CloseMainMenu();
+
+        UpdateCurrentSiteOfGraceID(siteOfGraceID);
 
         if (WorldSaveGameManager.instance.currentCharacterData.siteOfGraceActivated.ContainsKey(siteOfGraceID)
          && WorldSaveGameManager.instance.currentCharacterData.siteOfGraceActivated[siteOfGraceID])
@@ -97,6 +110,17 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
                 // Assuming you have a method to enable buttons based on Site of Grace ID
                 teleportButtons[siteOfGrace.siteOfGraceID].SetActive(WorldSaveGameManager.instance.currentCharacterData.siteOfGraceActivated[siteOfGrace.siteOfGraceID]);
             }
+            else
+            {
+                // Disable the button for this Site of Grace
+                teleportButtons[siteOfGrace.siteOfGraceID].SetActive(false);
+            }
+        }
+
+        if (currentSiteOfGraceID >= 0 && currentSiteOfGraceID < teleportButtons.Count)
+        {
+            // Disable the button for the current Site of Grace
+            teleportButtons[currentSiteOfGraceID].SetActive(false);
         }
     }
 

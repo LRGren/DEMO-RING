@@ -121,6 +121,7 @@ public class SiteOfGraceInteractable : Interactable
         // TODO: 当这个站点被激活时，重置所有怪物和敌人，但是如果当人物太多的时候，可能会导致性能问题，所以需要优化
         WorldAIManager.instance.ResetAllCharacters();
 
+        PlayerUIManager.instance.playerUISiteOfGraceManager.UpdateCurrentSiteOfGraceID(siteOfGraceID);
         PlayerUIManager.instance.playerUISiteOfGraceManager.OpenMainMenu();
     }
 
