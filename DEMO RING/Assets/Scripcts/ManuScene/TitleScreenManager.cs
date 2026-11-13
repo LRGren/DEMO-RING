@@ -8,22 +8,23 @@ using UnityEngine.UI;
 public class TitleScreenManager : MonoBehaviour
 {
     public static TitleScreenManager instance;
-    
+
     [Header("Menus")]
     [SerializeField] GameObject titleScreenMainMenu;
     [SerializeField] GameObject titleScreenLoadMenu;
-    
+    [SerializeField] GameObject tilteScreenCharacterCreationMenu;
+
     [Header("Buttons")]
     [SerializeField] Button loadMenuReturnButton;
     [SerializeField] Button mainMenuLoadGameButton;
     [SerializeField] Button mainMenuNewGameButton;
     [SerializeField] Button noCharacterSlotsOkayButton;
     [SerializeField] Button deleteCharacterSlotPopUpConfirmButton;
-    
+
     [Header("Pop Ups")]
     [SerializeField] GameObject noCharacterSlotsPopUp;
     [SerializeField] GameObject deleteCharacterSlotPopUp;
-    
+
     [Header("Character Slots")]
     public CharacterSlot currentSelectedSlot = CharacterSlot.NO_SLOT;
 
@@ -51,12 +52,38 @@ public class TitleScreenManager : MonoBehaviour
     {
         WorldSaveGameManager.instance.AttemptToCreateNewGame();
     }
-    
+
+    public void AttemptToCreateNewCharacter()
+    {
+        if (WorldSaveGameManager.instance.HasEmptyCharacterSlot())
+        {
+            OpenCharacterCreationMenu();
+        }
+        else
+        {
+            DisplayNoFreeCharacterSlotsPopUp();
+        }
+    }
+
+    public void OpenCharacterCreationMenu()
+    {
+        titleScreenMainMenu.SetActive(false);
+        tilteScreenCharacterCreationMenu.SetActive(true);
+    }
+
+    public void CloseCharacterCreationMenu()
+    {
+        titleScreenMainMenu.SetActive(true);
+        tilteScreenCharacterCreationMenu.SetActive(false);
+
+        mainMenuNewGameButton.Select();
+    }
+
     public void OpenLoadGameMenu()
     {
         titleScreenMainMenu.SetActive(false);
         titleScreenLoadMenu.SetActive(true);
-        
+
         loadMenuReturnButton.Select();
     }
 
@@ -103,10 +130,10 @@ public class TitleScreenManager : MonoBehaviour
     {
         deleteCharacterSlotPopUp.SetActive(false);
         WorldSaveGameManager.instance.DeleteGame(currentSelectedSlot);
-        
+
         titleScreenLoadMenu.SetActive(false);
         titleScreenLoadMenu.SetActive(true);
-        
+
         loadMenuReturnButton.Select();
     }
 

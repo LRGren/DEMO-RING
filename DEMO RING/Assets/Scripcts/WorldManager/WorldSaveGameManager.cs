@@ -78,6 +78,35 @@ public class WorldSaveGameManager : MonoBehaviour
         return fileName;
     }
 
+    public bool HasEmptyCharacterSlot()
+    {
+        saveFileDataWriter = new SaveFileDataWriter();
+        saveFileDataWriter.saveDataDirectoryPath = Application.persistentDataPath;
+
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_01);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_02);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_03);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_04);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_05);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_06);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_07);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_08);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_09);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_10);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+
+        return false;
+    }
+
     public void AttemptToCreateNewGame()
     {
         saveFileDataWriter = new SaveFileDataWriter();

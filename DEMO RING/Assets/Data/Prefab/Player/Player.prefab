@@ -57316,6 +57316,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   characterInventory: []
+  testItem: {fileID: 0}
+  testItemAdded: 0
 --- !u!114 &7701256391751851654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70882,15 +70884,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character UI
       objectReference: {fileID: 0}
-    - target: {fileID: 5111265517982121875, guid: a6648fcd9c81dc6469e08270f7286ef3,
+    - target: {fileID: 189903352661896145, guid: a6648fcd9c81dc6469e08270f7286ef3,
         type: 3}
-      propertyPath: m_AnchorMax.x
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5111265517982121875, guid: a6648fcd9c81dc6469e08270f7286ef3,
         type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111265517982121875, guid: a6648fcd9c81dc6469e08270f7286ef3,
+        type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7862858720002045967, guid: a6648fcd9c81dc6469e08270f7286ef3,
         type: 3}
