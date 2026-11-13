@@ -130,28 +130,33 @@ public class PlayerNetworkManager : CharacterNetworkManager
     // Weapon
     public void OnCurrentRightHandWeaponIDChanged(int oldWeaponID, int newWeaponID)
     {
-        WeaponItem newWeapon = Instantiate(WorldItemDatabase.instance.GetWeaponByID(newWeaponID));
-        player.playerInventoryManager.currentRightHandWeapon = newWeapon;
-        player.playerEquipmentManager.LoadRightWeapon();
-
         if (player.IsOwner)
-        {
-            PlayerUIManager.instance.playerUIHudManager.SetRightWeaponQuickSlotIcon(newWeaponID);
+            return;
 
-            PlayerUIManager.instance.playerUIHudManager.ToggleProjectileSlotsGameobject(newWeapon.weaponClass == WeaponClass.Bow);
-        }
+        WeaponItem definition = WorldItemDatabase.instance.GetWeaponByID(newWeaponID);
+
+        if (definition == null)
+            return;
+
+        player.playerInventoryManager.currentRightHandWeapon =
+            Instantiate(definition);
+
+        player.playerEquipmentManager.LoadRightWeapon();
     }
 
     public void OnCurrentLeftHandWeaponIDChanged(int oldWeaponID, int newWeaponID)
     {
-        WeaponItem newWeapon = Instantiate(WorldItemDatabase.instance.GetWeaponByID(newWeaponID));
-        player.playerInventoryManager.currentLeftHandWeapon = newWeapon;
-        player.playerEquipmentManager.LoadLeftWeapon();
-
         if (player.IsOwner)
-        {
-            PlayerUIManager.instance.playerUIHudManager.SetLeftWeaponQuickSlotIcon(newWeaponID);
-        }
+            return;
+
+        WeaponItem definition = WorldItemDatabase.instance.GetWeaponByID(newWeaponID);
+
+        if (definition == null)
+            return;
+
+        player.playerInventoryManager.currentLeftHandWeapon = Instantiate(definition);
+
+        player.playerEquipmentManager.LoadLeftWeapon();
     }
 
     public void OnCurrentWeaponBedingUsedIDChanged(int oldWeaponID, int newWeaponID)
@@ -203,19 +208,25 @@ public class PlayerNetworkManager : CharacterNetworkManager
     // Quick Slot Item
     public void OnCurrentQuickSlotItemIDChanged(int oldQuickSlotItemID, int newQuickSlotItemID)
     {
+        var inventory = player.playerInventoryManager;
+
         if (newQuickSlotItemID == -1)
         {
-            player.playerInventoryManager.currentQuickSlotItem = null;
-            PlayerUIManager.instance.playerUIHudManager.SetQuickSlotItemQuickSlotIcon(-1);
-            return;
+            inventory.currentQuickSlotItem = null;
         }
-
-        QuickSlotItem newQuickSlotItem = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(newQuickSlotItemID));
-
-        if (newQuickSlotItem == null)
-            return;
-
-        player.playerInventoryManager.currentQuickSlotItem = newQuickSlotItem;
+        else if (player.IsOwner)
+        {
+            int index = inventory.currentQuickSlotItemIndex;
+            inventory.currentQuickSlotItem = (0 <= index && index < 9) ? inventory.quickSlotItemInventory[index] : null;
+        }
+        else
+        {
+            var tmp = WorldItemDatabase.instance.GetQuickSlotItemByID(newQuickSlotItemID);
+            if (tmp != null)
+                inventory.currentQuickSlotItem = Instantiate(tmp);
+            else
+                inventory.currentQuickSlotItem = null;
+        }
 
         if (player.IsOwner)
         {

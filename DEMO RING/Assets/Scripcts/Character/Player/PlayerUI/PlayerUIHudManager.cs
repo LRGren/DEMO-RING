@@ -191,7 +191,9 @@ public class PlayerUIHudManager : MonoBehaviour
         quickSlotItemUI.enabled = true;
 
         PlayerManager player = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
-        SetQuickSlotCountText(quickSlotItem.GetAmountOfItem(player), quickSlotItem.isConsumable);
+
+        var current = player.playerInventoryManager.currentQuickSlotItem;
+        SetQuickSlotCountText(current != null ? current.GetAmountOfItem(player) : 0, current != null && current.isConsumable);
     }
 
     public void SetQuickSlotCountText(int count, bool isConsumable)

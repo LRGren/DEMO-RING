@@ -721,7 +721,7 @@ public class PlayerUIEquipmentManager : MonoBehaviour
 
                 if (player.playerInventoryManager.rightWeaponIndex == 0)
                 {
-                    player.playerNetworkManager.currentRightHandWeaponID.Value = WorldItemDatabase.instance.unarmedWeapon.itemID;
+                    player.playerEquipmentManager.RefreshRightWeapon();
                 }
                 break;
             case EquipmentType.RightWeapon02:
@@ -737,7 +737,7 @@ public class PlayerUIEquipmentManager : MonoBehaviour
                 }
                 if (player.playerInventoryManager.rightWeaponIndex == 1)
                 {
-                    player.playerNetworkManager.currentRightHandWeaponID.Value = WorldItemDatabase.instance.unarmedWeapon.itemID;
+                    player.playerEquipmentManager.RefreshRightWeapon();
                 }
                 break;
             case EquipmentType.RightWeapon03:
@@ -753,7 +753,7 @@ public class PlayerUIEquipmentManager : MonoBehaviour
                 }
                 if (player.playerInventoryManager.rightWeaponIndex == 2)
                 {
-                    player.playerNetworkManager.currentRightHandWeaponID.Value = WorldItemDatabase.instance.unarmedWeapon.itemID;
+                    player.playerEquipmentManager.RefreshRightWeapon();
                 }
                 break;
             case EquipmentType.LeftWeapon01:
@@ -769,7 +769,7 @@ public class PlayerUIEquipmentManager : MonoBehaviour
                 }
                 if (player.playerInventoryManager.leftWeaponIndex == 0)
                 {
-                    player.playerNetworkManager.currentLeftHandWeaponID.Value = WorldItemDatabase.instance.unarmedWeapon.itemID;
+                    player.playerEquipmentManager.RefreshLeftWeapon();
                 }
                 break;
             case EquipmentType.LeftWeapon02:
@@ -785,7 +785,7 @@ public class PlayerUIEquipmentManager : MonoBehaviour
                 }
                 if (player.playerInventoryManager.leftWeaponIndex == 1)
                 {
-                    player.playerNetworkManager.currentLeftHandWeaponID.Value = WorldItemDatabase.instance.unarmedWeapon.itemID;
+                    player.playerEquipmentManager.RefreshLeftWeapon();
                 }
                 break;
             case EquipmentType.LeftWeapon03:
@@ -801,7 +801,7 @@ public class PlayerUIEquipmentManager : MonoBehaviour
                 }
                 if (player.playerInventoryManager.leftWeaponIndex == 2)
                 {
-                    player.playerNetworkManager.currentLeftHandWeaponID.Value = WorldItemDatabase.instance.unarmedWeapon.itemID;
+                    player.playerEquipmentManager.RefreshLeftWeapon();
                 }
                 break;
             case EquipmentType.Head:

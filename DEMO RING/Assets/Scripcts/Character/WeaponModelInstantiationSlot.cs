@@ -44,6 +44,10 @@ public class WeaponModelInstantiationSlot : MonoBehaviour
                 weaponModel.transform.localPosition = new Vector3(0.219f, -0.036f, 0.017f);
                 weaponModel.transform.localRotation = Quaternion.Euler(-12.423f, -44.594f, 147.319f);
                 break;
+            case WeaponClass.Bow:
+                weaponModel.transform.localPosition = new Vector3(0.15f, -0.05f, -0.08f);
+                weaponModel.transform.localRotation = Quaternion.Euler(0, 90, 0);
+                break;
             default:
                 break;
         }

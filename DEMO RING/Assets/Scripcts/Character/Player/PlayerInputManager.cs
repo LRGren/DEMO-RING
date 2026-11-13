@@ -559,9 +559,24 @@ public class PlayerInputManager : MonoBehaviour
                 return;
             }
 
-            player.playerNetworkManager.SetCharacterActionHand(true);
-
-            player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_RB_Action, player.playerInventoryManager.currentRightHandWeapon);
+            if (!player.playerNetworkManager.isTwoHandingWeapon.Value)
+            {
+                player.playerNetworkManager.SetCharacterActionHand(true);
+                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_RB_Action, player.playerInventoryManager.currentRightHandWeapon);
+            }
+            else
+            {
+                if (player.playerNetworkManager.isTwoHandingRightWeapon.Value)
+                {
+                    player.playerNetworkManager.SetCharacterActionHand(true);
+                    player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_RB_Action, player.playerInventoryManager.currentRightHandWeapon);
+                }
+                else
+                {
+                    player.playerNetworkManager.SetCharacterActionHand(false);
+                    player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftHandWeapon.oh_RB_Action, player.playerInventoryManager.currentLeftHandWeapon);
+                }
+            }
         }
 
     }

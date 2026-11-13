@@ -36,18 +36,20 @@ public class PlayerInventoryManager : CharacterInventoryManager
     [Header("Inventory")]
     public List<Item> characterInventory = new List<Item>();
 
+    [Header("Test Item")]
+    public Item testItem;
+    public bool testItemAdded = false;
+
     //自己添加的
     override protected void Awake()
     {
         base.Awake();
         player = GetComponent<PlayerManager>();
     }
-
     public void AddItemToInventory(Item item)
     {
         characterInventory.Add(Instantiate(item));
     }
-
     public void RemoveItemFromInventory(Item item)
     {
         characterInventory.Remove(item);
@@ -61,6 +63,8 @@ public class PlayerInventoryManager : CharacterInventoryManager
         }
     }
 
+
+    // Quick Slot Item Management
     public void SetItemInQuickSlot(QuickSlotItem item, int slotIndex)
     {
         quickSlotItemInventory[slotIndex] = item;
@@ -77,5 +81,24 @@ public class PlayerInventoryManager : CharacterInventoryManager
             PlayerUIManager.instance.playerUIEquipmentManager.SetQuickSlotCountText(EquipmentType.QuickSlot01 + slotIndex, item.GetAmountOfItem(player), true);
         }
     }
+    public void RestoreQuickSlot(SerializableQuickSlotItem serializableQuickSlotItem, int slotIndex)
+    {
+        QuickSlotItem quickSlotItem = serializableQuickSlotItem != null ? serializableQuickSlotItem.GetQuickSlotItem() : null;
 
+        if (quickSlotItem != null)
+        {
+            quickSlotItem.SetAmountOfItem(player, serializableQuickSlotItem.itemCount);
+        }
+
+        SetItemInQuickSlot(quickSlotItem, slotIndex);
+    }
+
+    void Update()
+    {
+        if (testItem != null && testItemAdded)
+        {
+            AddItemToInventory(testItem);
+            testItemAdded = false;
+        }
+    }
 }

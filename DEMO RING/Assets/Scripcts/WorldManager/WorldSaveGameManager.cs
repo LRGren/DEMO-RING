@@ -352,4 +352,53 @@ public class WorldSaveGameManager : MonoBehaviour
     {
         return worldSceneIndex;
     }
+
+    public SerializableWeapon GetSerializableWeaponFromWeaponItem(WeaponItem weapon)
+    {
+        SerializableWeapon serializableWeapon = new SerializableWeapon();
+
+        serializableWeapon.itemID = weapon.itemID;
+
+        if (weapon.ashOfWar_Action)
+        {
+            serializableWeapon.ashOfWarID = weapon.ashOfWar_Action.itemID;
+        }
+        else
+        {
+            serializableWeapon.ashOfWarID = -1;
+        }
+
+        return serializableWeapon;
+    }
+
+    public SerializableRangedProjectile GetSerializableRangedProjectileFromRangedProjectileItem(RangedProjectileItem projectile)
+    {
+        SerializableRangedProjectile serializableRangedProjectile = new SerializableRangedProjectile();
+
+        if (projectile == null)
+        {
+            serializableRangedProjectile.itemID = -1;
+            serializableRangedProjectile.ammoAmount = 0;
+            return serializableRangedProjectile;
+        }
+        serializableRangedProjectile.itemID = projectile.itemID;
+        serializableRangedProjectile.ammoAmount = projectile.currentAmmoAmount;
+        return serializableRangedProjectile;
+    }
+
+    public SerializableQuickSlotItem GetSerializableQuickSlotItemFromQuickSlotItem(QuickSlotItem quickSlotItem, PlayerManager player)
+    {
+        SerializableQuickSlotItem serializableQuickSlotItem = new SerializableQuickSlotItem();
+
+        if (quickSlotItem == null)
+        {
+            serializableQuickSlotItem.itemID = -1;
+            serializableQuickSlotItem.itemCount = 0;
+            return serializableQuickSlotItem;
+        }
+
+        serializableQuickSlotItem.itemID = quickSlotItem.itemID;
+        serializableQuickSlotItem.itemCount = quickSlotItem.GetAmountOfItem(player);
+        return serializableQuickSlotItem;
+    }
 }

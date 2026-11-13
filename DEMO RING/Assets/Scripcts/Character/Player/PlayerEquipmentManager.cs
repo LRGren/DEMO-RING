@@ -665,7 +665,6 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             player.playerAnimatorManager.UpdateAnimatorController(player.playerInventoryManager.currentRightHandWeapon.weaponAnimator);
         }
     }
-
     public void SwitchRightWeapon()
     {
         if (!player.IsOwner)
@@ -703,12 +702,21 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             {
                 player.playerInventoryManager.rightWeaponIndex = -1;
                 selectedWeapon = WorldItemDatabase.instance.unarmedWeapon;
+
+                // 需要更新背包的武器信息
+                player.playerInventoryManager.currentRightHandWeapon = selectedWeapon;
+
                 player.playerNetworkManager.currentRightHandWeaponID.Value = selectedWeapon.itemID;
+
+                RefreshRightWeapon();
             }
             else
             {
                 player.playerInventoryManager.rightWeaponIndex = firstWeaponPosition;
+                player.playerInventoryManager.currentRightHandWeapon = firstWeapon;
                 player.playerNetworkManager.currentRightHandWeaponID.Value = firstWeapon.itemID;
+
+                RefreshRightWeapon();
             }
 
 
@@ -722,6 +730,9 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             {
                 selectedWeapon = player.playerInventoryManager.weaponsInRightHand[player.playerInventoryManager.rightWeaponIndex];
 
+                player.playerInventoryManager.currentRightHandWeapon = selectedWeapon;
+                RefreshRightWeapon();
+
                 //需要分配武器ID到网络上使得客户端能够正确加载武器模型
                 player.playerNetworkManager.currentRightHandWeaponID.Value = player.playerInventoryManager.weaponsInRightHand[player.playerInventoryManager.rightWeaponIndex].itemID;
 
@@ -733,6 +744,34 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         {
             SwitchRightWeapon();
         }
+    }
+    public void RefreshRightWeapon()
+    {
+        // 需要将本地刷新从网络中独立出来，这样相同ID的武器也能刷新本地状态和表现。
+        if (!player.IsOwner)
+            return;
+
+        var inventory = player.playerInventoryManager;
+        int index = inventory.rightWeaponIndex;
+
+        WeaponItem weapon = null;
+
+        if (index >= 0 && index < inventory.weaponsInRightHand.Length)
+            weapon = inventory.weaponsInRightHand[index];
+
+        if (weapon == null)
+            weapon = WorldItemDatabase.instance.unarmedWeapon;
+
+        inventory.currentRightHandWeapon = weapon;
+
+        LoadRightWeapon();
+
+        var hud = PlayerUIManager.instance.playerUIHudManager;
+        hud.SetRightWeaponQuickSlotIcon(weapon.itemID);
+        RefreshProjectileSlotsVisibility();
+
+        player.playerNetworkManager.currentRightHandWeaponID.Value =
+            weapon.itemID;
     }
 
     // Left Weapon 
@@ -765,7 +804,6 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             leftHandWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentLeftHandWeapon);
         }
     }
-
     public void SwitchLeftWeapon()
     {
         if (!player.IsOwner)
@@ -803,12 +841,18 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             {
                 player.playerInventoryManager.leftWeaponIndex = -1;
                 selectedWeapon = WorldItemDatabase.instance.unarmedWeapon;
+                player.playerInventoryManager.currentLeftHandWeapon = selectedWeapon;
                 player.playerNetworkManager.currentLeftHandWeaponID.Value = selectedWeapon.itemID;
+
+                RefreshLeftWeapon();
             }
             else
             {
                 player.playerInventoryManager.leftWeaponIndex = firstWeaponPosition;
+                player.playerInventoryManager.currentLeftHandWeapon = firstWeapon;
                 player.playerNetworkManager.currentLeftHandWeaponID.Value = firstWeapon.itemID;
+
+                RefreshLeftWeapon();
             }
 
 
@@ -822,6 +866,9 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             {
                 selectedWeapon = player.playerInventoryManager.weaponsInLeftHand[player.playerInventoryManager.leftWeaponIndex];
 
+                player.playerInventoryManager.currentLeftHandWeapon = selectedWeapon;
+                RefreshLeftWeapon();
+
                 //需要分配武器ID到网络上使得客户端能够正确加载武器模型
                 player.playerNetworkManager.currentLeftHandWeaponID.Value = player.playerInventoryManager.weaponsInLeftHand[player.playerInventoryManager.leftWeaponIndex].itemID;
 
@@ -834,66 +881,55 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             SwitchLeftWeapon();
         }
     }
+    public void RefreshLeftWeapon()
+    {
+        // 需要将本地刷新从网络中独立出来，这样相同ID的武器也能刷新本地状态和表现。
+        if (!player.IsOwner)
+            return;
+
+        var inventory = player.playerInventoryManager;
+        int index = inventory.leftWeaponIndex;
+
+        WeaponItem weapon = null;
+
+        if (index >= 0 && index < inventory.weaponsInLeftHand.Length)
+            weapon = inventory.weaponsInLeftHand[index];
+
+        if (weapon == null)
+            weapon = WorldItemDatabase.instance.unarmedWeapon;
+
+        inventory.currentLeftHandWeapon = weapon;
+
+        LoadLeftWeapon();
+
+        var hud = PlayerUIManager.instance.playerUIHudManager;
+        hud.SetLeftWeaponQuickSlotIcon(weapon.itemID);
+        RefreshProjectileSlotsVisibility();
+
+        player.playerNetworkManager.currentLeftHandWeaponID.Value =
+            weapon.itemID;
+    }
+
+    private void RefreshProjectileSlotsVisibility()
+    {
+        var inventory = player.playerInventoryManager;
+
+        bool rightHasBow = inventory.currentRightHandWeapon != null &&
+            inventory.currentRightHandWeapon.weaponClass == WeaponClass.Bow;
+
+        bool leftHasBow = inventory.currentLeftHandWeapon != null &&
+            inventory.currentLeftHandWeapon.weaponClass == WeaponClass.Bow;
+
+        PlayerUIManager.instance.playerUIHudManager
+            .ToggleProjectileSlotsGameobject(rightHasBow || leftHasBow);
+    }
     #endregion
 
     #region Quick Slot Items
 
     public void SwitchQuickSlotsItems()
     {
-        /*if (!player.IsOwner)
-            return;
 
-        player.playerInventoryManager.currentQuickSlotItemIndex++;
-
-        if (player.playerInventoryManager.currentQuickSlotItemIndex < 0 || player.playerInventoryManager.currentQuickSlotItemIndex > 9)
-        {
-            player.playerInventoryManager.currentQuickSlotItemIndex = 0;
-            int quickSlotItemCount = 0;
-            QuickSlotItem firstQuickSlotItem = null;
-            int firstQuickSlotItemPosition = 0;
-
-            for (int i = 0; i < player.playerInventoryManager.quickSlotItemInventory.Length; i++)
-            {
-                if (player.playerInventoryManager.quickSlotItemInventory[i] != null)
-                {
-                    quickSlotItemCount++;
-                    if (firstQuickSlotItem == null)
-                    {
-                        firstQuickSlotItem = player.playerInventoryManager.quickSlotItemInventory[i];
-                        firstQuickSlotItemPosition = i;
-                    }
-                }
-            }
-
-            if (quickSlotItemCount <= 0)
-            {
-                player.playerInventoryManager.currentQuickSlotItemIndex = -1;
-                player.playerNetworkManager.currentQuickSlotItemID.Value = -1;
-            }
-            else
-            {
-                player.playerInventoryManager.currentQuickSlotItemIndex = firstQuickSlotItemPosition;
-                player.playerNetworkManager.currentQuickSlotItemID.Value = firstQuickSlotItem.itemID;
-            }
-
-
-            return;
-        }
-
-        QuickSlotItem candidateQuickSlotItem = player.playerInventoryManager.quickSlotItemInventory[player.playerInventoryManager.currentQuickSlotItemIndex];
-
-        if (candidateQuickSlotItem != null)
-        {
-            // 需要分配物品 ID 到网络，让客户端正确加载快捷物品
-            player.playerNetworkManager.currentQuickSlotItemID.Value = candidateQuickSlotItem.itemID;
-            return;
-        }
-
-        // 当前槽位为空，继续尝试下一个
-        if (player.playerInventoryManager.currentQuickSlotItemIndex <= 9)
-        {
-            SwitchQuickSlotsItems();
-        }*/
         if (!player.IsOwner)
             return;
 

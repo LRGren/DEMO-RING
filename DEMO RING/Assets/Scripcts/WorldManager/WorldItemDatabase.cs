@@ -142,6 +142,25 @@ public class WorldItemDatabase : MonoBehaviour
         return items.FirstOrDefault(i => i.itemID == id);
     }
 
+    public WeaponItem GetWeaponFromSerializedData(SerializableWeapon serializableWeapon)
+    {
+        WeaponItem weapon = null;
+
+        if (Instantiate(GetWeaponByID(serializableWeapon.itemID)))
+            weapon = Instantiate(GetWeaponByID(serializableWeapon.itemID));
+
+        if (weapon == null)
+            return Instantiate(unarmedWeapon);
+
+        if (GetAshOfWarByID(serializableWeapon.ashOfWarID))
+        {
+            AshOfWar ashOfWar = Instantiate(GetAshOfWarByID(serializableWeapon.ashOfWarID));
+            weapon.ashOfWar_Action = ashOfWar;
+        }
+
+        return weapon;
+    }
+
     public WeaponItem GetWeaponByID(int id)
     {
         return weapons.FirstOrDefault(w => w.itemID == id);
@@ -182,10 +201,52 @@ public class WorldItemDatabase : MonoBehaviour
         return projectiles.FirstOrDefault(p => p.itemID == id);
     }
 
+    public RangedProjectileItem GetProjectileFromSerializedData(SerializableRangedProjectile serializableRangedProjectile)
+    {
+        if (serializableRangedProjectile == null || serializableRangedProjectile.itemID == -1)
+        {
+            return null;
+        }
+
+        var tmp = Instantiate(GetProjectileByID(serializableRangedProjectile.itemID));
+        if (tmp == null)
+        {
+            return null;
+        }
+
+        RangedProjectileItem projectile = Instantiate(tmp);
+        if (projectile != null)
+        {
+            projectile.currentAmmoAmount = serializableRangedProjectile.ammoAmount;
+        }
+
+        return projectile;
+    }
+
     public QuickSlotItem GetQuickSlotItemByID(int id)
     {
         return quickSlotItems.FirstOrDefault(q => q.itemID == id);
     }
+    public QuickSlotItem GetQuickSlotItemFromSerializableDate(SerializableQuickSlotItem serializableQuickSlotItem)
+    {
+        if (serializableQuickSlotItem == null || serializableQuickSlotItem.itemID == -1)
+        {
+            return null;
+        }
 
+        var tmp = Instantiate(GetQuickSlotItemByID(serializableQuickSlotItem.itemID));
+        if (tmp == null)
+        {
+            return null;
+        }
+
+        QuickSlotItem quickSlotItem = Instantiate(tmp);
+        if (quickSlotItem != null)
+        {
+            quickSlotItem.itemCount = serializableQuickSlotItem.itemCount;
+        }
+
+        return quickSlotItem;
+    }
 
 }

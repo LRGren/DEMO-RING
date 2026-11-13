@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
+using System;
 
 public class PlayerManager : CharacterManager
 {
@@ -119,10 +120,8 @@ public class PlayerManager : CharacterManager
 
         if (IsOwner)
         {
-            playerNetworkManager.currentRightHandWeaponID.Value =
-                playerInventoryManager.weaponsInRightHand[playerInventoryManager.rightWeaponIndex].itemID;
-            playerNetworkManager.currentLeftHandWeaponID.Value =
-                playerInventoryManager.weaponsInLeftHand[playerInventoryManager.leftWeaponIndex].itemID;
+            playerEquipmentManager.RefreshRightWeapon();
+            playerEquipmentManager.RefreshLeftWeapon();
         }
 
         //锁定
@@ -312,48 +311,38 @@ public class PlayerManager : CharacterManager
         currentCharacterSaveData.currentHandEquipment = playerNetworkManager.handEquipmentID.Value;
 
         currentCharacterSaveData.currentRightWeaponIndex = playerInventoryManager.rightWeaponIndex;
-        currentCharacterSaveData.rightWeapon01 = playerInventoryManager.weaponsInRightHand[0].itemID;
-        currentCharacterSaveData.rightWeapon02 = playerInventoryManager.weaponsInRightHand[1].itemID;
-        currentCharacterSaveData.rightWeapon03 = playerInventoryManager.weaponsInRightHand[2].itemID;
+        currentCharacterSaveData.currentLeftWeaponIndex = playerInventoryManager.leftWeaponIndex;
+
+        Func<WeaponItem, SerializableWeapon> Box = WorldSaveGameManager.instance.GetSerializableWeaponFromWeaponItem;
+        currentCharacterSaveData.currentRightWeaponIndex = playerInventoryManager.rightWeaponIndex;
+        currentCharacterSaveData.rightWeapon01 = Box(playerInventoryManager.weaponsInRightHand[0]);
+        currentCharacterSaveData.rightWeapon02 = Box(playerInventoryManager.weaponsInRightHand[1]);
+        currentCharacterSaveData.rightWeapon03 = Box(playerInventoryManager.weaponsInRightHand[2]);
 
         currentCharacterSaveData.currentLeftWeaponIndex = playerInventoryManager.leftWeaponIndex;
-        currentCharacterSaveData.leftWeapon01 = playerInventoryManager.weaponsInLeftHand[0].itemID;
-        currentCharacterSaveData.leftWeapon02 = playerInventoryManager.weaponsInLeftHand[1].itemID;
-        currentCharacterSaveData.leftWeapon03 = playerInventoryManager.weaponsInLeftHand[2].itemID;
+        currentCharacterSaveData.leftWeapon01 = Box(playerInventoryManager.weaponsInLeftHand[0]);
+        currentCharacterSaveData.leftWeapon02 = Box(playerInventoryManager.weaponsInLeftHand[1]);
+        currentCharacterSaveData.leftWeapon03 = Box(playerInventoryManager.weaponsInLeftHand[2]);
+
 
         currentCharacterSaveData.currentSpell = playerNetworkManager.currentSpellID.Value;
 
         currentCharacterSaveData.currentQuickSlotItemIndex = playerInventoryManager.currentQuickSlotItemIndex;
-        currentCharacterSaveData.quickSlotItem01 = playerInventoryManager.quickSlotItemInventory[0] != null ? playerInventoryManager.quickSlotItemInventory[0].itemID : -1;
-        currentCharacterSaveData.quickSlotItem02 = playerInventoryManager.quickSlotItemInventory[1] != null ? playerInventoryManager.quickSlotItemInventory[1].itemID : -1;
-        currentCharacterSaveData.quickSlotItem03 = playerInventoryManager.quickSlotItemInventory[2] != null ? playerInventoryManager.quickSlotItemInventory[2].itemID : -1;
-        currentCharacterSaveData.quickSlotItem04 = playerInventoryManager.quickSlotItemInventory[3] != null ? playerInventoryManager.quickSlotItemInventory[3].itemID : -1;
-        currentCharacterSaveData.quickSlotItem05 = playerInventoryManager.quickSlotItemInventory[4] != null ? playerInventoryManager.quickSlotItemInventory[4].itemID : -1;
-        currentCharacterSaveData.quickSlotItem06 = playerInventoryManager.quickSlotItemInventory[5] != null ? playerInventoryManager.quickSlotItemInventory[5].itemID : -1;
-        currentCharacterSaveData.quickSlotItem07 = playerInventoryManager.quickSlotItemInventory[6] != null ? playerInventoryManager.quickSlotItemInventory[6].itemID : -1;
-        currentCharacterSaveData.quickSlotItem08 = playerInventoryManager.quickSlotItemInventory[7] != null ? playerInventoryManager.quickSlotItemInventory[7].itemID : -1;
-        currentCharacterSaveData.quickSlotItem09 = playerInventoryManager.quickSlotItemInventory[8] != null ? playerInventoryManager.quickSlotItemInventory[8].itemID : -1;
-        currentCharacterSaveData.quickSlotItem10 = playerInventoryManager.quickSlotItemInventory[9] != null ? playerInventoryManager.quickSlotItemInventory[9].itemID : -1;
+        currentCharacterSaveData.quickSlotItem01 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[0], this);
+        currentCharacterSaveData.quickSlotItem02 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[1], this);
+        currentCharacterSaveData.quickSlotItem03 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[2], this);
+        currentCharacterSaveData.quickSlotItem04 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[3], this);
+        currentCharacterSaveData.quickSlotItem05 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[4], this);
+        currentCharacterSaveData.quickSlotItem06 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[5], this);
+        currentCharacterSaveData.quickSlotItem07 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[6], this);
+        currentCharacterSaveData.quickSlotItem08 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[7], this);
+        currentCharacterSaveData.quickSlotItem09 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[8], this);
+        currentCharacterSaveData.quickSlotItem10 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[9], this);
 
-        currentCharacterSaveData.quickSlotItem01Amount = playerInventoryManager.quickSlotItemInventory[0] != null ? playerInventoryManager.quickSlotItemInventory[0].GetAmountOfItem(this) : 0;
-        currentCharacterSaveData.quickSlotItem02Amount = playerInventoryManager.quickSlotItemInventory[1] != null ? playerInventoryManager.quickSlotItemInventory[1].GetAmountOfItem(this) : 0;
-        currentCharacterSaveData.quickSlotItem03Amount = playerInventoryManager.quickSlotItemInventory[2] != null ? playerInventoryManager.quickSlotItemInventory[2].GetAmountOfItem(this) : 0;
-        currentCharacterSaveData.quickSlotItem04Amount = playerInventoryManager.quickSlotItemInventory[3] != null ? playerInventoryManager.quickSlotItemInventory[3].GetAmountOfItem(this) : 0;
-        currentCharacterSaveData.quickSlotItem05Amount = playerInventoryManager.quickSlotItemInventory[4] != null ? playerInventoryManager.quickSlotItemInventory[4].GetAmountOfItem(this) : 0;
-        currentCharacterSaveData.quickSlotItem06Amount = playerInventoryManager.quickSlotItemInventory[5] != null ? playerInventoryManager.quickSlotItemInventory[5].GetAmountOfItem(this) : 0;
-        currentCharacterSaveData.quickSlotItem07Amount = playerInventoryManager.quickSlotItemInventory[6] != null ? playerInventoryManager.quickSlotItemInventory[6].GetAmountOfItem(this) : 0;
-        currentCharacterSaveData.quickSlotItem08Amount = playerInventoryManager.quickSlotItemInventory[7] != null ? playerInventoryManager.quickSlotItemInventory[7].GetAmountOfItem(this) : 0;
-        currentCharacterSaveData.quickSlotItem09Amount = playerInventoryManager.quickSlotItemInventory[8] != null ? playerInventoryManager.quickSlotItemInventory[8].GetAmountOfItem(this) : 0;
-        currentCharacterSaveData.quickSlotItem10Amount = playerInventoryManager.quickSlotItemInventory[9] != null ? playerInventoryManager.quickSlotItemInventory[9].GetAmountOfItem(this) : 0;
+        // TODO: 需要保存当前的弹药数量 以及当前的弹药类型
+        currentCharacterSaveData.currentMainProjectile = WorldSaveGameManager.instance.GetSerializableRangedProjectileFromRangedProjectileItem(playerInventoryManager.mainProjectile);
 
-        currentCharacterSaveData.currentMainProjectile = playerNetworkManager.mainProjectileID.Value;
-        currentCharacterSaveData.currentSecondaryProjectile = playerNetworkManager.secondaryProjectileID.Value;
-
-        currentCharacterSaveData.currentMainAmmoAmount = playerInventoryManager.mainProjectile != null ? playerInventoryManager.mainProjectile.currentAmmoAmount : 0;
-        currentCharacterSaveData.currentSecondaryAmmoAmount = playerInventoryManager.secondaryProjectile != null ? playerInventoryManager.secondaryProjectile.currentAmmoAmount : 0;
-
-        currentCharacterSaveData.currentMainProjectile = playerNetworkManager.mainProjectileID.Value;
-        currentCharacterSaveData.currentSecondaryProjectile = playerNetworkManager.secondaryProjectileID.Value;
+        currentCharacterSaveData.currentSecondaryProjectile = WorldSaveGameManager.instance.GetSerializableRangedProjectileFromRangedProjectileItem(playerInventoryManager.secondaryProjectile);
 
         // Spell
         if (playerInventoryManager.currentSpell != null)
@@ -361,8 +350,34 @@ public class PlayerManager : CharacterManager
         else
             currentCharacterSaveData.currentSpell = -1;
 
+        currentCharacterSaveData.remainingHealthFlasks = playerNetworkManager.remainingHealthFlasks.Value;
+        currentCharacterSaveData.remainingManaFlasks = playerNetworkManager.remainingManaFlasks.Value;
+
         // Inventory
-        currentCharacterSaveData.inventory = playerInventoryManager.characterInventory;
+        currentCharacterSaveData.weaponInInventory.Clear();
+        currentCharacterSaveData.quickSlotItemInInventory.Clear();
+        currentCharacterSaveData.rangedProjectileInInventory.Clear();
+        currentCharacterSaveData.equipmentInInventory.Clear();
+        for (int i = 0; i < playerInventoryManager.characterInventory.Count; i++)
+        {
+            Item item = playerInventoryManager.characterInventory[i];
+            if (item is WeaponItem weaponItem)
+            {
+                currentCharacterSaveData.weaponInInventory.Add(WorldSaveGameManager.instance.GetSerializableWeaponFromWeaponItem(weaponItem));
+            }
+            else if (item is QuickSlotItem quickSlotItem)
+            {
+                currentCharacterSaveData.quickSlotItemInInventory.Add(WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(quickSlotItem, this));
+            }
+            else if (item is RangedProjectileItem rangedProjectileItem)
+            {
+                currentCharacterSaveData.rangedProjectileInInventory.Add(WorldSaveGameManager.instance.GetSerializableRangedProjectileFromRangedProjectileItem(rangedProjectileItem));
+            }
+            else if (item is EquipmentItem equipmentItem)
+            {
+                currentCharacterSaveData.equipmentInInventory.Add(equipmentItem.itemID);
+            }
+        }
     }
 
     /// <summary>
@@ -442,34 +457,22 @@ public class PlayerManager : CharacterManager
 
 
         // Weapons Right Hand
-        if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon01) != null)
-            playerInventoryManager.weaponsInRightHand[0] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon01));
-        else
-            playerInventoryManager.weaponsInRightHand[0] = Instantiate(WorldItemDatabase.instance.unarmedWeapon);
-        if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon02) != null)
-            playerInventoryManager.weaponsInRightHand[1] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon02));
-        else
-            playerInventoryManager.weaponsInRightHand[1] = Instantiate(WorldItemDatabase.instance.unarmedWeapon); ;
-        if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon03) != null)
-            playerInventoryManager.weaponsInRightHand[2] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.rightWeapon03));
-        else
-            playerInventoryManager.weaponsInRightHand[2] = Instantiate(WorldItemDatabase.instance.unarmedWeapon); ;
-
+        playerInventoryManager.rightWeaponIndex = currentCharacterSaveData.currentRightWeaponIndex;
+        playerInventoryManager.weaponsInRightHand[0] = currentCharacterSaveData.rightWeapon01.GetWeapon();
+        playerInventoryManager.weaponsInRightHand[1] = currentCharacterSaveData.rightWeapon02.GetWeapon();
+        playerInventoryManager.weaponsInRightHand[2] = currentCharacterSaveData.rightWeapon03.GetWeapon();
 
         // Weapons Left Hand
-        if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon01) != null)
-            playerInventoryManager.weaponsInLeftHand[0] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon01));
-        else
-            playerInventoryManager.weaponsInLeftHand[0] = Instantiate(WorldItemDatabase.instance.unarmedWeapon); ;
-        if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon02) != null)
-            playerInventoryManager.weaponsInLeftHand[1] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon02));
-        else
-            playerInventoryManager.weaponsInLeftHand[1] = Instantiate(WorldItemDatabase.instance.unarmedWeapon); ;
-        if (WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon03) != null)
-            playerInventoryManager.weaponsInLeftHand[2] = Instantiate(WorldItemDatabase.instance.GetWeaponByID(currentCharacterSaveData.leftWeapon03));
-        else
-            playerInventoryManager.weaponsInLeftHand[2] = Instantiate(WorldItemDatabase.instance.unarmedWeapon); ;
+        playerInventoryManager.leftWeaponIndex = currentCharacterSaveData.currentLeftWeaponIndex;
+        playerInventoryManager.weaponsInLeftHand[0] = currentCharacterSaveData.leftWeapon01.GetWeapon();
+        playerInventoryManager.weaponsInLeftHand[1] = currentCharacterSaveData.leftWeapon02.GetWeapon();
+        playerInventoryManager.weaponsInLeftHand[2] = currentCharacterSaveData.leftWeapon03.GetWeapon();
 
+        playerInventoryManager.currentRightHandWeapon = playerInventoryManager.weaponsInRightHand[playerInventoryManager.rightWeaponIndex];
+        playerInventoryManager.currentLeftHandWeapon = playerInventoryManager.weaponsInLeftHand[playerInventoryManager.leftWeaponIndex];
+
+        playerEquipmentManager.RefreshRightWeapon();
+        playerEquipmentManager.RefreshLeftWeapon();
 
         // Spell
         if (WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell) != null)
@@ -478,107 +481,26 @@ public class PlayerManager : CharacterManager
             playerNetworkManager.currentSpellID.Value = -1;
 
         // Quick Slot Items
-        if (WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem01) != null)
-        {
-            playerInventoryManager.quickSlotItemInventory[0] = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem01));
-            playerInventoryManager.quickSlotItemInventory[0].SetAmountOfItem(this, currentCharacterSaveData.quickSlotItem01Amount);
-        }
-        else
-            playerInventoryManager.quickSlotItemInventory[0] = null;
 
-        if (WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem02) != null)
-        {
-            playerInventoryManager.quickSlotItemInventory[1] = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem02));
-            playerInventoryManager.quickSlotItemInventory[1].SetAmountOfItem(this, currentCharacterSaveData.quickSlotItem02Amount);
-        }
-        else
-            playerInventoryManager.quickSlotItemInventory[1] = null;
+        playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem01, 0);
+        playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem02, 1);
+        playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem03, 2);
+        playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem04, 3);
+        playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem05, 4);
+        playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem06, 5);
+        playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem07, 6);
+        playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem08, 7);
+        playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem09, 8);
+        playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem10, 9);
 
-        if (WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem03) != null)
-        {
-            playerInventoryManager.quickSlotItemInventory[2] = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem03));
-            playerInventoryManager.quickSlotItemInventory[2].SetAmountOfItem(this, currentCharacterSaveData.quickSlotItem03Amount);
-        }
-        else
-            playerInventoryManager.quickSlotItemInventory[2] = null;
 
-        if (WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem04) != null)
-        {
-            playerInventoryManager.quickSlotItemInventory[3] = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem04));
-            playerInventoryManager.quickSlotItemInventory[3].SetAmountOfItem(this, currentCharacterSaveData.quickSlotItem04Amount);
-        }
-        else
-            playerInventoryManager.quickSlotItemInventory[3] = null;
-        if (WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem05) != null)
-        {
-            playerInventoryManager.quickSlotItemInventory[4] = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem05));
-            playerInventoryManager.quickSlotItemInventory[4].SetAmountOfItem(this, currentCharacterSaveData.quickSlotItem05Amount);
-        }
-        else
-            playerInventoryManager.quickSlotItemInventory[4] = null;
-        if (WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem06) != null)
-        {
-            playerInventoryManager.quickSlotItemInventory[5] = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem06));
-            playerInventoryManager.quickSlotItemInventory[5].SetAmountOfItem(this, currentCharacterSaveData.quickSlotItem06Amount);
-        }
-        else
-            playerInventoryManager.quickSlotItemInventory[5] = null;
-        if (WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem07) != null)
-        {
-            playerInventoryManager.quickSlotItemInventory[6] = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem07));
-            playerInventoryManager.quickSlotItemInventory[6].SetAmountOfItem(this, currentCharacterSaveData.quickSlotItem07Amount);
-        }
-        else
-            playerInventoryManager.quickSlotItemInventory[6] = null;
-        if (WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem08) != null)
-        {
-            playerInventoryManager.quickSlotItemInventory[7] = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem08));
-            playerInventoryManager.quickSlotItemInventory[7].SetAmountOfItem(this, currentCharacterSaveData.quickSlotItem08Amount);
-        }
-        else
-            playerInventoryManager.quickSlotItemInventory[7] = null;
-        if (WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem09) != null)
-        {
-            playerInventoryManager.quickSlotItemInventory[8] = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem09));
-            playerInventoryManager.quickSlotItemInventory[8].SetAmountOfItem(this, currentCharacterSaveData.quickSlotItem09Amount);
-        }
-        else
-            playerInventoryManager.quickSlotItemInventory[8] = null;
-        if (WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem10) != null)
-        {
-            playerInventoryManager.quickSlotItemInventory[9] = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(currentCharacterSaveData.quickSlotItem10));
-            playerInventoryManager.quickSlotItemInventory[9].SetAmountOfItem(this, currentCharacterSaveData.quickSlotItem10Amount);
-        }
-        else
-            playerInventoryManager.quickSlotItemInventory[9] = null;
-
-        RangedProjectileItem mainProjectile = WorldItemDatabase.instance.GetProjectileByID(currentCharacterSaveData.currentMainProjectile);
-        if (mainProjectile != null)
-        {
-            mainProjectile = Instantiate(mainProjectile);
-            mainProjectile.SetAmmotAmount(currentCharacterSaveData.currentMainAmmoAmount);
-        }
+        RangedProjectileItem mainProjectile = currentCharacterSaveData.currentMainProjectile.GetProjectile();
         playerEquipmentManager.LoadMainProjectileEquipment(mainProjectile);
 
-        RangedProjectileItem secondaryProjectile = WorldItemDatabase.instance.GetProjectileByID(currentCharacterSaveData.currentSecondaryProjectile);
-        if (secondaryProjectile != null)
-        {
-            secondaryProjectile = Instantiate(secondaryProjectile);
-            secondaryProjectile.SetAmmotAmount(currentCharacterSaveData.currentSecondaryAmmoAmount);
-        }
+        RangedProjectileItem secondaryProjectile = currentCharacterSaveData.currentSecondaryProjectile.GetProjectile();
         playerEquipmentManager.LoadSecondaryProjectileEquipment(secondaryProjectile);
 
         playerEquipmentManager.EquipArmor();
-
-        if (currentCharacterSaveData.currentRightWeaponIndex == -1)
-            playerInventoryManager.rightWeaponIndex = 0;
-        else
-            playerInventoryManager.rightWeaponIndex = currentCharacterSaveData.currentRightWeaponIndex;
-
-        if (currentCharacterSaveData.currentLeftWeaponIndex == -1)
-            playerInventoryManager.leftWeaponIndex = 0;
-        else
-            playerInventoryManager.leftWeaponIndex = currentCharacterSaveData.currentLeftWeaponIndex;
 
         if (currentCharacterSaveData.currentQuickSlotItemIndex == -1)
             playerInventoryManager.currentQuickSlotItemIndex = 0;
@@ -591,12 +513,35 @@ public class PlayerManager : CharacterManager
                 PlayerUIManager.instance.playerUIHudManager.SetQuickSlotCountText(playerInventoryManager.currentQuickSlotItem.GetAmountOfItem(this), playerInventoryManager.currentQuickSlotItem.isConsumable);
         }
 
-        playerNetworkManager.currentRightHandWeaponID.Value = playerInventoryManager.weaponsInRightHand[playerInventoryManager.rightWeaponIndex].itemID;
-        playerNetworkManager.currentLeftHandWeaponID.Value = playerInventoryManager.weaponsInLeftHand[playerInventoryManager.leftWeaponIndex].itemID;
         playerNetworkManager.currentSpellID.Value = currentCharacterSaveData.currentSpell;
         playerNetworkManager.currentQuickSlotItemID.Value = playerInventoryManager.quickSlotItemInventory[playerInventoryManager.currentQuickSlotItemIndex] != null ? playerInventoryManager.quickSlotItemInventory[playerInventoryManager.currentQuickSlotItemIndex].itemID : -1;
+        playerNetworkManager.remainingHealthFlasks.Value = currentCharacterSaveData.remainingHealthFlasks;
+        playerNetworkManager.remainingManaFlasks.Value = currentCharacterSaveData.remainingManaFlasks;
 
-        playerInventoryManager.characterInventory = currentCharacterSaveData.inventory;
+        // Inventory
+        playerInventoryManager.characterInventory.Clear();
+        for (int i = 0; i < currentCharacterSaveData.weaponInInventory.Count; i++)
+        {
+            playerInventoryManager.characterInventory.Add(currentCharacterSaveData.weaponInInventory[i].GetWeapon());
+        }
+        for (int i = 0; i < currentCharacterSaveData.quickSlotItemInInventory.Count; i++)
+        {
+            playerInventoryManager.characterInventory.Add(currentCharacterSaveData.quickSlotItemInInventory[i].GetQuickSlotItem());
+        }
+        for (int i = 0; i < currentCharacterSaveData.rangedProjectileInInventory.Count; i++)
+        {
+            playerInventoryManager.characterInventory.Add(currentCharacterSaveData.rangedProjectileInInventory[i].GetProjectile());
+        }
+        for (int i = 0; i < currentCharacterSaveData.equipmentInInventory.Count; i++)
+        {
+            int id = currentCharacterSaveData.equipmentInInventory[i];
+            Item definition = WorldItemDatabase.instance.GetItemByID(id);
+
+            if (definition is EquipmentItem)
+            {
+                playerInventoryManager.characterInventory.Add(Instantiate(definition));
+            }
+        }
 
     }
 
