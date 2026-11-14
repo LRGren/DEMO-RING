@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Test Spell
   itemIcon: {fileID: 0}
   itemDescription: 
-  itemID: 0
+  itemID: 70012
   spellClass: 0
   fullChargeModifier: 2
   spellCastWarmUpFX: {fileID: 0}

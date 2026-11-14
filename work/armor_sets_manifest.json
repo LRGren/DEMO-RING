@@ -1,0 +1,375 @@
+[
+  {
+    "set": "Archer",
+    "preset": 58,
+    "slot": "Head",
+    "path": "Assets/Data/Items/Armor/Archer Set/Archer Hat.asset",
+    "guid": "a7dd31d746d041aba2b4ff19e8eae568",
+    "stats": {
+      "itemWeight": 3,
+      "physicalDamageAbsorption": 2.8,
+      "magicDamageAbsorption": 3.1,
+      "fireDamageAbsorption": 3.4,
+      "lightningDamageAbsorption": 3.6,
+      "holyDamageAbsorption": 3.1,
+      "immunity": 30,
+      "robustness": 14,
+      "focus": 14,
+      "vitality": 16,
+      "poise": 4
+    },
+    "models": [
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Archer's Set/Archer Hat.asset",
+        "guid": "49c3ac2e9c354a43b973b475d05546dd",
+        "type": 1,
+        "male": "Chr_HeadCoverings_Base_Hair_11",
+        "female": "Chr_HeadCoverings_Base_Hair_11"
+      }
+    ],
+    "balanceSource": "https://wiki.eso-ui.com/index.php/Elden_Ring:Bandit_Mask"
+  },
+  {
+    "set": "Archer",
+    "preset": 58,
+    "slot": "Body",
+    "path": "Assets/Data/Items/Armor/Archer Set/Archer Armor.asset",
+    "guid": "d8f8cde1353043c4af11f0d706f41124",
+    "stats": {
+      "itemWeight": 7.7,
+      "physicalDamageAbsorption": 8,
+      "magicDamageAbsorption": 10.2,
+      "fireDamageAbsorption": 10.2,
+      "lightningDamageAbsorption": 10.9,
+      "holyDamageAbsorption": 9.5,
+      "immunity": 52,
+      "robustness": 32,
+      "focus": 54,
+      "vitality": 54,
+      "poise": 15
+    },
+    "models": [
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Archer's Set/Archer Armor.asset",
+        "guid": "f425a03f373f457fbbfdb6f185aa2517",
+        "type": 5,
+        "male": "Chr_Torso_Male_10",
+        "female": "Chr_Torso_Female_10"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Archer's Set/Archer Armor Back.asset",
+        "guid": "7d7689c0979254c4b9493d2cbd0cc616",
+        "type": 6,
+        "male": "Chr_BackAttachment_11",
+        "female": "Chr_BackAttachment_11"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Archer's Set/Archer Armor Upper Arm Right.asset",
+        "guid": "fbcdceb6adc799845aff867f62a3c48c",
+        "type": 8,
+        "male": "Chr_ArmUpperRight_Male_02",
+        "female": "Chr_ArmUpperRight_Female_02"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Archer's Set/Archer Armor Upper Arm Left.asset",
+        "guid": "63c754d5045246588dc8932f6c4b3ce3",
+        "type": 13,
+        "male": "Chr_ArmUpperLeft_Male_02",
+        "female": "Chr_ArmUpperLeft_Female_02"
+      }
+    ],
+    "balanceSource": "https://wiki.eso-ui.com/index.php/Elden_Ring:Bandit_Garb"
+  },
+  {
+    "set": "Archer",
+    "preset": 58,
+    "slot": "Hand",
+    "path": "Assets/Data/Items/Armor/Archer Set/Archer Gauntlets.asset",
+    "guid": "f9a6adfef43f46358c8913954f31ad96",
+    "stats": {
+      "itemWeight": 1.7,
+      "physicalDamageAbsorption": 1.5,
+      "magicDamageAbsorption": 1.9,
+      "fireDamageAbsorption": 1.9,
+      "lightningDamageAbsorption": 2.1,
+      "holyDamageAbsorption": 1.7,
+      "immunity": 15,
+      "robustness": 8,
+      "focus": 17,
+      "vitality": 17,
+      "poise": 2
+    },
+    "models": [
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Archer's Set/Archer Gauntlets Lower Arm Right.asset",
+        "guid": "54c358769c1140b9a35edbb5a6567906",
+        "type": 10,
+        "male": "Chr_ArmLowerRight_Male_02",
+        "female": "Chr_ArmLowerRight_Female_02"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Archer's Set/Archer Gauntlets Hand Right.asset",
+        "guid": "28b899bcc6994381906daf7b27bd3340",
+        "type": 11,
+        "male": "Chr_HandRight_Male_05",
+        "female": "Chr_HandRight_Female_05"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Archer's Set/Archer Gauntlets Lower Arm Left.asset",
+        "guid": "4fb80bf2f6134c20969c7ecafadea6ba",
+        "type": 15,
+        "male": "Chr_ArmLowerLeft_Male_02",
+        "female": "Chr_ArmLowerLeft_Female_02"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Archer's Set/Archer Gauntlets Hand Left.asset",
+        "guid": "83a43bc9545a4162a751a35ffd68b4d0",
+        "type": 16,
+        "male": "Chr_HandLeft_Male_05",
+        "female": "Chr_HandLeft_Female_05"
+      }
+    ],
+    "balanceSource": "https://wiki.eso-ui.com/index.php/Elden_Ring:Bandit_Manchettes"
+  },
+  {
+    "set": "Archer",
+    "preset": 58,
+    "slot": "Leg",
+    "path": "Assets/Data/Items/Armor/Archer Set/Archer Greaves.asset",
+    "guid": "b8e65da6ee48466a9d9b07480ea5fdb2",
+    "stats": {
+      "itemWeight": 4.4,
+      "physicalDamageAbsorption": 4,
+      "magicDamageAbsorption": 5.4,
+      "fireDamageAbsorption": 5.4,
+      "lightningDamageAbsorption": 5.8,
+      "holyDamageAbsorption": 5,
+      "immunity": 34,
+      "robustness": 20,
+      "focus": 35,
+      "vitality": 35,
+      "poise": 8
+    },
+    "models": [
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Archer's Set/Archer Greaves Hips.asset",
+        "guid": "5c23e944b4f84ea28cd01ea843bdc351",
+        "type": 17,
+        "male": "Chr_Hips_Male_27",
+        "female": "Chr_Hips_Female_27"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Archer's Set/Archer Greaves Leg Right.asset",
+        "guid": "32d1ec4d85da428795beb79ce6dbb868",
+        "type": 19,
+        "male": "Chr_LegRight_Male_13",
+        "female": "Chr_LegRight_Female_13"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Archer's Set/Archer Greaves Leg Left.asset",
+        "guid": "fead0f02c72341ffb2ab8e725ce5a4d9",
+        "type": 21,
+        "male": "Chr_LegLeft_Male_13",
+        "female": "Chr_LegLeft_Female_13"
+      }
+    ],
+    "balanceSource": "https://wiki.eso-ui.com/index.php/Elden_Ring:Bandit_Boots"
+  },
+  {
+    "set": "Berserker",
+    "preset": 69,
+    "slot": "Head",
+    "path": "Assets/Data/Items/Armor/Berserker Set/Berserker Hood.asset",
+    "guid": "742b3a53ecc74f2885dbe614d7b1ea0b",
+    "stats": {
+      "itemWeight": 4,
+      "physicalDamageAbsorption": 4.6,
+      "magicDamageAbsorption": 3.1,
+      "fireDamageAbsorption": 3.6,
+      "lightningDamageAbsorption": 2.8,
+      "holyDamageAbsorption": 2.8,
+      "immunity": 14,
+      "robustness": 23,
+      "focus": 9,
+      "vitality": 9,
+      "poise": 7
+    },
+    "models": [
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Hood.asset",
+        "guid": "c364ea02fc0c47cd963748c858ef8ea2",
+        "type": 2,
+        "male": "Chr_HeadCoverings_No_Hair_11",
+        "female": "Chr_HeadCoverings_No_Hair_11"
+      }
+    ],
+    "balanceSource": "https://wiki.eso-ui.com/index.php/Elden_Ring:Vagabond_Knight_Helm"
+  },
+  {
+    "set": "Berserker",
+    "preset": 69,
+    "slot": "Body",
+    "path": "Assets/Data/Items/Armor/Berserker Set/Berserker Armor.asset",
+    "guid": "95b111323d1349c6ad25f3afe059d378",
+    "stats": {
+      "itemWeight": 10.6,
+      "physicalDamageAbsorption": 13.5,
+      "magicDamageAbsorption": 10.2,
+      "fireDamageAbsorption": 10.9,
+      "lightningDamageAbsorption": 8.8,
+      "holyDamageAbsorption": 8.8,
+      "immunity": 35,
+      "robustness": 57,
+      "focus": 23,
+      "vitality": 23,
+      "poise": 22
+    },
+    "models": [
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Armor.asset",
+        "guid": "4cce388d8a004508960b6191e9bd6153",
+        "type": 5,
+        "male": "Chr_Torso_Male_02",
+        "female": "Chr_Torso_Female_02"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Armor Back.asset",
+        "guid": "3b3aa4e0785a42cd9bb95fb8bf446453",
+        "type": 6,
+        "male": "Chr_BackAttachment_14",
+        "female": "Chr_BackAttachment_14"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Armor Upper Arm Right.asset",
+        "guid": "ba0ad88b55104de3b193181a3dfa11ed",
+        "type": 8,
+        "male": "Chr_ArmUpperRight_Male_10",
+        "female": "Chr_ArmUpperRight_Female_10"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Armor Upper Arm Left.asset",
+        "guid": "e268fa0945fc460f8bcfa04dfe8d7426",
+        "type": 13,
+        "male": "Chr_ArmUpperLeft_Male_19",
+        "female": "Chr_ArmUpperLeft_Female_19"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Armor Elbow Left.asset",
+        "guid": "9139d997555843b4939b8d6ad8a259d0",
+        "type": 14,
+        "male": "Chr_ElbowAttachLeft_02",
+        "female": "Chr_ElbowAttachLeft_02"
+      }
+    ],
+    "balanceSource": "https://wiki.eso-ui.com/index.php/Elden_Ring:Vagabond_Knight_Armor"
+  },
+  {
+    "set": "Berserker",
+    "preset": 69,
+    "slot": "Hand",
+    "path": "Assets/Data/Items/Armor/Berserker Set/Berserker Gauntlets.asset",
+    "guid": "eb3dc0f9486543bda4266e191c3190be",
+    "stats": {
+      "itemWeight": 3.5,
+      "physicalDamageAbsorption": 3.3,
+      "magicDamageAbsorption": 2.5,
+      "fireDamageAbsorption": 2.7,
+      "lightningDamageAbsorption": 2.1,
+      "holyDamageAbsorption": 2.1,
+      "immunity": 12,
+      "robustness": 19,
+      "focus": 8,
+      "vitality": 8,
+      "poise": 5
+    },
+    "models": [
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Gauntlets Lower Arm Right.asset",
+        "guid": "dbf90d31290c4de2a1cbc75b719d1222",
+        "type": 10,
+        "male": "Chr_ArmLowerRight_Male_09",
+        "female": "Chr_ArmLowerRight_Female_09"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Gauntlets Hand Right.asset",
+        "guid": "87d166c920ae4e92bbcfb6b48b514865",
+        "type": 11,
+        "male": "Chr_HandRight_Male_09",
+        "female": "Chr_HandRight_Female_09"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Gauntlets Lower Arm Left.asset",
+        "guid": "109b474b740746bbba679d29d11417bb",
+        "type": 15,
+        "male": "Chr_ArmLowerLeft_Male_09",
+        "female": "Chr_ArmLowerLeft_Female_09"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Gauntlets Hand Left.asset",
+        "guid": "6e76f17b4e4947b8a11cbf49da2ad5a3",
+        "type": 16,
+        "male": "Chr_HandLeft_Male_09",
+        "female": "Chr_HandLeft_Female_09"
+      }
+    ],
+    "balanceSource": "https://wiki.eso-ui.com/index.php/Elden_Ring:Vagabond_Knight_Gauntlets"
+  },
+  {
+    "set": "Berserker",
+    "preset": 69,
+    "slot": "Leg",
+    "path": "Assets/Data/Items/Armor/Berserker Set/Berserker Greaves.asset",
+    "guid": "ae6a8ca7b63e48ad8b6296721f473758",
+    "stats": {
+      "itemWeight": 5.7,
+      "physicalDamageAbsorption": 7.4,
+      "magicDamageAbsorption": 5,
+      "fireDamageAbsorption": 5.8,
+      "lightningDamageAbsorption": 4.5,
+      "holyDamageAbsorption": 4.5,
+      "immunity": 20,
+      "robustness": 34,
+      "focus": 13,
+      "vitality": 13,
+      "poise": 12
+    },
+    "models": [
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Greaves Hips.asset",
+        "guid": "415450de2a8e4258aff242b5ab00b5c5",
+        "type": 17,
+        "male": "Chr_Hips_Male_13",
+        "female": "Chr_Hips_Female_13"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Greaves Hips Attachment.asset",
+        "guid": "4a94aaa6cb0e40fcba8d7b35a550a451",
+        "type": 18,
+        "male": "Chr_HipsAttachment_12",
+        "female": "Chr_HipsAttachment_12"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Greaves Leg Right.asset",
+        "guid": "332c422336a04cd69dfed073738ff3a0",
+        "type": 19,
+        "male": "Chr_LegRight_Male_11",
+        "female": "Chr_LegRight_Female_11"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Greaves Leg Left.asset",
+        "guid": "ea450646d9f74dd0bdf9f4d1a4b6a48a",
+        "type": 21,
+        "male": "Chr_LegLeft_Male_11",
+        "female": "Chr_LegLeft_Female_11"
+      },
+      {
+        "path": "Assets/Data/Items/Armor/_ArmorModels/Berserker Set/Berserker Greaves Knee Left.asset",
+        "guid": "e2214bf6fbfe49eb8a85dbe5b106a927",
+        "type": 22,
+        "male": "Chr_KneeAttachLeft_08",
+        "female": "Chr_KneeAttachLeft_08"
+      }
+    ],
+    "balanceSource": "https://wiki.eso-ui.com/index.php/Elden_Ring:Vagabond_Knight_Greaves"
+  }
+]

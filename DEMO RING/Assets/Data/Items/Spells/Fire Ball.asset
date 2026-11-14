@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Fire Ball
   itemIcon: {fileID: 21300000, guid: 07caf3d1930bab14aa8f6dcdf2db871a, type: 3}
   itemDescription: 
-  itemID: 70012
+  itemID: 70013
   spellClass: 0
   fullCastStaminaCostModifier: 1.32
   staminaCost: 25

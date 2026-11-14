@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Long Sword
   itemIcon: {fileID: 21300114, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
   itemDescription: A straight sword
-  itemID: 1
+  itemID: 10001
   itemWeight: 3.5
   weaponAnimator: {fileID: 22100000, guid: 9579843364df031448b1014815f84953, type: 2}
   weaponType: 0

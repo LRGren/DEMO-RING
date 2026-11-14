@@ -18,7 +18,7 @@ MonoBehaviour:
     plate.
 
     Such metal armor is heavy, but provides considerable damage negation.'
-  itemID: 40006
+  itemID: 40009
   itemWeight: 3.5
   physicalDamageAbsorption: 3.1
   magicDamageAbsorption: 2.7

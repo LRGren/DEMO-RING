@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eee7b945bb11f874d9984d04e028acf3, type: 3}
+  m_Name: Wretch
+  m_EditorClassIdentifier: 
+  className: Wretch
+  level: 1
+  vigor: 10
+  mind: 10
+  endurance: 10
+  strength: 10
+  dexterity: 10
+  intelligence: 10
+  faith: 10
+  arcane: 10
+  startingRightWeapon01: {fileID: 11400000, guid: 4ee2564e9a7e50d499ee195376c42e31,
+    type: 2}
+  startingRightWeapon02: {fileID: 0}
+  startingRightWeapon03: {fileID: 0}
+  startingLeftWeapon01: {fileID: 11400000, guid: a864884746fe73f4a8f7470d75d141c2,
+    type: 2}
+  startingLeftWeapon02: {fileID: 0}
+  startingLeftWeapon03: {fileID: 0}
+  startingHeadEquipment: {fileID: 0}
+  startingBodyEquipment: {fileID: 0}
+  startingHandEquipment: {fileID: 0}
+  startingLegEquipment: {fileID: 0}
+  startingQuickSlotItem01: {fileID: 11400000, guid: f571f742dac8c2845ae72dec2ddbd06e,
+    type: 2}
+  startingQuickSlotItem02: {fileID: 11400000, guid: 8fc4faae818fe52428576c4e5d338102,
+    type: 2}
+  startingQuickSlotItem03: {fileID: 0}
+  startingQuickSlotItem04: {fileID: 0}
+  startingQuickSlotItem05: {fileID: 0}
+  startingQuickSlotItem06: {fileID: 0}
+  startingQuickSlotItem07: {fileID: 0}
+  startingQuickSlotItem08: {fileID: 0}
+  startingQuickSlotItem09: {fileID: 0}
+  startingQuickSlotItem10: {fileID: 0}
+  startingMainRangedProjectile: {fileID: 0}
+  startingMainRangedProjectileAmount: 0
+  startingSecondaryRangedProjectile: {fileID: 0}
+  startingSecondaryRangedProjectileAmount: 0
+  startingSpell01: {fileID: 0}
+  startingHealthFlaskCount: 3
+  startingManaFlaskCount: 1

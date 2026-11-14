@@ -22,7 +22,7 @@ MonoBehaviour:
 
 
     Such metal armor is heavy, but provides considerable damage negation.'
-  itemID: 20004
+  itemID: 20007
   itemWeight: 4.6
   physicalDamageAbsorption: 4.4
   magicDamageAbsorption: 3.8

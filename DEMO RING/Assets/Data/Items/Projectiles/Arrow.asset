@@ -24,7 +24,7 @@ MonoBehaviour:
   upwardVelocity: 0
   ammoMass: 1
   maxAmmoAmount: 999
-  currentAmmoAmount: 10
+  currentAmmoAmount: 999
   physicalDamage: 45
   magicalDamage: 0
   fireDamage: 0

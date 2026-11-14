@@ -17,6 +17,9 @@ public class WeaponItem : EquipmentItem
     [Header("Weapon Model")]
     public GameObject weaponModel;
 
+    [Header("Left Hand Placement")]
+    public bool useAsymmetricLeftHandSlot;
+
     [Header("Weapon Requirements")]
     public int strengthREQ = 0;
     public int dexterityREQ = 0;

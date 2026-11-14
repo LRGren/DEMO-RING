@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d8e197b744753ab4ea9a571f221cf452
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 22100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151650
+  packageName: Human Melee Animations
+  packageVersion: 2.1
+  assetPath: Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Melee
+    Animations/AnimatorControllers/Female/1H/HumanF@Run_BackwardLeft - 1H.overrideController
+  uploadId: 909592

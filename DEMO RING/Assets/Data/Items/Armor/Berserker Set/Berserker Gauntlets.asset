@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d593dd67f8ac01e4790e7e1a327de079, type: 3}
+  m_Name: Berserker Gauntlets
+  m_EditorClassIdentifier:
+  itemName: Berserker Gauntlets
+  itemIcon: {fileID: 21300080, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  itemDescription: Sturdy bracers and gloves made for close combat.
+  itemID: 40011
+  itemWeight: 3.5
+  physicalDamageAbsorption: 3.3
+  magicDamageAbsorption: 2.5
+  fireDamageAbsorption: 2.7
+  lightningDamageAbsorption: 2.1
+  holyDamageAbsorption: 2.1
+  immunity: 12
+  robustness: 19
+  focus: 8
+  vitality: 8
+  poise: 5
+  equipmentModels:
+  - {fileID: 11400000, guid: dbf90d31290c4de2a1cbc75b719d1222, type: 2}
+  - {fileID: 11400000, guid: 87d166c920ae4e92bbcfb6b48b514865, type: 2}
+  - {fileID: 11400000, guid: 109b474b740746bbba679d29d11417bb, type: 2}
+  - {fileID: 11400000, guid: 6e76f17b4e4947b8a11cbf49da2ad5a3, type: 2}

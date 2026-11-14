@@ -1,0 +1,18 @@
+{
+    "passed": true,
+    "items": 8,
+    "genderModelChecks": 54,
+    "attachmentCleanupChecks": 6,
+    "error": "",
+    "messages": [
+        "Loaded Assets/Data/Items/Armor/Archer Set/Archer Hat.asset; both gender mappings passed.",
+        "Loaded Assets/Data/Items/Armor/Archer Set/Archer Armor.asset; both gender mappings passed.",
+        "Loaded Assets/Data/Items/Armor/Archer Set/Archer Gauntlets.asset; both gender mappings passed.",
+        "Loaded Assets/Data/Items/Armor/Archer Set/Archer Greaves.asset; both gender mappings passed.",
+        "Loaded Assets/Data/Items/Armor/Berserker Set/Berserker Hood.asset; both gender mappings passed.",
+        "Loaded Assets/Data/Items/Armor/Berserker Set/Berserker Armor.asset; both gender mappings passed.",
+        "Loaded Assets/Data/Items/Armor/Berserker Set/Berserker Gauntlets.asset; both gender mappings passed.",
+        "Loaded Assets/Data/Items/Armor/Berserker Set/Berserker Greaves.asset; both gender mappings passed.",
+        "Archer -> Berserker -> Archer switch and attachment cleanup passed for both genders."
+    ]
+}

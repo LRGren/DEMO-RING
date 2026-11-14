@@ -209,19 +209,14 @@ public class PlayerCombatManager : CharacterCombatManager
     // Combo
     public override void EnableDoCombo()
     {
-        if (player.playerNetworkManager.isUsingRightHand.Value)
-        {
-            player.playerCombatManager.canComboWithMainHandWeapon = true;
-        }
-        else
-        {
-
-        }
+        // Two-handed attacks share the main-hand combo chain, regardless of which hand owns the weapon.
+        canComboWithMainHandWeapon = player.playerNetworkManager.isUsingRightHand.Value
+            || player.playerNetworkManager.isTwoHandingWeapon.Value;
     }
 
     public override void DisableDoCombo()
     {
-        player.playerCombatManager.canComboWithMainHandWeapon = false;
+        canComboWithMainHandWeapon = false;
     }
 
     // Projectile

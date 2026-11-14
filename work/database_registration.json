@@ -1,0 +1,173 @@
+{
+  "existing": [
+    {
+      "field": "weapons",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Weapons\\Melee Weapons\\Unarmed.asset",
+      "guid": "910b8aa8aaee5f6428bfd2b3e45a746f",
+      "storedID": 10000,
+      "runtimeID": 10000
+    },
+    {
+      "field": "weapons",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Weapons\\Melee Weapons\\Long Sword.asset",
+      "guid": "5127d45e178cc8649b053be9de266c07",
+      "storedID": 1,
+      "runtimeID": 10001
+    },
+    {
+      "field": "weapons",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Weapons\\Melee Weapons\\Broad Sword.asset",
+      "guid": "fd164a1d6f05bda478dd90018ab02d46",
+      "storedID": 10002,
+      "runtimeID": 10002
+    },
+    {
+      "field": "weapons",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Weapons\\Melee Weapons\\Wooden Shield.asset",
+      "guid": "a864884746fe73f4a8f7470d75d141c2",
+      "storedID": 10003,
+      "runtimeID": 10003
+    },
+    {
+      "field": "weapons",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Weapons\\Melee Weapons\\Wooden Light Shield.asset",
+      "guid": "cda573b7888932947ad828b9a17c0add",
+      "storedID": 10004,
+      "runtimeID": 10004
+    },
+    {
+      "field": "weapons",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Weapons\\Caster Weapons\\Charm.asset",
+      "guid": "6d5004223b4f5b4428a2734068010c59",
+      "storedID": 10005,
+      "runtimeID": 10005
+    },
+    {
+      "field": "weapons",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Weapons\\Ranged Weapons\\Long Bow.asset",
+      "guid": "3c972ae58e78a864bb5afaf012a4d215",
+      "storedID": 10006,
+      "runtimeID": 10006
+    },
+    {
+      "field": "headEquipment",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Armor\\Knight's Set\\Knight Helm.asset",
+      "guid": "00e9a9beff7e05a49baf85220cdd4cde",
+      "storedID": 20004,
+      "runtimeID": 20007
+    },
+    {
+      "field": "bodyEquipment",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Armor\\Knight's Set\\Knight Armor.asset",
+      "guid": "80ebf9e87d58d424a83bca9be888b238",
+      "storedID": 30005,
+      "runtimeID": 30008
+    },
+    {
+      "field": "handEquipment",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Armor\\Knight's Set\\Knight Gauntlets.asset",
+      "guid": "23a2e125ed5097747a3be1aacff1f99a",
+      "storedID": 40006,
+      "runtimeID": 40009
+    },
+    {
+      "field": "legEquipment",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Armor\\Knight's Set\\Knight Greaves.asset",
+      "guid": "9b995ab3578771e479a97bb1b8703258",
+      "storedID": 50007,
+      "runtimeID": 50010
+    },
+    {
+      "field": "ashesOfWar",
+      "path": "DEMO RING\\Assets\\Data\\Items\\AshesOfWar\\Parry.asset",
+      "guid": "a8febb1882335494a9a95b6a52d154f3",
+      "storedID": 60010,
+      "runtimeID": 60011
+    },
+    {
+      "field": "spells",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Spells\\Test Spell.asset",
+      "guid": "63bc88de29f5e0347ac9eba3758c76e6",
+      "storedID": 0,
+      "runtimeID": 70012
+    },
+    {
+      "field": "spells",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Spells\\Fire Ball.asset",
+      "guid": "26979afd063ecee4fb4309c827b28997",
+      "storedID": 70012,
+      "runtimeID": 70013
+    },
+    {
+      "field": "projectiles",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Projectiles\\Arrow.asset",
+      "guid": "662a833b9b6fde149b2c7492bf21ab86",
+      "storedID": 80014,
+      "runtimeID": 80014
+    },
+    {
+      "field": "quickSlotItems",
+      "path": "DEMO RING\\Assets\\Data\\Items\\QuickSlotItem\\Flask\\Health Flask.asset",
+      "guid": "f571f742dac8c2845ae72dec2ddbd06e",
+      "storedID": 90015,
+      "runtimeID": 90015
+    },
+    {
+      "field": "quickSlotItems",
+      "path": "DEMO RING\\Assets\\Data\\Items\\QuickSlotItem\\Flask\\Mana Flask.asset",
+      "guid": "8fc4faae818fe52428576c4e5d338102",
+      "storedID": 90016,
+      "runtimeID": 90016
+    }
+  ],
+  "added": [
+    {
+      "field": "headEquipment",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Armor\\Archer Set\\Archer Hat.asset",
+      "guid": "a7dd31d746d041aba2b4ff19e8eae568",
+      "itemID": 20008
+    },
+    {
+      "field": "headEquipment",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Armor\\Berserker Set\\Berserker Hood.asset",
+      "guid": "742b3a53ecc74f2885dbe614d7b1ea0b",
+      "itemID": 20009
+    },
+    {
+      "field": "bodyEquipment",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Armor\\Archer Set\\Archer Armor.asset",
+      "guid": "d8f8cde1353043c4af11f0d706f41124",
+      "itemID": 30009
+    },
+    {
+      "field": "bodyEquipment",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Armor\\Berserker Set\\Berserker Armor.asset",
+      "guid": "95b111323d1349c6ad25f3afe059d378",
+      "itemID": 30010
+    },
+    {
+      "field": "handEquipment",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Armor\\Archer Set\\Archer Gauntlets.asset",
+      "guid": "f9a6adfef43f46358c8913954f31ad96",
+      "itemID": 40010
+    },
+    {
+      "field": "handEquipment",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Armor\\Berserker Set\\Berserker Gauntlets.asset",
+      "guid": "eb3dc0f9486543bda4266e191c3190be",
+      "itemID": 40011
+    },
+    {
+      "field": "legEquipment",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Armor\\Archer Set\\Archer Greaves.asset",
+      "guid": "b8e65da6ee48466a9d9b07480ea5fdb2",
+      "itemID": 50011
+    },
+    {
+      "field": "legEquipment",
+      "path": "DEMO RING\\Assets\\Data\\Items\\Armor\\Berserker Set\\Berserker Greaves.asset",
+      "guid": "ae6a8ca7b63e48ad8b6296721f473758",
+      "itemID": 50012
+    }
+  ]
+}

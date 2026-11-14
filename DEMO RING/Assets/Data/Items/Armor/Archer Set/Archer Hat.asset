@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e6d0cde99c1d25428ff836a096dcdf8, type: 3}
+  m_Name: Archer Hat
+  m_EditorClassIdentifier:
+  itemName: Archer Hat
+  itemIcon: {fileID: 21300080, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  itemDescription: A light brimmed hat worn by archers.
+  itemID: 20008
+  itemWeight: 3
+  physicalDamageAbsorption: 2.8
+  magicDamageAbsorption: 3.1
+  fireDamageAbsorption: 3.4
+  lightningDamageAbsorption: 3.6
+  holyDamageAbsorption: 3.1
+  immunity: 30
+  robustness: 14
+  focus: 14
+  vitality: 16
+  poise: 4
+  equipmentModels:
+  - {fileID: 11400000, guid: 49c3ac2e9c354a43b973b475d05546dd, type: 2}
+  headEquipmentType: 1

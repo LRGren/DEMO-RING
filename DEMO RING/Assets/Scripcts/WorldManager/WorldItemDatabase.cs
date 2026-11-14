@@ -56,84 +56,38 @@ public class WorldItemDatabase : MonoBehaviour
         if (instance == null)
             instance = this;
         else
+        {
             Destroy(gameObject);
-
-        foreach (var weapon in weapons)
-        {
-            items.Add(weapon);
-        }
-        foreach (var head in headEquipment)
-        {
-            items.Add(head);
-        }
-        foreach (var body in bodyEquipment)
-        {
-            items.Add(body);
-        }
-        foreach (var hand in handEquipment)
-        {
-            items.Add(hand);
-        }
-        foreach (var leg in legEquipment)
-        {
-            items.Add(leg);
-        }
-        foreach (var ash in ashesOfWar)
-        {
-            items.Add(ash);
-        }
-        foreach (var spell in spells)
-        {
-            items.Add(spell);
-        }
-        foreach (var projectile in projectiles)
-        {
-            items.Add(projectile);
-        }
-        foreach (var quickSlotItem in quickSlotItems)
-        {
-            items.Add(quickSlotItem);
+            return;
         }
 
-        for (int i = 0; i < items.Count; i++)
-        {
-            if (i < weapons.Count)
-            {
-                items[i].itemID = i + weaponKey;
-            }
-            else if (i < weapons.Count + headEquipment.Count)
-            {
-                items[i].itemID = i + headKey;
-            }
-            else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count)
-            {
-                items[i].itemID = i + bodyKey;
-            }
-            else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count + handEquipment.Count)
-            {
-                items[i].itemID = i + handKey;
-            }
-            else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count + handEquipment.Count + legEquipment.Count)
-            {
-                items[i].itemID = i + legKey;
-            }
-            else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count + handEquipment.Count + legEquipment.Count + ashesOfWar.Count)
-            {
-                items[i].itemID = i + ashOfWarKey;
-            }
-            else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count + handEquipment.Count + legEquipment.Count + ashesOfWar.Count + spells.Count)
-            {
-                items[i].itemID = i + spellKey;
-            }
-            else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count + handEquipment.Count + legEquipment.Count + ashesOfWar.Count + spells.Count + projectiles.Count)
-            {
-                items[i].itemID = i + projectileKey;
-            }
-            else if (i < weapons.Count + headEquipment.Count + bodyEquipment.Count + handEquipment.Count + legEquipment.Count + ashesOfWar.Count + spells.Count + projectiles.Count + quickSlotItems.Count)
-            {
-                items[i].itemID = i + quickSlotItemKey;
-            }
+        items.Clear();
 
+        RegisterItems(weapons, weaponKey);
+        RegisterItems(headEquipment, headKey);
+        RegisterItems(bodyEquipment, bodyKey);
+        RegisterItems(handEquipment, handKey);
+        RegisterItems(legEquipment, legKey);
+        RegisterItems(ashesOfWar, ashOfWarKey);
+        RegisterItems(spells, spellKey);
+        RegisterItems(projectiles, projectileKey);
+        RegisterItems(quickSlotItems, quickSlotItemKey);
+    }
+
+    private void RegisterItems<T>(List<T> category, int firstID) where T : Item
+    {
+        for (int i = 0; i < category.Count; i++)
+        {
+            T item = category[i];
+
+            if (item == null)
+                throw new System.InvalidOperationException($"物品列表存在空引用，下标：{i}");
+
+            if (items.Contains(item))
+                throw new System.InvalidOperationException($"物品重复注册：{item.name}");
+
+            item.itemID = firstID + i;
+            items.Add(item);
         }
     }
 
@@ -146,8 +100,9 @@ public class WorldItemDatabase : MonoBehaviour
     {
         WeaponItem weapon = null;
 
-        if (Instantiate(GetWeaponByID(serializableWeapon.itemID)))
-            weapon = Instantiate(GetWeaponByID(serializableWeapon.itemID));
+        WeaponItem definition = serializableWeapon != null ? GetWeaponByID(serializableWeapon.itemID) : null;
+        if (definition != null)
+            weapon = Instantiate(definition);
 
         if (weapon == null)
             return Instantiate(unarmedWeapon);

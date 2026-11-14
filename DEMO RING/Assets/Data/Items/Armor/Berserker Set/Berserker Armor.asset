@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f9ab1b34462d0c4b8e71ca7652dd823, type: 3}
+  m_Name: Berserker Armor
+  m_EditorClassIdentifier:
+  itemName: Berserker Armor
+  itemIcon: {fileID: 21300080, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  itemDescription: Battle-worn armor with asymmetric arm guards and a back attachment.
+  itemID: 30010
+  itemWeight: 10.6
+  physicalDamageAbsorption: 13.5
+  magicDamageAbsorption: 10.2
+  fireDamageAbsorption: 10.9
+  lightningDamageAbsorption: 8.8
+  holyDamageAbsorption: 8.8
+  immunity: 35
+  robustness: 57
+  focus: 23
+  vitality: 23
+  poise: 22
+  equipmentModels:
+  - {fileID: 11400000, guid: 4cce388d8a004508960b6191e9bd6153, type: 2}
+  - {fileID: 11400000, guid: 3b3aa4e0785a42cd9bb95fb8bf446453, type: 2}
+  - {fileID: 11400000, guid: ba0ad88b55104de3b193181a3dfa11ed, type: 2}
+  - {fileID: 11400000, guid: e268fa0945fc460f8bcfa04dfe8d7426, type: 2}
+  - {fileID: 11400000, guid: 9139d997555843b4939b8d6ad8a259d0, type: 2}

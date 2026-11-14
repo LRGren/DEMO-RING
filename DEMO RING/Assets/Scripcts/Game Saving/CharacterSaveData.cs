@@ -26,9 +26,15 @@ public class CharacterSaveData
     public int currentFocus;
 
     [Header("Stats")]
-    public int vitality;
-    public int endurance;
+    public int level;
+    public int vigor;
     public int mind;
+    public int endurance;
+    public int strength;
+    public int dexterity;
+    public int intelligence;
+    public int faith;
+    public int arcane;
 
     [Header("Flasks")]
     public int remainingHealthFlasks;

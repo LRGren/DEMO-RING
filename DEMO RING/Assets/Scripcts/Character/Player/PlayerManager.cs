@@ -75,7 +75,7 @@ public class PlayerManager : CharacterManager
             WorldSaveGameManager.instance.player = this;
 
             //更新状态条最大值
-            playerNetworkManager.vitality.OnValueChanged += playerNetworkManager.SetNewMaxHealthValue;
+            playerNetworkManager.vigor.OnValueChanged += playerNetworkManager.SetNewMaxHealthValue;
             playerNetworkManager.mind.OnValueChanged += playerNetworkManager.SetNewMaxFocusValue;
             playerNetworkManager.endurance.OnValueChanged += playerNetworkManager.SetNewMaxStaminaValue;
 
@@ -167,7 +167,7 @@ public class PlayerManager : CharacterManager
         if (IsOwner)
         {
             //更新状态条最大值
-            playerNetworkManager.vitality.OnValueChanged -= playerNetworkManager.SetNewMaxHealthValue;
+            playerNetworkManager.vigor.OnValueChanged -= playerNetworkManager.SetNewMaxHealthValue;
             playerNetworkManager.mind.OnValueChanged -= playerNetworkManager.SetNewMaxFocusValue;
             playerNetworkManager.endurance.OnValueChanged -= playerNetworkManager.SetNewMaxStaminaValue;
 
@@ -280,6 +280,134 @@ public class PlayerManager : CharacterManager
         }
     }
 
+    private T CloneOptionalItem<T>(T template) where T : UnityEngine.Object
+    {
+        return template != null ? Instantiate(template) : null;
+    }
+
+    public void InitializeNewCharacter(string characterName, StartingClassDefinition startingClass)
+    {
+        playerInventoryManager.characterInventory.Clear();
+
+        playerNetworkManager.characterName.Value = string.IsNullOrWhiteSpace(characterName) ? "Tarnished" : characterName;
+
+        playerNetworkManager.level.Value = startingClass.level;
+        playerNetworkManager.vigor.Value = startingClass.vigor;
+        playerNetworkManager.mind.Value = startingClass.mind;
+        playerNetworkManager.endurance.Value = startingClass.endurance;
+        playerNetworkManager.strength.Value = startingClass.strength;
+        playerNetworkManager.dexterity.Value = startingClass.dexterity;
+        playerNetworkManager.intelligence.Value = startingClass.intelligence;
+        playerNetworkManager.faith.Value = startingClass.faith;
+        playerNetworkManager.arcane.Value = startingClass.arcane;
+
+        //设置初始武器
+        playerInventoryManager.rightWeaponIndex = 0;
+        playerInventoryManager.weaponsInRightHand[0] = Instantiate(startingClass.startingRightWeapon01 ? startingClass.startingRightWeapon01 : WorldItemDatabase.instance.unarmedWeapon);
+        playerInventoryManager.weaponsInRightHand[1] = Instantiate(startingClass.startingRightWeapon02 ? startingClass.startingRightWeapon02 : WorldItemDatabase.instance.unarmedWeapon);
+        playerInventoryManager.weaponsInRightHand[2] = Instantiate(startingClass.startingRightWeapon03 ? startingClass.startingRightWeapon03 : WorldItemDatabase.instance.unarmedWeapon);
+
+        playerInventoryManager.leftWeaponIndex = 0;
+        playerInventoryManager.weaponsInLeftHand[0] = Instantiate(startingClass.startingLeftWeapon01 ? startingClass.startingLeftWeapon01 : WorldItemDatabase.instance.unarmedWeapon);
+        playerInventoryManager.weaponsInLeftHand[1] = Instantiate(startingClass.startingLeftWeapon02 ? startingClass.startingLeftWeapon02 : WorldItemDatabase.instance.unarmedWeapon);
+        playerInventoryManager.weaponsInLeftHand[2] = Instantiate(startingClass.startingLeftWeapon03 ? startingClass.startingLeftWeapon03 : WorldItemDatabase.instance.unarmedWeapon);
+
+        //设置初始装备
+        playerInventoryManager.headEquipment = CloneOptionalItem(startingClass.startingHeadEquipment);
+        playerInventoryManager.bodyEquipment = CloneOptionalItem(startingClass.startingBodyEquipment);
+        playerInventoryManager.handEquipment = CloneOptionalItem(startingClass.startingHandEquipment);
+        playerInventoryManager.legEquipment = CloneOptionalItem(startingClass.startingLegEquipment);
+
+        //设置初始快捷栏物品
+        playerInventoryManager.currentQuickSlotItemIndex = 0;
+        playerInventoryManager.quickSlotItemInventory[0] = CloneOptionalItem(startingClass.startingQuickSlotItem01);
+        playerInventoryManager.quickSlotItemInventory[1] = CloneOptionalItem(startingClass.startingQuickSlotItem02);
+        playerInventoryManager.quickSlotItemInventory[2] = CloneOptionalItem(startingClass.startingQuickSlotItem03);
+        playerInventoryManager.quickSlotItemInventory[3] = CloneOptionalItem(startingClass.startingQuickSlotItem04);
+        playerInventoryManager.quickSlotItemInventory[4] = CloneOptionalItem(startingClass.startingQuickSlotItem05);
+        playerInventoryManager.quickSlotItemInventory[5] = CloneOptionalItem(startingClass.startingQuickSlotItem06);
+        playerInventoryManager.quickSlotItemInventory[6] = CloneOptionalItem(startingClass.startingQuickSlotItem07);
+        playerInventoryManager.quickSlotItemInventory[7] = CloneOptionalItem(startingClass.startingQuickSlotItem08);
+        playerInventoryManager.quickSlotItemInventory[8] = CloneOptionalItem(startingClass.startingQuickSlotItem09);
+        playerInventoryManager.quickSlotItemInventory[9] = CloneOptionalItem(startingClass.startingQuickSlotItem10);
+
+        //设置初始远程弹药
+        playerInventoryManager.mainProjectile = CloneOptionalItem(startingClass.startingMainRangedProjectile);
+        playerInventoryManager.secondaryProjectile = CloneOptionalItem(startingClass.startingSecondaryRangedProjectile);
+
+        // 设置初始弹药数量
+        if (playerInventoryManager.mainProjectile != null)
+        {
+            playerInventoryManager.mainProjectile.SetAmmotAmount(
+                Mathf.Clamp(
+                    startingClass.startingMainRangedProjectileAmount,
+                    0,
+                    playerInventoryManager.mainProjectile.maxAmmoAmount));
+        }
+        if (playerInventoryManager.secondaryProjectile != null)
+        {
+            playerInventoryManager.secondaryProjectile.SetAmmotAmount(
+                Mathf.Clamp(
+                    startingClass.startingSecondaryRangedProjectileAmount,
+                    0,
+                    playerInventoryManager.secondaryProjectile.maxAmmoAmount));
+        }
+
+        playerNetworkManager.remainingHealthFlasks.Value =
+            Mathf.Max(0, startingClass.startingHealthFlaskCount);
+        playerNetworkManager.remainingManaFlasks.Value =
+            Mathf.Max(0, startingClass.startingManaFlaskCount);
+
+        //设置初始法术
+        playerInventoryManager.currentSpell = CloneOptionalItem(startingClass.startingSpell01);
+
+        playerNetworkManager.isTwoHandingWeapon.Value = false;
+        playerNetworkManager.isTwoHandingRightWeapon.Value = false;
+        playerNetworkManager.isTwoHandingLeftWeapon.Value = false;
+
+        // 根据新角色的属性，主动计算资源上限
+        playerNetworkManager.maxHealth.Value =
+            playerStatsManager.CalculateHealthBasedOnVitalityLevel(
+                playerNetworkManager.vigor.Value);
+
+        playerNetworkManager.maxStamina.Value =
+            playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(
+                playerNetworkManager.endurance.Value);
+
+        playerNetworkManager.maxFocus.Value =
+            playerStatsManager.CalculateFocusBasedOnMindLevel(
+                playerNetworkManager.mind.Value);
+
+        // 先更新状态条上限
+        var hud = PlayerUIManager.instance.playerUIHudManager;
+        hud.SetMaxHealthValue(playerNetworkManager.maxHealth.Value);
+        hud.SetMaxStaminaValue(playerNetworkManager.maxStamina.Value);
+        hud.SetMaxFocusValue(playerNetworkManager.maxFocus.Value);
+
+        // 新角色以满状态开始
+        playerNetworkManager.currentHealth.Value =
+            playerNetworkManager.maxHealth.Value;
+        playerNetworkManager.currentStamina.Value =
+            playerNetworkManager.maxStamina.Value;
+        playerNetworkManager.currentFocusPoints.Value =
+            playerNetworkManager.maxFocus.Value;
+
+        // 根据初始化后的武器数组，刷新当前武器、模型和网络 ID
+        playerEquipmentManager.RefreshRightWeapon();
+        playerEquipmentManager.RefreshLeftWeapon();
+
+        // 根据初始化后的护甲，刷新模型和网络 ID
+        playerEquipmentManager.EquipArmor();
+
+        // 刷新弹药装备及网络 ID
+        playerEquipmentManager.LoadMainProjectileEquipment(playerInventoryManager.mainProjectile);
+        playerEquipmentManager.LoadSecondaryProjectileEquipment(playerInventoryManager.secondaryProjectile);
+
+        playerInventoryManager.currentQuickSlotItem = playerInventoryManager.quickSlotItemInventory[playerInventoryManager.currentQuickSlotItemIndex];
+        playerNetworkManager.currentQuickSlotItemID.Value = playerInventoryManager.currentQuickSlotItem != null ? playerInventoryManager.currentQuickSlotItem.itemID : -1;
+        playerNetworkManager.currentSpellID.Value = playerInventoryManager.currentSpell != null ? playerInventoryManager.currentSpell.itemID : -1;
+    }
+
     public void SaveGameToCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData)
     {
         currentCharacterSaveData.sceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -294,10 +422,17 @@ public class PlayerManager : CharacterManager
 
         currentCharacterSaveData.currentHealth = playerNetworkManager.currentHealth.Value;
         currentCharacterSaveData.currentStamina = playerNetworkManager.currentStamina.Value;
+        currentCharacterSaveData.currentFocus = playerNetworkManager.currentFocusPoints.Value;
 
-        currentCharacterSaveData.vitality = playerNetworkManager.vitality.Value;
+        currentCharacterSaveData.level = playerNetworkManager.level.Value;
+        currentCharacterSaveData.vigor = playerNetworkManager.vigor.Value;
         currentCharacterSaveData.endurance = playerNetworkManager.endurance.Value;
         currentCharacterSaveData.mind = playerNetworkManager.mind.Value;
+        currentCharacterSaveData.strength = playerNetworkManager.strength.Value;
+        currentCharacterSaveData.dexterity = playerNetworkManager.dexterity.Value;
+        currentCharacterSaveData.intelligence = playerNetworkManager.intelligence.Value;
+        currentCharacterSaveData.faith = playerNetworkManager.faith.Value;
+        currentCharacterSaveData.arcane = playerNetworkManager.arcane.Value;
 
         currentCharacterSaveData.siteOfGraceActivated = WorldSaveGameManager.instance.currentCharacterData.siteOfGraceActivated;
 
@@ -420,22 +555,37 @@ public class PlayerManager : CharacterManager
         transform.position = myPosition;
         characterController.enabled = true;
 
-        playerNetworkManager.vitality.Value = currentCharacterSaveData.vitality;
+        playerNetworkManager.level.Value = currentCharacterSaveData.level;
+        playerNetworkManager.vigor.Value = currentCharacterSaveData.vigor;
         playerNetworkManager.endurance.Value = currentCharacterSaveData.endurance;
         playerNetworkManager.mind.Value = currentCharacterSaveData.mind;
+        playerNetworkManager.strength.Value = currentCharacterSaveData.strength;
+        playerNetworkManager.dexterity.Value = currentCharacterSaveData.dexterity;
+        playerNetworkManager.intelligence.Value = currentCharacterSaveData.intelligence;
+        playerNetworkManager.faith.Value = currentCharacterSaveData.faith;
+        playerNetworkManager.arcane.Value = currentCharacterSaveData.arcane;
 
-        playerNetworkManager.maxHealth.Value = playerStatsManager.CalculateHealthBasedOnVitalityLevel(playerNetworkManager.vitality.Value);
+        playerNetworkManager.maxHealth.Value = playerStatsManager.CalculateHealthBasedOnVitalityLevel(playerNetworkManager.vigor.Value);
         playerNetworkManager.maxStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
         playerNetworkManager.maxFocus.Value = playerStatsManager.CalculateFocusBasedOnMindLevel(playerNetworkManager.mind.Value);
 
         playerNetworkManager.currentHealth.Value = currentCharacterSaveData.currentHealth;
         playerNetworkManager.currentStamina.Value = playerNetworkManager.maxStamina.Value;
+        playerNetworkManager.currentFocusPoints.Value = Mathf.Clamp(currentCharacterSaveData.currentFocus, 0, playerNetworkManager.maxFocus.Value);
 
-        PlayerUIManager.instance.playerUIHudManager.SetMaxHealthValue(playerNetworkManager.maxHealth.Value);
-        PlayerUIManager.instance.playerUIHudManager.SetMaxStaminaValue(playerNetworkManager.maxStamina.Value);
-
-        PlayerUIManager.instance.playerUIHudManager.SetNewHealthValue(playerNetworkManager.currentHealth.Value, playerNetworkManager.currentHealth.Value);
-        PlayerUIManager.instance.playerUIHudManager.SetNewStaminaValue(playerNetworkManager.currentStamina.Value, playerNetworkManager.maxStamina.Value);
+        var hud = PlayerUIManager.instance.playerUIHudManager;
+        hud.SetMaxHealthValue(playerNetworkManager.maxHealth.Value);
+        hud.SetMaxStaminaValue(playerNetworkManager.maxStamina.Value);
+        hud.SetMaxFocusValue(playerNetworkManager.maxFocus.Value);
+        hud.SetNewHealthValue(
+            playerNetworkManager.currentHealth.Value,
+            playerNetworkManager.currentHealth.Value);
+        hud.SetNewStaminaValue(
+            playerNetworkManager.currentStamina.Value,
+            playerNetworkManager.currentStamina.Value);
+        hud.SetNewFocusValue(
+            playerNetworkManager.currentFocusPoints.Value,
+            playerNetworkManager.currentFocusPoints.Value);
 
         // Equipment
         if (WorldItemDatabase.instance.GetHeadEquipmentByID(currentCharacterSaveData.currentHeadEquipment) != null)

@@ -1,0 +1,8 @@
+{
+    "passed": true,
+    "itemCount": 30,
+    "uniqueIDs": true,
+    "shieldRoundTrip": true,
+    "repeatInitialization": true,
+    "error": ""
+}

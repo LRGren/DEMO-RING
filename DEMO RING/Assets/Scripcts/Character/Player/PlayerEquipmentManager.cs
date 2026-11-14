@@ -11,6 +11,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     [Header("Weapon Slots")]
     public WeaponModelInstantiationSlot rightHandWeaponSlot;
     public WeaponModelInstantiationSlot leftHandWeaponSlot;
+    public WeaponModelInstantiationSlot leftHandAsymmetricWeaponSlot;
     public WeaponModelInstantiationSlot leftHandShieldSlot;
     public WeaponModelInstantiationSlot backSlot;
 
@@ -148,6 +149,22 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         InitializeEquipmentModel(ref leftKneeObject, ref leftKnees);
         InitializeEquipmentModel(ref backAccessoriesObject, ref backAccessories);
         InitializeEquipmentModel(ref hipAccessoriesObject, ref hipAccessories);
+    }
+
+    public void InitialAllSlotInPreview(StartingClassDefinition startingClass)
+    {
+        LoadHeadEquipment(startingClass.startingHeadEquipment);
+        LoadBodyEquipment(startingClass.startingBodyEquipment);
+        LoadHandEquipment(startingClass.startingHandEquipment);
+        LoadLegEquipment(startingClass.startingLegEquipment);
+
+        player.playerInventoryManager.currentRightHandWeapon = startingClass.startingRightWeapon01;
+        player.playerInventoryManager.currentLeftHandWeapon = startingClass.startingLeftWeapon01;
+
+        LoadWeaponsOnBothHands();
+
+        LoadMainProjectileEquipment(startingClass.startingMainRangedProjectile);
+        LoadSecondaryProjectileEquipment(startingClass.startingSecondaryRangedProjectile);
     }
 
     #region Equipment
@@ -316,6 +333,11 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
     public void UnloadBodyEquipment()
     {
+        foreach (var model in backAccessories)
+        {
+            model.SetActive(false);
+        }
+
         foreach (var model in bodies)
         {
             model.SetActive(false);
@@ -570,6 +592,11 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
     public void UnloadLegEquipment()
     {
+        foreach (var model in hipAccessories)
+        {
+            model.SetActive(false);
+        }
+
         // 停用所有腿部模型
         foreach (var model in hips)
         {
@@ -619,7 +646,7 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
     private void InitialiseWeaponSlots()
     {
-        WeaponModelInstantiationSlot[] weaponSlots = GetComponentsInChildren<WeaponModelInstantiationSlot>();
+        WeaponModelInstantiationSlot[] weaponSlots = GetComponentsInChildren<WeaponModelInstantiationSlot>(true);
 
         foreach (var weapon in weaponSlots)
         {
@@ -630,6 +657,10 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             else if (weapon.weaponSlot == WeaponModelSlot.LeftHandWeaponSlot)
             {
                 leftHandWeaponSlot = weapon;
+            }
+            else if (weapon.weaponSlot == WeaponModelSlot.LeftHandAsymmetricWeaponSlot)
+            {
+                leftHandAsymmetricWeaponSlot = weapon;
             }
             else if (weapon.weaponSlot == WeaponModelSlot.LeftHandShieldSlot)
             {
@@ -774,31 +805,30 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
             weapon.itemID;
     }
 
-    // Left Weapon 
+    private WeaponModelInstantiationSlot GetLeftHandSlot(WeaponItem weapon)
+    {
+        if (weapon.weaponType == WeaponType.Shield)
+            return leftHandShieldSlot;
+
+        if (weapon.useAsymmetricLeftHandSlot && leftHandAsymmetricWeaponSlot != null)
+            return leftHandAsymmetricWeaponSlot;
+
+        return leftHandWeaponSlot;
+    }
+
+    // Left Weapon
     public void LoadLeftWeapon()
     {
         if (player.playerInventoryManager.currentLeftHandWeapon != null)
         {
-            if (leftHandWeaponSlot.currentWeapon != null)
-                leftHandWeaponSlot.UnloadWeapon();
-
-            if (leftHandShieldSlot.currentWeapon != null)
-                leftHandShieldSlot.UnloadWeapon();
+            leftHandWeaponSlot?.UnloadWeapon();
+            leftHandAsymmetricWeaponSlot?.UnloadWeapon();
+            leftHandShieldSlot?.UnloadWeapon();
 
             leftWeaponModel = Instantiate(player.playerInventoryManager.currentLeftHandWeapon.weaponModel);
 
-            switch (player.playerInventoryManager.currentLeftHandWeapon.weaponType)
-            {
-                case WeaponType.Weapon:
-                    leftHandWeaponSlot.PlaceWeaponIntoSlot(leftWeaponModel);
-                    break;
-                case WeaponType.Shield:
-                    leftHandShieldSlot.PlaceWeaponIntoSlot(leftWeaponModel);
-                    break;
-                default:
-                    Debug.LogError("Unknown weapon type for left hand weapon.");
-                    break;
-            }
+            GetLeftHandSlot(player.playerInventoryManager.currentLeftHandWeapon)
+                .PlaceWeaponIntoSlot(leftWeaponModel);
 
             leftHandWeaponManager = leftWeaponModel.GetComponentInChildren<WeaponManager>();
             leftHandWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentLeftHandWeapon);
@@ -979,14 +1009,8 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         //去除力量加成
 
         //恢复非双持武器
-        if (player.playerInventoryManager.currentLeftHandWeapon.weaponType == WeaponType.Weapon)
-        {
-            leftHandWeaponSlot.PlaceWeaponIntoSlot(leftWeaponModel);
-        }
-        else if (player.playerInventoryManager.currentLeftHandWeapon.weaponType == WeaponType.Shield)
-        {
-            leftHandShieldSlot.PlaceWeaponIntoSlot(leftWeaponModel);
-        }
+        GetLeftHandSlot(player.playerInventoryManager.currentLeftHandWeapon)
+            .PlaceWeaponIntoSlot(leftWeaponModel);
 
         rightHandWeaponSlot.PlaceWeaponIntoSlot(rightWeaponModel);
 

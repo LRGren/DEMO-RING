@@ -1,0 +1,129 @@
+{
+    "version": 1,
+    "entries": [
+        {
+            "guid": "910b8aa8aaee5f6428bfd2b3e45a746f",
+            "itemID": 10000
+        },
+        {
+            "guid": "5127d45e178cc8649b053be9de266c07",
+            "itemID": 10001
+        },
+        {
+            "guid": "fd164a1d6f05bda478dd90018ab02d46",
+            "itemID": 10002
+        },
+        {
+            "guid": "a864884746fe73f4a8f7470d75d141c2",
+            "itemID": 10003
+        },
+        {
+            "guid": "cda573b7888932947ad828b9a17c0add",
+            "itemID": 10004
+        },
+        {
+            "guid": "6d5004223b4f5b4428a2734068010c59",
+            "itemID": 10005
+        },
+        {
+            "guid": "3c972ae58e78a864bb5afaf012a4d215",
+            "itemID": 10006
+        },
+        {
+            "guid": "23ebd91f668348e0bf8fa719913296c3",
+            "itemID": 10007
+        },
+        {
+            "guid": "cc9ffd0fc7394c1aa00713ead17d3a63",
+            "itemID": 10008
+        },
+        {
+            "guid": "00e9a9beff7e05a49baf85220cdd4cde",
+            "itemID": 20007
+        },
+        {
+            "guid": "a7dd31d746d041aba2b4ff19e8eae568",
+            "itemID": 20008
+        },
+        {
+            "guid": "742b3a53ecc74f2885dbe614d7b1ea0b",
+            "itemID": 20009
+        },
+        {
+            "guid": "80ebf9e87d58d424a83bca9be888b238",
+            "itemID": 30008
+        },
+        {
+            "guid": "d8f8cde1353043c4af11f0d706f41124",
+            "itemID": 30009
+        },
+        {
+            "guid": "95b111323d1349c6ad25f3afe059d378",
+            "itemID": 30010
+        },
+        {
+            "guid": "23a2e125ed5097747a3be1aacff1f99a",
+            "itemID": 40009
+        },
+        {
+            "guid": "f9a6adfef43f46358c8913954f31ad96",
+            "itemID": 40010
+        },
+        {
+            "guid": "eb3dc0f9486543bda4266e191c3190be",
+            "itemID": 40011
+        },
+        {
+            "guid": "9b995ab3578771e479a97bb1b8703258",
+            "itemID": 50010
+        },
+        {
+            "guid": "b8e65da6ee48466a9d9b07480ea5fdb2",
+            "itemID": 50011
+        },
+        {
+            "guid": "ae6a8ca7b63e48ad8b6296721f473758",
+            "itemID": 50012
+        },
+        {
+            "guid": "a8febb1882335494a9a95b6a52d154f3",
+            "itemID": 60011
+        },
+        {
+            "guid": "63bc88de29f5e0347ac9eba3758c76e6",
+            "itemID": 70012
+        },
+        {
+            "guid": "26979afd063ecee4fb4309c827b28997",
+            "itemID": 70013
+        },
+        {
+            "guid": "662a833b9b6fde149b2c7492bf21ab86",
+            "itemID": 80014
+        },
+        {
+            "guid": "f571f742dac8c2845ae72dec2ddbd06e",
+            "itemID": 90015
+        },
+        {
+            "guid": "8fc4faae818fe52428576c4e5d338102",
+            "itemID": 90016
+        },
+        {
+            "guid": "caab14c2aa581924c8eab6272b89f59d",
+            "itemID": 20010
+        },
+        {
+            "guid": "0757e051514a3e947bc6110d66cbc731",
+            "itemID": 10009
+        },
+        {
+            "guid": "4ee2564e9a7e50d499ee195376c42e31",
+            "itemID": 10010
+        },
+        {
+            "guid": "ea129ee9bc1023f40ad25b7679fecb96",
+            "itemID": 10011
+        }
+    ]
+}

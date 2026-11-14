@@ -217,13 +217,7 @@ public class WorldSaveGameManager : MonoBehaviour
 
     private void NewGame()
     {
-        player.playerNetworkManager.vitality.Value = 15;
-        player.playerNetworkManager.mind.Value = 10;
-        player.playerNetworkManager.endurance.Value = 11;
-
-
         SaveGame();
-        //StartCoroutine(LoadWorldScene());
         LoadWorldScene(worldSceneIndex);
     }
 
@@ -385,7 +379,6 @@ public class WorldSaveGameManager : MonoBehaviour
     public SerializableWeapon GetSerializableWeaponFromWeaponItem(WeaponItem weapon)
     {
         SerializableWeapon serializableWeapon = new SerializableWeapon();
-
         serializableWeapon.itemID = weapon.itemID;
 
         if (weapon.ashOfWar_Action)

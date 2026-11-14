@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Open Face Helm
   itemIcon: {fileID: 21300070, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
   itemDescription: 
-  itemID: 0
+  itemID: 20010
   itemWeight: 4.6
   physicalDamageAbsorption: 4.4
   magicDamageAbsorption: 3.8

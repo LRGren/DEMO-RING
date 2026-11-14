@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce00bb60fd1689a4c926891f5ed4c7f5, type: 3}
+  m_Name: Berserker Greaves
+  m_EditorClassIdentifier:
+  itemName: Berserker Greaves
+  itemIcon: {fileID: 21300080, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  itemDescription: Layered leg armor with a belt attachment and a reinforced left knee.
+  itemID: 50012
+  itemWeight: 5.7
+  physicalDamageAbsorption: 7.4
+  magicDamageAbsorption: 5
+  fireDamageAbsorption: 5.8
+  lightningDamageAbsorption: 4.5
+  holyDamageAbsorption: 4.5
+  immunity: 20
+  robustness: 34
+  focus: 13
+  vitality: 13
+  poise: 12
+  equipmentModels:
+  - {fileID: 11400000, guid: 415450de2a8e4258aff242b5ab00b5c5, type: 2}
+  - {fileID: 11400000, guid: 4a94aaa6cb0e40fcba8d7b35a550a451, type: 2}
+  - {fileID: 11400000, guid: 332c422336a04cd69dfed073738ff3a0, type: 2}
+  - {fileID: 11400000, guid: ea450646d9f74dd0bdf9f4d1a4b6a48a, type: 2}
+  - {fileID: 11400000, guid: e2214bf6fbfe49eb8a85dbe5b106a927, type: 2}

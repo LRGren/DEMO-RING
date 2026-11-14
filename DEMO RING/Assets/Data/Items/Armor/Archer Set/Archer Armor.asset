@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f9ab1b34462d0c4b8e71ca7652dd823, type: 3}
+  m_Name: Archer Armor
+  m_EditorClassIdentifier: 
+  itemName: Archer Armor
+  itemIcon: {fileID: 21300080, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  itemDescription: Supple leather armor with a quiver, made for mobile archers.
+  itemID: 30009
+  itemWeight: 7.7
+  physicalDamageAbsorption: 8
+  magicDamageAbsorption: 10.2
+  fireDamageAbsorption: 10.2
+  lightningDamageAbsorption: 10.9
+  holyDamageAbsorption: 9.5
+  immunity: 52
+  robustness: 32
+  focus: 54
+  vitality: 54
+  poise: 15
+  equipmentModels:
+  - {fileID: 11400000, guid: f425a03f373f457fbbfdb6f185aa2517, type: 2}
+  - {fileID: 11400000, guid: fbcdceb6adc799845aff867f62a3c48c, type: 2}
+  - {fileID: 11400000, guid: 63c754d5045246588dc8932f6c4b3ce3, type: 2}
+  - {fileID: 11400000, guid: 7d7689c0979254c4b9493d2cbd0cc616, type: 2}
