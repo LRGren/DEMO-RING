@@ -412,6 +412,8 @@ public class PlayerManager : CharacterManager
     {
         currentCharacterSaveData.sceneIndex = SceneManager.GetActiveScene().buildIndex;
 
+        currentCharacterSaveData.appearanceSaveData = playerBodyManager.GetAppearanceData();
+
         currentCharacterSaveData.characterName = playerNetworkManager.characterName.Value.ToString();
 
         currentCharacterSaveData.isMale = playerNetworkManager.isMale.Value;
@@ -545,6 +547,7 @@ public class PlayerManager : CharacterManager
 
         playerNetworkManager.isMale.Value = currentCharacterSaveData.isMale;
         playerBodyManager.ToggleBodyType(playerNetworkManager.isMale.Value);
+        playerBodyManager.LoadAppearance(currentCharacterSaveData.appearanceSaveData);
 
         Vector3 myPosition = new Vector3(
             currentCharacterSaveData.xPosition,

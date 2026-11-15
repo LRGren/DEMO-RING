@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c1beb772185fa2b98e32da2167ff91, type: 3}
+  m_Name: FacialHairStyleCatalog
+  m_EditorClassIdentifier: 
+  facialHairStyleOptions:
+  - facialHairID: none
+    facialHairName: No_Beard
+    facialHairModelName: 
+  - facialHairID: beard01
+    facialHairName: Beard_01
+    facialHairModelName: Chr_FacialHair_Male_01
+  - facialHairID: beard02
+    facialHairName: Beard_02
+    facialHairModelName: Chr_FacialHair_Male_02
+  - facialHairID: beard03
+    facialHairName: Beard_03
+    facialHairModelName: Chr_FacialHair_Male_03
+  - facialHairID: beard04
+    facialHairName: Beard_04
+    facialHairModelName: Chr_FacialHair_Male_04
+  - facialHairID: beard05
+    facialHairName: Beard_05
+    facialHairModelName: Chr_FacialHair_Male_05
+  - facialHairID: beard06
+    facialHairName: Beard_06
+    facialHairModelName: Chr_FacialHair_Male_06
+  - facialHairID: beard07
+    facialHairName: Beard_07
+    facialHairModelName: Chr_FacialHair_Male_07
+  - facialHairID: beard08
+    facialHairName: Beard_08
+    facialHairModelName: Chr_FacialHair_Male_08
+  - facialHairID: beard09
+    facialHairName: Beard_09
+    facialHairModelName: Chr_FacialHair_Male_09
+  - facialHairID: beard10
+    facialHairName: Beard_10
+    facialHairModelName: Chr_FacialHair_Male_10
+  - facialHairID: beard11
+    facialHairName: Beard_11
+    facialHairModelName: Chr_FacialHair_Male_11
+  - facialHairID: beard12
+    facialHairName: Beard_12
+    facialHairModelName: Chr_FacialHair_Male_12
+  - facialHairID: beard13
+    facialHairName: Beard_13
+    facialHairModelName: Chr_FacialHair_Male_13
+  - facialHairID: beard14
+    facialHairName: Beard_14
+    facialHairModelName: Chr_FacialHair_Male_14
+  - facialHairID: beard15
+    facialHairName: Beard_15
+    facialHairModelName: Chr_FacialHair_Male_15
+  - facialHairID: beard16
+    facialHairName: Beard_16
+    facialHairModelName: Chr_FacialHair_Male_16
+  - facialHairID: beard17
+    facialHairName: Beard_17
+    facialHairModelName: Chr_FacialHair_Male_17
+  - facialHairID: beard18
+    facialHairName: Beard_18
+    facialHairModelName: Chr_FacialHair_Male_18

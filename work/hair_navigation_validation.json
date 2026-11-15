@@ -1,0 +1,5 @@
+{
+    "passed": false,
+    "checks": 16,
+    "error": "System.Exception: Right event did not cycle\r\n  at HairNavigationValidation.Check (System.Boolean value, HairNavigationValidation+Result r, System.String message) [0x00009] in D:\\All_Documents\\CodeDocuments\\Github\\DEMO-RING\\DEMO RING\\Assets\\Editor\\HairNavigationValidation.cs:17 \r\n  at HairNavigationValidation.Run () [0x005ba] in D:\\All_Documents\\CodeDocuments\\Github\\DEMO-RING\\DEMO RING\\Assets\\Editor\\HairNavigationValidation.cs:80 "
+}

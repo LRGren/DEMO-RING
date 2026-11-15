@@ -100,6 +100,9 @@ public class CharacterSaveData
     public SerializableRangedProjectile currentMainProjectile;
     public SerializableRangedProjectile currentSecondaryProjectile;
 
+    [Header("Appearance")]
+    public AppearanceSaveData appearanceSaveData;
+
     public CharacterSaveData()
     {
         siteOfGraceActivated = new SerializableDictionary<int, bool>();

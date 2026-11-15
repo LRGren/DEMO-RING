@@ -12138,7 +12138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6437258856973700024
 Transform:
   m_ObjectHideFlags: 0
@@ -45008,7 +45008,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5552723347082320860
 Transform:
   m_ObjectHideFlags: 0
@@ -57676,7 +57676,7 @@ MonoBehaviour:
   femaleObject: {fileID: 8658389041974437824}
   hair: {fileID: 740765748149725341}
   maleFacialHair: {fileID: 7930679284894636559}
-  maleHead: {fileID: 2447244985000916034}
+  maleHead: {fileID: 8265714524795381650}
   maleBody:
   - {fileID: 2758652822257639144}
   - {fileID: 7493803840981501597}
@@ -57691,7 +57691,7 @@ MonoBehaviour:
   - {fileID: 8283195399693744282}
   - {fileID: 6186296029024680133}
   maleEyebrows: {fileID: 8949711754262185676}
-  femaleHead: {fileID: 5711834954198312511}
+  femaleHead: {fileID: 3155342132077827442}
   femaleBody:
   - {fileID: 5605858269564392769}
   - {fileID: 7740439482295674033}
@@ -57706,6 +57706,18 @@ MonoBehaviour:
   - {fileID: 2048713992735474232}
   - {fileID: 1942525804180340627}
   femaleEyebrows: {fileID: 3832053291758408534}
+  test: 0
+  testHairID: 
+  hairStyleCatalog: {fileID: 11400000, guid: 3d946e9697347754ba70b48165bea455, type: 2}
+  headStyleCatalog: {fileID: 11400000, guid: 00f7cfde6a035f66a849d9e3f6f8b676, type: 2}
+  maleEyebrowStyleCatalog: {fileID: 11400000, guid: 0b1188bccd7650198f9a39b9785c05a3, type: 2}
+  femaleEyebrowStyleCatalog: {fileID: 11400000, guid: 45e8302790a05b6db4cab33f57e27112, type: 2}
+  facialHairStyleCatalog: {fileID: 11400000, guid: 3623998005615d89a6600cfca3593b50, type: 2}
+  currentHairID: none
+  currentHeadID: head00
+  currentMaleEyebrowID: eyebrow01
+  currentFemaleEyebrowID: eyebrow01
+  currentFacialHairID: none
 --- !u!1 &7309088612374852883
 GameObject:
   m_ObjectHideFlags: 0
@@ -64150,7 +64162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4286171461212278122
 Transform:
   m_ObjectHideFlags: 0

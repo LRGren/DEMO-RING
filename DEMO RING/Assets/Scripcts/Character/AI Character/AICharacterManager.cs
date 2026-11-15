@@ -61,6 +61,9 @@ public class AICharacterManager : CharacterManager
         base.Update();
 
         aiCharacterCombatManager.HandleActionRecovery(this);
+
+        if (IsOwner)
+            ProcessStateMachine();
     }
 
     public override void OnNetworkDespawn()
@@ -70,27 +73,6 @@ public class AICharacterManager : CharacterManager
         aiCharacterNetworkManager.currentHealth.OnValueChanged -= aiCharacterNetworkManager.CheckHP;
     }
 
-    protected override void FixedUpdate()
-    {
-        base.FixedUpdate();
-
-        ProcessStateMachine();
-    }
-
-    /*public void ProcessStateMachine()
-    {
-        AIState nextState = null;
-
-        if (currentState != null)
-        {
-            nextState = currentState.Tick(this);
-        }
-
-        if(nextState != null)
-        {
-            currentState = nextState;
-        }
-    }*/
     private void ProcessStateMachine()
     {
         if (!IsServer)
