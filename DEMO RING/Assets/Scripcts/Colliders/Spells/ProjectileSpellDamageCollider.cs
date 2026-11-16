@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBallDamageCollider : SpellDamageCollider
+public class ProjectileSpellDamageCollider : SpellDamageCollider
 {
-    FireBallManager fireBallManager;
+    ProjectileSpellManager _projectileSpellManager;
 
     protected override void Awake()
     {
         base.Awake();
 
-        fireBallManager = GetComponentInParent<FireBallManager>();
+        _projectileSpellManager = GetComponentInParent<ProjectileSpellManager>();
     }
 
     protected override void OnTriggerEnter(Collider other)
@@ -43,7 +43,7 @@ public class FireBallDamageCollider : SpellDamageCollider
                 DamageTarget(damageTarget);
 
             // 触发火球的碰撞效果
-            fireBallManager.WaitThenInstantiateSpellDestructionFX(0.4f);
+            _projectileSpellManager.WaitThenInstantiateSpellDestructionFX(0.4f);
         }
     }
 

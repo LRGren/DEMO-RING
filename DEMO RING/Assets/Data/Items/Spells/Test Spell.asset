@@ -15,11 +15,15 @@ MonoBehaviour:
   itemName: Test Spell
   itemIcon: {fileID: 0}
   itemDescription: 
-  itemID: 70012
+  itemID: 70000
   spellClass: 0
-  fullChargeModifier: 2
+  fullCastStaminaCostModifier: 1.5
+  staminaCost: 10
+  focusCost: 10
   spellCastWarmUpFX: {fileID: 0}
+  spellChargeFX: {fileID: 0}
   spellCastReleaseFX: {fileID: 0}
+  spellCastReleaseFXFullCharge: {fileID: 0}
   mainHandSpellAnimtion: Spell_Main_Fire_Ball_Start
   offHandSpellAnimtion: Spell_Off_Fire_Ball_Start
   spellCastWarmUpSound: {fileID: 0}

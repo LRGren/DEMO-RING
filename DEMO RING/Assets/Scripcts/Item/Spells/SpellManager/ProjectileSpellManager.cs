@@ -2,33 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBallManager : SpellManager
+public class ProjectileSpellManager : SpellManager
 {
-    // - What does this script do? - This script serves as a central hub to manipulate and adjust the fireball spell once its active, doing things such as
-    // 1. Making the spell slightly "curve" or "follow" its lock targets as they are moving
-    // 2. Assigning damage neatly with a function from this script
-    // 3. Enabling/Disabling VFX and SFX, such as "contact" explosions, trails, ect
-
-    // OPTIONAL THINGS TO DO: IF YOU HAVE MANY SPELLS THAT SHARE THIS LOGIC (Spell Target, Collider, Impact Particles ect) MAKE A BASE CLASS
-
     [Header("Colliders")]
-    public FireBallDamageCollider damageCollider;
+    public ProjectileSpellDamageCollider _damageCollider;
 
     [Header("Instantiated FX")]
-    private GameObject instantiatedImpactParticle;
+    protected GameObject instantiatedImpactParticle;
 
     public bool isFullCharge = false;
 
-    private bool hasCollided = false;
-    private Rigidbody fireBallRigidbody;
-    private Coroutine destructionCoroutine;
+    protected bool hasCollided = false;
+    protected Rigidbody fireBallRigidbody;
+    protected Coroutine destructionCoroutine;
+
+    [Header("Spell Setup")]
+    public SpellSetup spellSetup;
 
 
     protected override void Awake()
     {
         base.Awake();
         fireBallRigidbody = GetComponent<Rigidbody>();
-        damageCollider = GetComponentInChildren<FireBallDamageCollider>();
+        _damageCollider = GetComponentInChildren<ProjectileSpellDamageCollider>();
     }
 
     protected override void Update()
@@ -45,7 +41,7 @@ public class FireBallManager : SpellManager
         }*/
     }
 
-    void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == 6)
             return;
@@ -57,16 +53,21 @@ public class FireBallManager : SpellManager
         }
     }
 
-    public void InitializeFireBall(CharacterManager caster)
+    public virtual void InitializeProjectileSpell(CharacterManager caster)
     {
-        damageCollider.spellCaster = caster;
-        damageCollider.fireDamage = 150;
+        _damageCollider.spellCaster = caster;
 
-        if (isFullCharge)
-            damageCollider.fireDamage *= 3f; // Increase damage by 50% if fully charged
+        var multiplier = isFullCharge ? 3f : 1f;
+
+        _damageCollider.fireDamage = spellSetup.fireDamage * multiplier;
+        _damageCollider.magicalDamage = spellSetup.magicalDamage * multiplier;
+        _damageCollider.lightningDamage = spellSetup.lightningDamage * multiplier;
+        _damageCollider.holyDamage = spellSetup.holyDamage * multiplier;
+        _damageCollider.poiseDamage = spellSetup.poiseDamage * multiplier;
+        _damageCollider.physicalDamage = spellSetup.physicalDamage * multiplier;
     }
 
-    public void InstantiateImpactParticleFX()
+    protected virtual void InstantiateImpactParticleFX()
     {
         if (isFullCharge)
             instantiatedImpactParticle = Instantiate(impactParticleFullCharge, transform.position, Quaternion.identity);
@@ -75,7 +76,7 @@ public class FireBallManager : SpellManager
         Destroy(gameObject);
     }
 
-    public void WaitThenInstantiateSpellDestructionFX(float timeToWait)
+    public virtual void WaitThenInstantiateSpellDestructionFX(float timeToWait)
     {
 
         if (destructionCoroutine != null)
@@ -84,12 +85,11 @@ public class FireBallManager : SpellManager
         destructionCoroutine = StartCoroutine(WaitThenInstantiateFX(timeToWait));
         StartCoroutine(WaitThenInstantiateFX(timeToWait));
     }
-    private IEnumerator WaitThenInstantiateFX(float timeToWait)
+    protected virtual IEnumerator WaitThenInstantiateFX(float timeToWait)
     {
 
         yield return new WaitForSeconds(timeToWait);
 
         InstantiateImpactParticleFX();
     }
-
 }

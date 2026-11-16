@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Items/Spells/Fire Ball")]
-public class FireBall : SpellItem
+public class ProjectileSpell : SpellItem
 {
     public float upwardForce;
     public float forwardForce;
@@ -57,8 +56,8 @@ public class FireBall : SpellItem
         instantiatedReleasedFX.transform.parent = null;
 
         // 4. 使用DamageEffect来处理伤害
-        FireBallManager fireBallManager = instantiatedReleasedFX.GetComponent<FireBallManager>();
-        fireBallManager.InitializeFireBall(player);
+        ProjectileSpellManager _projectileSpellManager = instantiatedReleasedFX.GetComponent<ProjectileSpellManager>();
+        _projectileSpellManager.InitializeProjectileSpell(player);
 
         // 5. 将Caster的Collider传入DamageEffect中，以便在处理伤害时排除Caster自身
         /*Physics.IgnoreCollision(characterCollisionCollider, fireBallManager.damageCollider.damageCollider);
@@ -72,7 +71,7 @@ public class FireBall : SpellItem
 
         if (player.playerNetworkManager.isLockOn.Value)
         {
-            instantiatedReleasedFX.transform.LookAt(player.playerCombatManager.currentTarget.transform.position);
+            instantiatedReleasedFX.transform.LookAt(player.playerCombatManager.currentTarget.characterCombatManager.lockOnTransform.position);
         }
         else
         {
@@ -117,9 +116,9 @@ public class FireBall : SpellItem
         instantiatedReleasedFX.transform.parent = null;
 
         // 4. 使用DamageEffect来处理伤害
-        FireBallManager fireBallManager = instantiatedReleasedFX.GetComponent<FireBallManager>();
-        fireBallManager.isFullCharge = true;
-        fireBallManager.InitializeFireBall(player);
+        ProjectileSpellManager _projectileSpellManager = instantiatedReleasedFX.GetComponent<ProjectileSpellManager>();
+        _projectileSpellManager.isFullCharge = true;
+        _projectileSpellManager.InitializeProjectileSpell(player);
 
         // 5. 将Caster的Collider传入DamageEffect中，以便在处理伤害时排除Caster自身
         /*Physics.IgnoreCollision(characterCollisionCollider, fireBallManager.damageCollider.damageCollider);
@@ -133,7 +132,7 @@ public class FireBall : SpellItem
 
         if (player.playerNetworkManager.isLockOn.Value)
         {
-            instantiatedReleasedFX.transform.LookAt(player.playerCombatManager.currentTarget.transform.position);
+            instantiatedReleasedFX.transform.LookAt(player.playerCombatManager.currentTarget.characterCombatManager.lockOnTransform.position);
         }
         else
         {

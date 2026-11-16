@@ -4,12 +4,12 @@
   <Project Path="Unity.ShaderGraph.Editor.csproj" />
   <Project Path="Autodesk.Fbx.csproj" />
   <Project Path="Unity.InputSystem.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.VisualScripting.Flow.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Runtime.csproj" />
   <Project Path="UnityEditor.UI.csproj" />
   <Project Path="Unity.Timeline.Editor.csproj" />
   <Project Path="Unity.RenderPipelines.Core.Runtime.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.Mathematics.csproj" />
   <Project Path="Unity.RenderPipelines.Core.Editor.csproj" />
   <Project Path="Unity.VisualScripting.Core.Editor.csproj" />
