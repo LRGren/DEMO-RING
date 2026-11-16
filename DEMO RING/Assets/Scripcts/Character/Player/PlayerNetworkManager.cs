@@ -504,7 +504,9 @@ public class PlayerNetworkManager : CharacterNetworkManager
         // 如果弓有动画的话，在这里通过WeaponManager得到弓的动画并播放
 
         // 生成投掷物
-        GameObject arrow = Instantiate(WorldItemDatabase.instance.GetProjectileByID(projectileID).drawProjectileModel, player.playerEquipmentManager.leftHandWeaponManager.transform);
+        GameObject arrow = Instantiate(WorldItemDatabase.instance.GetProjectileByID(projectileID).drawProjectileModel, player.playerEquipmentManager.leftHandWeaponSlot.transform);
+        arrow.transform.SetParent(player.playerEquipmentManager.leftHandWeaponSlot.transform);
+        arrow.transform.localPosition = Vector3.zero;
         player.playerEffectsManager.activeProjectileFX = arrow;
 
         player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(WorldSoundFXManager.instance.notchArrowSFX));

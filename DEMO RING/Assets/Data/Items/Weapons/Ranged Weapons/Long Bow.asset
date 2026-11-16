@@ -28,6 +28,7 @@ MonoBehaviour:
   weaponClass: 4
   weaponModel: {fileID: 2694263985928079331, guid: a2138fd829ded984f848dd4924449ba5,
     type: 3}
+  useAsymmetricLeftHandSlot: 1
   strengthREQ: 9
   dexterityREQ: 0
   intelligenceREQ: 14
