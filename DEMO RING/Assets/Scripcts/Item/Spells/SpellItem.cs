@@ -21,7 +21,7 @@ public class SpellItem : Item
     public GameObject spellCastReleaseFXFullCharge;
 
     [Header("Spell Animations")]
-    public string mainHandSpellAnimtion;
+    public string mainHandSpellAnimation;
     public string offHandSpellAnimtion;
 
     [Header("Spell Sound FX")]

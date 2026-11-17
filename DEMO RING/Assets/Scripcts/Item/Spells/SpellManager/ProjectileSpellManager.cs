@@ -16,9 +16,6 @@ public class ProjectileSpellManager : SpellManager
     protected Rigidbody fireBallRigidbody;
     protected Coroutine destructionCoroutine;
 
-    [Header("Spell Setup")]
-    public SpellSetup spellSetup;
-
 
     protected override void Awake()
     {

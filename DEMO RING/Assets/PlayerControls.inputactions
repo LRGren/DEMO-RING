@@ -160,6 +160,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "RB Channeling",
+                    "type": "Button",
+                    "id": "1ee1946e-f642-43bf-a116-c043fb4d8693",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "LB",
                     "type": "Button",
                     "id": "d1eeb4d6-ff1b-492c-8496-6d5d69c60560",
@@ -175,6 +184,15 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Hold(pressPoint=0.1)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LB Channeling",
+                    "type": "Button",
+                    "id": "6e75bf40-4b15-4df6-8134-df213ff62701",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -337,6 +355,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Hold RB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d1260574-3d49-40b9-b05f-9bd663ebf7ce",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RB Channeling",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b7093a73-18a3-4559-a1eb-9411649292c8",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LB Channeling",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

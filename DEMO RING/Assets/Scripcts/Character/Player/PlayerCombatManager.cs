@@ -12,6 +12,12 @@ public class PlayerCombatManager : CharacterCombatManager
     [Header("Projectile")]
     public Vector3 projectileAimDirection;
 
+    [Header("Spell Casting")]
+    [Header("Channeling Spell")]
+    public bool isChannelingSpell = false;
+    public ChannelingSpell currentChannelingSpell;
+    public ChannelingSpellManager currentChannelingSpellManager;
+
     [Header("Flags")]
     public bool canComboWithMainHandWeapon = false;
     //public bool canComboWithOffHandWeapon = false;
@@ -21,6 +27,13 @@ public class PlayerCombatManager : CharacterCombatManager
     {
         base.Awake();
         player = GetComponent<PlayerManager>();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        CheckChannelingSpell();
     }
 
     public void PerformWeaponBasedAction(WeaponItemAction weaponAction, WeaponItem weaponPerformingAction)
@@ -359,6 +372,41 @@ public class PlayerCombatManager : CharacterCombatManager
             return;
 
         player.playerInventoryManager.currentSpell.SuccessfullyChargeSpell(player);
+    }
+
+    public void CheckChannelingSpell()
+    {
+        if (!player.IsOwner)
+            return;
+
+        if (!isChannelingSpell)
+            return;
+
+        if (currentChannelingSpell == null)
+            return;
+
+        if (!PlayerInputManager.instance.isChannelingSpell_Right)
+            StopChannelingSpell();
+    }
+    public void StopChannelingSpell(bool playEndAnimation = true)
+    {
+        if (currentChannelingSpell == null)
+            return;
+
+        currentChannelingSpell.StopChannelingSpell(player, playEndAnimation);
+    }
+
+    public override void DestoryAllAttemptedActions()
+    {
+        base.DestoryAllAttemptedActions();
+
+        if (player.IsOwner)
+        {
+            if (isChannelingSpell)
+            {
+                StopChannelingSpell(false);
+            }
+        }
     }
 
     // Quick Slot Item

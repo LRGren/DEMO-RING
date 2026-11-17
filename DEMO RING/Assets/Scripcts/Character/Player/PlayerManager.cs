@@ -254,6 +254,9 @@ public class PlayerManager : CharacterManager
     {
         if (IsOwner)
         {
+            if (playerCombatManager.isChannelingSpell)
+                playerCombatManager.StopChannelingSpell(false);
+
             PlayerUIManager.instance.playerUIPopUpManager.SendYouDiedPopUp();
         }
 

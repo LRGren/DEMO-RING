@@ -73,6 +73,9 @@ public class PlayerInputManager : MonoBehaviour
     [Header("UI Inputs")]
     [SerializeField] private bool openCharacterMenuInput = false;
 
+    [Header("Other Check")]
+    public bool isChannelingSpell_Right = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -185,6 +188,10 @@ public class PlayerInputManager : MonoBehaviour
 
             //UI Inputs
             playerControls.UI.Start.performed += i => openCharacterMenuInput = true;
+
+            // Other Check
+            playerControls.PlayerActions.RBChanneling.performed += i => isChannelingSpell_Right = true;
+            playerControls.PlayerActions.RBChanneling.canceled += i => isChannelingSpell_Right = false;
 
         }
 
@@ -867,5 +874,4 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
     }
-
 }

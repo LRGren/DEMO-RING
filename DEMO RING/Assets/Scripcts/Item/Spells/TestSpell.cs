@@ -16,7 +16,7 @@ public class TestSpell : SpellItem
 
         if (player.playerNetworkManager.isUsingRightHand.Value)
         {
-            player.playerAnimatorManager.PlayerTargetActionAnimation(mainHandSpellAnimtion, true);
+            player.playerAnimatorManager.PlayerTargetActionAnimation(mainHandSpellAnimation, true);
         }
         if (player.playerNetworkManager.isUsingLeftHand.Value)
         {

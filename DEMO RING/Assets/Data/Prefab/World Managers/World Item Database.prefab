@@ -81,6 +81,8 @@ MonoBehaviour:
   spells:
   - {fileID: 11400000, guid: 63bc88de29f5e0347ac9eba3758c76e6, type: 2}
   - {fileID: 11400000, guid: 26979afd063ecee4fb4309c827b28997, type: 2}
+  - {fileID: 11400000, guid: e0328ea38c5d55c49a0201e5fba54c24, type: 2}
+  - {fileID: 11400000, guid: 9eea415182a3bb34db24c4324ed7f621, type: 2}
   projectiles:
   - {fileID: 11400000, guid: 662a833b9b6fde149b2c7492bf21ab86, type: 2}
   quickSlotItems:

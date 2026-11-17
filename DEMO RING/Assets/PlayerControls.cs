@@ -246,6 +246,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""RB Channeling"",
+                    ""type"": ""Button"",
+                    ""id"": ""1ee1946e-f642-43bf-a116-c043fb4d8693"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""LB"",
                     ""type"": ""Button"",
                     ""id"": ""d1eeb4d6-ff1b-492c-8496-6d5d69c60560"",
@@ -261,6 +270,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Hold(pressPoint=0.1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LB Channeling"",
+                    ""type"": ""Button"",
+                    ""id"": ""6e75bf40-4b15-4df6-8134-df213ff62701"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -423,6 +441,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Hold RB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d1260574-3d49-40b9-b05f-9bd663ebf7ce"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RB Channeling"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7093a73-18a3-4559-a1eb-9411649292c8"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LB Channeling"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1187,8 +1227,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActions_TwoHandLeftWeapon = m_PlayerActions.FindAction("Two Hand Left Weapon", throwIfNotFound: true);
         m_PlayerActions_RB = m_PlayerActions.FindAction("RB", throwIfNotFound: true);
         m_PlayerActions_HoldRB = m_PlayerActions.FindAction("Hold RB", throwIfNotFound: true);
+        m_PlayerActions_RBChanneling = m_PlayerActions.FindAction("RB Channeling", throwIfNotFound: true);
         m_PlayerActions_LB = m_PlayerActions.FindAction("LB", throwIfNotFound: true);
         m_PlayerActions_HoldLB = m_PlayerActions.FindAction("Hold LB", throwIfNotFound: true);
+        m_PlayerActions_LBChanneling = m_PlayerActions.FindAction("LB Channeling", throwIfNotFound: true);
         m_PlayerActions_LBShield = m_PlayerActions.FindAction("LBShield", throwIfNotFound: true);
         m_PlayerActions_QueRB = m_PlayerActions.FindAction("Que RB", throwIfNotFound: true);
         m_PlayerActions_RT = m_PlayerActions.FindAction("RT", throwIfNotFound: true);
@@ -1412,8 +1454,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_TwoHandLeftWeapon;
     private readonly InputAction m_PlayerActions_RB;
     private readonly InputAction m_PlayerActions_HoldRB;
+    private readonly InputAction m_PlayerActions_RBChanneling;
     private readonly InputAction m_PlayerActions_LB;
     private readonly InputAction m_PlayerActions_HoldLB;
+    private readonly InputAction m_PlayerActions_LBChanneling;
     private readonly InputAction m_PlayerActions_LBShield;
     private readonly InputAction m_PlayerActions_QueRB;
     private readonly InputAction m_PlayerActions_RT;
@@ -1475,6 +1519,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @HoldRB => m_Wrapper.m_PlayerActions_HoldRB;
         /// <summary>
+        /// Provides access to the underlying input action "PlayerActions/RBChanneling".
+        /// </summary>
+        public InputAction @RBChanneling => m_Wrapper.m_PlayerActions_RBChanneling;
+        /// <summary>
         /// Provides access to the underlying input action "PlayerActions/LB".
         /// </summary>
         public InputAction @LB => m_Wrapper.m_PlayerActions_LB;
@@ -1482,6 +1530,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerActions/HoldLB".
         /// </summary>
         public InputAction @HoldLB => m_Wrapper.m_PlayerActions_HoldLB;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerActions/LBChanneling".
+        /// </summary>
+        public InputAction @LBChanneling => m_Wrapper.m_PlayerActions_LBChanneling;
         /// <summary>
         /// Provides access to the underlying input action "PlayerActions/LBShield".
         /// </summary>
@@ -1587,12 +1639,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @HoldRB.started += instance.OnHoldRB;
             @HoldRB.performed += instance.OnHoldRB;
             @HoldRB.canceled += instance.OnHoldRB;
+            @RBChanneling.started += instance.OnRBChanneling;
+            @RBChanneling.performed += instance.OnRBChanneling;
+            @RBChanneling.canceled += instance.OnRBChanneling;
             @LB.started += instance.OnLB;
             @LB.performed += instance.OnLB;
             @LB.canceled += instance.OnLB;
             @HoldLB.started += instance.OnHoldLB;
             @HoldLB.performed += instance.OnHoldLB;
             @HoldLB.canceled += instance.OnHoldLB;
+            @LBChanneling.started += instance.OnLBChanneling;
+            @LBChanneling.performed += instance.OnLBChanneling;
+            @LBChanneling.canceled += instance.OnLBChanneling;
             @LBShield.started += instance.OnLBShield;
             @LBShield.performed += instance.OnLBShield;
             @LBShield.canceled += instance.OnLBShield;
@@ -1670,12 +1728,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @HoldRB.started -= instance.OnHoldRB;
             @HoldRB.performed -= instance.OnHoldRB;
             @HoldRB.canceled -= instance.OnHoldRB;
+            @RBChanneling.started -= instance.OnRBChanneling;
+            @RBChanneling.performed -= instance.OnRBChanneling;
+            @RBChanneling.canceled -= instance.OnRBChanneling;
             @LB.started -= instance.OnLB;
             @LB.performed -= instance.OnLB;
             @LB.canceled -= instance.OnLB;
             @HoldLB.started -= instance.OnHoldLB;
             @HoldLB.performed -= instance.OnHoldLB;
             @HoldLB.canceled -= instance.OnHoldLB;
+            @LBChanneling.started -= instance.OnLBChanneling;
+            @LBChanneling.performed -= instance.OnLBChanneling;
+            @LBChanneling.canceled -= instance.OnLBChanneling;
             @LBShield.started -= instance.OnLBShield;
             @LBShield.performed -= instance.OnLBShield;
             @LBShield.canceled -= instance.OnLBShield;
@@ -2254,6 +2318,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnHoldRB(InputAction.CallbackContext context);
         /// <summary>
+        /// Method invoked when associated input action "RB Channeling" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRBChanneling(InputAction.CallbackContext context);
+        /// <summary>
         /// Method invoked when associated input action "LB" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -2267,6 +2338,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnHoldLB(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LB Channeling" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLBChanneling(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "LBShield" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

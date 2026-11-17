@@ -2289,34 +2289,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: World Item Database
       objectReference: {fileID: 0}
-    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
-        type: 3}
-      propertyPath: spells.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
-        type: 3}
-      propertyPath: weapons.Array.size
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
-        type: 3}
-      propertyPath: spells.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: e0328ea38c5d55c49a0201e5fba54c24,
-        type: 2}
-    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
-        type: 3}
-      propertyPath: weapons.Array.data[9]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4ee2564e9a7e50d499ee195376c42e31,
-        type: 2}
-    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
-        type: 3}
-      propertyPath: weapons.Array.data[10]
-      value: 
-      objectReference: {fileID: 11400000, guid: 0757e051514a3e947bc6110d66cbc731,
-        type: 2}
     - target: {fileID: 7703937357132980738, guid: ba46be3c9ee99aa41971da263ce4d03b,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662e4f9015ae889479c72caba415fb64, type: 3}
+  m_Name: Azure
+  m_EditorClassIdentifier: 
+  itemName: Azure
+  itemIcon: {fileID: 21300128, guid: 09e4c6a7d75923945afe43953ef58ad2, type: 3}
+  itemDescription: 
+  itemID: 70003
+  spellClass: 0
+  fullCastStaminaCostModifier: 1.5
+  staminaCost: 10
+  focusCost: 10
+  spellCastWarmUpFX: {fileID: 0}
+  spellChargeFX: {fileID: 0}
+  spellCastReleaseFX: {fileID: 3212356884160148728, guid: f72b6716d35fc754b90738e3f2604644,
+    type: 3}
+  spellCastReleaseFXFullCharge: {fileID: 0}
+  mainHandSpellAnimation: Azure_Start
+  offHandSpellAnimtion: 
+  spellCastWarmUpSound: {fileID: 0}
+  spellCastReleaseSound: {fileID: 0}
+  focusCostPerTick: 2
+  tickInterval: 0.2
+  Beam_Loop: Azure_Loop
+  Beam_End: Azure_End
