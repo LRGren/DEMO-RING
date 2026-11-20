@@ -11,22 +11,22 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d593dd67f8ac01e4790e7e1a327de079, type: 3}
   m_Name: Berserker Gauntlets
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   itemName: Berserker Gauntlets
-  itemIcon: {fileID: 21300080, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: Sturdy bracers and gloves made for close combat.
+  itemIcon: {fileID: 21300000, guid: 0dff43dfc2fb27d44ab2a13a0e27d954, type: 3}
+  itemDescription: 'Reinforced bracers pad the forearms where a heavy weapon can strike them.'
   itemID: 40011
-  itemWeight: 3.5
-  physicalDamageAbsorption: 3.3
-  magicDamageAbsorption: 2.5
-  fireDamageAbsorption: 2.7
-  lightningDamageAbsorption: 2.1
-  holyDamageAbsorption: 2.1
-  immunity: 12
-  robustness: 19
-  focus: 8
-  vitality: 8
-  poise: 5
+  itemWeight: 2.1
+  physicalDamageAbsorption: 1.6
+  magicDamageAbsorption: 1.9
+  fireDamageAbsorption: 2.3
+  lightningDamageAbsorption: 2.5
+  holyDamageAbsorption: 2.3
+  immunity: 17
+  robustness: 11
+  focus: 14
+  vitality: 13
+  poise: 3
   equipmentModels:
   - {fileID: 11400000, guid: dbf90d31290c4de2a1cbc75b719d1222, type: 2}
   - {fileID: 11400000, guid: 87d166c920ae4e92bbcfb6b48b514865, type: 2}

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Long Sword
   m_EditorClassIdentifier: 
   itemName: Long Sword
-  itemIcon: {fileID: 21300114, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: A straight sword
+  itemIcon: {fileID: 21300000, guid: c84ccd7416ca37645a193aa8f6157839, type: 3}
+  itemDescription: 'A straight, double-edged sword suited to both quick cuts and thrusts.'
   itemID: 10001
   itemWeight: 3.5
   weaponAnimator: {fileID: 22100000, guid: 9579843364df031448b1014815f84953, type: 2}
@@ -22,6 +22,7 @@ MonoBehaviour:
   weaponClass: 1
   weaponModel: {fileID: 1711130412322516538, guid: 56af49cc44ec3a24dba59291ba12d421,
     type: 3}
+  useAsymmetricLeftHandSlot: 0
   strengthREQ: 10
   dexterityREQ: 10
   intelligenceREQ: 0

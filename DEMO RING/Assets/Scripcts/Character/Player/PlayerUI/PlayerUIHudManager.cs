@@ -63,6 +63,33 @@ public class PlayerUIHudManager : MonoBehaviour
         staminaBar.gameObject.SetActive(true);
     }
 
+    public void RefreshHUDFromPlayer(PlayerManager player)
+    {
+        if (player == null || !player.IsOwner)
+            return;
+
+        var network = player.playerNetworkManager;
+        var inventory = player.playerInventoryManager;
+
+        SetMaxHealthValue(network.maxHealth.Value);
+        SetMaxStaminaValue(network.maxStamina.Value);
+        SetMaxFocusValue(network.maxFocus.Value);
+        healthBar.SetStat(network.currentHealth.Value);
+        staminaBar.SetStat(Mathf.RoundToInt(network.currentStamina.Value));
+        focusBar.SetStat(network.currentFocusPoints.Value);
+
+        SetRightWeaponQuickSlotIcon(network.currentRightHandWeaponID.Value);
+        SetLeftWeaponQuickSlotIcon(network.currentLeftHandWeaponID.Value);
+        SetSpellItemQuickSlotIcon(network.currentSpellID.Value);
+        SetQuickSlotItemQuickSlotIcon(network.currentQuickSlotItemID.Value, player);
+
+        SetMainProjectileItemQuickSlotIcon(inventory.mainProjectile);
+        SetSecondaryProjectileItemQuickSlotIcon(inventory.secondaryProjectile);
+        ToggleProjectileSlotsGameobject(inventory.currentRightHandWeapon?.weaponClass == WeaponClass.Bow
+            || inventory.currentLeftHandWeapon?.weaponClass == WeaponClass.Bow);
+        crosshair.SetActive(network.isAiming.Value);
+    }
+
     public void SetNewHealthValue(int oldValue, int newValue)
     {
         healthBar.SetStat(newValue);
@@ -167,6 +194,12 @@ public class PlayerUIHudManager : MonoBehaviour
 
     public void SetQuickSlotItemQuickSlotIcon(int quickSlotItemID)
     {
+        var playerObject = NetworkManager.Singleton?.LocalClient?.PlayerObject;
+        SetQuickSlotItemQuickSlotIcon(quickSlotItemID, playerObject != null ? playerObject.GetComponent<PlayerManager>() : null);
+    }
+
+    private void SetQuickSlotItemQuickSlotIcon(int quickSlotItemID, PlayerManager player)
+    {
         QuickSlotItem quickSlotItem = WorldItemDatabase.instance.GetQuickSlotItemByID(quickSlotItemID);
 
         if (quickSlotItem == null)
@@ -190,9 +223,7 @@ public class PlayerUIHudManager : MonoBehaviour
         quickSlotItemUI.sprite = quickSlotItem.itemIcon;
         quickSlotItemUI.enabled = true;
 
-        PlayerManager player = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
-
-        var current = player.playerInventoryManager.currentQuickSlotItem;
+        var current = player != null ? player.playerInventoryManager.currentQuickSlotItem : null;
         SetQuickSlotCountText(current != null ? current.GetAmountOfItem(player) : 0, current != null && current.isConsumable);
     }
 

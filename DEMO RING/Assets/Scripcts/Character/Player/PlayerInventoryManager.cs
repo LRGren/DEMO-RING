@@ -16,7 +16,6 @@ public class PlayerInventoryManager : CharacterInventoryManager
     public int rightWeaponIndex = 0;
     public WeaponItem[] weaponsInLeftHand = new WeaponItem[3];
     public int leftWeaponIndex = 0;
-    public SpellItem currentSpell;
 
     [Header("Equipment Slots")]
     public HeadEquipmentItem headEquipment;
@@ -32,6 +31,11 @@ public class PlayerInventoryManager : CharacterInventoryManager
     public QuickSlotItem currentQuickSlotItem;
     public int currentQuickSlotItemIndex = 0;
     public QuickSlotItem[] quickSlotItemInventory = new QuickSlotItem[10];
+
+    [Header("Spells")]
+    public SpellItem currentSpell;
+    public int currentSpellIndex = 0;
+    public SpellItem[] spellInventory;
 
     [Header("Inventory")]
     public List<Item> characterInventory = new List<Item>();
@@ -91,6 +95,31 @@ public class PlayerInventoryManager : CharacterInventoryManager
         }
 
         SetItemInQuickSlot(quickSlotItem, slotIndex);
+    }
+
+    // Spell Management
+    public void UpdateMaxSpellCapacity(int newMaxCapacity)
+    {
+        if (newMaxCapacity < 0)
+            return;
+
+        SpellItem[] newSpellInventory = new SpellItem[newMaxCapacity];
+
+        if (spellInventory == null)
+        {
+            spellInventory = newSpellInventory;
+            return;
+        }
+
+        for (int i = 0; i < Mathf.Min(spellInventory.Length, newMaxCapacity); i++)
+        {
+            newSpellInventory[i] = spellInventory[i];
+        }
+        spellInventory = newSpellInventory;
+    }
+    public void SetSpellInInventory(SpellItem spell, int index)
+    {
+        spellInventory[index] = spell;
     }
 
     void Update()

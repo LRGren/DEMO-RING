@@ -11,6 +11,7 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
     [Header("Main Menu")]
     public GameObject mainMenu;
     public GameObject teleportMenu;
+    public GameObject spellMenu;
 
     [Header("Teleport Buttons")]
     public List<GameObject> teleportButtons;
@@ -41,12 +42,26 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
     {
         PlayerUIManager.instance.menuWindowIsOpen = true;
         mainMenu.SetActive(true);
+
         teleportMenu.SetActive(false);
+        spellMenu.SetActive(false);
     }
 
     public void CloseMainMenu()
     {
+        if (!mainMenu.activeSelf)
+            return;
+
         StartCoroutine(CloseTeleportMenuCoroutine());
+
+        if (WorldSaveGameManager.instance.currentCharacterData.siteOfGraceActivated.ContainsKey(currentSiteOfGraceID)
+         && WorldSaveGameManager.instance.currentCharacterData.siteOfGraceActivated[currentSiteOfGraceID])
+        {
+            PlayerManager player = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
+            SiteOfGraceInteractable targetSiteOfGrace = WorldObjectManager.instance.siteOfGraces.Find(sog => sog.siteOfGraceID == currentSiteOfGraceID);
+
+            targetSiteOfGrace.StandUpFromResting(player);
+        }
     }
 
     public void OpenTeleportMenu()
@@ -67,25 +82,29 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
 
     public void TeleportToSiteOfGrace(int siteOfGraceID)
     {
-        CloseMainMenu();
+        if (!WorldSaveGameManager.instance.currentCharacterData.siteOfGraceActivated.ContainsKey(siteOfGraceID))
+            return;
 
-        UpdateCurrentSiteOfGraceID(siteOfGraceID);
+        if (!WorldSaveGameManager.instance.currentCharacterData.siteOfGraceActivated[siteOfGraceID])
+            return;
 
-        if (WorldSaveGameManager.instance.currentCharacterData.siteOfGraceActivated.ContainsKey(siteOfGraceID)
-         && WorldSaveGameManager.instance.currentCharacterData.siteOfGraceActivated[siteOfGraceID])
+        // Perform the teleportation logic here
+        PlayerManager player = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
+        SiteOfGraceInteractable targetSiteOfGrace = WorldObjectManager.instance.siteOfGraces.Find(sog => sog.siteOfGraceID == siteOfGraceID);
+        if (targetSiteOfGrace != null && targetSiteOfGrace.teleportPosition != null)
         {
-            // Perform the teleportation logic here
-            PlayerManager player = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
-            SiteOfGraceInteractable targetSiteOfGrace = WorldObjectManager.instance.siteOfGraces[siteOfGraceID];
-            if (targetSiteOfGrace != null && targetSiteOfGrace.teleportPosition != null)
-            {
-                PlayerUIManager.instance.playerUILoadingScreenManager.ActivateLoadingScreen();
+            StartCoroutine(CloseTeleportMenuCoroutine());
 
-                // Debug.Log($"Teleporting player to Site of Grace ID: {siteOfGraceID} at position: {targetSiteOfGrace.teleportPosition.position}");
-                player.transform.position = targetSiteOfGrace.teleportPosition.position;
+            UpdateCurrentSiteOfGraceID(siteOfGraceID);
 
-                PlayerUIManager.instance.playerUILoadingScreenManager.DeactivateLoadingScreen();
-            }
+            PlayerUIManager.instance.playerUILoadingScreenManager.ActivateLoadingScreen();
+
+            // Debug.Log($"Teleporting player to Site of Grace ID: {siteOfGraceID} at position: {targetSiteOfGrace.teleportPosition.position}");
+            player.transform.position = targetSiteOfGrace.teleportPosition.position;
+
+            PlayerUIManager.instance.playerUILoadingScreenManager.DeactivateLoadingScreen();
+
+            targetSiteOfGrace.StandUpFromResting(player);
         }
     }
 
@@ -122,6 +141,18 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
             // Disable the button for the current Site of Grace
             teleportButtons[currentSiteOfGraceID].SetActive(false);
         }
+    }
+
+    public void OpenSpellMenu()
+    {
+        mainMenu.SetActive(false);
+        spellMenu.SetActive(true);
+    }
+
+    public void CloseSpellMenu()
+    {
+        mainMenu.SetActive(true);
+        spellMenu.SetActive(false);
     }
 
 }

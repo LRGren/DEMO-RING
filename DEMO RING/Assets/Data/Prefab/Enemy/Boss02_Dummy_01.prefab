@@ -5537,7 +5537,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 360
-  m_StoppingDistance: 5
+  m_StoppingDistance: 2.55
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -9066,7 +9066,7 @@ MonoBehaviour:
   armorVitality: 0
   totalPoiseDamage: 0
   offensivePoiseBonus: 0
-  basePoiseDefense: 120
+  basePoiseDefense: 85
   defaultPoiseResetTimer: 4
   poiseResetTimer: 0
 --- !u!143 &7055204243726310791
@@ -9300,9 +9300,9 @@ MonoBehaviour:
   maxStamina:
     m_InternalValue: 0
   currentHealth:
-    m_InternalValue: 1000
+    m_InternalValue: 2100
   maxHealth:
-    m_InternalValue: 1000
+    m_InternalValue: 2100
   currentFocusPoints:
     m_InternalValue: 0
   maxFocus:
@@ -9342,8 +9342,8 @@ MonoBehaviour:
   minimumFOV: -35
   maximumFOV: 35
   attackRotationSpeed: 240
-  maxStance: 10
-  currentStance: 10
+  maxStance: 110
+  currentStance: 110
   stanceRegenRationPerSecond: 15
   ignoreStanceBreak: 0
   stanceRegenerationTimer: 15
@@ -9355,12 +9355,12 @@ MonoBehaviour:
   stumpAttackRadius: 2
   stumpAttackEffect: {fileID: 3432958286849152088, guid: 81a4c697f03d1c9419935dcf0260ec2b,
     type: 3}
-  baseDamage: 50
-  basePoiseDamage: 25
+  baseDamage: 80
+  basePoiseDamage: 40
   attack01Modifier: 1
-  attack02Modifier: 1.4
-  attack03Modifier: 2.5
-  stumpAttackDamage: 60
+  attack02Modifier: 1.35
+  attack03Modifier: 1.65
+  stumpAttackDamage: 110
 --- !u!114 &4901979404351098482
 MonoBehaviour:
   m_ObjectHideFlags: 0

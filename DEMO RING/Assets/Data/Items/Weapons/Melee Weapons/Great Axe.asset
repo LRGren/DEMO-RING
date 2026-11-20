@@ -11,16 +11,18 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73ca27b6157a4f4a81a71c9a439ee3af, type: 3}
   m_Name: Great Axe
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   itemName: Greataxe
-  itemIcon: {fileID: 21300078, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: A heavy greataxe for powerful warriors. Its weight favors deliberate, committed attacks.
+  itemIcon: {fileID: 21300000, guid: 8b94c200afa55e744b71d91fdffb7788, type: 3}
+  itemDescription: 'A heavy axe built for deliberate swings. Its weight demands considerable strength.'
   itemID: 10008
   itemWeight: 13
   weaponAnimator: {fileID: 22100000, guid: 6a948882e2c14d4bb6cdc0e67be0caa2, type: 2}
   weaponType: 0
   weaponClass: 6
-  weaponModel: {fileID: 159048987350256036, guid: 89bbdab92c5b4ab4b8562582cbd50eab, type: 3}
+  weaponModel: {fileID: 159048987350256036, guid: 89bbdab92c5b4ab4b8562582cbd50eab,
+    type: 3}
+  useAsymmetricLeftHandSlot: 0
   strengthREQ: 30
   dexterityREQ: 8
   intelligenceREQ: 0

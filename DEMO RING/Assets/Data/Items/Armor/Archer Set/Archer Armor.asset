@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Archer Armor
   m_EditorClassIdentifier: 
   itemName: Archer Armor
-  itemIcon: {fileID: 21300080, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: Supple leather armor with a quiver, made for mobile archers.
+  itemIcon: {fileID: 21300000, guid: 739dd5ead436f24418ffa214e1698ffb, type: 3}
+  itemDescription: 'Supple leather armor with a back quiver and room to draw a bow.'
   itemID: 30009
   itemWeight: 7.7
   physicalDamageAbsorption: 8

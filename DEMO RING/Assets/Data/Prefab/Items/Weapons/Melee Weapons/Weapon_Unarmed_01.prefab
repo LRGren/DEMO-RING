@@ -142,6 +142,8 @@ MonoBehaviour:
   run_Attack_01_Modifier: 0
   roll_Attack_01_Modifier: 0
   backstep_Attack_01_Modifier: 0
+  jump_Light_Attack_01_Modifier: 0
+  jump_Heavy_Attack_01_Modifier: 0
 --- !u!135 &2214868543873612513
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -157,9 +159,9 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}

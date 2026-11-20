@@ -11,10 +11,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce00bb60fd1689a4c926891f5ed4c7f5, type: 3}
   m_Name: Archer Greaves
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   itemName: Archer Greaves
-  itemIcon: {fileID: 21300080, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: Flexible leggings and boots suited to moving between firing positions.
+  itemIcon: {fileID: 21300000, guid: df7fc776384fa0f4daac857bebe07293, type: 3}
+  itemDescription: 'Soft boots and flexible leggings let an archer change position quietly.'
   itemID: 50011
   itemWeight: 4.4
   physicalDamageAbsorption: 4

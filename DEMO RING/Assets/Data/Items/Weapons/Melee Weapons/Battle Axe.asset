@@ -11,17 +11,18 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73ca27b6157a4f4a81a71c9a439ee3af, type: 3}
   m_Name: Battle Axe
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   itemName: Battle Axe
-  itemIcon: {fileID: 21300078, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: A versatile battle axe with a heavy blade. Strong swings reward careful timing.
+  itemIcon: {fileID: 21300000, guid: 072c57e6cf256cb4eaba6231099a8b22, type: 3}
+  itemDescription: 'A one-handed axe with a broad blade for strong chopping attacks.'
   itemID: 10007
   itemWeight: 4.5
   weaponAnimator: {fileID: 22100000, guid: a59fb39090ff46549394def341ac80a8, type: 2}
   weaponType: 0
   weaponClass: 5
+  weaponModel: {fileID: 4416895510362898170, guid: bd5ecd3d18b0cbe43957eec08609d957,
+    type: 3}
   useAsymmetricLeftHandSlot: 1
-  weaponModel: {fileID: 4416895510362898170, guid: bd5ecd3d18b0cbe43957eec08609d957, type: 3}
   strengthREQ: 12
   dexterityREQ: 8
   intelligenceREQ: 0

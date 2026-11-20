@@ -74,6 +74,9 @@ public class PlayerManager : CharacterManager
             PlayerInputManager.instance.player = this;
             WorldSaveGameManager.instance.player = this;
 
+            //更新Spell最大容量
+            playerInventoryManager.UpdateMaxSpellCapacity(playerNetworkManager.currentMaxSpellCapacity.Value);
+
             //更新状态条最大值
             playerNetworkManager.vigor.OnValueChanged += playerNetworkManager.SetNewMaxHealthValue;
             playerNetworkManager.mind.OnValueChanged += playerNetworkManager.SetNewMaxFocusValue;
@@ -132,6 +135,7 @@ public class PlayerManager : CharacterManager
         playerNetworkManager.isChargingAttack.OnValueChanged += playerNetworkManager.OnIsChargingAttackChanged;
 
         //Spell
+        playerNetworkManager.currentMaxSpellCapacity.OnValueChanged += playerNetworkManager.OnCurrentMaxSpellCapacityChanged;
         playerNetworkManager.isChargingRightSpell.OnValueChanged += playerNetworkManager.OnIsChargingRightSpellChanged;
         playerNetworkManager.isChargingLeftSpell.OnValueChanged += playerNetworkManager.OnIsChargingLeftSpellChanged;
 
@@ -163,6 +167,16 @@ public class PlayerManager : CharacterManager
         base.OnNetworkDespawn();
 
         NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnecterCallback;
+
+        // 清除Beam
+        if (playerCombatManager.currentChannelingSpellManager)
+        {
+            playerCombatManager.currentChannelingSpellManager.enabled = false;
+            playerCombatManager.currentChannelingSpellManager.channelingSpell.DestoryBeamVisual(this);
+            playerCombatManager.currentChannelingSpellManager = null;
+            playerCombatManager.isChannelingSpell = false;
+            playerCombatManager.currentChannelingSpell = null;
+        }
 
         if (IsOwner)
         {
@@ -363,6 +377,24 @@ public class PlayerManager : CharacterManager
 
         //设置初始法术
         playerInventoryManager.currentSpell = CloneOptionalItem(startingClass.startingSpell01);
+        if (playerInventoryManager.spellInventory == null || playerInventoryManager.spellInventory.Length < 2)
+        {
+            playerInventoryManager.spellInventory = new SpellItem[2];
+        }
+        playerInventoryManager.spellInventory[0] = CloneOptionalItem(startingClass.startingSpell01);
+        playerInventoryManager.spellInventory[1] = CloneOptionalItem(startingClass.startingSpell02);
+        if (startingClass.startingSpell01 != null)
+        {
+            playerInventoryManager.currentSpellIndex = 0;
+        }
+        else if (startingClass.startingSpell02 != null)
+        {
+            playerInventoryManager.currentSpellIndex = 1;
+        }
+        else
+        {
+            playerInventoryManager.currentSpellIndex = -1;
+        }
 
         playerNetworkManager.isTwoHandingWeapon.Value = false;
         playerNetworkManager.isTwoHandingRightWeapon.Value = false;

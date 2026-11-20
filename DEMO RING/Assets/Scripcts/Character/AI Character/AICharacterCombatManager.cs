@@ -143,7 +143,7 @@ public class AICharacterCombatManager : CharacterCombatManager
                     {
                         //Debug.DrawLine(aiCharacter.characterCombatManager.lockOnTransform.position, targetCharacter.transform.position, Color.red, 0.1f);
                         //Debug.Log("Blocked by environment");
-                        Debug.Log("Target Blocked by Environment: " + targetCharacter.name);
+                        //Debug.Log("Target Blocked by Environment: " + targetCharacter.name);
                     }
                     else
                     {

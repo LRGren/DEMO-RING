@@ -987,6 +987,36 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     }
     #endregion
 
+    #region  Spells
+    public void SwitchSpells()
+    {
+        if (!player.IsOwner)
+            return;
+
+        SpellItem[] inventory = player.playerInventoryManager.spellInventory;
+        int startIndex = player.playerInventoryManager.currentSpellIndex;
+        int length = inventory.Length;
+
+        // 从下一个槽位开始，最多检查一整圈
+        for (int offset = 1; offset <= length; offset++)
+        {
+            int nextIndex = (startIndex + offset) % length;
+
+            if (inventory[nextIndex] != null)
+            {
+                player.playerInventoryManager.currentSpellIndex = nextIndex;
+                player.playerNetworkManager.currentSpellID.Value = inventory[nextIndex].itemID;
+                return;
+            }
+        }
+
+        // 一个可用法术都没有
+        player.playerInventoryManager.currentSpellIndex = -1;
+        player.playerNetworkManager.currentSpellID.Value = -1;
+
+    }
+    #endregion
+
     #region Two Hand Weapon
     // Two Hand Weapon
     public void UnTwoHandWeapon()

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Parry
   m_EditorClassIdentifier: 
   itemName: Parry
-  itemIcon: {fileID: 0}
-  itemDescription: 
-  itemID: 60011
+  itemIcon: {fileID: 21300000, guid: b07da8b6fa9fa544d9c3f93b67bf5e4f, type: 3}
+  itemDescription: 'Time a shield deflection to knock aside an incoming attack and create an opening.'
+  itemID: 60000
   usableWeaponClasses: 0200000003000000
   focusPointsCost: 0
   staminaCost: 20

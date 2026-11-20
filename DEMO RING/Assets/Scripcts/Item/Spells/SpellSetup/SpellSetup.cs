@@ -18,4 +18,6 @@ public class SpellSetup : ScriptableObject
 
     public float fullChargeMultiplier = 1.5f;
     public bool useGravity = false;
+
+    public float attackRadius = 0.3f;
 }

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Lightning Spear
   m_EditorClassIdentifier: 
   itemName: Lightning Spear
-  itemIcon: {fileID: 21300000, guid: b0394665e16ef504bb922274dd606020, type: 3}
-  itemDescription: 
+  itemIcon: {fileID: 21300000, guid: 8584d07c3e7026d479a5b4ad3b3bb4dd, type: 3}
+  itemDescription: 'Gather lightning into a spear and throw it at a target. Hold the cast to increase its power.'
   itemID: 70002
   spellClass: 0
   fullCastStaminaCostModifier: 1.32
@@ -28,11 +28,11 @@ MonoBehaviour:
     type: 3}
   spellCastReleaseFXFullCharge: {fileID: 2479329178434569337, guid: 2ab9d90926138164ca5b28b4f530ed64,
     type: 3}
-  mainHandSpellAnimtion: Spell_Main_Fire_Ball_Start
-  offHandSpellAnimtion: Spell_Off_Fire_Ball_Start
-  spellCastWarmUpSound: {fileID: 8300000, guid: da396a16a7f24f64cbb0054f5a56b46a,
+  mainHandSpellAnimation: Spell_Main_Fire_Ball_Start
+  offHandSpellAnimation: Spell_Off_Fire_Ball_Start
+  spellCastWarmUpSound: {fileID: 8300000, guid: 2c7e44f9e5f92b341ad8b3a60e119c00,
     type: 3}
-  spellCastReleaseSound: {fileID: 8300000, guid: a652877b012108e41871f867ada9f176,
+  spellCastReleaseSound: {fileID: 8300000, guid: dbe0c1a0d2e6a834c9000cde90129721,
     type: 3}
   upwardForce: 0
   forwardForce: 30

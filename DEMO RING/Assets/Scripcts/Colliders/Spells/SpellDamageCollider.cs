@@ -6,4 +6,9 @@ using UnityEngine;
 public class SpellDamageCollider : DamageCollider
 {
     public CharacterManager spellCaster;
+
+    protected override CharacterManager GetAttackingCharacter()
+    {
+        return spellCaster;
+    }
 }

@@ -13,21 +13,21 @@ MonoBehaviour:
   m_Name: Rapier
   m_EditorClassIdentifier: 
   itemName: Rapier
-  itemIcon: {fileID: 21300114, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: A rapier
+  itemIcon: {fileID: 21300000, guid: 0b5931ae918b74140b46e7ec02c89106, type: 3}
+  itemDescription: 'A slender thrusting sword made for quick attacks through narrow openings.'
   itemID: 10011
-  itemWeight: 3.5
+  itemWeight: 2.5
   weaponAnimator: {fileID: 22100000, guid: c105071075868a7438869ac1afddb2d9, type: 2}
   weaponType: 0
   weaponClass: 1
   weaponModel: {fileID: 2187159235766523947, guid: 5817df01bf36b1c4f8f6f176fad56081,
     type: 3}
   useAsymmetricLeftHandSlot: 0
-  strengthREQ: 10
-  dexterityREQ: 10
+  strengthREQ: 7
+  dexterityREQ: 12
   intelligenceREQ: 0
   faithREQ: 0
-  physicalDamage: 110
+  physicalDamage: 96
   magicalDamage: 0
   fireDamage: 0
   holyDamage: 0

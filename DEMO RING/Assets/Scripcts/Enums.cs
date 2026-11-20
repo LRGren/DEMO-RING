@@ -173,4 +173,5 @@ public enum StartingClass
     Archer,
     Berserker,
     Wretch,
+    Caster,
 }

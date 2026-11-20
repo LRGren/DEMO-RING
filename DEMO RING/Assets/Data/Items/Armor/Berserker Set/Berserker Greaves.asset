@@ -11,22 +11,22 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce00bb60fd1689a4c926891f5ed4c7f5, type: 3}
   m_Name: Berserker Greaves
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   itemName: Berserker Greaves
-  itemIcon: {fileID: 21300080, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: Layered leg armor with a belt attachment and a reinforced left knee.
+  itemIcon: {fileID: 21300000, guid: 6a286b923cc3ce1478631de216953556, type: 3}
+  itemDescription: 'Layered leather and a reinforced knee keep the legs mobile in a brawl.'
   itemID: 50012
-  itemWeight: 5.7
-  physicalDamageAbsorption: 7.4
-  magicDamageAbsorption: 5
-  fireDamageAbsorption: 5.8
-  lightningDamageAbsorption: 4.5
-  holyDamageAbsorption: 4.5
-  immunity: 20
-  robustness: 34
-  focus: 13
-  vitality: 13
-  poise: 12
+  itemWeight: 3.9
+  physicalDamageAbsorption: 3.8
+  magicDamageAbsorption: 4.5
+  fireDamageAbsorption: 5.4
+  lightningDamageAbsorption: 5.8
+  holyDamageAbsorption: 5.4
+  immunity: 31
+  robustness: 20
+  focus: 26
+  vitality: 24
+  poise: 4
   equipmentModels:
   - {fileID: 11400000, guid: 415450de2a8e4258aff242b5ab00b5c5, type: 2}
   - {fileID: 11400000, guid: 4a94aaa6cb0e40fcba8d7b35a550a451, type: 2}

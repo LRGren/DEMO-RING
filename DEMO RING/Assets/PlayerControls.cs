@@ -381,6 +381,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Switch Spell"",
+                    ""type"": ""Button"",
+                    ""id"": ""5ac46e61-d608-417b-8000-7baaa7a35eef"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Seek Left Lock On Target"",
                     ""type"": ""Button"",
                     ""id"": ""9758e58d-d17a-4887-b14d-ceb457cdf238"",
@@ -595,6 +604,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Switch Quick Slots Item"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8df99065-067d-4fd5-b4d7-ad52f8cff8b4"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch Spell"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1242,6 +1262,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActions_SwitchRightWeapon = m_PlayerActions.FindAction("Switch Right Weapon", throwIfNotFound: true);
         m_PlayerActions_SwitchLeftWeapon = m_PlayerActions.FindAction("Switch Left Weapon", throwIfNotFound: true);
         m_PlayerActions_SwitchQuickSlotsItem = m_PlayerActions.FindAction("Switch Quick Slots Item", throwIfNotFound: true);
+        m_PlayerActions_SwitchSpell = m_PlayerActions.FindAction("Switch Spell", throwIfNotFound: true);
         m_PlayerActions_SeekLeftLockOnTarget = m_PlayerActions.FindAction("Seek Left Lock On Target", throwIfNotFound: true);
         m_PlayerActions_SeekRightLockOnTarget = m_PlayerActions.FindAction("Seek Right Lock On Target", throwIfNotFound: true);
         // Player Camera
@@ -1469,6 +1490,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_SwitchRightWeapon;
     private readonly InputAction m_PlayerActions_SwitchLeftWeapon;
     private readonly InputAction m_PlayerActions_SwitchQuickSlotsItem;
+    private readonly InputAction m_PlayerActions_SwitchSpell;
     private readonly InputAction m_PlayerActions_SeekLeftLockOnTarget;
     private readonly InputAction m_PlayerActions_SeekRightLockOnTarget;
     /// <summary>
@@ -1579,6 +1601,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @SwitchQuickSlotsItem => m_Wrapper.m_PlayerActions_SwitchQuickSlotsItem;
         /// <summary>
+        /// Provides access to the underlying input action "PlayerActions/SwitchSpell".
+        /// </summary>
+        public InputAction @SwitchSpell => m_Wrapper.m_PlayerActions_SwitchSpell;
+        /// <summary>
         /// Provides access to the underlying input action "PlayerActions/SeekLeftLockOnTarget".
         /// </summary>
         public InputAction @SeekLeftLockOnTarget => m_Wrapper.m_PlayerActions_SeekLeftLockOnTarget;
@@ -1684,6 +1710,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchQuickSlotsItem.started += instance.OnSwitchQuickSlotsItem;
             @SwitchQuickSlotsItem.performed += instance.OnSwitchQuickSlotsItem;
             @SwitchQuickSlotsItem.canceled += instance.OnSwitchQuickSlotsItem;
+            @SwitchSpell.started += instance.OnSwitchSpell;
+            @SwitchSpell.performed += instance.OnSwitchSpell;
+            @SwitchSpell.canceled += instance.OnSwitchSpell;
             @SeekLeftLockOnTarget.started += instance.OnSeekLeftLockOnTarget;
             @SeekLeftLockOnTarget.performed += instance.OnSeekLeftLockOnTarget;
             @SeekLeftLockOnTarget.canceled += instance.OnSeekLeftLockOnTarget;
@@ -1773,6 +1802,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchQuickSlotsItem.started -= instance.OnSwitchQuickSlotsItem;
             @SwitchQuickSlotsItem.performed -= instance.OnSwitchQuickSlotsItem;
             @SwitchQuickSlotsItem.canceled -= instance.OnSwitchQuickSlotsItem;
+            @SwitchSpell.started -= instance.OnSwitchSpell;
+            @SwitchSpell.performed -= instance.OnSwitchSpell;
+            @SwitchSpell.canceled -= instance.OnSwitchSpell;
             @SeekLeftLockOnTarget.started -= instance.OnSeekLeftLockOnTarget;
             @SeekLeftLockOnTarget.performed -= instance.OnSeekLeftLockOnTarget;
             @SeekLeftLockOnTarget.canceled -= instance.OnSeekLeftLockOnTarget;
@@ -2422,6 +2454,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSwitchQuickSlotsItem(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Switch Spell" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwitchSpell(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Seek Left Lock On Target" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

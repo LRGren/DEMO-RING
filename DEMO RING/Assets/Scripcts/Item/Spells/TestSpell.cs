@@ -20,7 +20,7 @@ public class TestSpell : SpellItem
         }
         if (player.playerNetworkManager.isUsingLeftHand.Value)
         {
-            player.playerAnimatorManager.PlayerTargetActionAnimation(offHandSpellAnimtion, true);
+            player.playerAnimatorManager.PlayerTargetActionAnimation(offHandSpellAnimation, true);
         }
 
     }

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Broad Sword
   m_EditorClassIdentifier: 
   itemName: Broadsword
-  itemIcon: {fileID: 21300078, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: A straight sword
+  itemIcon: {fileID: 21300000, guid: e9619a4d3e5a2e547a2be6069487c392, type: 3}
+  itemDescription: 'A wide-bladed sword that trades reach for forceful slashes.'
   itemID: 10002
   itemWeight: 4
   weaponAnimator: {fileID: 22100000, guid: 7233d515cbc095a44b72c59e7a1d72f8, type: 2}
@@ -22,6 +22,7 @@ MonoBehaviour:
   weaponClass: 1
   weaponModel: {fileID: 1711130412322516538, guid: ac1c0c907d9ebf4499db0b6721bf1ee3,
     type: 3}
+  useAsymmetricLeftHandSlot: 0
   strengthREQ: 10
   dexterityREQ: 10
   intelligenceREQ: 0

@@ -13,14 +13,8 @@ MonoBehaviour:
   m_Name: Long Bow
   m_EditorClassIdentifier: 
   itemName: Long Bow
-  itemIcon: {fileID: 21300122, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: 'Longbow made to fire arrows over great distances. Compared to
-    a shortbow, arrows fired reach further and deal more damage.
-
-
-
-    To use a
-    bow, arrows must also be equipped.'
+  itemIcon: {fileID: 21300000, guid: 10895662b05e3d44fb0c12e1a49baba7, type: 3}
+  itemDescription: 'A full-length bow that sends arrows farther than a compact bow. Requires arrows.'
   itemID: 10006
   itemWeight: 4
   weaponAnimator: {fileID: 22100000, guid: f184761e52b1beb419a85d927bd2d19a, type: 2}
@@ -30,8 +24,8 @@ MonoBehaviour:
     type: 3}
   useAsymmetricLeftHandSlot: 1
   strengthREQ: 9
-  dexterityREQ: 0
-  intelligenceREQ: 14
+  dexterityREQ: 14
+  intelligenceREQ: 0
   faithREQ: 0
   physicalDamage: 80
   magicalDamage: 0

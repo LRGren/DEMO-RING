@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Azure
   m_EditorClassIdentifier: 
   itemName: Azure
-  itemIcon: {fileID: 21300128, guid: 09e4c6a7d75923945afe43953ef58ad2, type: 3}
-  itemDescription: 
+  itemIcon: {fileID: 21300000, guid: 959173e2567f7aa47ab4a51f87634212, type: 3}
+  itemDescription: 'Channel a sustained beam of magic. Maintaining the beam consumes FP.'
   itemID: 70003
   spellClass: 0
   fullCastStaminaCostModifier: 1.5
@@ -26,10 +26,14 @@ MonoBehaviour:
     type: 3}
   spellCastReleaseFXFullCharge: {fileID: 0}
   mainHandSpellAnimation: Azure_Start
-  offHandSpellAnimtion: 
+  offHandSpellAnimation: Azure_Start_Left
   spellCastWarmUpSound: {fileID: 0}
   spellCastReleaseSound: {fileID: 0}
+  channelingRotationSpeed: 0.5
   focusCostPerTick: 2
   tickInterval: 0.2
-  Beam_Loop: Azure_Loop
   Beam_End: Azure_End
+  Beam_End_Left: Azure_End_Left
+  startChannelingSound: {fileID: 8300000, guid: f1e101f749ccdd343849d12c30e8655c,
+    type: 3}
+  endChannelingSound: {fileID: 8300000, guid: 53911e5b88ad4d5408a699925c7be13e, type: 3}

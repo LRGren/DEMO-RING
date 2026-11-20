@@ -70,6 +70,11 @@ public class CharacterAnimatorManager : MonoBehaviour
         character.animator.SetFloat(vertical, snappedVertical, 0.1f, Time.deltaTime);
     }
 
+    public void UpdateAnimatorTriggerParameters(string parameterName)
+    {
+        character.animator.SetTrigger(parameterName);
+    }
+
     public virtual void PlayerTargetActionAnimation(string targetAnimation, bool isPerformingAction, bool applyRootMotion = true, bool canRotate = false, bool canMove = false, bool canRun = true, bool canRoll = false)
     {
         //Debug.Log("Playing Target Action Animation: " + targetAnimation);

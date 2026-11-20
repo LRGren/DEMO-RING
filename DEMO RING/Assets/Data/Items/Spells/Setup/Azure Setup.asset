@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4419f74e476cc54c855863aa0fbc012, type: 3}
   m_Name: Azure Setup
   m_EditorClassIdentifier: 
-  spellName: 
+  spellName: 'Azure'
   physicalDamage: 0
   fireDamage: 0
   magicalDamage: 35
   lightningDamage: 0
   holyDamage: 0
-  poiseDamage: 10
+  poiseDamage: 1
   fullChargeMultiplier: 0
   useGravity: 0

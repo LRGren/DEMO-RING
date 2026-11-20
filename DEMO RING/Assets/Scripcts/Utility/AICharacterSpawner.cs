@@ -41,6 +41,9 @@ public class AICharacterSpawner : MonoBehaviour
         if (aiCharacrer == null)
             return;
 
+        if (aiCharacrer is AIBossCharacterManager boss && boss.hasBeenDefeated.Value)
+            return;
+
         spawnedAICharacter.transform.position = transform.position;
         spawnedAICharacter.transform.rotation = transform.rotation;
 

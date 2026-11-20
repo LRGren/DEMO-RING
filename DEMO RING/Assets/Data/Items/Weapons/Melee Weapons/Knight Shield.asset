@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Knight Shield
   m_EditorClassIdentifier: 
   itemName: Knight Shield
-  itemIcon: {fileID: 21300088, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: Knight Shield
-  itemID: 10009
-  itemWeight: 0
+  itemIcon: {fileID: 21300000, guid: d50d9f3cb2fe1364f8b95bb0ad724483, type: 3}
+  itemDescription: 'An iron-faced shield that can absorb a physical blow or turn it aside with a parry.'
+  itemID: 10010
+  itemWeight: 3.5
   weaponAnimator: {fileID: 22100000, guid: 9be177efe1fcba84294f9aff999f6bfe, type: 2}
   weaponType: 1
   weaponClass: 2
@@ -24,10 +24,10 @@ MonoBehaviour:
     type: 3}
   useAsymmetricLeftHandSlot: 0
   strengthREQ: 10
-  dexterityREQ: 10
+  dexterityREQ: 0
   intelligenceREQ: 0
   faithREQ: 0
-  physicalDamage: 78
+  physicalDamage: 77
   magicalDamage: 0
   fireDamage: 0
   holyDamage: 0
@@ -35,11 +35,11 @@ MonoBehaviour:
   criticalDamage: 100
   poiseDamage: 25
   physicalDamageAbsorption: 100
-  magicalDamageAbsorption: 0
-  fireDamageAbsorption: 0
-  holyDamageAbsorption: 0
-  lightningDamageAbsorption: 0
-  staminaAbsorption: 40
+  magicalDamageAbsorption: 43
+  fireDamageAbsorption: 43
+  holyDamageAbsorption: 43
+  lightningDamageAbsorption: 27
+  staminaAbsorption: 52
   light_Attack_01_Modifier: 1.1
   light_Attack_02_Modifier: 1.2
   heavy_Attack_01_Modifier: 1.4

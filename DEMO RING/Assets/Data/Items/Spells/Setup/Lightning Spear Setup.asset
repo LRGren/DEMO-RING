@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4419f74e476cc54c855863aa0fbc012, type: 3}
   m_Name: Lightning Spear Setup
   m_EditorClassIdentifier: 
-  spellName: Fire Ball
+  spellName: 'Lightning Spear'
   physicalDamage: 0
   fireDamage: 0
   magicalDamage: 0

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Unarmed Weapon
   itemIcon: {fileID: 0}
-  itemDescription: 
+  itemDescription: 'Bare fists used when no weapon is equipped.'
   itemID: 10000
   itemWeight: 0
   weaponAnimator: {fileID: 22100000, guid: 830d08253f11c7d40a528b234b01be4b, type: 2}

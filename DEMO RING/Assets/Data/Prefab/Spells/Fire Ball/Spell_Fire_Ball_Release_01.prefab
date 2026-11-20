@@ -5211,7 +5211,7 @@ Rigidbody:
   m_GameObject: {fileID: 2479329178434569337}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 1
+  m_Drag: 0.15
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -5302,7 +5302,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.18
+  m_Radius: 0.42
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6809577919359818800
 Rigidbody:

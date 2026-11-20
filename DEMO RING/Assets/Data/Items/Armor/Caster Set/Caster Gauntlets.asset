@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d593dd67f8ac01e4790e7e1a327de079, type: 3}
+  m_Name: Caster Gauntlets
+  m_EditorClassIdentifier: 
+  itemName: Caster Gauntlets
+  itemIcon: {fileID: 21300000, guid: 78976731e94ff804e96148c59079b3a1, type: 3}
+  itemDescription: Thin casting gloves preserve dexterity and offer light protection
+    against sorcery.
+  itemID: 40012
+  itemWeight: 1.4
+  physicalDamageAbsorption: 1.3
+  magicDamageAbsorption: 3.2
+  fireDamageAbsorption: 3.1
+  lightningDamageAbsorption: 3.2
+  holyDamageAbsorption: 3.1
+  immunity: 14
+  robustness: 7
+  focus: 24
+  vitality: 21
+  poise: 2
+  equipmentModels:
+  - {fileID: 11400000, guid: 7f3e0fe47b094c3e8b6905a04b874096, type: 2}
+  - {fileID: 11400000, guid: cfc6a1237f9140b7a1776a3012ea464f, type: 2}
+  - {fileID: 11400000, guid: d78bc18f89a742ae8e2c801abc1bfacb, type: 2}
+  - {fileID: 11400000, guid: 811c8b750251438bba9ca23b2ddea0cc, type: 2}

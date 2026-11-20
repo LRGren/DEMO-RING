@@ -62,6 +62,7 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private bool switch_Right_Weapons_Input = false;
     [SerializeField] private bool switch_Leftt_Weapons_Input = false;
     [SerializeField] private bool switch_Quick_Slots_Items_Input = false;
+    [SerializeField] private bool switch_Spell_Input = false;
 
     [Header("Qued Inputs")]
     private bool que_Input_Is_Active = false;
@@ -75,6 +76,7 @@ public class PlayerInputManager : MonoBehaviour
 
     [Header("Other Check")]
     public bool isChannelingSpell_Right = false;
+    public bool isChannelingSpell_Left = false;
 
     private void Awake()
     {
@@ -177,6 +179,7 @@ public class PlayerInputManager : MonoBehaviour
             playerControls.PlayerActions.SwitchRightWeapon.performed += i => switch_Right_Weapons_Input = true;
             playerControls.PlayerActions.SwitchLeftWeapon.performed += i => switch_Leftt_Weapons_Input = true;
             playerControls.PlayerActions.SwitchQuickSlotsItem.performed += i => switch_Quick_Slots_Items_Input = true;
+            playerControls.PlayerActions.SwitchSpell.performed += i => switch_Spell_Input = true;
 
             //Que Inputs
             playerControls.PlayerActions.QueRB.performed += i => QueInput(ref que_RB_Input);
@@ -192,6 +195,8 @@ public class PlayerInputManager : MonoBehaviour
             // Other Check
             playerControls.PlayerActions.RBChanneling.performed += i => isChannelingSpell_Right = true;
             playerControls.PlayerActions.RBChanneling.canceled += i => isChannelingSpell_Right = false;
+            playerControls.PlayerActions.LBChanneling.performed += i => isChannelingSpell_Left = true;
+            playerControls.PlayerActions.LBChanneling.canceled += i => isChannelingSpell_Left = false;
 
         }
 
@@ -244,11 +249,12 @@ public class PlayerInputManager : MonoBehaviour
         HandleHoldLBInput();
         HandleRTInput();
         HandleHoldRTInput();
-        HandleHoldLTInput();
+        HandleLTInput();
 
         HandleSwitchRightWeaponsInput();
         HandleSwitchLeftWeaponsInput();
         HandleSwitchQuickSlotsItemsInput();
+        HandleSwitchSpellInput();
 
         HandleInteractionInput();
 
@@ -616,14 +622,22 @@ public class PlayerInputManager : MonoBehaviour
                 return;
             }
 
-            player.playerNetworkManager.SetCharacterActionHand(false);
-
-            if (player.playerNetworkManager.isTwoHandingRightWeapon.Value)
+            if (player.playerNetworkManager.isTwoHandingWeapon.Value)
             {
-                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_LB_Action, player.playerInventoryManager.currentRightHandWeapon);
+                if (player.playerNetworkManager.isTwoHandingRightWeapon.Value)
+                {
+                    player.playerNetworkManager.SetCharacterActionHand(true);
+                    player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_LB_Action, player.playerInventoryManager.currentRightHandWeapon);
+                }
+                else
+                {
+                    player.playerNetworkManager.SetCharacterActionHand(false);
+                    player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftHandWeapon.oh_LB_Action, player.playerInventoryManager.currentLeftHandWeapon);
+                }
             }
             else
             {
+                player.playerNetworkManager.SetCharacterActionHand(false);
                 player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftHandWeapon.oh_LB_Action, player.playerInventoryManager.currentLeftHandWeapon);
             }
         }
@@ -658,31 +672,41 @@ public class PlayerInputManager : MonoBehaviour
                 return;
             }
 
-            player.playerNetworkManager.SetCharacterActionHand(true);
-
-            player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_RT_Action, player.playerInventoryManager.currentRightHandWeapon);
+            if (player.playerNetworkManager.isTwoHandingWeapon.Value)
+            {
+                if (player.playerNetworkManager.isTwoHandingRightWeapon.Value)
+                {
+                    player.playerNetworkManager.SetCharacterActionHand(true);
+                    player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_RT_Action, player.playerInventoryManager.currentRightHandWeapon);
+                }
+                else
+                {
+                    player.playerNetworkManager.SetCharacterActionHand(false);
+                    player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftHandWeapon.oh_RT_Action, player.playerInventoryManager.currentLeftHandWeapon);
+                }
+            }
+            else
+            {
+                player.playerNetworkManager.SetCharacterActionHand(true);
+                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_RT_Action, player.playerInventoryManager.currentRightHandWeapon);
+            }
         }
 
     }
 
     private void HandleHoldRTInput()
     {
-        if (player.isPerformingAction)
-        {
-            if (player.playerNetworkManager.isUsingRightHand.Value)
-            {
-                if (player.playerCombatManager.isUsingItem)
-                {
-                    player.playerNetworkManager.isChargingAttack.Value = false;
-                    return;
-                }
+        var network = player.playerNetworkManager;
+        bool rtUsesLeftHand = network.isTwoHandingWeapon.Value && network.isTwoHandingLeftWeapon.Value;
+        bool usingRTHand = rtUsesLeftHand ? network.isUsingLeftHand.Value : network.isUsingRightHand.Value;
 
-                player.playerNetworkManager.isChargingAttack.Value = hold_RT_Input;
-            }
-        }
+        network.isChargingAttack.Value = hold_RT_Input
+            && player.isPerformingAction
+            && usingRTHand
+            && !player.playerCombatManager.isUsingItem;
     }
 
-    private void HandleHoldLTInput()
+    private void HandleLTInput()
     {
         if (LT_Input)
         {
@@ -698,6 +722,8 @@ public class PlayerInputManager : MonoBehaviour
             }
 
             WeaponItem selectedWeapon = player.playerCombatManager.SelectWeaponToPerformAshOfWar();
+            if (selectedWeapon == null)
+                return;
 
             if (selectedWeapon.ashOfWar_Action == null)
                 return;
@@ -766,6 +792,24 @@ public class PlayerInputManager : MonoBehaviour
             }
 
             player.playerEquipmentManager.SwitchQuickSlotsItems();
+        }
+    }
+
+    public void HandleSwitchSpellInput()
+    {
+        if (switch_Spell_Input)
+        {
+            switch_Spell_Input = false;
+
+            if (player.playerCombatManager.isUsingItem)
+                return;
+
+            if (PlayerUIManager.instance.menuWindowIsOpen)
+            {
+                return;
+            }
+
+            player.playerEquipmentManager.SwitchSpells();
         }
     }
 

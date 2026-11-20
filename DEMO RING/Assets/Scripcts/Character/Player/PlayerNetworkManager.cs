@@ -13,6 +13,8 @@ public class PlayerNetworkManager : CharacterNetworkManager
     public NetworkVariable<FixedString64Bytes> characterName = new NetworkVariable<FixedString64Bytes>("sereinjians", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("Flasks")]
+    public NetworkVariable<int> maxHealthFlasks = new NetworkVariable<int>(3, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> maxManaFlasks = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> remainingHealthFlasks = new NetworkVariable<int>(3, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> remainingManaFlasks = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isChugging = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -29,6 +31,8 @@ public class PlayerNetworkManager : CharacterNetworkManager
     public NetworkVariable<bool> isUsingLeftHand = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("Spells")]
+    public NetworkVariable<int> currentSpellInQuickSlotID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> currentMaxSpellCapacity = new NetworkVariable<int>(2, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isChargingRightSpell = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isChargingLeftSpell = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
@@ -174,6 +178,13 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
 
     // Spell
+    public void OnCurrentMaxSpellCapacityChanged(int oldMaxSpellCapacity, int newMaxSpellCapacity)
+    {
+        if (player.IsOwner)
+        {
+            player.playerInventoryManager.UpdateMaxSpellCapacity(newMaxSpellCapacity);
+        }
+    }
     public void OnCurrentSpellIDChanged(int oldSpellID, int newSpellID)
     {
         if (newSpellID == -1)
@@ -676,4 +687,70 @@ public class PlayerNetworkManager : CharacterNetworkManager
             player.playerEquipmentManager.leftWeaponModel.SetActive(true);
     }
 
+
+    [ServerRpc]
+    public void NotifyTheServerOfStartedBeamServerRpc(ulong clientID, int spellID, Vector3 forward, bool isUsingRightHand)
+    {
+        if (IsServer)
+        {
+            NotifyTheClientsOfStartedBeamClientRpc(clientID, spellID, forward, isUsingRightHand);
+        }
+    }
+
+    [ClientRpc]
+    private void NotifyTheClientsOfStartedBeamClientRpc(ulong clientID, int spellID, Vector3 forward, bool isUsingRightHand)
+    {
+        if (clientID != NetworkManager.Singleton.LocalClientId)
+        {
+            // Handle the started beam on the client side
+            HandleStartedBeam(spellID, forward, isUsingRightHand);
+        }
+    }
+
+    private void HandleStartedBeam(int spellID, Vector3 forward, bool isUsingRightHand)
+    {
+        if (player.IsOwner)
+            return;
+
+        SpellItem spell = WorldItemDatabase.instance.GetSpellByID(spellID);
+        if (spell != null && spell is ChannelingSpell channelingSpell)
+        {
+            channelingSpell.CreateBeamVisual(player, forward, isUsingRightHand);
+        }
+    }
+
+    [ServerRpc]
+    public void NotifyTheServerOfStoppedBeamServerRpc(ulong clientID, int spellID)
+    {
+        if (IsServer)
+        {
+            NotifyTheClientsOfStoppedBeamClientRpc(clientID, spellID);
+        }
+    }
+
+    [ClientRpc]
+    private void NotifyTheClientsOfStoppedBeamClientRpc(ulong clientID, int spellID)
+    {
+        if (clientID != NetworkManager.Singleton.LocalClientId)
+        {
+            HandleStoppedBeam(spellID);
+        }
+    }
+
+    private void HandleStoppedBeam(int spellID)
+    {
+        if (player.IsOwner)
+            return;
+
+        if (!player.playerCombatManager.currentChannelingSpellManager)
+            return;
+
+        if (!player.playerCombatManager.currentChannelingSpellManager.channelingSpell)
+            return;
+
+        if (player.playerCombatManager.currentChannelingSpellManager.channelingSpell.itemID != spellID)
+            return;
+
+        player.playerCombatManager.currentChannelingSpellManager.channelingSpell.DestoryBeamVisual(player);
+    }
 }

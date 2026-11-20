@@ -11,10 +11,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d593dd67f8ac01e4790e7e1a327de079, type: 3}
   m_Name: Archer Gauntlets
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   itemName: Archer Gauntlets
-  itemIcon: {fileID: 21300080, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: Light arm guards and gloves that leave room for a steady draw.
+  itemIcon: {fileID: 21300000, guid: 0a30841e3f324e9458a73d87f3fe425d, type: 3}
+  itemDescription: 'Close-fitting gloves and bracers leave the fingers free to nock an arrow.'
   itemID: 40010
   itemWeight: 1.7
   physicalDamageAbsorption: 1.5

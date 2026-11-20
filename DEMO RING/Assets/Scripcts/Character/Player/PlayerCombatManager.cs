@@ -15,6 +15,7 @@ public class PlayerCombatManager : CharacterCombatManager
     [Header("Spell Casting")]
     [Header("Channeling Spell")]
     public bool isChannelingSpell = false;
+    public bool isChannelingRightHand = true; // true = right hand, false = left hand
     public ChannelingSpell currentChannelingSpell;
     public ChannelingSpellManager currentChannelingSpellManager;
 
@@ -385,7 +386,7 @@ public class PlayerCombatManager : CharacterCombatManager
         if (currentChannelingSpell == null)
             return;
 
-        if (!PlayerInputManager.instance.isChannelingSpell_Right)
+        if ((!PlayerInputManager.instance.isChannelingSpell_Right && isChannelingRightHand) || (!PlayerInputManager.instance.isChannelingSpell_Left && !isChannelingRightHand))
             StopChannelingSpell();
     }
     public void StopChannelingSpell(bool playEndAnimation = true)
@@ -456,7 +457,7 @@ public class PlayerCombatManager : CharacterCombatManager
         if (player.playerNetworkManager.isTwoHandingWeapon.Value)
         {
             selectedWeapon = player.playerInventoryManager.currentTwoHandedWeapon;
-            if (player.playerNetworkManager.isUsingRightHand.Value)
+            if (player.playerNetworkManager.isTwoHandingRightWeapon.Value)
             {
                 player.playerNetworkManager.SetCharacterActionHand(true);
             }
@@ -468,9 +469,18 @@ public class PlayerCombatManager : CharacterCombatManager
         }
         else
         {
-            selectedWeapon = player.playerInventoryManager.currentLeftHandWeapon;
-            player.playerNetworkManager.SetCharacterActionHand(false);
-            player.playerCombatManager.currentWeaponBedingUsed = selectedWeapon;
+            if (player.playerInventoryManager.currentLeftHandWeapon && (player.playerInventoryManager.currentLeftHandWeapon.weaponClass == WeaponClass.LightShield || player.playerInventoryManager.currentLeftHandWeapon.weaponClass == WeaponClass.MediumShield) && player.playerInventoryManager.currentLeftHandWeapon.ashOfWar_Action != null)
+            {
+                selectedWeapon = player.playerInventoryManager.currentLeftHandWeapon;
+                player.playerNetworkManager.SetCharacterActionHand(false);
+                player.playerCombatManager.currentWeaponBedingUsed = selectedWeapon;
+            }
+            else
+            {
+                selectedWeapon = player.playerInventoryManager.currentRightHandWeapon;
+                player.playerNetworkManager.SetCharacterActionHand(true);
+                player.playerCombatManager.currentWeaponBedingUsed = selectedWeapon;
+            }
         }
 
         return selectedWeapon;

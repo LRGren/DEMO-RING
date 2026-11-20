@@ -54,6 +54,7 @@ public class StartingClassDefinition : ScriptableObject
 
     [Header("Starting Spells")]
     public SpellItem startingSpell01;
+    public SpellItem startingSpell02;
 
     [Header("Starting Consumables")]
     public int startingHealthFlaskCount;

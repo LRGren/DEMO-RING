@@ -15,6 +15,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
     [SerializeField] private float walkingSpeed = 1.5f;
     [SerializeField] private float runningSpeed = 4.5f;
     [SerializeField] private float sprintingSpeed = 7f;
+    private float originalRotationSpeed;
     [SerializeField] private float rotationSpeed = 15f;
     [SerializeField] private float sprintingCost = 5f;
 
@@ -34,6 +35,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         base.Awake();
 
         player = GetComponent<PlayerManager>();
+        originalRotationSpeed = rotationSpeed;
     }
 
     protected override void Update()
@@ -364,5 +366,15 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         player.playerCombatManager.EnableCanPerformJumpAttack();
 
         yVelocity.y = Mathf.Sqrt(jumpHeight * -2 * gravityForce);
+    }
+
+    public void ChangeRotationSpeed(float newRotationSpeed)
+    {
+        rotationSpeed = newRotationSpeed;
+    }
+
+    public void ResetRotationSpeed()
+    {
+        rotationSpeed = originalRotationSpeed;
     }
 }

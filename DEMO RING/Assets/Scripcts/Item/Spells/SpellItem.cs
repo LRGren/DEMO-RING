@@ -22,7 +22,7 @@ public class SpellItem : Item
 
     [Header("Spell Animations")]
     public string mainHandSpellAnimation;
-    public string offHandSpellAnimtion;
+    public string offHandSpellAnimation;
 
     [Header("Spell Sound FX")]
     public AudioClip spellCastWarmUpSound;

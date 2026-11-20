@@ -16,9 +16,9 @@ MonoBehaviour:
   comboAction: {fileID: 0}
   isParryableAttack: 1
   attackType: 0
-  attackWeight: 50
-  attackRecoveryTime: 0.5
-  maximumAttackAngle: 25
-  minimumAttackAngle: -25
-  maximumAttackDistance: 5
-  minimumAttackDistance: 0
+  attackWeight: 30
+  attackRecoveryTime: 1.05
+  maximumAttackAngle: 35
+  minimumAttackAngle: -35
+  maximumAttackDistance: 3.85
+  minimumAttackDistance: 0.6
