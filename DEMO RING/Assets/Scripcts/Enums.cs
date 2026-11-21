@@ -175,3 +175,16 @@ public enum StartingClass
     Wretch,
     Caster,
 }
+
+public enum PlayerAtrribute
+{
+    None,
+    Vigor,
+    Mind,
+    Endurance,
+    Strength,
+    Dexterity,
+    Intelligence,
+    Faith,
+    Arcane
+}
