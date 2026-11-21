@@ -457,6 +457,8 @@ public class PlayerManager : CharacterManager
         currentCharacterSaveData.yPosition = transform.position.y;
         currentCharacterSaveData.zPosition = transform.position.z;
 
+        currentCharacterSaveData.currentGold = playerNetworkManager.currentGold.Value;
+
         currentCharacterSaveData.currentHealth = playerNetworkManager.currentHealth.Value;
         currentCharacterSaveData.currentStamina = playerNetworkManager.currentStamina.Value;
         currentCharacterSaveData.currentFocus = playerNetworkManager.currentFocusPoints.Value;
@@ -497,7 +499,17 @@ public class PlayerManager : CharacterManager
         currentCharacterSaveData.leftWeapon03 = Box(playerInventoryManager.weaponsInLeftHand[2]);
 
 
-        currentCharacterSaveData.currentSpell = playerNetworkManager.currentSpellID.Value;
+        currentCharacterSaveData.currentSpellIndex = playerNetworkManager.currentSpellID.Value;
+        currentCharacterSaveData.currentSpell01 = playerInventoryManager.spellInventory[0] != null ? playerInventoryManager.spellInventory[0].itemID : -1;
+        currentCharacterSaveData.currentSpell02 = playerInventoryManager.spellInventory[1] != null ? playerInventoryManager.spellInventory[1].itemID : -1;
+        currentCharacterSaveData.currentSpell03 = playerInventoryManager.spellInventory[2] != null ? playerInventoryManager.spellInventory[2].itemID : -1;
+        currentCharacterSaveData.currentSpell04 = playerInventoryManager.spellInventory[3] != null ? playerInventoryManager.spellInventory[3].itemID : -1;
+        currentCharacterSaveData.currentSpell05 = playerInventoryManager.spellInventory[4] != null ? playerInventoryManager.spellInventory[4].itemID : -1;
+        currentCharacterSaveData.currentSpell06 = playerInventoryManager.spellInventory[5] != null ? playerInventoryManager.spellInventory[5].itemID : -1;
+        currentCharacterSaveData.currentSpell07 = playerInventoryManager.spellInventory[6] != null ? playerInventoryManager.spellInventory[6].itemID : -1;
+        currentCharacterSaveData.currentSpell08 = playerInventoryManager.spellInventory[7] != null ? playerInventoryManager.spellInventory[7].itemID : -1;
+        currentCharacterSaveData.currentSpell09 = playerInventoryManager.spellInventory[8] != null ? playerInventoryManager.spellInventory[8].itemID : -1;
+        currentCharacterSaveData.currentSpell10 = playerInventoryManager.spellInventory[9] != null ? playerInventoryManager.spellInventory[9].itemID : -1;
 
         currentCharacterSaveData.currentQuickSlotItemIndex = playerInventoryManager.currentQuickSlotItemIndex;
         currentCharacterSaveData.quickSlotItem01 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[0], this);
@@ -518,9 +530,9 @@ public class PlayerManager : CharacterManager
 
         // Spell
         if (playerInventoryManager.currentSpell != null)
-            currentCharacterSaveData.currentSpell = playerInventoryManager.currentSpell.itemID;
+            currentCharacterSaveData.currentSpellIndex = playerInventoryManager.currentSpell.itemID;
         else
-            currentCharacterSaveData.currentSpell = -1;
+            currentCharacterSaveData.currentSpellIndex = -1;
 
         currentCharacterSaveData.remainingHealthFlasks = playerNetworkManager.remainingHealthFlasks.Value;
         currentCharacterSaveData.remainingManaFlasks = playerNetworkManager.remainingManaFlasks.Value;
@@ -530,6 +542,7 @@ public class PlayerManager : CharacterManager
         currentCharacterSaveData.quickSlotItemInInventory.Clear();
         currentCharacterSaveData.rangedProjectileInInventory.Clear();
         currentCharacterSaveData.equipmentInInventory.Clear();
+        currentCharacterSaveData.spellInInventory.Clear();
         for (int i = 0; i < playerInventoryManager.characterInventory.Count; i++)
         {
             Item item = playerInventoryManager.characterInventory[i];
@@ -548,6 +561,10 @@ public class PlayerManager : CharacterManager
             else if (item is EquipmentItem equipmentItem)
             {
                 currentCharacterSaveData.equipmentInInventory.Add(equipmentItem.itemID);
+            }
+            else if (item is SpellItem spellItem)
+            {
+                currentCharacterSaveData.spellInInventory.Add(spellItem.itemID);
             }
         }
     }
@@ -592,6 +609,9 @@ public class PlayerManager : CharacterManager
         characterController.enabled = false;
         transform.position = myPosition;
         characterController.enabled = true;
+
+        playerNetworkManager.currentGold.Value = currentCharacterSaveData.currentGold;
+        PlayerUIManager.instance.playerUIHudManager.UpdateGoldText(playerNetworkManager.currentGold.Value);
 
         playerNetworkManager.level.Value = currentCharacterSaveData.level;
         playerNetworkManager.vigor.Value = currentCharacterSaveData.vigor;
@@ -663,13 +683,23 @@ public class PlayerManager : CharacterManager
         playerEquipmentManager.RefreshLeftWeapon();
 
         // Spell
-        if (WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell) != null)
-            playerNetworkManager.currentSpellID.Value = Instantiate(WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell)).itemID;
+        if (WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpellIndex) != null)
+            playerNetworkManager.currentSpellID.Value = Instantiate(WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpellIndex)).itemID;
         else
             playerNetworkManager.currentSpellID.Value = -1;
 
-        // Quick Slot Items
+        playerInventoryManager.spellInventory[0] = WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell01);
+        playerInventoryManager.spellInventory[1] = WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell02);
+        playerInventoryManager.spellInventory[2] = WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell03);
+        playerInventoryManager.spellInventory[3] = WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell04);
+        playerInventoryManager.spellInventory[4] = WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell05);
+        playerInventoryManager.spellInventory[5] = WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell06);
+        playerInventoryManager.spellInventory[6] = WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell07);
+        playerInventoryManager.spellInventory[7] = WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell08);
+        playerInventoryManager.spellInventory[8] = WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell09);
+        playerInventoryManager.spellInventory[9] = WorldItemDatabase.instance.GetSpellByID(currentCharacterSaveData.currentSpell10);
 
+        // Quick Slot Items
         playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem01, 0);
         playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem02, 1);
         playerInventoryManager.RestoreQuickSlot(currentCharacterSaveData.quickSlotItem03, 2);
@@ -701,7 +731,7 @@ public class PlayerManager : CharacterManager
                 PlayerUIManager.instance.playerUIHudManager.SetQuickSlotCountText(playerInventoryManager.currentQuickSlotItem.GetAmountOfItem(this), playerInventoryManager.currentQuickSlotItem.isConsumable);
         }
 
-        playerNetworkManager.currentSpellID.Value = currentCharacterSaveData.currentSpell;
+        playerNetworkManager.currentSpellID.Value = currentCharacterSaveData.currentSpellIndex;
         playerNetworkManager.currentQuickSlotItemID.Value = playerInventoryManager.quickSlotItemInventory[playerInventoryManager.currentQuickSlotItemIndex] != null ? playerInventoryManager.quickSlotItemInventory[playerInventoryManager.currentQuickSlotItemIndex].itemID : -1;
         playerNetworkManager.remainingHealthFlasks.Value = currentCharacterSaveData.remainingHealthFlasks;
         playerNetworkManager.remainingManaFlasks.Value = currentCharacterSaveData.remainingManaFlasks;
@@ -726,6 +756,16 @@ public class PlayerManager : CharacterManager
             Item definition = WorldItemDatabase.instance.GetItemByID(id);
 
             if (definition is EquipmentItem)
+            {
+                playerInventoryManager.characterInventory.Add(Instantiate(definition));
+            }
+        }
+        for (int i = 0; i < currentCharacterSaveData.spellInInventory.Count; i++)
+        {
+            int id = currentCharacterSaveData.spellInInventory[i];
+            Item definition = WorldItemDatabase.instance.GetItemByID(id);
+
+            if (definition is SpellItem)
             {
                 playerInventoryManager.characterInventory.Add(Instantiate(definition));
             }

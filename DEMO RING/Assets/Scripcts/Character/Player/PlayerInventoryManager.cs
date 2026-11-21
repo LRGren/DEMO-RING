@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class PlayerInventoryManager : CharacterInventoryManager
 {
@@ -33,9 +34,10 @@ public class PlayerInventoryManager : CharacterInventoryManager
     public QuickSlotItem[] quickSlotItemInventory = new QuickSlotItem[10];
 
     [Header("Spells")]
+    public int currentMaxSpellCapacity = 2;
     public SpellItem currentSpell;
     public int currentSpellIndex = 0;
-    public SpellItem[] spellInventory;
+    public SpellItem[] spellInventory = new SpellItem[10];
 
     [Header("Inventory")]
     public List<Item> characterInventory = new List<Item>();
@@ -52,6 +54,9 @@ public class PlayerInventoryManager : CharacterInventoryManager
     }
     public void AddItemToInventory(Item item)
     {
+        if (item == null)
+            return;
+
         characterInventory.Add(Instantiate(item));
     }
     public void RemoveItemFromInventory(Item item)
@@ -103,23 +108,70 @@ public class PlayerInventoryManager : CharacterInventoryManager
         if (newMaxCapacity < 0)
             return;
 
-        SpellItem[] newSpellInventory = new SpellItem[newMaxCapacity];
+        currentMaxSpellCapacity = newMaxCapacity;
 
-        if (spellInventory == null)
+        for (int i = currentMaxSpellCapacity; i < spellInventory.Length; i++)
         {
-            spellInventory = newSpellInventory;
-            return;
+            spellInventory[i] = null;
         }
-
-        for (int i = 0; i < Mathf.Min(spellInventory.Length, newMaxCapacity); i++)
-        {
-            newSpellInventory[i] = spellInventory[i];
-        }
-        spellInventory = newSpellInventory;
     }
     public void SetSpellInInventory(SpellItem spell, int index)
     {
-        spellInventory[index] = spell;
+        if (spell == null)
+        {
+            AddItemToInventory(spellInventory[index]);
+            spellInventory[index] = null;
+            if (index == currentSpellIndex)
+            {
+                player.playerNetworkManager.currentSpellID.Value = -1;
+            }
+            return;
+        }
+
+        var playerUISpellManager = PlayerUIManager.instance.playerUISpellManager;
+
+        if (playerUISpellManager.hasEquippedSpell(spell))
+        {
+            int fromIndex = 0;
+            for (int i = 0; i < spellInventory.Length; i++)
+            {
+                if (spellInventory[i] == null)
+                    continue;
+
+                if (spellInventory[i].itemID == spell.itemID)
+                {
+                    fromIndex = i;
+                    break;
+                }
+            }
+
+            var oldSpell = spellInventory[index];
+            spellInventory[index] = spell;
+            spellInventory[fromIndex] = oldSpell;
+
+            if (fromIndex == currentSpellIndex)
+            {
+                player.playerNetworkManager.currentSpellID.Value = oldSpell != null ? oldSpell.itemID : -1;
+            }
+
+            if (oldSpell == null)
+            {
+                player.playerEquipmentManager.SwitchSpells();
+            }
+        }
+        else
+        {
+            var oldSpell = spellInventory[index];
+            if (oldSpell != null)
+                AddItemToInventory(oldSpell);
+
+            spellInventory[index] = spell;
+        }
+
+        if (index == currentSpellIndex)
+        {
+            player.playerNetworkManager.currentSpellID.Value = spell != null ? spell.itemID : -1;
+        }
     }
 
     void Update()

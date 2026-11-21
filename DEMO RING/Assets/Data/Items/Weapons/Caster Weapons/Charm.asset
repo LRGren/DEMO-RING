@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Charm
   m_EditorClassIdentifier: 
   itemName: Charm
-  itemIcon: {fileID: 21300000, guid: 43c44c01a983a394f954c6f698590ff2, type: 3}
-  itemDescription: 'A handheld focus used to shape and release spells.'
+  itemIcon: {fileID: 21300000, guid: 56a7a94b06900a14b8227a09214c9513, type: 3}
+  itemDescription: A handheld focus used to shape and release spells.
   itemID: 10005
   itemWeight: 1.5
   weaponAnimator: {fileID: 22100000, guid: 830d08253f11c7d40a528b234b01be4b, type: 2}

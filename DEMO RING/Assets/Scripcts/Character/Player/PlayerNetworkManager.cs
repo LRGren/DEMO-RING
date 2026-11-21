@@ -12,6 +12,9 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
     public NetworkVariable<FixedString64Bytes> characterName = new NetworkVariable<FixedString64Bytes>("sereinjians", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
+    [Header("Gold")]
+    public NetworkVariable<int> currentGold = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
     [Header("Flasks")]
     public NetworkVariable<int> maxHealthFlasks = new NetworkVariable<int>(3, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> maxManaFlasks = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -101,6 +104,10 @@ public class PlayerNetworkManager : CharacterNetworkManager
         currentFocusPoints.Value = maxFocus.Value;
     }
 
+    public void UpdateCurrentGold(int newGoldAmount)
+    {
+        currentGold.Value = newGoldAmount;
+    }
 
     // Aiming
     public void OnIsAimingChanged(bool old, bool isAiming)

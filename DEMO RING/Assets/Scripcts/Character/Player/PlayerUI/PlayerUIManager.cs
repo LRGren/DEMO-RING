@@ -17,6 +17,7 @@ public class PlayerUIManager : MonoBehaviour
     [HideInInspector] public PlayerUIEquipmentManager playerUIEquipmentManager;
     [HideInInspector] public PlayerUISiteOfGraceManager playerUISiteOfGraceManager;
     [HideInInspector] public PlayerUILoadingScreenManager playerUILoadingScreenManager;
+    [HideInInspector] public PlayerUISpellManager playerUISpellManager;
 
     [Header("UI Flags")]
     public bool menuWindowIsOpen = false;
@@ -39,6 +40,7 @@ public class PlayerUIManager : MonoBehaviour
         playerUIEquipmentManager = GetComponentInChildren<PlayerUIEquipmentManager>();
         playerUISiteOfGraceManager = GetComponentInChildren<PlayerUISiteOfGraceManager>();
         playerUILoadingScreenManager = GetComponentInChildren<PlayerUILoadingScreenManager>();
+        playerUISpellManager = GetComponentInChildren<PlayerUISpellManager>();
     }
 
     private void Start()

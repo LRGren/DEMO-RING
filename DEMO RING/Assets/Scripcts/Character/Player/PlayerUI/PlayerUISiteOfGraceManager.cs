@@ -8,6 +8,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerUISiteOfGraceManager : MonoBehaviour
 {
+    private PlayerUIHudManager playerUIHudManager;
+
     [Header("Main Menu")]
     public GameObject mainMenu;
     public GameObject teleportMenu;
@@ -21,16 +23,26 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
     public int currentSiteOfGraceID = -1; // Initialize with an invalid ID
     public Button teleportReturnButton;
 
+    [Header("Spell Menu")]
+    public PlayerUISpellManager playerUISpellManager;
+
     void Awake()
     {
         if (teleportButtons.Count > 0)
             return;
 
+        playerUISpellManager = GetComponent<PlayerUISpellManager>();
         Button[] buttons = teleportButtonParent.GetComponentsInChildren<Button>();
         foreach (var button in buttons)
         {
             teleportButtons.Add(button.gameObject);
         }
+    }
+
+    void Start()
+    {
+        if (playerUIHudManager == null)
+            playerUIHudManager = PlayerUIManager.instance.playerUIHudManager;
     }
 
     public void UpdateCurrentSiteOfGraceID(int siteOfGraceID)
@@ -40,6 +52,8 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
 
     public void OpenMainMenu()
     {
+        playerUIHudManager.ToggleHUD(false);
+
         PlayerUIManager.instance.menuWindowIsOpen = true;
         mainMenu.SetActive(true);
 
@@ -49,6 +63,8 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
 
     public void CloseMainMenu()
     {
+        playerUIHudManager.ToggleHUD(true);
+
         if (!mainMenu.activeSelf)
             return;
 
@@ -147,6 +163,8 @@ public class PlayerUISiteOfGraceManager : MonoBehaviour
     {
         mainMenu.SetActive(false);
         spellMenu.SetActive(true);
+
+        playerUISpellManager.RefreshSpellInventory();
     }
 
     public void CloseSpellMenu()

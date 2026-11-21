@@ -36,6 +36,10 @@ public class PlayerUIHudManager : MonoBehaviour
     [Header("Crosshair")]
     public GameObject crosshair;
 
+    [Header("Gold")]
+    public TextMeshProUGUI goldText;
+    public TextMeshProUGUI goldAdditionText;
+
     public void ToggleHUD(bool status)
     {
         if (status)
@@ -300,4 +304,58 @@ public class PlayerUIHudManager : MonoBehaviour
         projectileSlotsGameobject.SetActive(status);
     }
 
+    public void UpdateGoldText(int newGoldAmount, bool animation = false)
+    {
+        if (!animation)
+            goldText.text = newGoldAmount.ToString();
+        else
+            StartCoroutine(UpdateGoldTextWithAnimation(newGoldAmount, 1f));
+    }
+    public void ShowGoldAdditionText(int goldAdded)
+    {
+        goldAdditionText.text = "+" + goldAdded.ToString();
+        StartCoroutine(FadeInThenFadeOutText(0.5f, 1f, goldAdditionText));
+    }
+    private IEnumerator UpdateGoldTextWithAnimation(int newGoldAmount, float duration)
+    {
+        int currentGold = int.Parse(goldText.text);
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            int interpolatedGold = Mathf.RoundToInt(Mathf.Lerp(currentGold, newGoldAmount, t));
+            goldText.text = interpolatedGold.ToString();
+            yield return null;
+        }
+
+        goldText.text = newGoldAmount.ToString();
+    }
+    private IEnumerator FadeInThenFadeOutText(float fadeInDuration, float fadeOutDuration, TextMeshProUGUI textElement)
+    {
+        // Fade in
+        yield return StartCoroutine(FadeTextTo(1f, fadeInDuration, textElement));
+
+        // Wait for a moment before fading out
+        yield return new WaitForSeconds(0.5f);
+
+        // Fade out
+        yield return StartCoroutine(FadeTextTo(0f, fadeOutDuration, textElement));
+    }
+    private IEnumerator FadeTextTo(float targetAlpha, float duration, TextMeshProUGUI textElement)
+    {
+        float startAlpha = textElement.alpha;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / duration);
+            textElement.alpha = newAlpha;
+            yield return null;
+        }
+
+        textElement.alpha = targetAlpha;
+    }
 }

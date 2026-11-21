@@ -15,6 +15,9 @@ public class CharacterSaveData
     [Header("Time Played")]
     public float secondsPlayed;
 
+    [Header("Gold")]
+    public int currentGold;
+
     [Header("World Coordinates")]
     public float xPosition;
     public float yPosition;
@@ -55,6 +58,7 @@ public class CharacterSaveData
     public List<SerializableQuickSlotItem> quickSlotItemInInventory;
     public List<SerializableRangedProjectile> rangedProjectileInInventory;
     public List<int> equipmentInInventory;
+    public List<int> spellInInventory;
 
     [Header("Equipment")]
     public int currentHeadEquipment;
@@ -72,7 +76,17 @@ public class CharacterSaveData
     public SerializableWeapon leftWeapon02;
     public SerializableWeapon leftWeapon03;
 
-    public int currentSpell;
+    public int currentSpellIndex;
+    public int currentSpell01;
+    public int currentSpell02;
+    public int currentSpell03;
+    public int currentSpell04;
+    public int currentSpell05;
+    public int currentSpell06;
+    public int currentSpell07;
+    public int currentSpell08;
+    public int currentSpell09;
+    public int currentSpell10;
 
     public int currentQuickSlotItemIndex;
     public SerializableQuickSlotItem quickSlotItem01;
@@ -86,16 +100,7 @@ public class CharacterSaveData
     public SerializableQuickSlotItem quickSlotItem09;
     public SerializableQuickSlotItem quickSlotItem10;
 
-    public int quickSlotItem01Amount;
-    public int quickSlotItem02Amount;
-    public int quickSlotItem03Amount;
-    public int quickSlotItem04Amount;
-    public int quickSlotItem05Amount;
-    public int quickSlotItem06Amount;
-    public int quickSlotItem07Amount;
-    public int quickSlotItem08Amount;
-    public int quickSlotItem09Amount;
-    public int quickSlotItem10Amount;
+
 
     public SerializableRangedProjectile currentMainProjectile;
     public SerializableRangedProjectile currentSecondaryProjectile;
@@ -116,6 +121,7 @@ public class CharacterSaveData
         quickSlotItemInInventory = new List<SerializableQuickSlotItem>();
         rangedProjectileInInventory = new List<SerializableRangedProjectile>();
         equipmentInInventory = new List<int>();
+        spellInInventory = new List<int>();
     }
 
 

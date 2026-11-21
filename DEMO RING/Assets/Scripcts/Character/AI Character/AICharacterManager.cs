@@ -13,6 +13,11 @@ public class AICharacterManager : CharacterManager
     [HideInInspector] public AICharacterLocomotionManager aiCharacterLocomotionManager;
     [HideInInspector] public AICharacterInventoryManager aiCharacterInventoryManager;
 
+    [Header("Gold Drop")]
+    public int goldDropRange = 400;
+    public int goldDropAmount = 500;
+    public int goldDropRandomRange = 100;
+
     [Header("AI State")]
     public AIState currentState;
 
@@ -138,5 +143,27 @@ public class AICharacterManager : CharacterManager
         {
             aiCharacterNetworkManager.currentHealth.OnValueChanged -= characterUIManager.OnHPChanged;
         }
+    }
+
+    public override IEnumerator ProcessDeathEvent(bool manuallySelectedDeathAnimation = false)
+    {
+        // Give Every Player Some Gold When This AI Character Dies
+        if (IsOwner)
+        {
+            var players = FindObjectsOfType<PlayerNetworkManager>();
+            foreach (var player in players)
+            {
+                if (Vector3.Distance(player.transform.position, transform.position) > goldDropRange)
+                    continue;
+
+                int randomGoldDrop = Random.Range(goldDropAmount - goldDropRandomRange, goldDropAmount + goldDropRandomRange);
+
+                PlayerUIManager.instance.playerUIHudManager.ShowGoldAdditionText(randomGoldDrop);
+                PlayerUIManager.instance.playerUIHudManager.UpdateGoldText(player.currentGold.Value + randomGoldDrop, true);
+                player.UpdateCurrentGold(player.currentGold.Value + randomGoldDrop);
+            }
+        }
+
+        return base.ProcessDeathEvent(manuallySelectedDeathAnimation);
     }
 }

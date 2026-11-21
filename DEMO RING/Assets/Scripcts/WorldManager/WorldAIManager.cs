@@ -139,6 +139,13 @@ public class WorldAIManager : MonoBehaviour
     public void ResetAllCharacters()
     {
         isPerformingLoadingScreenSpawn = true;
+        foreach (var character in spawnedInCharacters)
+        {
+            if (character != null)
+            {
+                character.aiCharacterInventoryManager.ClearDroppedItem();
+            }
+        }
 
         if (resetCoroutine != null)
         {
