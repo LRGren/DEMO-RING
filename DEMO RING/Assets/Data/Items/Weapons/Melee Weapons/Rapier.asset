@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Rapier
   itemIcon: {fileID: 21300000, guid: 0b5931ae918b74140b46e7ec02c89106, type: 3}
-  itemDescription: 'A slender thrusting sword made for quick attacks through narrow openings.'
+  itemDescription: A slender thrusting sword made for quick attacks through narrow
+    openings.
   itemID: 10011
   itemWeight: 2.5
   weaponAnimator: {fileID: 22100000, guid: c105071075868a7438869ac1afddb2d9, type: 2}
@@ -23,6 +24,7 @@ MonoBehaviour:
   weaponModel: {fileID: 2187159235766523947, guid: 5817df01bf36b1c4f8f6f176fad56081,
     type: 3}
   useAsymmetricLeftHandSlot: 0
+  isPairedWeapon: 0
   strengthREQ: 7
   dexterityREQ: 12
   intelligenceREQ: 0
@@ -62,7 +64,8 @@ MonoBehaviour:
   jumpHeavyAttackStaminaModifier: 1.5
   oh_RB_Action: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b, type: 2}
   oh_RT_Action: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8, type: 2}
-  oh_LB_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
+  oh_LB_Attack_Action: {fileID: 0}
+  oh_LB_Block_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
   ashOfWar_Action: {fileID: 0}
   wooshes:
   - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}

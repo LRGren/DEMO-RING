@@ -39,7 +39,6 @@ public class PlayerNetworkManager : CharacterNetworkManager
     public NetworkVariable<bool> isChargingRightSpell = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isChargingLeftSpell = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
-
     [Header("Two Hand Weapon")]
     public NetworkVariable<bool> isTwoHandingWeapon = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isTwoHandingRightWeapon = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -364,7 +363,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
             player.playerEquipmentManager.UnTwoHandWeapon();
             player.playerEffectsManager.RemoveStaticEffect(WorldCharacterEffectsManager.instance.twoHandingEffect.staticEffectID);
         }
-        else
+        else if (player.playerInventoryManager.currentTwoHandedWeapon?.isPairedWeapon != true)
         {
             player.playerEffectsManager.AddStaticEffect(WorldCharacterEffectsManager.instance.twoHandingEffect);
         }
@@ -376,13 +375,13 @@ public class PlayerNetworkManager : CharacterNetworkManager
         if (!isTwoHandingRightWeapon.Value)
             return;
 
+        player.playerInventoryManager.currentTwoHandedWeapon = player.playerInventoryManager.currentRightHandWeapon;
         if (IsOwner)
         {
             currentWeaponBeingTwoHanded.Value = currentRightHandWeaponID.Value;
             isTwoHandingWeapon.Value = true;
         }
 
-        player.playerInventoryManager.currentTwoHandedWeapon = player.playerInventoryManager.currentRightHandWeapon;
         player.playerEquipmentManager.TwoHandRightWeapon();
     }
     public void OnIsTwoHandingLeftWeaponChanged(bool old, bool isTwoHanding)
@@ -390,13 +389,13 @@ public class PlayerNetworkManager : CharacterNetworkManager
         if (!isTwoHandingLeftWeapon.Value)
             return;
 
+        player.playerInventoryManager.currentTwoHandedWeapon = player.playerInventoryManager.currentLeftHandWeapon;
         if (IsOwner)
         {
             currentWeaponBeingTwoHanded.Value = currentLeftHandWeaponID.Value;
             isTwoHandingWeapon.Value = true;
         }
 
-        player.playerInventoryManager.currentTwoHandedWeapon = player.playerInventoryManager.currentLeftHandWeapon;
         player.playerEquipmentManager.TwoHandLeftWeapon();
     }
 
@@ -647,11 +646,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
     [ClientRpc]
     private void HideWeaponsClientRpc()
     {
-        if (player.playerEquipmentManager.rightWeaponModel != null)
-            player.playerEquipmentManager.rightWeaponModel.SetActive(false);
-
-        if (player.playerEquipmentManager.leftWeaponModel != null)
-            player.playerEquipmentManager.leftWeaponModel.SetActive(false);
+        player.playerEquipmentManager.SetWeaponModelsVisible(false);
     }
 
     [ServerRpc]
@@ -687,11 +682,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
     [ClientRpc]
     private void NotifyTheClientsOfUnhideWeaponsClientRpc()
     {
-        if (player.playerEquipmentManager.rightWeaponModel != null)
-            player.playerEquipmentManager.rightWeaponModel.SetActive(true);
-
-        if (player.playerEquipmentManager.leftWeaponModel != null)
-            player.playerEquipmentManager.leftWeaponModel.SetActive(true);
+        player.playerEquipmentManager.SetWeaponModelsVisible(true);
     }
 
 

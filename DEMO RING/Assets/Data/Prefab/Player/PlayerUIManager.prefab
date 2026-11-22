@@ -7221,7 +7221,6 @@ GameObject:
   - component: {fileID: 1866020840360732714}
   - component: {fileID: 5096351002562766783}
   - component: {fileID: 333895949047855134}
-  - component: {fileID: 3693470097677145844}
   m_Layer: 0
   m_Name: Teleport
   m_TagString: Untagged
@@ -7343,18 +7342,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3693470097677145844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4305334647752773384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b7e99092a684dd419296598f49465a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4313160054240312137
 GameObject:
   m_ObjectHideFlags: 0

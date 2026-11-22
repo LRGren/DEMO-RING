@@ -18,6 +18,9 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     [Header("Weapon Managers")]
     public WeaponManager rightHandWeaponManager;
     public WeaponManager leftHandWeaponManager;
+    private WeaponManager pairedWeaponManager;
+    private GameObject stowedWeaponModel;
+    private bool weaponModelsVisible = true;
 
     [Header("Weapon Models")]
     public GameObject rightWeaponModel;
@@ -782,6 +785,8 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         if (!player.IsOwner)
             return;
 
+        ExitPairedWeaponMode();
+
         var inventory = player.playerInventoryManager;
         int index = inventory.rightWeaponIndex;
 
@@ -917,6 +922,8 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         if (!player.IsOwner)
             return;
 
+        ExitPairedWeaponMode();
+
         var inventory = player.playerInventoryManager;
         int index = inventory.leftWeaponIndex;
 
@@ -1018,9 +1025,46 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     #endregion
 
     #region Two Hand Weapon
+    private void ExitPairedWeaponMode()
+    {
+        if (pairedWeaponManager != null)
+            player.playerNetworkManager.isTwoHandingWeapon.Value = false;
+    }
+
+    private void EquipPairedWeapon(WeaponItem weapon, bool fromRightHand)
+    {
+        if (pairedWeaponManager != null)
+            return;
+
+        CloseAllWeaponDamageColliders();
+        player.playerAnimatorManager.UpdateAnimatorController(weapon.weaponAnimator);
+
+        // The companion occupies the opposite hand without changing its equipped item.
+        var companionSlot = fromRightHand ? leftHandWeaponSlot : rightHandWeaponSlot;
+        var companion = Instantiate(weapon.weaponModel, companionSlot.transform, false);
+        pairedWeaponManager = companion.GetComponentInChildren<WeaponManager>();
+        pairedWeaponManager.SetWeaponDamage(player, weapon);
+
+        stowedWeaponModel = fromRightHand ? leftWeaponModel : rightWeaponModel;
+        SetWeaponModelsVisible(weaponModelsVisible);
+    }
+
     // Two Hand Weapon
     public void UnTwoHandWeapon()
     {
+        if (pairedWeaponManager != null)
+        {
+            CloseAllWeaponDamageColliders();
+            pairedWeaponManager.gameObject.SetActive(false);
+            Destroy(pairedWeaponManager.gameObject);
+            pairedWeaponManager = null;
+            stowedWeaponModel = null;
+            player.playerInventoryManager.currentTwoHandedWeapon = null;
+            SetWeaponModelsVisible(weaponModelsVisible);
+            player.playerAnimatorManager.UpdateAnimatorController(player.playerInventoryManager.currentRightHandWeapon.weaponAnimator);
+            return;
+        }
+
         //更新动画
         player.playerAnimatorManager.UpdateAnimatorController(player.playerInventoryManager.currentRightHandWeapon.weaponAnimator);
 
@@ -1051,8 +1095,14 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
     public void TwoHandRightWeapon()
     {
+        if (player.playerInventoryManager.currentRightHandWeapon.isPairedWeapon)
+        {
+            EquipPairedWeapon(player.playerInventoryManager.currentRightHandWeapon, true);
+            return;
+        }
+
         //检查是否可以双持
-        if (player.playerInventoryManager.currentRightHandWeapon == WorldItemDatabase.instance.unarmedWeapon)
+        if (player.playerInventoryManager.currentRightHandWeapon.itemID == WorldItemDatabase.instance.unarmedWeapon.itemID)
         {
 
             //如果RETURNING 或者 NOT TWO HANDING，直接RESET BOOL
@@ -1082,8 +1132,14 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
 
     public void TwoHandLeftWeapon()
     {
+        if (player.playerInventoryManager.currentLeftHandWeapon.isPairedWeapon)
+        {
+            EquipPairedWeapon(player.playerInventoryManager.currentLeftHandWeapon, false);
+            return;
+        }
+
         //检查是否可以双持
-        if (player.playerInventoryManager.currentLeftHandWeapon == WorldItemDatabase.instance.unarmedWeapon)
+        if (player.playerInventoryManager.currentLeftHandWeapon.itemID == WorldItemDatabase.instance.unarmedWeapon.itemID)
         {
 
             //如果RETURNING 或者 NOT TWO HANDING，直接RESET BOOL
@@ -1112,74 +1168,86 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
     }
     #endregion
 
-    // Damage Colliders
+    // Called by the weapon animation events.
     public void OpenDamageCollider()
     {
-        //双手共持
-        if (player.playerNetworkManager.isTwoHandingWeapon.Value)
-        {
-            if (player.playerInventoryManager.currentTwoHandedWeapon == player.playerInventoryManager.currentRightHandWeapon)
-            {
-                rightHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
-            }
-            else if (player.playerInventoryManager.currentTwoHandedWeapon == player.playerInventoryManager.currentLeftHandWeapon)
-            {
-                leftHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
-            }
-            player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(player.playerInventoryManager.currentTwoHandedWeapon.wooshes));
-        }
-        else
+        var network = player.playerNetworkManager;
+        var inventory = player.playerInventoryManager;
+        bool twoHanding = network.isTwoHandingWeapon.Value;
+        bool useRight = twoHanding ? network.isTwoHandingRightWeapon.Value : network.isUsingRightHand.Value;
+        bool useLeft = twoHanding ? network.isTwoHandingLeftWeapon.Value : network.isUsingLeftHand.Value;
+        if (!useRight && !useLeft)
+            return;
 
-            if (player.playerNetworkManager.isUsingRightHand.Value)
-            {
-                rightHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
-                player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(player.playerInventoryManager.currentRightHandWeapon.wooshes));
-            }
-            else if (player.playerNetworkManager.isUsingLeftHand.Value)
-            {
-                leftHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
-                player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(player.playerInventoryManager.currentLeftHandWeapon.wooshes));
-            }
+        var manager = useRight ? rightHandWeaponManager : leftHandWeaponManager;
+        var weapon = useRight ? inventory.currentRightHandWeapon : inventory.currentLeftHandWeapon;
+        if (manager == null || !manager.gameObject.activeInHierarchy || manager.meleeWeaponDamageCollider == null)
+            return;
+
+        manager.meleeWeaponDamageCollider.EnableDamageCollider();
+        if (twoHanding && pairedWeaponManager != null && pairedWeaponManager.gameObject.activeInHierarchy)
+            pairedWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
+
+        player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(weapon.wooshes));
+    }
+
+    public void OpenRightDamageCollider()
+    {
+        if (rightHandWeaponManager != null && rightHandWeaponManager.gameObject.activeInHierarchy && rightHandWeaponManager.meleeWeaponDamageCollider != null)
+            rightHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
+    }
+
+    public void OpenLeftDamageCollider()
+    {
+        if (leftHandWeaponManager != null && leftHandWeaponManager.gameObject.activeInHierarchy && leftHandWeaponManager.meleeWeaponDamageCollider != null)
+            leftHandWeaponManager.meleeWeaponDamageCollider.EnableDamageCollider();
     }
 
     public void CloseDamageCollider()
     {
-        if (player.playerNetworkManager.isTwoHandingWeapon.Value)
-        {
-            if (player.playerInventoryManager.currentTwoHandedWeapon == player.playerInventoryManager.currentRightHandWeapon)
-            {
-                rightHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
-            }
-            else if (player.playerInventoryManager.currentTwoHandedWeapon == player.playerInventoryManager.currentLeftHandWeapon)
-            {
-                leftHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
-            }
-        }
-        else
-        {
-            if (player.playerNetworkManager.isUsingRightHand.Value)
-            {
-                rightHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
-            }
-            else if (player.playerNetworkManager.isUsingLeftHand.Value)
-            {
-                leftHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
-            }
-        }
+        CloseAllWeaponDamageColliders();
     }
 
-    // Unhide Weapon Models
+    public void CloseAllWeaponDamageColliders()
+    {
+        DisableWeaponDamageCollider(rightHandWeaponManager);
+        DisableWeaponDamageCollider(leftHandWeaponManager);
+        DisableWeaponDamageCollider(pairedWeaponManager);
+    }
+
+    public void ClosePairedWeaponDamageColliders()
+    {
+        if (pairedWeaponManager != null)
+            CloseAllWeaponDamageColliders();
+    }
+
+    private static void DisableWeaponDamageCollider(WeaponManager manager)
+    {
+        if (manager != null && manager.meleeWeaponDamageCollider != null)
+            manager.meleeWeaponDamageCollider.DisableDamageCollider();
+    }
+
+    public void SetWeaponModelsVisible(bool visible)
+    {
+        weaponModelsVisible = visible;
+        if (!visible)
+            CloseAllWeaponDamageColliders();
+
+        if (rightWeaponModel != null)
+            rightWeaponModel.SetActive(visible && rightWeaponModel != stowedWeaponModel);
+
+        if (leftWeaponModel != null)
+            leftWeaponModel.SetActive(visible && leftWeaponModel != stowedWeaponModel);
+
+        if (pairedWeaponManager != null)
+            pairedWeaponManager.gameObject.SetActive(visible);
+    }
+
     public void UnhideWeaponModels()
     {
         if (player.IsOwner)
-        {
             player.playerNetworkManager.NotifyTheServerOfUnhideWeaponsServerRpc();
-        }
-        if (player.playerEquipmentManager.rightWeaponModel != null)
-            player.playerEquipmentManager.rightWeaponModel.SetActive(true);
 
-        if (player.playerEquipmentManager.leftWeaponModel != null)
-            player.playerEquipmentManager.leftWeaponModel.SetActive(true);
+        SetWeaponModelsVisible(true);
     }
-
 }

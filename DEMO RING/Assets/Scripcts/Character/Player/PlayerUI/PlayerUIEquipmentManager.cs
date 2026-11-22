@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Unity.Netcode;
 using TMPro;
@@ -158,6 +159,11 @@ public class PlayerUIEquipmentManager : MonoBehaviour
 
     public void CloseEquipmentInventoryWindow()
     {
+        var eventSystem = EventSystem.current;
+        var selected = eventSystem == null ? null : eventSystem.currentSelectedGameObject;
+        if (selected != null && selected.transform.IsChildOf(equipmentInventoryWindow.transform))
+            eventSystem.SetSelectedGameObject(null);
+
         equipmentInventoryWindow.SetActive(false);
     }
 
@@ -906,8 +912,7 @@ public class PlayerUIEquipmentManager : MonoBehaviour
 
     public void FromEquipmentInventoryWindowBackToEquipmentMenu()
     {
-        equipmentInventoryWindow.SetActive(false);
-        RefreshMenu();
+        CloseEquipmentInventoryWindow();
         SelectLastSelectedEquipmentSlot();
     }
 

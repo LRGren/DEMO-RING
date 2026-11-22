@@ -214,6 +214,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Que LB",
+                    "type": "Button",
+                    "id": "c3c1bed3-3902-48cb-b51e-b85e85750504",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "RT",
                     "type": "Button",
                     "id": "ca421288-d01d-4ff4-a120-961a5c190132",
@@ -485,6 +494,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Que RB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "439ffbb4-7ac7-4ad7-bfdb-191413d3fe8f",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Que LB",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

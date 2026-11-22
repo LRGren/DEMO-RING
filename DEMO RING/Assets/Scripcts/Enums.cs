@@ -53,6 +53,12 @@ public enum WeaponClass
     GreatAxe,
 }
 
+public enum DualWieldGroup
+{
+    None,
+    StraightSword
+}
+
 public enum SpellClass
 {
     Incantation,

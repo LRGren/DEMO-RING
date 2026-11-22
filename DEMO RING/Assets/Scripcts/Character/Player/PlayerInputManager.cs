@@ -45,7 +45,7 @@ public class PlayerInputManager : MonoBehaviour
     [Header("Bumper Inputs")]
     [SerializeField] private bool RB_Input = false;
     [SerializeField] private bool hold_RB_Input = false;
-    [SerializeField] private bool LB_Shield_Input = false;
+    [SerializeField] private bool LB_Input = false;
     [SerializeField] private bool hold_LB_Input = false;
 
     [Header("Two Hand Weapon Inputs")]
@@ -69,6 +69,7 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private float default_Que_Input_Timer = 0.35f;
     [SerializeField] private float que_Input_Timer = 0f;
     [SerializeField] private bool que_RB_Input = false;
+    [SerializeField] private bool que_LB_Input = false;
     [SerializeField] private bool que_RT_Input = false;
 
     [Header("UI Inputs")]
@@ -143,7 +144,7 @@ public class PlayerInputManager : MonoBehaviour
             //Bumpers
             playerControls.PlayerActions.RB.started += i => RB_Input = true;
 
-            playerControls.PlayerActions.LBShield.performed += i => LB_Shield_Input = true;
+            playerControls.PlayerActions.LBShield.performed += i => LB_Input = true;
             playerControls.PlayerActions.LBShield.canceled += i => player.playerNetworkManager.isBlocking.Value = false;
             playerControls.PlayerActions.LBShield.canceled += i => player.playerNetworkManager.isAiming.Value = false;
 
@@ -183,6 +184,7 @@ public class PlayerInputManager : MonoBehaviour
 
             //Que Inputs
             playerControls.PlayerActions.QueRB.performed += i => QueInput(ref que_RB_Input);
+            playerControls.PlayerActions.QueLB.performed += i => QueInput(ref que_LB_Input);
             playerControls.PlayerActions.QueRT.performed += i => QueInput(ref que_RT_Input);
 
             //Interaction
@@ -291,7 +293,7 @@ public class PlayerInputManager : MonoBehaviour
         if (two_Hand_Input)
         {
             RB_Input = false;
-            LB_Shield_Input = false;
+            LB_Input = false;
         }
         else
         {
@@ -323,7 +325,7 @@ public class PlayerInputManager : MonoBehaviour
         else if (two_Hand_Left_Input)
         {
             //LB
-            LB_Shield_Input = false;
+            LB_Input = false;
 
             player.playerNetworkManager.isBlocking.Value = false;
 
@@ -606,40 +608,60 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (two_Hand_Input)
         {
-            LB_Shield_Input = false;
+            LB_Input = false;
             return;
         }
 
-        if (LB_Shield_Input)
+        if (LB_Input)
         {
-            LB_Shield_Input = false;
+            LB_Input = false;
 
             if (player.playerCombatManager.isUsingItem)
                 return;
-
             if (PlayerUIManager.instance.menuWindowIsOpen)
-            {
                 return;
-            }
 
             if (player.playerNetworkManager.isTwoHandingWeapon.Value)
             {
-                if (player.playerNetworkManager.isTwoHandingRightWeapon.Value)
-                {
-                    player.playerNetworkManager.SetCharacterActionHand(true);
-                    player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_LB_Action, player.playerInventoryManager.currentRightHandWeapon);
-                }
-                else
-                {
-                    player.playerNetworkManager.SetCharacterActionHand(false);
-                    player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftHandWeapon.oh_LB_Action, player.playerInventoryManager.currentLeftHandWeapon);
-                }
+                player.playerNetworkManager.SetCharacterActionHand(player.playerNetworkManager.isTwoHandingRightWeapon.Value);
+                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentTwoHandedWeapon.oh_LB_Block_Action, player.playerInventoryManager.currentTwoHandedWeapon);
             }
             else
             {
-                player.playerNetworkManager.SetCharacterActionHand(false);
-                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftHandWeapon.oh_LB_Action, player.playerInventoryManager.currentLeftHandWeapon);
+                var rightWeapon = player.playerInventoryManager.currentRightHandWeapon;
+                var leftWeapon = player.playerInventoryManager.currentLeftHandWeapon;
+
+                bool canDualWield =
+                    rightWeapon is MeleeWeaponItem &&
+                    leftWeapon is MeleeWeaponItem &&
+                    rightWeapon.weaponType == WeaponType.Weapon &&
+                    leftWeapon.weaponType == WeaponType.Weapon &&
+                    rightWeapon.dualWieldGroup != DualWieldGroup.None &&
+                    rightWeapon.dualWieldGroup == leftWeapon.dualWieldGroup;
+                if (canDualWield)
+                {
+                    if (player.playerInventoryManager.currentLeftHandWeapon.oh_LB_Attack_Action is OffHandLightAttackWeaponItemAction offHandLightAttackAction)
+                    {
+                        player.playerNetworkManager.SetCharacterActionHand(false);
+                        offHandLightAttackAction.AttemptToPerformDualWieldingAction(player, player.playerInventoryManager.currentLeftHandWeapon, true);
+                    }
+                    return;
+                }
+
+
+                if (player.playerInventoryManager.currentLeftHandWeapon != null && player.playerInventoryManager.currentLeftHandWeapon.oh_LB_Attack_Action != null)
+                {
+                    player.playerNetworkManager.SetCharacterActionHand(false);
+                    player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftHandWeapon.oh_LB_Attack_Action, player.playerInventoryManager.currentLeftHandWeapon);
+                }
+                else
+                {
+                    player.playerNetworkManager.SetCharacterActionHand(true);
+                    player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_LB_Block_Action, player.playerInventoryManager.currentRightHandWeapon);
+                }
             }
+
+
         }
 
     }
@@ -836,6 +858,7 @@ public class PlayerInputManager : MonoBehaviour
         if (two_Hand_Input)
         {
             que_RB_Input = false;
+            que_LB_Input = false;
             que_RT_Input = false;
             return;
         }
@@ -843,11 +866,13 @@ public class PlayerInputManager : MonoBehaviour
         if (PlayerUIManager.instance.menuWindowIsOpen)
         {
             que_RB_Input = false;
+            que_LB_Input = false;
             que_RT_Input = false;
             return;
         }
 
         que_RB_Input = false;
+        que_LB_Input = false;
         que_RT_Input = false;
 
         if (player.isPerformingAction || !player.playerNetworkManager.isJumping.Value)
@@ -866,6 +891,9 @@ public class PlayerInputManager : MonoBehaviour
 
         if (PlayerUIManager.instance.menuWindowIsOpen)
             return;
+
+        if (que_LB_Input)
+            LB_Input = true;
 
         if (que_RB_Input)
             RB_Input = true;
@@ -890,6 +918,7 @@ public class PlayerInputManager : MonoBehaviour
 
                 //Reset all queued inputs to false after the que input timer has expired
                 que_RB_Input = false;
+                que_LB_Input = false;
                 que_RT_Input = false;
             }
         }

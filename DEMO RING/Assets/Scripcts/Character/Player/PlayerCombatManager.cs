@@ -21,7 +21,7 @@ public class PlayerCombatManager : CharacterCombatManager
 
     [Header("Flags")]
     public bool canComboWithMainHandWeapon = false;
-    //public bool canComboWithOffHandWeapon = false;
+    public bool canComboWithOffHandWeapon = false;
     public bool isUsingItem = false;
 
     protected override void Awake()
@@ -226,11 +226,15 @@ public class PlayerCombatManager : CharacterCombatManager
         // Two-handed attacks share the main-hand combo chain, regardless of which hand owns the weapon.
         canComboWithMainHandWeapon = player.playerNetworkManager.isUsingRightHand.Value
             || player.playerNetworkManager.isTwoHandingWeapon.Value;
+
+        canComboWithOffHandWeapon = player.playerNetworkManager.isUsingLeftHand.Value
+            && !player.playerNetworkManager.isTwoHandingWeapon.Value;
     }
 
     public override void DisableDoCombo()
     {
         canComboWithMainHandWeapon = false;
+        canComboWithOffHandWeapon = false;
     }
 
     // Projectile
@@ -400,6 +404,7 @@ public class PlayerCombatManager : CharacterCombatManager
     public override void DestoryAllAttemptedActions()
     {
         base.DestoryAllAttemptedActions();
+        player.playerEquipmentManager.ClosePairedWeaponDamageColliders();
 
         if (player.IsOwner)
         {
@@ -490,11 +495,7 @@ public class PlayerCombatManager : CharacterCombatManager
     {
         base.CloseAllDamageColliders();
 
-        if (player.IsOwner)
-        {
-            player.playerEquipmentManager.rightHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
-            player.playerEquipmentManager.leftHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
-        }
+        player.playerEquipmentManager.CloseAllWeaponDamageColliders();
     }
 
 

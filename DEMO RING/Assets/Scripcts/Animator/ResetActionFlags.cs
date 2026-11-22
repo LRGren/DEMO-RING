@@ -25,6 +25,9 @@ public class ResetActionFlags : StateMachineBehaviour
         character.characterCombatManager.canPerformBackstepAttack = false;
         character.characterCombatManager.canPerformJumpAttack = false;
 
+        if (character is PlayerManager player)
+            player.playerEquipmentManager.ClosePairedWeaponDamageColliders();
+
         if (character.characterEffectsManager.activeSpellWarmUpFX != null)
             Destroy(character.characterEffectsManager.activeSpellWarmUpFX.gameObject);
 

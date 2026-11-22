@@ -14,15 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Mace
   itemIcon: {fileID: 21300000, guid: a39c4c7600e33304eaa0958aad69c5d0, type: 3}
-  itemDescription: 'A compact iron mace that delivers heavy blows at close range.'
+  itemDescription: A compact iron mace that delivers heavy blows at close range.
   itemID: 10009
   itemWeight: 4.5
-  weaponAnimator: {fileID: 22100000, guid: 7233d515cbc095a44b72c59e7a1d72f8, type: 2}
+  weaponAnimator: {fileID: 22100000, guid: dd7f717c533941318cc53ee15da6d26c, type: 2}
   weaponType: 0
   weaponClass: 1
   weaponModel: {fileID: 7341409941833069142, guid: dad6ffe563f3b83439f5c511d8fc0a36,
     type: 3}
   useAsymmetricLeftHandSlot: 0
+  isPairedWeapon: 0
   strengthREQ: 12
   dexterityREQ: 7
   intelligenceREQ: 0
@@ -62,10 +63,12 @@ MonoBehaviour:
   jumpHeavyAttackStaminaModifier: 1.5
   oh_RB_Action: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b, type: 2}
   oh_RT_Action: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8, type: 2}
-  oh_LB_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
+  oh_LB_Attack_Action: {fileID: 0}
+  oh_LB_Block_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
   ashOfWar_Action: {fileID: 0}
   wooshes:
   - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
   - {fileID: 8300000, guid: 4d4ef7516a431934681038a3dc391e55, type: 3}
   blocks:
   - {fileID: 8300000, guid: 738e3bff6c9edfe409dcb5b68d82d66a, type: 3}
+  - {fileID: 0}

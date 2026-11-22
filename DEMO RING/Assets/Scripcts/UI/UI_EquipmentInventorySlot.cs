@@ -33,6 +33,11 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
         highlightIcon.enabled = false;
     }
 
+    private void OnDisable()
+    {
+        DeselectSlot();
+    }
+
     public void EquipItem()
     {
         PlayerManager player = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
@@ -219,11 +224,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 break;
         }
 
-        PlayerUIManager.instance.playerUIEquipmentManager.RefreshMenu();
-        PlayerUIManager.instance.playerUIEquipmentManager.CloseEquipmentInventoryWindow();
-
-
-        PlayerUIManager.instance.playerUIEquipmentManager.SelectLastSelectedEquipmentSlot();
+        PlayerUIManager.instance.playerUIEquipmentManager.FromEquipmentInventoryWindowBackToEquipmentMenu();
     }
 
 }

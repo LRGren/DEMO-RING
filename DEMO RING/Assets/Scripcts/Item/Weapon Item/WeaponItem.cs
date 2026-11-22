@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class WeaponItem : EquipmentItem
 {
+    [Header("Weapon Item Settings")]
+    public DualWieldGroup dualWieldGroup = DualWieldGroup.None;
+
     //ANIMATION CONTROLLE 覆盖（基于武器需要有不同的攻击模组）
     [Header("Weapon Animator Override Controller")]
     public AnimatorOverrideController weaponAnimator;
@@ -19,6 +22,7 @@ public class WeaponItem : EquipmentItem
 
     [Header("Left Hand Placement")]
     public bool useAsymmetricLeftHandSlot;
+    public bool isPairedWeapon;
 
     [Header("Weapon Requirements")]
     public int strengthREQ = 0;
@@ -87,7 +91,8 @@ public class WeaponItem : EquipmentItem
     [Header("Weapon Actions")]
     public WeaponItemAction oh_RB_Action;//oh for one hand
     public WeaponItemAction oh_RT_Action;//oh for one hand
-    public WeaponItemAction oh_LB_Action;//oh for one hand
+    public WeaponItemAction oh_LB_Attack_Action;//oh for one hand
+    public WeaponItemAction oh_LB_Block_Action;//oh for one hand
     public AshOfWar ashOfWar_Action;//ash of war
 
     //ASH OF WAR

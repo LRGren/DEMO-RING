@@ -24,7 +24,7 @@ MonoBehaviour:
   arcane: 10
   startingRightWeapon01: {fileID: 11400000, guid: 4ee2564e9a7e50d499ee195376c42e31,
     type: 2}
-  startingRightWeapon02: {fileID: 0}
+  startingRightWeapon02: {fileID: 11400000, guid: 9c464875c996415d9742ffea42052c3e, type: 2}
   startingRightWeapon03: {fileID: 0}
   startingLeftWeapon01: {fileID: 11400000, guid: a864884746fe73f4a8f7470d75d141c2,
     type: 2}

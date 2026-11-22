@@ -14,15 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Wooden Light Shield
   itemIcon: {fileID: 21300000, guid: 8dacf117e3d3bf1439f8e676078561ff, type: 3}
-  itemDescription: 'A small wooden shield that is easy to move into position for a parry.'
+  itemDescription: A small wooden shield that is easy to move into position for a
+    parry.
   itemID: 10004
   itemWeight: 1
-  weaponAnimator: {fileID: 22100000, guid: 9be177efe1fcba84294f9aff999f6bfe, type: 2}
+  weaponAnimator: {fileID: 22100000, guid: 763d62eb3058420a933842c956ccd6a3, type: 2}
   weaponType: 1
   weaponClass: 3
   weaponModel: {fileID: 1711130412322516538, guid: 56c1eef20fc0e31479eeed8bbf9680f4,
     type: 3}
   useAsymmetricLeftHandSlot: 0
+  isPairedWeapon: 0
   strengthREQ: 8
   dexterityREQ: 0
   intelligenceREQ: 0
@@ -62,10 +64,12 @@ MonoBehaviour:
   jumpHeavyAttackStaminaModifier: 1.5
   oh_RB_Action: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b, type: 2}
   oh_RT_Action: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8, type: 2}
-  oh_LB_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
+  oh_LB_Attack_Action: {fileID: 0}
+  oh_LB_Block_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
   ashOfWar_Action: {fileID: 11400000, guid: a8febb1882335494a9a95b6a52d154f3, type: 2}
   wooshes:
   - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
   - {fileID: 8300000, guid: 4d4ef7516a431934681038a3dc391e55, type: 3}
   blocks:
   - {fileID: 8300000, guid: 82ef6eaed5d940240a305b0266087f97, type: 3}
+  - {fileID: 0}

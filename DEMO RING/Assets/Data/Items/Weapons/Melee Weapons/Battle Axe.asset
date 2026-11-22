@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Battle Axe
   itemIcon: {fileID: 21300000, guid: 072c57e6cf256cb4eaba6231099a8b22, type: 3}
-  itemDescription: 'A one-handed axe with a broad blade for strong chopping attacks.'
+  itemDescription: A one-handed axe with a broad blade for strong chopping attacks.
   itemID: 10007
   itemWeight: 4.5
   weaponAnimator: {fileID: 22100000, guid: a59fb39090ff46549394def341ac80a8, type: 2}
@@ -23,6 +23,7 @@ MonoBehaviour:
   weaponModel: {fileID: 4416895510362898170, guid: bd5ecd3d18b0cbe43957eec08609d957,
     type: 3}
   useAsymmetricLeftHandSlot: 1
+  isPairedWeapon: 0
   strengthREQ: 12
   dexterityREQ: 8
   intelligenceREQ: 0
@@ -62,7 +63,8 @@ MonoBehaviour:
   jumpHeavyAttackStaminaModifier: 1.5
   oh_RB_Action: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b, type: 2}
   oh_RT_Action: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8, type: 2}
-  oh_LB_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
+  oh_LB_Attack_Action: {fileID: 0}
+  oh_LB_Block_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
   ashOfWar_Action: {fileID: 0}
   wooshes:
   - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
