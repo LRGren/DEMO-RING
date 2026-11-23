@@ -115,7 +115,7 @@ public class CharacterAnimatorManager : MonoBehaviour
             NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
     }
 
-    public virtual void PlayerTargetAttackActionAnimation(WeaponItem weapon, AttackType attackType, string targetAnimation, bool isPerformingAction, bool applyRootMotion = true, bool canRotate = false, bool canMove = false)
+    public virtual void PlayerTargetAttackActionAnimation(WeaponItem weapon, AttackType attackType, string targetAnimation, bool isPerformingAction, bool applyRootMotion = true, bool canRotate = false, bool canMove = false, float fixedTransitionDuration = -1f)
     {
         //COMBOS
         //确定攻击类型
@@ -129,7 +129,7 @@ public class CharacterAnimatorManager : MonoBehaviour
         UpdateAnimatorController(weapon.weaponAnimator);
 
         character.characterAnimatorManager.applyRootMotion = applyRootMotion;
-        character.animator.CrossFade(targetAnimation, 0.2f);
+        CrossFadeAttack(targetAnimation, fixedTransitionDuration);
         character.isPerformingAction = isPerformingAction;
         character.characterLocomotionManager.canRotate = canRotate;
         character.characterLocomotionManager.canMove = canMove;
@@ -140,13 +140,21 @@ public class CharacterAnimatorManager : MonoBehaviour
             return;
 
         character.characterNetworkManager.NotifyTheServerOfAttackActionAnimationServerRpc(
-            NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
+            NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion, fixedTransitionDuration, weapon.itemID);
     }
 
+    public void CrossFadeAttack(string state, float fixedTransitionDuration)
+    {
+        if (fixedTransitionDuration >= 0f)
+            character.animator.CrossFadeInFixedTime(state, fixedTransitionDuration, -1, 0f);
+        else
+            character.animator.CrossFade(state, 0.2f);
+    }
 
     public void UpdateAnimatorController(AnimatorOverrideController weaponController)
     {
-        character.animator.runtimeAnimatorController = weaponController;
+        if (character.animator.runtimeAnimatorController != weaponController)
+            character.animator.runtimeAnimatorController = weaponController;
     }
 
     //Animation Event Calls

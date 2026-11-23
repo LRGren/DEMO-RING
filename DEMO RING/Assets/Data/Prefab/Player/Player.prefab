@@ -56910,7 +56910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2685673625
+  GlobalObjectIdHash: 2978010494
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -57073,6 +57073,12 @@ MonoBehaviour:
         byte0059: 0
         byte0060: 0
         byte0061: 0
+  currentGold:
+    m_InternalValue: 0
+  maxHealthFlasks:
+    m_InternalValue: 3
+  maxManaFlasks:
+    m_InternalValue: 1
   remainingHealthFlasks:
     m_InternalValue: 3
   remainingManaFlasks:
@@ -57093,6 +57099,10 @@ MonoBehaviour:
     m_InternalValue: 0
   isUsingLeftHand:
     m_InternalValue: 0
+  currentSpellInQuickSlotID:
+    m_InternalValue: 0
+  currentMaxSpellCapacity:
+    m_InternalValue: 2
   isChargingRightSpell:
     m_InternalValue: 0
   isChargingLeftSpell:
@@ -57232,7 +57242,7 @@ MonoBehaviour:
   rotationSpeed: 15
   sprintingCost: 5
   jumpStaminaCost: 10
-  jumpHeight: 2
+  jumpHeight: 3
   jumpingForwardSpeed: 5
   freeFallSpeed: 2
   dodgeStaminaCost: 25
@@ -57353,7 +57363,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   - {fileID: 11400000, guid: 910b8aa8aaee5f6428bfd2b3e45a746f, type: 2}
   leftWeaponIndex: 0
-  currentSpell: {fileID: 11400000, guid: 26979afd063ecee4fb4309c827b28997, type: 2}
   headEquipment: {fileID: 0}
   bodyEquipment: {fileID: 0}
   handEquipment: {fileID: 0}
@@ -57363,6 +57372,20 @@ MonoBehaviour:
   currentQuickSlotItem: {fileID: 0}
   currentQuickSlotItemIndex: 0
   quickSlotItemInventory:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  currentMaxSpellCapacity: 2
+  currentSpell: {fileID: 11400000, guid: 26979afd063ecee4fb4309c827b28997, type: 2}
+  currentSpellIndex: 0
+  spellInventory:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -57405,7 +57428,12 @@ MonoBehaviour:
   currentWeaponBedingUsed: {fileID: 0}
   currentProjectileSlotBeingUsed: 0
   projectileAimDirection: {x: 0, y: 0, z: 0}
+  isChannelingSpell: 0
+  isChannelingRightHand: 1
+  currentChannelingSpell: {fileID: 0}
+  currentChannelingSpellManager: {fileID: 0}
   canComboWithMainHandWeapon: 0
+  canComboWithOffHandWeapon: 0
   isUsingItem: 0
 --- !u!114 &3399047118958252384
 MonoBehaviour:
@@ -57672,6 +57700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebb11bb7ec474914a8c9d5ab878f9c03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   maleObject: {fileID: 1907980781447196418}
   femaleObject: {fileID: 8658389041974437824}
   hair: {fileID: 740765748149725341}
@@ -57706,18 +57735,21 @@ MonoBehaviour:
   - {fileID: 2048713992735474232}
   - {fileID: 1942525804180340627}
   femaleEyebrows: {fileID: 3832053291758408534}
-  test: 0
-  testHairID: 
   hairStyleCatalog: {fileID: 11400000, guid: 3d946e9697347754ba70b48165bea455, type: 2}
-  headStyleCatalog: {fileID: 11400000, guid: 00f7cfde6a035f66a849d9e3f6f8b676, type: 2}
-  maleEyebrowStyleCatalog: {fileID: 11400000, guid: 0b1188bccd7650198f9a39b9785c05a3, type: 2}
-  femaleEyebrowStyleCatalog: {fileID: 11400000, guid: 45e8302790a05b6db4cab33f57e27112, type: 2}
-  facialHairStyleCatalog: {fileID: 11400000, guid: 3623998005615d89a6600cfca3593b50, type: 2}
   currentHairID: none
+  headStyleCatalog: {fileID: 11400000, guid: 00f7cfde6a035f66a849d9e3f6f8b676, type: 2}
   currentHeadID: head00
+  maleEyebrowStyleCatalog: {fileID: 11400000, guid: 0b1188bccd7650198f9a39b9785c05a3,
+    type: 2}
+  femaleEyebrowStyleCatalog: {fileID: 11400000, guid: 45e8302790a05b6db4cab33f57e27112,
+    type: 2}
   currentMaleEyebrowID: eyebrow01
   currentFemaleEyebrowID: eyebrow01
+  facialHairStyleCatalog: {fileID: 11400000, guid: 3623998005615d89a6600cfca3593b50,
+    type: 2}
   currentFacialHairID: none
+  test: 0
+  testHairID: 
 --- !u!1 &7309088612374852883
 GameObject:
   m_ObjectHideFlags: 0

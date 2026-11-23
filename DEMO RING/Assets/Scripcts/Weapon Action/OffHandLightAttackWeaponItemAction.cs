@@ -23,6 +23,9 @@ public class OffHandLightAttackWeaponItemAction : WeaponItemAction
     [Header("Backstep Attack Animations")]
     [SerializeField] private string backstep_Attack_01 = "DW_Backstep_Attack_01";
 
+    [Header("Jump Attack Animations")]
+    [SerializeField] private string jump_Attack_01 = "DW_Jump_Attack_01";
+
     public override void AttemptToPerformAction(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
     {
         base.AttemptToPerformAction(playerPerformingAction, weaponPerformingAction);
@@ -86,8 +89,11 @@ public class OffHandLightAttackWeaponItemAction : WeaponItemAction
         if (playerPerformingAction.playerNetworkManager.currentStamina.Value <= 0)
             return;
 
-        if (playerPerformingAction.playerCombatManager.canPerformJumpAttack && !playerPerformingAction.playerLocomotionManager.isGrounded)
+        if (playerPerformingAction.playerLocomotionManager.CanStartJumpAttack())
+        {
+            PerformJumpAttack(playerPerformingAction, weaponPerformingAction, isDualWielding);
             return;
+        }
 
         if (!playerPerformingAction.playerLocomotionManager.isGrounded)
             return;
@@ -173,6 +179,7 @@ public class OffHandLightAttackWeaponItemAction : WeaponItemAction
 
     private void PerformBackstepAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction, bool isDualWielding = false)
     {
+        playerPerformingAction.playerCombatManager.canPerformBackstepAttack = false;
         if (isDualWielding)
         {
             playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.BackstepAttack01, backstep_Attack_01, true);
@@ -186,6 +193,13 @@ public class OffHandLightAttackWeaponItemAction : WeaponItemAction
         {
             playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.RollingAttack01, rolling_Attack_01, true);
         }
+    }
+
+    private void PerformJumpAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction, bool isDualWielding = false)
+    {
+        if (isDualWielding)
+            playerPerformingAction.playerLocomotionManager.PerformJumpAttack(
+                weaponPerformingAction, AttackType.JumpLightAttack01, jump_Attack_01);
     }
 
 }

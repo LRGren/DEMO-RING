@@ -119,6 +119,7 @@ public class WorldUtilityManager : MonoBehaviour
         switch (weaponClass)
         {
             case WeaponClass.StraightSword:
+            case WeaponClass.CurvedSword:
                 return 3.45f;
             case WeaponClass.MediumShield:
                 return 2.0f;
@@ -132,6 +133,7 @@ public class WorldUtilityManager : MonoBehaviour
         switch (weaponClass)
         {
             case WeaponClass.StraightSword:
+            case WeaponClass.CurvedSword:
                 return 2.3f;
             case WeaponClass.MediumShield:
                 return 1.0f;

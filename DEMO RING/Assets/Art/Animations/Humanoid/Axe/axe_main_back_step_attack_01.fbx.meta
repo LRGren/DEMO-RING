@@ -65,6 +65,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.25
+        functionName: DisableRotate
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.27234043
         functionName: OpenDamageCollider
         data:
@@ -74,13 +81,6 @@ ModelImporter:
         messageOptions: 0
       - time: 0.29084637
         functionName: DrainStaminaBasedOnAttack
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.33770514
-        functionName: DisableRotate
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

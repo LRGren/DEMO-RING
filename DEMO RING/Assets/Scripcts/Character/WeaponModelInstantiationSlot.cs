@@ -36,6 +36,7 @@ public class WeaponModelInstantiationSlot : MonoBehaviour
         switch (weaponClass)
         {
             case WeaponClass.StraightSword:
+            case WeaponClass.CurvedSword:
             case WeaponClass.Axe:
                 weaponModel.transform.localPosition = new Vector3(0.064f, 0f, -0.06f);
                 weaponModel.transform.localRotation = Quaternion.Euler(194, 90, -0.22f);

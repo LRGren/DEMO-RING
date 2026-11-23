@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerLocomotionManager : CharacterLocomotionManager
@@ -25,6 +24,19 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
     [SerializeField] private float jumpHeight = 4;
     [SerializeField] private float jumpingForwardSpeed = 5f;
     [SerializeField] private float freeFallSpeed = 2f;
+    [SerializeField, Min(0f)] private float lateJumpAttackWindow = 0.55f;
+
+    private WeaponItem queuedJumpWeapon;
+    private WeaponItem queuedRightWeapon;
+    private WeaponItem queuedLeftWeapon;
+    private AttackType queuedJumpAttackType;
+    private string queuedGroundAttackState;
+    private bool queuedJumpUsesRightHand;
+    private bool queuedJumpTwoHanded;
+    private float queuedJumpDeadline;
+
+    private const string ActionLayer = "Action Override";
+    private const float JumpAttackBlend = 0.10f;
 
     [Header("Dodge")]
     private Vector3 rollDirection;
@@ -44,6 +56,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
 
         if (player.IsOwner)
         {
+            UpdateQueuedJumpAttack();
             player.characterNetworkManager.verticalMovement.Value = verticalMovement;
             player.characterNetworkManager.horizontalMovement.Value = horizontalMovement;
             player.characterNetworkManager.moveAmount.Value = moveAmount;
@@ -359,6 +372,99 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
                 jumpDirection *= 0.25f;
             }
         }
+    }
+
+    public bool CanStartJumpAttack()
+    {
+        return player.playerCombatManager.canPerformJumpAttack &&
+            (!isGrounded || (player.playerNetworkManager.isJumping.Value && yVelocity.y < 0f));
+    }
+
+    public void PerformJumpAttack(WeaponItem weapon, AttackType attackType, string airborneState)
+    {
+        if (player.isPerformingAction || queuedJumpWeapon != null)
+            return;
+
+        int layer = player.animator.GetLayerIndex(ActionLayer);
+        string lateState = ActionLayer + ".Jump Attacks." + airborneState + "_Ground_Attack";
+        if (lateJumpAttackWindow > 0f && layer >= 0 &&
+            player.animator.HasState(layer, Animator.StringToHash(lateState)) && IsLandingSoon())
+        {
+            queuedJumpWeapon = weapon;
+            queuedRightWeapon = player.playerInventoryManager.currentRightHandWeapon;
+            queuedLeftWeapon = player.playerInventoryManager.currentLeftHandWeapon;
+            queuedJumpAttackType = attackType;
+            queuedGroundAttackState = lateState;
+            queuedJumpUsesRightHand = player.playerNetworkManager.isUsingRightHand.Value;
+            queuedJumpTwoHanded = player.playerNetworkManager.isTwoHandingWeapon.Value;
+            queuedJumpDeadline = Time.time + lateJumpAttackWindow + 0.20f;
+            return;
+        }
+
+        player.playerCombatManager.DisableCanPerformJumpAttack();
+        player.playerAnimatorManager.PlayerTargetAttackActionAnimation(
+            weapon, attackType, airborneState, true, fixedTransitionDuration: JumpAttackBlend);
+    }
+
+    private bool IsLandingSoon()
+    {
+        if (player.characterController.isGrounded && yVelocity.y <= 0f)
+            return true;
+
+        float distance = (-yVelocity.y - 0.5f * gravityForce * lateJumpAttackWindow) * lateJumpAttackWindow;
+        if (distance <= 0f)
+            return false;
+
+        float lift = groundCheckSphereRadius;
+        Vector3 origin = transform.position + Vector3.up * lift;
+        return Physics.SphereCast(origin, groundCheckSphereRadius, Vector3.down, out RaycastHit hit,
+                   distance + lift, groundLayer, QueryTriggerInteraction.Ignore) &&
+            Vector3.Angle(hit.normal, Vector3.up) <= player.characterController.slopeLimit;
+    }
+
+    private void UpdateQueuedJumpAttack()
+    {
+        if (queuedJumpWeapon == null)
+            return;
+
+        var network = player.playerNetworkManager;
+        var inventory = player.playerInventoryManager;
+        if (Time.time > queuedJumpDeadline || player.isDead.Value || player.playerCombatManager.isUsingItem ||
+            inventory.currentRightHandWeapon != queuedRightWeapon || inventory.currentLeftHandWeapon != queuedLeftWeapon ||
+            network.isTwoHandingWeapon.Value != queuedJumpTwoHanded ||
+            (queuedJumpTwoHanded && network.isTwoHandingRightWeapon.Value != queuedJumpUsesRightHand))
+        {
+            ClearQueuedJumpAttack();
+            return;
+        }
+
+        if (player.isPerformingAction)
+        {
+            ClearQueuedJumpAttack();
+            return;
+        }
+
+        if (!player.characterController.isGrounded)
+            return;
+
+        WeaponItem weapon = queuedJumpWeapon;
+        AttackType attackType = queuedJumpAttackType;
+        string groundAttack = queuedGroundAttackState;
+        bool useRightHand = queuedJumpUsesRightHand;
+        ClearQueuedJumpAttack();
+
+        player.playerCombatManager.DisableCanPerformJumpAttack();
+        network.SetCharacterActionHand(useRightHand);
+        network.currentWeaponBeingUsed.Value = weapon.itemID;
+        player.playerAnimatorManager.PlayerTargetAttackActionAnimation(
+            weapon, attackType, groundAttack, true, fixedTransitionDuration: JumpAttackBlend);
+    }
+
+    private void ClearQueuedJumpAttack()
+    {
+        queuedJumpWeapon = null;
+        queuedRightWeapon = null;
+        queuedLeftWeapon = null;
     }
 
     public void ApplyJumpVelocity()

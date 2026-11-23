@@ -15,6 +15,6 @@ MonoBehaviour:
   actionID: 0
   light_Attack_01: Off_Light_Attack_01
   light_Attack_02: Off_Light_Attack_02
-  running_Attack_01: Off_Run_Attack_01
-  rolling_Attack_01: Off_Roll_Attack_01
-  jump_Attack_01: Off_Jump_Light_Attack_01
+  running_Attack_01: DW_Run_Attack_01
+  rolling_Attack_01: DW_Roll_Attack_01
+  jump_Attack_01: DW_Jump_Attack_01

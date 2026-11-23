@@ -51,12 +51,15 @@ public enum WeaponClass
     Bow,
     Axe,
     GreatAxe,
+    CurvedSword,
 }
 
 public enum DualWieldGroup
 {
     None,
-    StraightSword
+    StraightSword,
+    Axe,
+    CurvedSword
 }
 
 public enum SpellClass

@@ -235,27 +235,33 @@ public class CharacterNetworkManager : NetworkBehaviour
 
     #region Attack Animation
     [ServerRpc]
-    public void NotifyTheServerOfAttackActionAnimationServerRpc(ulong clientId, string animationName, bool applyRootMotion)
+    public void NotifyTheServerOfAttackActionAnimationServerRpc(ulong clientId, string animationName, bool applyRootMotion, float fixedTransitionDuration, int weaponId)
     {
         if (IsServer)
         {
-            PlayAttackActionAnimationForAllClientsClientRpc(clientId, animationName, applyRootMotion);
+            PlayAttackActionAnimationForAllClientsClientRpc(clientId, animationName, applyRootMotion, fixedTransitionDuration, weaponId);
         }
     }
 
     [ClientRpc]
-    public void PlayAttackActionAnimationForAllClientsClientRpc(ulong clientId, string animationName, bool applyRootMotion)
+    public void PlayAttackActionAnimationForAllClientsClientRpc(ulong clientId, string animationName, bool applyRootMotion, float fixedTransitionDuration, int weaponId)
     {
         if (clientId != NetworkManager.Singleton.LocalClientId)
         {
-            PerformAttackActionAnimationFromServer(animationName, applyRootMotion);
+            if (fixedTransitionDuration >= 0f && character is PlayerManager &&
+                WorldItemDatabase.instance.GetWeaponByID(weaponId) is WeaponItem weapon)
+            {
+                character.characterAnimatorManager.UpdateAnimatorController(weapon.weaponAnimator);
+            }
+
+            PerformAttackActionAnimationFromServer(animationName, applyRootMotion, fixedTransitionDuration);
         }
     }
 
-    public void PerformAttackActionAnimationFromServer(string animationName, bool applyRootMotion)
+    public void PerformAttackActionAnimationFromServer(string animationName, bool applyRootMotion, float fixedTransitionDuration)
     {
         character.characterAnimatorManager.applyRootMotion = applyRootMotion;
-        character.animator.CrossFade(animationName, 0.2f);
+        character.characterAnimatorManager.CrossFadeAttack(animationName, fixedTransitionDuration);
     }
     #endregion
 
