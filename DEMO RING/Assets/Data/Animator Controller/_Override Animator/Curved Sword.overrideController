@@ -201,3 +201,9 @@ AnimatorOverrideController:
       type: 3}
     m_OverrideClip: {fileID: 2665543394630463952, guid: 2dde7c208f57a5e4e972481a437d3ecf,
       type: 3}
+  - m_OriginalClip: {fileID: 8594672525682897810, guid: e0b4240e1d4fb334297a13ddd96a8c48,
+      type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: ac0b0aef483423847b024fe9a8754422, type: 2}
+  - m_OriginalClip: {fileID: 2241361648400260794, guid: 9e7a9376aff85754b938b00cea1c3e8c,
+      type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 133fe0c48600d564ebc9bfa32e0898dc, type: 2}

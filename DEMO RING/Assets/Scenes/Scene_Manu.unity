@@ -3430,6 +3430,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: World Item Database
       objectReference: {fileID: 0}
+    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
+        type: 3}
+      propertyPath: quickSlotItems.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
+        type: 3}
+      propertyPath: quickSlotItems.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 636b97032cdd28f4b9ad6df80841469f,
+        type: 2}
     - target: {fileID: 7703937357132980738, guid: ba46be3c9ee99aa41971da263ce4d03b,
         type: 3}
       propertyPath: m_LocalPosition.x

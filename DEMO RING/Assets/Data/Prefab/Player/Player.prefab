@@ -56910,7 +56910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2978010494
+  GlobalObjectIdHash: 2685673625
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -57219,7 +57219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21a58197658c7464491c508fc5d65191, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityForce: -40
+  gravityForce: -20
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -57242,9 +57242,10 @@ MonoBehaviour:
   rotationSpeed: 15
   sprintingCost: 5
   jumpStaminaCost: 10
-  jumpHeight: 3
+  jumpHeight: 1.5
   jumpingForwardSpeed: 5
   freeFallSpeed: 2
+  lateJumpAttackWindow: 0.55
   dodgeStaminaCost: 25
 --- !u!114 &2031708461828761784
 MonoBehaviour:

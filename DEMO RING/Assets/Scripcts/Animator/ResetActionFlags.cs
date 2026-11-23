@@ -26,7 +26,19 @@ public class ResetActionFlags : StateMachineBehaviour
         character.characterCombatManager.canPerformJumpAttack = false;
 
         if (character is PlayerManager player)
+        {
             player.playerEquipmentManager.ClosePairedWeaponDamageColliders();
+            player.playerEquipmentManager.UnhideWeaponModels();
+            player.playerLocomotionManager.canRun = true;
+            if (player.playerCombatManager.isUsingItem)
+            {
+                player.playerCombatManager.isUsingItem = false;
+                if (!player.isPerformingAction)
+                {
+                    player.playerLocomotionManager.canRoll = true;
+                }
+            }
+        }
 
         if (character.characterEffectsManager.activeSpellWarmUpFX != null)
             Destroy(character.characterEffectsManager.activeSpellWarmUpFX.gameObject);

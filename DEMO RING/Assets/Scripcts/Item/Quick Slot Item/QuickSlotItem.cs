@@ -26,6 +26,7 @@ public class QuickSlotItem : Item
     public virtual void SuccessfullyUsedItem(PlayerManager player)
     {
     }
+
     public virtual bool CanIUseThisItem(PlayerManager player)
     {
         return true;
