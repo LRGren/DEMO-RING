@@ -2,8 +2,8 @@
   <Project Path="Unity.Timeline.csproj" />
   <Project Path="Unity.PlasticSCM.Editor.csproj" />
   <Project Path="Unity.ShaderGraph.Editor.csproj" />
-  <Project Path="Autodesk.Fbx.csproj" />
   <Project Path="Unity.InputSystem.csproj" />
+  <Project Path="MCPForUnity.Runtime.csproj" />
   <Project Path="Unity.VisualScripting.Flow.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Runtime.csproj" />
   <Project Path="UnityEditor.UI.csproj" />
@@ -22,10 +22,12 @@
   <Project Path="Unity.VisualScripting.Core.csproj" />
   <Project Path="Unity.Searcher.Editor.csproj" />
   <Project Path="Unity.Burst.csproj" />
+  <Project Path="Autodesk.Fbx.csproj" />
   <Project Path="Unity.AI.Navigation.Editor.csproj" />
   <Project Path="Unity.Netcode.Runtime.csproj" />
   <Project Path="Unity.Collections.csproj" />
   <Project Path="Unity.VisualStudio.Editor.csproj" />
+  <Project Path="MCPForUnity.Editor.csproj" />
   <Project Path="PPv2URPConverters.csproj" />
   <Project Path="Unity.Netcode.Components.csproj" />
   <Project Path="Unity.Rider.Editor.csproj" />

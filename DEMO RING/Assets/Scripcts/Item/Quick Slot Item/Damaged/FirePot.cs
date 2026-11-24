@@ -5,12 +5,9 @@ public class FirePot : QuickSlotItem
 {
     [Header("Fire Pot Settings")]
     public GameObject firePotPrefab;
+    public float airTime = .5f;
     [SerializeField, Min(1f)] private float freeAimRange = 12f;
-    [SerializeField, Min(0.1f)] private float preferredHorizontalSpeed = 12f;
     [SerializeField] private LayerMask aimMask = Physics.DefaultRaycastLayers;
-
-    private const float MinimumFlightTime = 0.35f;
-    private const float MaximumFlightTime = 1f;
 
     public override void AttemptToUseItem(PlayerManager player)
     {
@@ -38,26 +35,38 @@ public class FirePot : QuickSlotItem
             player.playerCombatManager.DestoryAllAttemptedActions();
 
         Transform projectileSpawnPoint = player.playerEquipmentManager.rightHandWeaponManager.transform;
-        Vector3 spawnPosition = projectileSpawnPoint.position;
-        Vector3 aimPoint = GetAimPoint(player, spawnPosition);
-        GameObject projectile = Instantiate(firePotPrefab, spawnPosition, projectileSpawnPoint.rotation);
-        var projectileManager = projectile.GetComponent<QuickSlotItemProjectileManager>();
+        GameObject instantiatedReleasedFX = Instantiate(firePotPrefab);
+        instantiatedReleasedFX.transform.parent = projectileSpawnPoint;
+        instantiatedReleasedFX.transform.localPosition = Vector3.zero;
+        instantiatedReleasedFX.transform.localRotation = Quaternion.identity;
+        instantiatedReleasedFX.transform.parent = null;
+
+        QuickSlotItemProjectileManager projectileManager = instantiatedReleasedFX.GetComponent<QuickSlotItemProjectileManager>();
         projectileManager.InitializeProjectile(player);
 
-        foreach (Collider collider in player.GetComponentsInChildren<Collider>())
-            Physics.IgnoreCollision(collider, projectileManager.projectileCollider);
+        Collider[] characterColliders = player.GetComponentsInChildren<Collider>();
+        var projectileCollider = projectileManager.projectileCollider;
+        foreach (Collider collider in characterColliders)
+        {
+            Physics.IgnoreCollision(collider, projectileCollider);
+        }
 
-        var projectileBody = projectile.GetComponent<Rigidbody>();
-        Vector3 displacement = aimPoint - projectileBody.position;
-        Vector3 gravity = projectileBody.useGravity ? Physics.gravity : Vector3.zero;
-        float horizontalDistance = Vector3.ProjectOnPlane(displacement, Vector3.up).magnitude;
-        float flightTime = Mathf.Clamp(horizontalDistance / Mathf.Max(0.1f, preferredHorizontalSpeed),
-            MinimumFlightTime, MaximumFlightTime);
+        Vector3 aimPoint = GetAimPoint(player, projectileSpawnPoint.position);
+        if (aimPoint != projectileSpawnPoint.position)
+            instantiatedReleasedFX.transform.LookAt(aimPoint);
 
-        Vector3 launchVelocity = displacement / flightTime - 0.5f * gravity * flightTime;
-        if (launchVelocity.sqrMagnitude > 0.001f)
-            projectileBody.rotation = Quaternion.LookRotation(launchVelocity);
-        projectileBody.velocity = launchVelocity;
+        Rigidbody projectileRigidbody = instantiatedReleasedFX.GetComponent<Rigidbody>();
+        Vector3 direction = aimPoint - projectileSpawnPoint.position;
+        direction.y = 0f;
+        direction.Normalize();
+
+        float horizontalDistance = Vector3.Distance(new Vector3(projectileSpawnPoint.position.x, 0f, projectileSpawnPoint.position.z), new Vector3(aimPoint.x, 0f, aimPoint.z));
+        float verticalDistance = aimPoint.y - projectileSpawnPoint.position.y;
+
+        float horizontalSpeed = horizontalDistance / airTime;
+        float verticalSpeed = (verticalDistance - 0.5f * Physics.gravity.y * airTime * airTime) / airTime;
+
+        projectileRigidbody.velocity = direction * horizontalSpeed + Vector3.up * verticalSpeed;
 
         SetAmountOfItem(player, GetAmountOfItem(player) - 1);
 
@@ -69,34 +78,40 @@ public class FirePot : QuickSlotItem
 
     private Vector3 GetAimPoint(PlayerManager player, Vector3 spawnPosition)
     {
-        var target = player.playerCombatManager.currentTarget;
-        if (player.playerNetworkManager.isLockOn.Value && target != null)
+        // TODO: Return the world-space aim point for locked-on or free aim.
+        if (player.playerNetworkManager.isLockOn.Value && player.playerCombatManager.currentTarget != null)
         {
-            Vector3 targetFeet = target.transform.position;
-            if (target.characterController != null && target.characterController.enabled)
-                targetFeet.y = target.characterController.bounds.min.y;
-
-            return targetFeet;
+            // If the player has a current target, return its position.
+            return player.playerCombatManager.currentTarget.transform.position;
         }
-
-        Camera camera = player.IsOwner && PlayerCamera.instance != null
-            ? PlayerCamera.instance.cameraObject
-            : null;
-        if (camera == null)
-            return spawnPosition + player.transform.forward * freeAimRange;
-
-        Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        Vector3 aimPoint = ray.GetPoint(freeAimRange);
-        float nearestDistance = freeAimRange;
-        foreach (RaycastHit hit in Physics.RaycastAll(ray, freeAimRange, aimMask, QueryTriggerInteraction.Ignore))
+        else
         {
-            if (hit.distance >= nearestDistance || hit.collider.transform.IsChildOf(player.transform))
-                continue;
+            // If the player does not have a current target, return a point in front of the player based on free aim range.
+            Vector3 forwardDirection = PlayerCamera.instance.cameraObject.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f)).direction;
+            Ray aimRay = new Ray(spawnPosition, forwardDirection);
 
-            nearestDistance = hit.distance;
-            aimPoint = hit.point;
+            var hits = Physics.RaycastAll(aimRay, freeAimRange, aimMask, QueryTriggerInteraction.Ignore);
+            int minDistanceIndex = -1;
+            float minDistance = Mathf.Infinity;
+            for (int i = 0; i < hits.Length; i++)
+            {
+                if (hits[i].collider.transform.IsChildOf(player.transform))
+                    continue;
+
+                float distance = Vector3.Distance(spawnPosition, hits[i].point);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    minDistanceIndex = i;
+                }
+            }
+
+            if (minDistanceIndex != -1)
+            {
+                return hits[minDistanceIndex].point;
+            }
+
+            return spawnPosition + forwardDirection * freeAimRange;
         }
-
-        return aimPoint;
     }
 }

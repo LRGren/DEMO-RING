@@ -22,8 +22,9 @@ MonoBehaviour:
   isConsumable: 1
   firePotPrefab: {fileID: 2850333755853052695, guid: d6dbaf81e3b283b47abf0bcaa92aab4c,
     type: 3}
+  upwardForce: 5
+  forwardForce: 10
   freeAimRange: 12
-  preferredHorizontalSpeed: 12
   aimMask:
     serializedVersion: 2
     m_Bits: 201

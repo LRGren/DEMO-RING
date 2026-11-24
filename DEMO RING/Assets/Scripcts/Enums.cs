@@ -59,7 +59,8 @@ public enum DualWieldGroup
     None,
     StraightSword,
     Axe,
-    CurvedSword
+    CurvedSword,
+    GreatAxe
 }
 
 public enum SpellClass

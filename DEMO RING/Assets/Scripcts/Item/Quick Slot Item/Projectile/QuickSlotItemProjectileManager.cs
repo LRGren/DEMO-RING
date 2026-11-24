@@ -33,14 +33,6 @@ public class QuickSlotItemProjectileManager : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (projectileTarget != null)
-            transform.LookAt(projectileTarget.characterCombatManager.lockOnTransform.position);
-
-        /*if (fireBallRigidbody != null)
-        {
-            Vector3 currentVelocity = fireBallRigidbody.velocity;
-            fireBallRigidbody.velocity = transform.forward + currentVelocity;
-        }*/
     }
 
     protected virtual void OnCollisionEnter(Collision collision)
