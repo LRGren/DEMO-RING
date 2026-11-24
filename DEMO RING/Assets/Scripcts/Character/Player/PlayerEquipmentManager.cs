@@ -1208,16 +1208,6 @@ public class PlayerEquipmentManager : CharacterEquipmentManager
         CloseAllWeaponDamageColliders();
     }
 
-    public void CloseRightDamageCollider()
-    {
-        DisableWeaponDamageCollider(rightHandWeaponManager);
-    }
-
-    public void CloseLeftDamageCollider()
-    {
-        DisableWeaponDamageCollider(leftHandWeaponManager);
-    }
-
     public void CloseAllWeaponDamageColliders()
     {
         DisableWeaponDamageCollider(rightHandWeaponManager);
