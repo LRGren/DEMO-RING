@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: Charm
   m_EditorClassIdentifier: 
   itemName: Charm
-  itemIcon: {fileID: 21300128, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  itemDescription: 
+  itemIcon: {fileID: 21300000, guid: 56a7a94b06900a14b8227a09214c9513, type: 3}
+  itemDescription: A handheld focus used to shape and release spells.
   itemID: 10005
-  itemWeight: 0
+  itemWeight: 1.5
   weaponAnimator: {fileID: 22100000, guid: 830d08253f11c7d40a528b234b01be4b, type: 2}
   weaponType: 0
   weaponClass: 0
   weaponModel: {fileID: 1711130412322516538, guid: de72cad6e5e861844af06a53cdbdb2f3,
     type: 3}
+  useAsymmetricLeftHandSlot: 0
   strengthREQ: 0
   dexterityREQ: 0
   intelligenceREQ: 0
@@ -48,6 +49,8 @@ MonoBehaviour:
   run_Attack_01_Modifier: 1
   roll_Attack_01_Modifier: 1
   backstep_Attack_01_Modifier: 1
+  jump_Light_Attack_01_Modifier: 1.2
+  jump_Heavy_Attack_01_Modifier: 1.8
   basicStaminaCost: 0
   lightAttackStaminaModifier: 0.9
   heavyAttackStaminaModifier: 1.2
@@ -55,9 +58,13 @@ MonoBehaviour:
   runningAttackStaminaModifier: 1
   rollingAttackStaminaModifier: 1
   backstepAttackStaminaModifier: 1
+  jumpLightAttackStaminaModifier: 1
+  jumpHeavyAttackStaminaModifier: 1.5
   oh_RB_Action: {fileID: 11400000, guid: 1423e33dc8661584fa58b3ad6c1a8066, type: 2}
-  oh_RT_Action: {fileID: 11400000, guid: 1423e33dc8661584fa58b3ad6c1a8066, type: 2}
+  oh_RT_Action: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8, type: 2}
   oh_LB_Action: {fileID: 11400000, guid: 1423e33dc8661584fa58b3ad6c1a8066, type: 2}
   ashOfWar_Action: {fileID: 11400000, guid: a8febb1882335494a9a95b6a52d154f3, type: 2}
-  wooshes: []
-  blocks: []
+  wooshes:
+  - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
+  blocks:
+  - {fileID: 8300000, guid: 738e3bff6c9edfe409dcb5b68d82d66a, type: 3}

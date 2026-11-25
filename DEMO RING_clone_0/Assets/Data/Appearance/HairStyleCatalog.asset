@@ -1,0 +1,132 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a01add02accc7c459ad7cc27dfdf370, type: 3}
+  m_Name: HairStyleCatalog
+  m_EditorClassIdentifier: 
+  hairStyleOptions:
+  - hairID: none
+    hairName: No_Hair
+    hairModelName: 
+  - hairID: hair01
+    hairName: Hair_01
+    hairModelName: Chr_Hair_01
+  - hairID: hair02
+    hairName: Hair_02
+    hairModelName: Chr_Hair_02
+  - hairID: hair03
+    hairName: Hair_03
+    hairModelName: Chr_Hair_03
+  - hairID: hair04
+    hairName: Hair_04
+    hairModelName: Chr_Hair_04
+  - hairID: hair05
+    hairName: Hair_05
+    hairModelName: Chr_Hair_05
+  - hairID: hair06
+    hairName: Hair_06
+    hairModelName: Chr_Hair_06
+  - hairID: hair07
+    hairName: Hair_07
+    hairModelName: Chr_Hair_07
+  - hairID: hair08
+    hairName: Hair_08
+    hairModelName: Chr_Hair_08
+  - hairID: hair09
+    hairName: Hair_09
+    hairModelName: Chr_Hair_09
+  - hairID: hair10
+    hairName: Hair_10
+    hairModelName: Chr_Hair_10
+  - hairID: hair11
+    hairName: Hair_11
+    hairModelName: Chr_Hair_11
+  - hairID: hair12
+    hairName: Hair_12
+    hairModelName: Chr_Hair_12
+  - hairID: hair13
+    hairName: Hair_13
+    hairModelName: Chr_Hair_13
+  - hairID: hair14
+    hairName: Hair_14
+    hairModelName: Chr_Hair_14
+  - hairID: hair15
+    hairName: Hair_15
+    hairModelName: Chr_Hair_15
+  - hairID: hair16
+    hairName: Hair_16
+    hairModelName: Chr_Hair_16
+  - hairID: hair17
+    hairName: Hair_17
+    hairModelName: Chr_Hair_17
+  - hairID: hair18
+    hairName: Hair_18
+    hairModelName: Chr_Hair_18
+  - hairID: hair19
+    hairName: Hair_19
+    hairModelName: Chr_Hair_19
+  - hairID: hair20
+    hairName: Hair_20
+    hairModelName: Chr_Hair_20
+  - hairID: hair21
+    hairName: Hair_21
+    hairModelName: Chr_Hair_21
+  - hairID: hair22
+    hairName: Hair_22
+    hairModelName: Chr_Hair_22
+  - hairID: hair23
+    hairName: Hair_23
+    hairModelName: Chr_Hair_23
+  - hairID: hair24
+    hairName: Hair_24
+    hairModelName: Chr_Hair_24
+  - hairID: hair25
+    hairName: Hair_25
+    hairModelName: Chr_Hair_25
+  - hairID: hair26
+    hairName: Hair_26
+    hairModelName: Chr_Hair_26
+  - hairID: hair27
+    hairName: Hair_27
+    hairModelName: Chr_Hair_27
+  - hairID: hair28
+    hairName: Hair_28
+    hairModelName: Chr_Hair_28
+  - hairID: hair29
+    hairName: Hair_29
+    hairModelName: Chr_Hair_29
+  - hairID: hair30
+    hairName: Hair_30
+    hairModelName: Chr_Hair_30
+  - hairID: hair31
+    hairName: Hair_31
+    hairModelName: Chr_Hair_31
+  - hairID: hair32
+    hairName: Hair_32
+    hairModelName: Chr_Hair_32
+  - hairID: hair33
+    hairName: Hair_33
+    hairModelName: Chr_Hair_33
+  - hairID: hair34
+    hairName: Hair_34
+    hairModelName: Chr_Hair_34
+  - hairID: hair35
+    hairName: Hair_35
+    hairModelName: Chr_Hair_35
+  - hairID: hair36
+    hairName: Hair_36
+    hairModelName: Chr_Hair_36
+  - hairID: hair37
+    hairName: Hair_37
+    hairModelName: Chr_Hair_37
+  - hairID: hair38
+    hairName: Hair_38
+    hairModelName: Chr_Hair_38

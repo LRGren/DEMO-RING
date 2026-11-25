@@ -20,11 +20,9 @@ public class NetworkObjectSpawner : MonoBehaviour
 
     public void AttemptToSpawnNetworkObject()
     {
-        if (spawnedNetworkObject == null)
+        if (NetworkManager.Singleton && NetworkManager.Singleton.IsServer && !spawnedNetworkObject)
         {
-            spawnedNetworkObject = Instantiate(networkObjectPrefab);
-            spawnedNetworkObject.transform.position = transform.position;
-            spawnedNetworkObject.transform.rotation = transform.rotation;
+            spawnedNetworkObject = Instantiate(networkObjectPrefab, transform.position, transform.rotation);
 
             spawnedNetworkObject.GetComponent<FogWallInteractable>().bossID = objectID;
             spawnedNetworkObject.GetComponent<NetworkObject>().Spawn();

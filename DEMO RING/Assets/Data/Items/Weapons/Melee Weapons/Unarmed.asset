@@ -17,7 +17,7 @@ MonoBehaviour:
   itemDescription: Bare fists used when no weapon is equipped.
   itemID: 10000
   itemWeight: 0
-  weaponAnimator: {fileID: 22100000, guid: fb90001340f049a398e7345e91629597, type: 2}
+  weaponAnimator: {fileID: 22100000, guid: 1d7562ca4b85e944fbd0a6327324d2b8, type: 2}
   weaponType: 0
   weaponClass: 0
   weaponModel: {fileID: 1711130412322516538, guid: de72cad6e5e861844af06a53cdbdb2f3,

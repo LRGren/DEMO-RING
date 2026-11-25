@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39269503d048520baffb0fd3a427ffd5, type: 3}
+  m_Name: MaleEyebrowStyleCatalog
+  m_EditorClassIdentifier: 
+  eyebrowStyleOptions:
+  - eyebrowID: none
+    eyebrowName: No_Eyebrows
+    eyebrowModelName: 
+  - eyebrowID: eyebrow01
+    eyebrowName: Eyebrows_01
+    eyebrowModelName: Chr_Eyebrow_Male_01
+  - eyebrowID: eyebrow02
+    eyebrowName: Eyebrows_02
+    eyebrowModelName: Chr_Eyebrow_Male_02
+  - eyebrowID: eyebrow03
+    eyebrowName: Eyebrows_03
+    eyebrowModelName: Chr_Eyebrow_Male_03
+  - eyebrowID: eyebrow04
+    eyebrowName: Eyebrows_04
+    eyebrowModelName: Chr_Eyebrow_Male_04
+  - eyebrowID: eyebrow05
+    eyebrowName: Eyebrows_05
+    eyebrowModelName: Chr_Eyebrow_Male_05
+  - eyebrowID: eyebrow06
+    eyebrowName: Eyebrows_06
+    eyebrowModelName: Chr_Eyebrow_Male_06
+  - eyebrowID: eyebrow07
+    eyebrowName: Eyebrows_07
+    eyebrowModelName: Chr_Eyebrow_Male_07
+  - eyebrowID: eyebrow08
+    eyebrowName: Eyebrows_08
+    eyebrowModelName: Chr_Eyebrow_Male_08
+  - eyebrowID: eyebrow09
+    eyebrowName: Eyebrows_09
+    eyebrowModelName: Chr_Eyebrow_Male_09
+  - eyebrowID: eyebrow10
+    eyebrowName: Eyebrows_10
+    eyebrowModelName: Chr_Eyebrow_Male_10

@@ -100,11 +100,13 @@ public class FlaskItem : QuickSlotItem
             if (isHealthFlask)
             {
                 player.playerNetworkManager.remainingHealthFlasks.Value--;
+                itemCount = player.playerNetworkManager.remainingHealthFlasks.Value;
                 player.playerNetworkManager.currentHealth.Value += healthFlaskAmount;
             }
             else
             {
                 player.playerNetworkManager.remainingManaFlasks.Value--;
+                itemCount = player.playerNetworkManager.remainingManaFlasks.Value;
                 player.playerNetworkManager.currentFocusPoints.Value += manaFlaskAmount;
             }
 
@@ -161,6 +163,12 @@ public class FlaskItem : QuickSlotItem
 
     public override void SetAmountOfItem(PlayerManager player, int amount)
     {
+        if (!player.IsOwner)
+            return;
+
+        if (!isConsumable)
+            return;
+
         base.SetAmountOfItem(player, amount);
 
         if (isHealthFlask)

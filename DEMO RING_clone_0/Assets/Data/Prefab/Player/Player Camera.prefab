@@ -217,7 +217,8 @@ MonoBehaviour:
   player: {fileID: 0}
   cameraObject: {fileID: 6280488472982938095}
   cameraPivotTransform: {fileID: 835540250504287526}
-  cameraSmoothTime: 1
+  aimingFollowCameraYPositionOffset: 1.5
+  cameraSmoothTime: 0.1
   leftAndRightRotationSpeed: 220
   upAndDownRotationSpeed: 220
   minimumPivot: -30
@@ -225,7 +226,7 @@ MonoBehaviour:
   cameraCollisionRadius: 0.2
   collideWithLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 8
   leftAndRightAngle: 0
   upAndDownAngle: 0
   lockOnRadius: 20
@@ -238,3 +239,5 @@ MonoBehaviour:
   nearestLockOnTarget: {fileID: 0}
   leftLockOnTarget: {fileID: 0}
   rightLockOnTarget: {fileID: 0}
+  aimingFollowTransform: {fileID: 0}
+  aimDirection: {x: 0, y: 0, z: 0}

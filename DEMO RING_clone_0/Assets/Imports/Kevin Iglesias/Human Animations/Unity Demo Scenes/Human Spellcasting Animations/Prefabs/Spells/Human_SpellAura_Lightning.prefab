@@ -26,7 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977017968331972667}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000089406946, y: 0.000000029802315, z: 0.000000009313224, w: 1}
+  m_LocalRotation: {x: 0.000000089406946, y: 0.000000029802315, z: 0.000000009313224,
+    w: 1}
   m_LocalPosition: {x: 0.00000023378149, y: -0.00000009177444, z: -0.00000033591442}
   m_LocalScale: {x: 1, y: 1, z: 1.0000001}
   m_ConstrainProportionsScale: 0
@@ -4774,9 +4775,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4859,7 +4857,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4163786769323947261}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.00000005960465, y: -0.00000013224782, z: -0.000000046566132, w: 1}
+  m_LocalRotation: {x: 0.00000005960465, y: -0.00000013224782, z: -0.000000046566132,
+    w: 1}
   m_LocalPosition: {x: 0.00000023378149, y: -0.00000009177444, z: -0.00000033591442}
   m_LocalScale: {x: 1, y: 0.99999976, z: 0.99999994}
   m_ConstrainProportionsScale: 0
@@ -6141,7 +6140,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 0}
+        key0: {r: 1, g: 0.9833824, b: 0, a: 0}
         key1: {r: 0.6933962, g: 0.7387735, b: 1, a: 1}
         key2: {r: 1, g: 0.290895, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0.5686275}
@@ -9607,9 +9606,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9717,7 +9713,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -9892,7 +9888,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.86667836, g: 1, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -10977,7 +10973,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 0}
+        key0: {r: 0.9949657, g: 1, b: 0, a: 0}
         key1: {r: 0.6933962, g: 0.7387735, b: 1, a: 1}
         key2: {r: 1, g: 0.290895, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0.39607844}
@@ -14443,9 +14439,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -19276,9 +19269,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

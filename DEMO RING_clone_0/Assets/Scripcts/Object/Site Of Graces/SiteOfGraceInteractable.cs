@@ -105,7 +105,11 @@ public class SiteOfGraceInteractable : Interactable
 
     public void RestAtSiteOfGrace(PlayerManager player)
     {
-        Debug.Log("Player is resting at the Site of Grace");
+        player.playerNetworkManager.HideWeaponsServerRpc();
+        player.playerAnimatorManager.PlayerTargetActionAnimation("Rest_Site_Of_Grace_01", true);
+        PlayerUIManager.instance.playerUILoadingScreenManager.ActivateLoadingScreen();
+
+        //Debug.Log("Player is resting at the Site of Grace");
         //Play The Rest Animation
         //Update/Force Move Quest Character
         //Reset The Monsters In The Area
@@ -113,6 +117,10 @@ public class SiteOfGraceInteractable : Interactable
         //Reset The Player's Health And Stamina
         player.playerNetworkManager.currentHealth.Value = player.playerNetworkManager.maxHealth.Value;
         player.playerNetworkManager.currentStamina.Value = player.playerNetworkManager.maxStamina.Value;
+        player.playerNetworkManager.currentFocusPoints.Value = player.playerNetworkManager.maxFocus.Value;
+
+        player.playerNetworkManager.remainingHealthFlasks.Value = player.playerNetworkManager.maxHealthFlasks.Value;
+        player.playerNetworkManager.remainingManaFlasks.Value = player.playerNetworkManager.maxManaFlasks.Value;
 
         WorldSaveGameManager.instance.SaveGame();
 
@@ -121,7 +129,20 @@ public class SiteOfGraceInteractable : Interactable
         // TODO: 当这个站点被激活时，重置所有怪物和敌人，但是如果当人物太多的时候，可能会导致性能问题，所以需要优化
         WorldAIManager.instance.ResetAllCharacters();
 
+        PlayerUIManager.instance.playerUIHudManager.RefreshHUDFromPlayer(player);
+
+        PlayerUIManager.instance.playerUILoadingScreenManager.DeactivateLoadingScreen();
+
+        PlayerUIManager.instance.playerUISiteOfGraceManager.UpdateCurrentSiteOfGraceID(siteOfGraceID);
         PlayerUIManager.instance.playerUISiteOfGraceManager.OpenMainMenu();
+    }
+
+    public void StandUpFromResting(PlayerManager player)
+    {
+        player.playerAnimatorManager.UpdateAnimatorTriggerParameters("StandUpAtSiteOfGrace");
+        PlayerUIManager.instance.playerUILoadingScreenManager.ActivateLoadingScreen();
+        player.playerEquipmentManager.UnhideWeaponModels();
+        PlayerUIManager.instance.playerUILoadingScreenManager.DeactivateLoadingScreen();
     }
 
     private IEnumerator WaitForAnimationToFinish(PlayerManager player)

@@ -193,24 +193,11 @@ public class PlayerNetworkManager : CharacterNetworkManager
     }
     public void OnCurrentSpellIDChanged(int oldSpellID, int newSpellID)
     {
-        if (newSpellID == -1)
-        {
-            player.playerInventoryManager.currentSpell = null;
-            PlayerUIManager.instance.playerUIHudManager.SetSpellItemQuickSlotIcon(-1);
-            return;
-        }
-
-        SpellItem newSpell = Instantiate(WorldItemDatabase.instance.GetSpellByID(newSpellID));
-
-        if (newSpell == null)
-            return;
-
-        player.playerInventoryManager.currentSpell = newSpell;
+        var spell = newSpellID == -1 ? null : WorldItemDatabase.instance.GetSpellByID(newSpellID);
+        player.playerInventoryManager.currentSpell = spell ? Instantiate(spell) : null;
 
         if (player.IsOwner)
-        {
-            PlayerUIManager.instance.playerUIHudManager.SetSpellItemQuickSlotIcon(newSpellID);
-        }
+            PlayerUIManager.instance.playerUIHudManager.SetSpellItemQuickSlotIcon(spell ? newSpellID : -1);
     }
 
     public void OnIsChargingRightSpellChanged(bool old, bool isCharging)

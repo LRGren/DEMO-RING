@@ -33,6 +33,7 @@ public enum WeaponModelSlot
     LeftHandWeaponSlot,
     LeftHandShieldSlot,
     BackSlot,
+    LeftHandAsymmetricWeaponSlot,
 }
 
 public enum WeaponType
@@ -48,6 +49,18 @@ public enum WeaponClass
     MediumShield,
     LightShield,
     Bow,
+    Axe,
+    GreatAxe,
+    CurvedSword,
+}
+
+public enum DualWieldGroup
+{
+    None,
+    StraightSword,
+    Axe,
+    CurvedSword,
+    GreatAxe
 }
 
 public enum SpellClass
@@ -164,3 +177,24 @@ public enum PickUpItemType
     CharacterDrop,
 }
 
+public enum StartingClass
+{
+    Knight,
+    Archer,
+    Berserker,
+    Wretch,
+    Caster,
+}
+
+public enum PlayerAtrribute
+{
+    None,
+    Vigor,
+    Mind,
+    Endurance,
+    Strength,
+    Dexterity,
+    Intelligence,
+    Faith,
+    Arcane
+}

@@ -6,7 +6,7 @@ using UnityEngine;
 public class TakeBlockedDamageEffect : InstantCharacterEffect
 {
     [Header("Character Causing Damage")]
-    CharacterManager characterCausingDamage;
+    public CharacterManager characterCausingDamage;
 
     [Header("Damage")]
     public float physicalDamage = 0;
@@ -113,6 +113,9 @@ public class TakeBlockedDamageEffect : InstantCharacterEffect
 
     private void CalculateStaminaCost(CharacterManager character)
     {
+        if (!character.IsOwner)
+            return;
+
         finalStaminaCost = staminaCost - staminaCost * character.characterStatsManager.blockingStaminaAbsorption / 100;
 
         if (finalStaminaCost <= 0)

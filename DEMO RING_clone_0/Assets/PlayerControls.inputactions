@@ -160,6 +160,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "RB Channeling",
+                    "type": "Button",
+                    "id": "1ee1946e-f642-43bf-a116-c043fb4d8693",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "LB",
                     "type": "Button",
                     "id": "d1eeb4d6-ff1b-492c-8496-6d5d69c60560",
@@ -178,6 +187,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "LB Channeling",
+                    "type": "Button",
+                    "id": "6e75bf40-4b15-4df6-8134-df213ff62701",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "LBShield",
                     "type": "Button",
                     "id": "c6666525-d6d6-4dfb-9cb4-99de104b2dae",
@@ -190,6 +208,15 @@
                     "name": "Que RB",
                     "type": "Button",
                     "id": "9c042a08-562d-49d3-8695-61b9ef7c2f08",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Que LB",
+                    "type": "Button",
+                    "id": "c3c1bed3-3902-48cb-b51e-b85e85750504",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Tap",
@@ -277,6 +304,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Switch Spell",
+                    "type": "Button",
+                    "id": "5ac46e61-d608-417b-8000-7baaa7a35eef",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Seek Left Lock On Target",
                     "type": "Button",
                     "id": "9758e58d-d17a-4887-b14d-ceb457cdf238",
@@ -337,6 +373,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Hold RB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d1260574-3d49-40b9-b05f-9bd663ebf7ce",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RB Channeling",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b7093a73-18a3-4559-a1eb-9411649292c8",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LB Channeling",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -441,6 +499,17 @@
                 },
                 {
                     "name": "",
+                    "id": "439ffbb4-7ac7-4ad7-bfdb-191413d3fe8f",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Que LB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "89b81e96-f1e1-492f-80bc-a6f5ac0c0fe7",
                     "path": "<Gamepad>/dpad/right",
                     "interactions": "",
@@ -469,6 +538,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Switch Quick Slots Item",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8df99065-067d-4fd5-b4d7-ad52f8cff8b4",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Switch Spell",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

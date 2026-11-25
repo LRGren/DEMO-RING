@@ -10,6 +10,11 @@ public class PlayerUIManager : MonoBehaviour
 
     [Header("Network JOIN")]
     [SerializeField] private bool startAsClient;
+    public bool IsParrelSyncClone { get; private set; }
+    private StartingClassDefinition clientStartingClass;
+    private string clientCharacterName;
+    private AppearanceSaveData clientAppearance;
+    private bool clientIsMale;
 
     [HideInInspector] public PlayerUIHudManager playerUIHudManager;
     [HideInInspector] public PlayerUIPopUpManager playerUIPopUpManager;
@@ -25,6 +30,10 @@ public class PlayerUIManager : MonoBehaviour
 
     private void Awake()
     {
+#if UNITY_EDITOR
+        string directory = System.IO.Path.GetDirectoryName(Application.dataPath);
+        IsParrelSyncClone = System.IO.File.Exists(System.IO.Path.Combine(directory, ".clone"));
+#endif
         if (instance == null)
         {
             instance = this;
@@ -53,11 +62,57 @@ public class PlayerUIManager : MonoBehaviour
         if (startAsClient)
         {
             startAsClient = false;
-            //只需要一个主机，作为客户要关闭自己的主机
-            NetworkManager.Singleton.Shutdown();
-            //作为客户登录
-            NetworkManager.Singleton.StartClient();
+            StartCoroutine(SwitchToClient());
         }
+    }
+
+    public void PrepareClientCharacter(string characterName, StartingClassDefinition startingClass,
+        AppearanceSaveData appearance = null, bool isMale = false)
+    {
+        clientCharacterName = characterName;
+        clientStartingClass = startingClass;
+        clientAppearance = appearance;
+        clientIsMale = isMale;
+        WorldSaveGameManager.instance.currentCharacterData = new CharacterSaveData();
+        WorldSaveGameManager.instance.currentCharacterSlotBeingUsed = CharacterSlot.NO_SLOT;
+    }
+
+    public bool ApplyPreparedClientCharacter(PlayerManager player)
+    {
+        if (!IsParrelSyncClone || !clientStartingClass ||
+            WorldSaveGameManager.instance.currentCharacterSlotBeingUsed != CharacterSlot.NO_SLOT)
+            return false;
+
+        if (clientAppearance != null)
+        {
+            player.playerBodyManager.ToggleBodyType(clientIsMale);
+            player.playerBodyManager.LoadAppearance(clientAppearance);
+        }
+
+        player.InitializeNewCharacter(clientCharacterName, clientStartingClass);
+        return true;
+    }
+
+    private IEnumerator SwitchToClient()
+    {
+        var network = NetworkManager.Singleton;
+        if (!network || network.IsClient && !network.IsHost)
+            yield break;
+
+        if (IsParrelSyncClone && !clientStartingClass &&
+            WorldSaveGameManager.instance.currentCharacterData == null)
+        {
+            Debug.LogWarning("Press Start and prepare a character before joining.");
+            yield break;
+        }
+
+        if (network.IsListening)
+            network.Shutdown();
+
+        while (network.ShutdownInProgress)
+            yield return null;
+
+        network.StartClient();
     }
 
     public void CloseAllWindows()

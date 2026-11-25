@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: dc8109a3d0d360c4a9319ef6e74665df
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151650
+  packageName: Human Melee Animations
+  packageVersion: 2.1
+  assetPath: Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Melee
+    Animations/AnimatorControllers/Male/1H/HumanM@RunStrafe01_Left - 1H.controller
+  uploadId: 909592

@@ -12,6 +12,7 @@ public class TitleScreenManager : MonoBehaviour
     public static TitleScreenManager instance;
 
     [Header("Menus")]
+    [SerializeField] Button pressStartButton;
     [SerializeField] GameObject titleScreenMainMenu;
     [SerializeField] GameObject titleScreenLoadMenu;
     [SerializeField] GameObject titleScreenCharacterCreationMenu;
@@ -67,18 +68,48 @@ public class TitleScreenManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    /// <summary>
-    /// 以房主的身份开启服务器
-    /// </summary>
-    public void StartNetworkAsHost()
+    public void StartNetwork()
     {
-        NetworkManager.Singleton.StartHost();
+        var network = NetworkManager.Singleton;
+        if (network.ShutdownInProgress)
+            return;
+
+        var ui = PlayerUIManager.instance;
+        if (ui.IsParrelSyncClone)
+        {
+            ui.PrepareClientCharacter(characterName, startingClasses.Count > 0 ? startingClasses[0] : null);
+        }
+        else if (!network.IsListening && !network.StartHost())
+        {
+            return;
+        }
+
+        titleScreenMainMenu.SetActive(true);
+        pressStartButton.gameObject.SetActive(false);
+        mainMenuNewGameButton.Select();
     }
 
     public void StartNewGame()
     {
-        if (previewPlayer == null)
-            previewPlayer = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
+        if (!TryGetPreviewPlayer() || !selectedStartingClass)
+            return;
+
+        var ui = PlayerUIManager.instance;
+        if (ui.IsParrelSyncClone)
+        {
+            ui.PrepareClientCharacter(characterName, selectedStartingClass,
+                previewPlayer.playerBodyManager.GetAppearanceData(), previewPlayer.playerBodyManager.IsMaleBody);
+
+            var localPlayer = NetworkManager.Singleton.LocalClient?.PlayerObject;
+            if (localPlayer && localPlayer.TryGetComponent(out PlayerManager joinedPlayer))
+                ui.ApplyPreparedClientCharacter(joinedPlayer);
+
+            CloseCharacterCreationMenu();
+            var label = mainMenuNewGameButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (label)
+                label.text = "NEW GAME (READY)";
+            return;
+        }
 
         previewPlayer.InitializeNewCharacter(characterName, selectedStartingClass);
 
@@ -87,7 +118,7 @@ public class TitleScreenManager : MonoBehaviour
 
     public void AttemptToCreateNewCharacter()
     {
-        if (WorldSaveGameManager.instance.HasEmptyCharacterSlot())
+        if (PlayerUIManager.instance.IsParrelSyncClone || WorldSaveGameManager.instance.HasEmptyCharacterSlot())
         {
             OpenCharacterCreationMenu();
         }
@@ -99,12 +130,11 @@ public class TitleScreenManager : MonoBehaviour
 
     public void OpenCharacterCreationMenu()
     {
+        if (!TryGetPreviewPlayer() || startingClasses.Count == 0)
+            return;
+
         titleScreenMainMenu.SetActive(false);
         titleScreenCharacterCreationMenu.SetActive(true);
-
-        if (previewPlayer == null)
-
-            previewPlayer = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
 
         SelectStartingClass(startingClasses[0].className);
         previewPlayer.playerBodyManager.ResetAppearance();
@@ -200,8 +230,8 @@ public class TitleScreenManager : MonoBehaviour
         currentSelectedStartingClass = (StartingClass)Enum.Parse(typeof(StartingClass), startingClass);
         selectedStartingClass = startingClasses.Find(x => x.className == startingClass);
 
-        if (previewPlayer == null)
-            previewPlayer = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
+        if (!TryGetPreviewPlayer() || !selectedStartingClass)
+            return;
 
         previewPlayer.playerEquipmentManager.InitialAllSlotInPreview(selectedStartingClass);
 
@@ -230,12 +260,11 @@ public class TitleScreenManager : MonoBehaviour
 
     public void OpenCharacterCustomizationMenu()
     {
+        if (!TryGetPreviewPlayer())
+            return;
+
         characterCreation_CharacterCustomizationMenu.SetActive(true);
         FirstCUSTOMIZATIONButton.Select();
-
-        if (previewPlayer == null)
-            previewPlayer = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
-
         RefreshAppearanceTexts();
     }
 
@@ -249,10 +278,8 @@ public class TitleScreenManager : MonoBehaviour
     // ------------------- Character Customization ------------------- //
     public void ToggleEquipmentPreview(bool isOn)
     {
-        if (previewPlayer == null)
-            previewPlayer = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
-
-        previewPlayer.playerBodyManager.ToggleEquipmentPreview(isOn);
+        if (TryGetPreviewPlayer())
+            previewPlayer.playerBodyManager.ToggleEquipmentPreview(isOn);
     }
 
     public void SetText(TextMeshProUGUI textMeshPro, string text)
@@ -407,10 +434,24 @@ public class TitleScreenManager : MonoBehaviour
         if (previewPlayer == null)
         {
             var networkManager = NetworkManager.Singleton;
-            if (networkManager == null || networkManager.LocalClient == null || networkManager.LocalClient.PlayerObject == null)
+            if (networkManager == null)
                 return false;
 
-            previewPlayer = networkManager.LocalClient.PlayerObject.GetComponent<PlayerManager>();
+            if (PlayerUIManager.instance.IsParrelSyncClone)
+            {
+                var rig = FindFirstObjectByType<TitleScreenPlayerPreviewRotator>();
+                if (!rig)
+                    return false;
+
+                var model = Instantiate(networkManager.NetworkConfig.PlayerPrefab, rig.transform.position, rig.transform.rotation, rig.transform);
+                previewPlayer = model.GetComponent<PlayerManager>();
+                previewPlayer.playerLocomotionManager.enabled = false;
+                previewPlayer.characterController.enabled = false;
+            }
+            else if (networkManager.LocalClient?.PlayerObject)
+            {
+                previewPlayer = networkManager.LocalClient.PlayerObject.GetComponent<PlayerManager>();
+            }
         }
 
         return previewPlayer != null && previewPlayer.playerBodyManager != null;

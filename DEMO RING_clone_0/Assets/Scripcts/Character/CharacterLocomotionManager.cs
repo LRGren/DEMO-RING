@@ -10,8 +10,8 @@ public class CharacterLocomotionManager : MonoBehaviour
 
     [Header("Ground Check & Jump")]
     [SerializeField] protected float gravityForce = -40f;
-    [SerializeField] LayerMask groundLayer = 3;
-    [SerializeField] float groundCheckSphereRadius = 0.3f;
+    [SerializeField] protected LayerMask groundLayer = 3;
+    [SerializeField] protected float groundCheckSphereRadius = 0.3f;
     [SerializeField] protected Vector3 yVelocity;//用来观测是上升还是下降
     [SerializeField] protected float groundedYVelocity = -20;
     [SerializeField] protected float fallStartYVelocity = -5;
@@ -33,6 +33,10 @@ public class CharacterLocomotionManager : MonoBehaviour
 
     protected virtual void Update()
     {
+        var controller = character.characterController;
+        if (!controller || !controller.enabled || !controller.gameObject.activeInHierarchy)
+            return;
+
         HandleGroundCheck();
 
         if (isGrounded)
@@ -61,7 +65,7 @@ public class CharacterLocomotionManager : MonoBehaviour
         }
 
         //一直模拟重力
-        character.characterController.Move(yVelocity * Time.deltaTime);
+        controller.Move(yVelocity * Time.deltaTime);
     }
 
 

@@ -33,6 +33,11 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
         highlightIcon.enabled = false;
     }
 
+    private void OnDisable()
+    {
+        DeselectSlot();
+    }
+
     public void EquipItem()
     {
         PlayerManager player = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
@@ -54,7 +59,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
 
                 if (player.playerInventoryManager.rightWeaponIndex == 0)
                 {
-                    player.playerNetworkManager.currentRightHandWeaponID.Value = currentItem.itemID;
+                    player.playerEquipmentManager.RefreshRightWeapon();
                 }
                 break;
             case EquipmentType.RightWeapon02:
@@ -69,7 +74,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 player.playerInventoryManager.RemoveItemFromInventory(currentItem);
                 if (player.playerInventoryManager.rightWeaponIndex == 1)
                 {
-                    player.playerNetworkManager.currentRightHandWeaponID.Value = currentItem.itemID;
+                    player.playerEquipmentManager.RefreshRightWeapon();
                 }
                 break;
             case EquipmentType.RightWeapon03:
@@ -82,7 +87,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 player.playerInventoryManager.RemoveItemFromInventory(currentItem);
                 if (player.playerInventoryManager.rightWeaponIndex == 2)
                 {
-                    player.playerNetworkManager.currentRightHandWeaponID.Value = currentItem.itemID;
+                    player.playerEquipmentManager.RefreshRightWeapon();
                 }
                 break;
             case EquipmentType.LeftWeapon01:
@@ -95,7 +100,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 player.playerInventoryManager.RemoveItemFromInventory(currentItem);
                 if (player.playerInventoryManager.leftWeaponIndex == 0)
                 {
-                    player.playerNetworkManager.currentLeftHandWeaponID.Value = currentItem.itemID;
+                    player.playerEquipmentManager.RefreshLeftWeapon();
                 }
 
                 break;
@@ -109,7 +114,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 player.playerInventoryManager.RemoveItemFromInventory(currentItem);
                 if (player.playerInventoryManager.leftWeaponIndex == 1)
                 {
-                    player.playerNetworkManager.currentLeftHandWeaponID.Value = currentItem.itemID;
+                    player.playerEquipmentManager.RefreshLeftWeapon();
                 }
                 break;
             case EquipmentType.LeftWeapon03:
@@ -122,7 +127,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 player.playerInventoryManager.RemoveItemFromInventory(currentItem);
                 if (player.playerInventoryManager.leftWeaponIndex == 2)
                 {
-                    player.playerNetworkManager.currentLeftHandWeaponID.Value = currentItem.itemID;
+                    player.playerEquipmentManager.RefreshLeftWeapon();
                 }
                 break;
 
@@ -219,11 +224,7 @@ public class UI_EquipmentInventorySlot : MonoBehaviour
                 break;
         }
 
-        PlayerUIManager.instance.playerUIEquipmentManager.RefreshMenu();
-        PlayerUIManager.instance.playerUIEquipmentManager.CloseEquipmentInventoryWindow();
-
-
-        PlayerUIManager.instance.playerUIEquipmentManager.SelectLastSelectedEquipmentSlot();
+        PlayerUIManager.instance.playerUIEquipmentManager.FromEquipmentInventoryWindowBackToEquipmentMenu();
     }
 
 }

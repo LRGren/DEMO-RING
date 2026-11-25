@@ -19,17 +19,12 @@ public class AICharacterSpawner : MonoBehaviour
 
     public void AttemptToSpawnAICharacter()
     {
-        if (spawnedAICharacter == null)
+        if (NetworkManager.Singleton && NetworkManager.Singleton.IsServer && !spawnedAICharacter)
         {
-            spawnedAICharacter = Instantiate(aiCharacterPrefab);
-            spawnedAICharacter.transform.position = transform.position;
-            spawnedAICharacter.transform.rotation = transform.rotation;
+            spawnedAICharacter = Instantiate(aiCharacterPrefab, transform.position, transform.rotation);
 
             spawnedAICharacter.GetComponent<NetworkObject>().Spawn();
             aiCharacrer = spawnedAICharacter.GetComponent<AICharacterManager>();
-
-            if (aiCharacrer != null)
-                WorldAIManager.instance.AddSpawnedCharacter(spawnedAICharacter.GetComponent<AICharacterManager>());
         }
     }
 

@@ -54,6 +54,13 @@ public class WorldAIManager : MonoBehaviour
         }
     }
 
+    public void RemoveSpawnedCharacter(AICharacterManager character)
+    {
+        spawnedInCharacters.Remove(character);
+        if (character is AIBossCharacterManager boss)
+            spawnedInBossCharacters.Remove(boss);
+    }
+
     public AIBossCharacterManager GetBossCharacterByID(string bossID)
     {
         return spawnedInBossCharacters.FirstOrDefault(boss => boss.bossID == bossID);
@@ -115,7 +122,7 @@ public class WorldAIManager : MonoBehaviour
 
     private IEnumerator DespawnAllCharactersCoroutine()
     {
-        foreach (var character in spawnedInCharacters)
+        foreach (var character in spawnedInCharacters.ToArray())
         {
             if (character != null)
             {
@@ -139,6 +146,13 @@ public class WorldAIManager : MonoBehaviour
     public void ResetAllCharacters()
     {
         isPerformingLoadingScreenSpawn = true;
+        foreach (var character in spawnedInCharacters)
+        {
+            if (character != null)
+            {
+                character.aiCharacterInventoryManager.ClearDroppedItem();
+            }
+        }
 
         if (resetCoroutine != null)
         {

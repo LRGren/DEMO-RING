@@ -28,7 +28,8 @@ public class CharacterManager : NetworkBehaviour
 
     protected virtual void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        if (transform.parent == null)
+            DontDestroyOnLoad(gameObject);
 
         characterController = GetComponent<CharacterController>();
         characterNetworkManager = GetComponent<CharacterNetworkManager>();
@@ -51,6 +52,12 @@ public class CharacterManager : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
+        if (IsServer && IsOwner)
+        {
+            characterNetworkManager.networkPosition.Value = transform.position;
+            characterNetworkManager.networkRotation.Value = transform.rotation;
+        }
+
         animator.SetBool("isMoving", characterNetworkManager.isMoving.Value);
         characterNetworkManager.OnIsActiveChanged(false, characterNetworkManager.isActive.Value);
 
@@ -70,6 +77,9 @@ public class CharacterManager : NetworkBehaviour
 
     protected virtual void Update()
     {
+        if (!IsSpawned)
+            return;
+
         animator.SetBool("isGrounded", characterLocomotionManager.isGrounded);
 
         if (IsOwner)

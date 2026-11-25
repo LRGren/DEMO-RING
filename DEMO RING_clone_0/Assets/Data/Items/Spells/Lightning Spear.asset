@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f72641919229f6488dbf033f0ebf81a, type: 3}
+  m_Name: Lightning Spear
+  m_EditorClassIdentifier: 
+  itemName: Lightning Spear
+  itemIcon: {fileID: 21300000, guid: 8584d07c3e7026d479a5b4ad3b3bb4dd, type: 3}
+  itemDescription: 'Gather lightning into a spear and throw it at a target. Hold the cast to increase its power.'
+  itemID: 70002
+  spellClass: 0
+  fullCastStaminaCostModifier: 1.32
+  staminaCost: 25
+  focusCost: 18
+  spellCastWarmUpFX: {fileID: 4533992852024952465, guid: f0787dd17d5afda42ba8343366fa7145,
+    type: 3}
+  spellChargeFX: {fileID: 4533992852024952465, guid: 7aa72babf755f6747aafeebf7cf09ad6,
+    type: 3}
+  spellCastReleaseFX: {fileID: 2479329178434569337, guid: 3e4d119b0a6930849a252867e98eb0af,
+    type: 3}
+  spellCastReleaseFXFullCharge: {fileID: 2479329178434569337, guid: 2ab9d90926138164ca5b28b4f530ed64,
+    type: 3}
+  mainHandSpellAnimation: Spell_Main_Fire_Ball_Start
+  offHandSpellAnimation: Spell_Off_Fire_Ball_Start
+  spellCastWarmUpSound: {fileID: 8300000, guid: 2c7e44f9e5f92b341ad8b3a60e119c00,
+    type: 3}
+  spellCastReleaseSound: {fileID: 8300000, guid: dbe0c1a0d2e6a834c9000cde90129721,
+    type: 3}
+  upwardForce: 0
+  forwardForce: 30

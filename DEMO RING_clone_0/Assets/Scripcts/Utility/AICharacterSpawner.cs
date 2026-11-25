@@ -19,17 +19,12 @@ public class AICharacterSpawner : MonoBehaviour
 
     public void AttemptToSpawnAICharacter()
     {
-        if (spawnedAICharacter == null)
+        if (NetworkManager.Singleton && NetworkManager.Singleton.IsServer && !spawnedAICharacter)
         {
-            spawnedAICharacter = Instantiate(aiCharacterPrefab);
-            spawnedAICharacter.transform.position = transform.position;
-            spawnedAICharacter.transform.rotation = transform.rotation;
+            spawnedAICharacter = Instantiate(aiCharacterPrefab, transform.position, transform.rotation);
 
             spawnedAICharacter.GetComponent<NetworkObject>().Spawn();
             aiCharacrer = spawnedAICharacter.GetComponent<AICharacterManager>();
-
-            if (aiCharacrer != null)
-                WorldAIManager.instance.AddSpawnedCharacter(spawnedAICharacter.GetComponent<AICharacterManager>());
         }
     }
 
@@ -41,10 +36,20 @@ public class AICharacterSpawner : MonoBehaviour
         if (aiCharacrer == null)
             return;
 
+        if (aiCharacrer is AIBossCharacterManager boss && boss.hasBeenDefeated.Value)
+            return;
+
         spawnedAICharacter.transform.position = transform.position;
         spawnedAICharacter.transform.rotation = transform.rotation;
-        aiCharacrer.aiCharacterNetworkManager.currentHealth = aiCharacrer.aiCharacterNetworkManager.maxHealth;
+
+        aiCharacrer.aiCharacterNetworkManager.currentHealth.Value = aiCharacrer.aiCharacterNetworkManager.maxHealth.Value;
+
         aiCharacrer.currentState = aiCharacrer.idle;
+        aiCharacrer.navMeshAgent.Warp(transform.position);
+
+        aiCharacrer.aiCharacterNetworkManager.isMoving.Value = false;
+
+        aiCharacrer.aiCharacterCombatManager.currentTarget = null;
 
         if (aiCharacrer.isDead.Value)
         {

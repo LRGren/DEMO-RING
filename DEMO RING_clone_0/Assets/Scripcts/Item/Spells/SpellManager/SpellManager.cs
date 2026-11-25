@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SpellManager : MonoBehaviour
 {
+    [Header("Spell Setup")]
+    public SpellSetup spellSetup;
+
     [Header("Spell Target")]
     [SerializeField] protected CharacterManager spellTarget;
 

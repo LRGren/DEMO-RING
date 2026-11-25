@@ -15,6 +15,9 @@ public class CharacterSaveData
     [Header("Time Played")]
     public float secondsPlayed;
 
+    [Header("Gold")]
+    public int currentGold;
+
     [Header("World Coordinates")]
     public float xPosition;
     public float yPosition;
@@ -26,9 +29,19 @@ public class CharacterSaveData
     public int currentFocus;
 
     [Header("Stats")]
-    public int vitality;
-    public int endurance;
+    public int level;
+    public int vigor;
     public int mind;
+    public int endurance;
+    public int strength;
+    public int dexterity;
+    public int intelligence;
+    public int faith;
+    public int arcane;
+
+    [Header("Flasks")]
+    public int remainingHealthFlasks;
+    public int remainingManaFlasks;
 
     [Header("Site Of Grace")]
     public SerializableDictionary<int, bool> siteOfGraceActivated;
@@ -41,7 +54,11 @@ public class CharacterSaveData
     public SerializableDictionary<int, bool> worldItemsLooted;
 
     [Header("Inventory")]
-    public List<Item> inventory;
+    public List<SerializableWeapon> weaponInInventory;
+    public List<SerializableQuickSlotItem> quickSlotItemInInventory;
+    public List<SerializableRangedProjectile> rangedProjectileInInventory;
+    public List<int> equipmentInInventory;
+    public List<int> spellInInventory;
 
     [Header("Equipment")]
     public int currentHeadEquipment;
@@ -50,45 +67,46 @@ public class CharacterSaveData
     public int currentHandEquipment;
 
     public int currentRightWeaponIndex;
-    public int rightWeapon01;
-    public int rightWeapon02;
-    public int rightWeapon03;
-
     public int currentLeftWeaponIndex;
-    public int leftWeapon01;
-    public int leftWeapon02;
-    public int leftWeapon03;
+    public SerializableWeapon rightWeapon01;
+    public SerializableWeapon rightWeapon02;
+    public SerializableWeapon rightWeapon03;
 
-    public int currentSpell;
+    public SerializableWeapon leftWeapon01;
+    public SerializableWeapon leftWeapon02;
+    public SerializableWeapon leftWeapon03;
+
+    public int currentSpellIndex;
+    public int currentSpell01;
+    public int currentSpell02;
+    public int currentSpell03;
+    public int currentSpell04;
+    public int currentSpell05;
+    public int currentSpell06;
+    public int currentSpell07;
+    public int currentSpell08;
+    public int currentSpell09;
+    public int currentSpell10;
 
     public int currentQuickSlotItemIndex;
-    public int quickSlotItem01;
-    public int quickSlotItem02;
-    public int quickSlotItem03;
-    public int quickSlotItem04;
-    public int quickSlotItem05;
-    public int quickSlotItem06;
-    public int quickSlotItem07;
-    public int quickSlotItem08;
-    public int quickSlotItem09;
-    public int quickSlotItem10;
+    public SerializableQuickSlotItem quickSlotItem01;
+    public SerializableQuickSlotItem quickSlotItem02;
+    public SerializableQuickSlotItem quickSlotItem03;
+    public SerializableQuickSlotItem quickSlotItem04;
+    public SerializableQuickSlotItem quickSlotItem05;
+    public SerializableQuickSlotItem quickSlotItem06;
+    public SerializableQuickSlotItem quickSlotItem07;
+    public SerializableQuickSlotItem quickSlotItem08;
+    public SerializableQuickSlotItem quickSlotItem09;
+    public SerializableQuickSlotItem quickSlotItem10;
 
-    public int quickSlotItem01Amount;
-    public int quickSlotItem02Amount;
-    public int quickSlotItem03Amount;
-    public int quickSlotItem04Amount;
-    public int quickSlotItem05Amount;
-    public int quickSlotItem06Amount;
-    public int quickSlotItem07Amount;
-    public int quickSlotItem08Amount;
-    public int quickSlotItem09Amount;
-    public int quickSlotItem10Amount;
 
-    public int currentMainProjectile;
-    public int currentSecondaryProjectile;
 
-    public int currentMainAmmoAmount;
-    public int currentSecondaryAmmoAmount;
+    public SerializableRangedProjectile currentMainProjectile;
+    public SerializableRangedProjectile currentSecondaryProjectile;
+
+    [Header("Appearance")]
+    public AppearanceSaveData appearanceSaveData;
 
     public CharacterSaveData()
     {
@@ -99,7 +117,11 @@ public class CharacterSaveData
 
         worldItemsLooted = new SerializableDictionary<int, bool>();
 
-        inventory = new List<Item>();
+        weaponInInventory = new List<SerializableWeapon>();
+        quickSlotItemInInventory = new List<SerializableQuickSlotItem>();
+        rangedProjectileInInventory = new List<SerializableRangedProjectile>();
+        equipmentInInventory = new List<int>();
+        spellInInventory = new List<int>();
     }
 
 

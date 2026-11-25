@@ -13,6 +13,11 @@ public class AICharacterManager : CharacterManager
     [HideInInspector] public AICharacterLocomotionManager aiCharacterLocomotionManager;
     [HideInInspector] public AICharacterInventoryManager aiCharacterInventoryManager;
 
+    [Header("Gold Drop")]
+    public int goldDropRange = 400;
+    public int goldDropAmount = 500;
+    public int goldDropRandomRange = 100;
+
     [Header("AI State")]
     public AIState currentState;
 
@@ -42,6 +47,9 @@ public class AICharacterManager : CharacterManager
     {
         base.OnNetworkSpawn();
 
+        if (WorldAIManager.instance)
+            WorldAIManager.instance.AddSpawnedCharacter(this);
+
         if (IsOwner)
         {
             //拷贝一份，不改变原始的状态对象
@@ -54,6 +62,7 @@ public class AICharacterManager : CharacterManager
         }
 
         aiCharacterNetworkManager.currentHealth.OnValueChanged += aiCharacterNetworkManager.CheckHP;
+        aiCharacterNetworkManager.RestoreDeathPose();
     }
 
     protected override void Update()
@@ -61,36 +70,21 @@ public class AICharacterManager : CharacterManager
         base.Update();
 
         aiCharacterCombatManager.HandleActionRecovery(this);
+
+        if (IsOwner)
+            ProcessStateMachine();
     }
 
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
 
+        if (WorldAIManager.instance)
+            WorldAIManager.instance.RemoveSpawnedCharacter(this);
+
         aiCharacterNetworkManager.currentHealth.OnValueChanged -= aiCharacterNetworkManager.CheckHP;
     }
 
-    protected override void FixedUpdate()
-    {
-        base.FixedUpdate();
-
-        ProcessStateMachine();
-    }
-
-    /*public void ProcessStateMachine()
-    {
-        AIState nextState = null;
-
-        if (currentState != null)
-        {
-            nextState = currentState.Tick(this);
-        }
-
-        if(nextState != null)
-        {
-            currentState = nextState;
-        }
-    }*/
     private void ProcessStateMachine()
     {
         if (!IsServer)
@@ -156,5 +150,27 @@ public class AICharacterManager : CharacterManager
         {
             aiCharacterNetworkManager.currentHealth.OnValueChanged -= characterUIManager.OnHPChanged;
         }
+    }
+
+    public override IEnumerator ProcessDeathEvent(bool manuallySelectedDeathAnimation = false)
+    {
+        // Give Every Player Some Gold When This AI Character Dies
+        if (IsOwner)
+        {
+            var players = FindObjectsOfType<PlayerNetworkManager>();
+            foreach (var player in players)
+            {
+                if (Vector3.Distance(player.transform.position, transform.position) > goldDropRange)
+                    continue;
+
+                int randomGoldDrop = Random.Range(goldDropAmount - goldDropRandomRange, goldDropAmount + goldDropRandomRange);
+
+                PlayerUIManager.instance.playerUIHudManager.ShowGoldAdditionText(randomGoldDrop);
+                PlayerUIManager.instance.playerUIHudManager.UpdateGoldText(player.currentGold.Value + randomGoldDrop, true);
+                player.UpdateCurrentGold(player.currentGold.Value + randomGoldDrop);
+            }
+        }
+
+        return base.ProcessDeathEvent(manuallySelectedDeathAnimation);
     }
 }

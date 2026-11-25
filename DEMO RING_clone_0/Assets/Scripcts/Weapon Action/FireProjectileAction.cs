@@ -18,6 +18,9 @@ public class FireProjectileAction : WeaponItemAction
         if (playerPerformingAction.playerNetworkManager.currentStamina.Value <= 0)
             return;
 
+        if (playerPerformingAction.playerLocomotionManager.isRolling)
+            return;
+
         // 1. Define which projectile we are using (Main projectile slot, Secondary projectile slot)
         RangedProjectileItem projectileToFire = null;
         switch (projectileSlot)

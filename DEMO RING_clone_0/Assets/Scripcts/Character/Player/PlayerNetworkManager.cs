@@ -12,7 +12,12 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
     public NetworkVariable<FixedString64Bytes> characterName = new NetworkVariable<FixedString64Bytes>("sereinjians", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
+    [Header("Gold")]
+    public NetworkVariable<int> currentGold = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
     [Header("Flasks")]
+    public NetworkVariable<int> maxHealthFlasks = new NetworkVariable<int>(3, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> maxManaFlasks = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> remainingHealthFlasks = new NetworkVariable<int>(3, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> remainingManaFlasks = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isChugging = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -29,9 +34,10 @@ public class PlayerNetworkManager : CharacterNetworkManager
     public NetworkVariable<bool> isUsingLeftHand = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("Spells")]
+    public NetworkVariable<int> currentSpellInQuickSlotID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> currentMaxSpellCapacity = new NetworkVariable<int>(2, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isChargingRightSpell = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<bool> isChargingLeftSpell = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-
 
     [Header("Two Hand Weapon")]
     public NetworkVariable<bool> isTwoHandingWeapon = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -59,6 +65,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
         player = GetComponent<PlayerManager>();
     }
+
 
     public void SetCharacterActionHand(bool rightHandedAction)
     {
@@ -96,6 +103,10 @@ public class PlayerNetworkManager : CharacterNetworkManager
         currentFocusPoints.Value = maxFocus.Value;
     }
 
+    public void UpdateCurrentGold(int newGoldAmount)
+    {
+        currentGold.Value = newGoldAmount;
+    }
 
     // Aiming
     public void OnIsAimingChanged(bool old, bool isAiming)
@@ -130,28 +141,33 @@ public class PlayerNetworkManager : CharacterNetworkManager
     // Weapon
     public void OnCurrentRightHandWeaponIDChanged(int oldWeaponID, int newWeaponID)
     {
-        WeaponItem newWeapon = Instantiate(WorldItemDatabase.instance.GetWeaponByID(newWeaponID));
-        player.playerInventoryManager.currentRightHandWeapon = newWeapon;
-        player.playerEquipmentManager.LoadRightWeapon();
-
         if (player.IsOwner)
-        {
-            PlayerUIManager.instance.playerUIHudManager.SetRightWeaponQuickSlotIcon(newWeaponID);
+            return;
 
-            PlayerUIManager.instance.playerUIHudManager.ToggleProjectileSlotsGameobject(newWeapon.weaponClass == WeaponClass.Bow);
-        }
+        WeaponItem definition = WorldItemDatabase.instance.GetWeaponByID(newWeaponID);
+
+        if (definition == null)
+            return;
+
+        player.playerInventoryManager.currentRightHandWeapon =
+            Instantiate(definition);
+
+        player.playerEquipmentManager.LoadRightWeapon();
     }
 
     public void OnCurrentLeftHandWeaponIDChanged(int oldWeaponID, int newWeaponID)
     {
-        WeaponItem newWeapon = Instantiate(WorldItemDatabase.instance.GetWeaponByID(newWeaponID));
-        player.playerInventoryManager.currentLeftHandWeapon = newWeapon;
-        player.playerEquipmentManager.LoadLeftWeapon();
-
         if (player.IsOwner)
-        {
-            PlayerUIManager.instance.playerUIHudManager.SetLeftWeaponQuickSlotIcon(newWeaponID);
-        }
+            return;
+
+        WeaponItem definition = WorldItemDatabase.instance.GetWeaponByID(newWeaponID);
+
+        if (definition == null)
+            return;
+
+        player.playerInventoryManager.currentLeftHandWeapon = Instantiate(definition);
+
+        player.playerEquipmentManager.LoadLeftWeapon();
     }
 
     public void OnCurrentWeaponBedingUsedIDChanged(int oldWeaponID, int newWeaponID)
@@ -168,26 +184,20 @@ public class PlayerNetworkManager : CharacterNetworkManager
 
 
     // Spell
-    public void OnCurrentSpellIDChanged(int oldSpellID, int newSpellID)
+    public void OnCurrentMaxSpellCapacityChanged(int oldMaxSpellCapacity, int newMaxSpellCapacity)
     {
-        if (newSpellID == -1)
-        {
-            player.playerInventoryManager.currentSpell = null;
-            PlayerUIManager.instance.playerUIHudManager.SetSpellItemQuickSlotIcon(-1);
-            return;
-        }
-
-        SpellItem newSpell = Instantiate(WorldItemDatabase.instance.GetSpellByID(newSpellID));
-
-        if (newSpell == null)
-            return;
-
-        player.playerInventoryManager.currentSpell = newSpell;
-
         if (player.IsOwner)
         {
-            PlayerUIManager.instance.playerUIHudManager.SetSpellItemQuickSlotIcon(newSpellID);
+            player.playerInventoryManager.UpdateMaxSpellCapacity(newMaxSpellCapacity);
         }
+    }
+    public void OnCurrentSpellIDChanged(int oldSpellID, int newSpellID)
+    {
+        var spell = newSpellID == -1 ? null : WorldItemDatabase.instance.GetSpellByID(newSpellID);
+        player.playerInventoryManager.currentSpell = spell ? Instantiate(spell) : null;
+
+        if (player.IsOwner)
+            PlayerUIManager.instance.playerUIHudManager.SetSpellItemQuickSlotIcon(spell ? newSpellID : -1);
     }
 
     public void OnIsChargingRightSpellChanged(bool old, bool isCharging)
@@ -203,19 +213,25 @@ public class PlayerNetworkManager : CharacterNetworkManager
     // Quick Slot Item
     public void OnCurrentQuickSlotItemIDChanged(int oldQuickSlotItemID, int newQuickSlotItemID)
     {
+        var inventory = player.playerInventoryManager;
+
         if (newQuickSlotItemID == -1)
         {
-            player.playerInventoryManager.currentQuickSlotItem = null;
-            PlayerUIManager.instance.playerUIHudManager.SetQuickSlotItemQuickSlotIcon(-1);
-            return;
+            inventory.currentQuickSlotItem = null;
         }
-
-        QuickSlotItem newQuickSlotItem = Instantiate(WorldItemDatabase.instance.GetQuickSlotItemByID(newQuickSlotItemID));
-
-        if (newQuickSlotItem == null)
-            return;
-
-        player.playerInventoryManager.currentQuickSlotItem = newQuickSlotItem;
+        else if (player.IsOwner)
+        {
+            int index = inventory.currentQuickSlotItemIndex;
+            inventory.currentQuickSlotItem = (0 <= index && index < 9) ? inventory.quickSlotItemInventory[index] : null;
+        }
+        else
+        {
+            var tmp = WorldItemDatabase.instance.GetQuickSlotItemByID(newQuickSlotItemID);
+            if (tmp != null)
+                inventory.currentQuickSlotItem = Instantiate(tmp);
+            else
+                inventory.currentQuickSlotItem = null;
+        }
 
         if (player.IsOwner)
         {
@@ -334,7 +350,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
             player.playerEquipmentManager.UnTwoHandWeapon();
             player.playerEffectsManager.RemoveStaticEffect(WorldCharacterEffectsManager.instance.twoHandingEffect.staticEffectID);
         }
-        else
+        else if (player.playerInventoryManager.currentTwoHandedWeapon?.isPairedWeapon != true)
         {
             player.playerEffectsManager.AddStaticEffect(WorldCharacterEffectsManager.instance.twoHandingEffect);
         }
@@ -346,13 +362,13 @@ public class PlayerNetworkManager : CharacterNetworkManager
         if (!isTwoHandingRightWeapon.Value)
             return;
 
+        player.playerInventoryManager.currentTwoHandedWeapon = player.playerInventoryManager.currentRightHandWeapon;
         if (IsOwner)
         {
             currentWeaponBeingTwoHanded.Value = currentRightHandWeaponID.Value;
             isTwoHandingWeapon.Value = true;
         }
 
-        player.playerInventoryManager.currentTwoHandedWeapon = player.playerInventoryManager.currentRightHandWeapon;
         player.playerEquipmentManager.TwoHandRightWeapon();
     }
     public void OnIsTwoHandingLeftWeaponChanged(bool old, bool isTwoHanding)
@@ -360,13 +376,13 @@ public class PlayerNetworkManager : CharacterNetworkManager
         if (!isTwoHandingLeftWeapon.Value)
             return;
 
+        player.playerInventoryManager.currentTwoHandedWeapon = player.playerInventoryManager.currentLeftHandWeapon;
         if (IsOwner)
         {
             currentWeaponBeingTwoHanded.Value = currentLeftHandWeaponID.Value;
             isTwoHandingWeapon.Value = true;
         }
 
-        player.playerInventoryManager.currentTwoHandedWeapon = player.playerInventoryManager.currentLeftHandWeapon;
         player.playerEquipmentManager.TwoHandLeftWeapon();
     }
 
@@ -492,7 +508,9 @@ public class PlayerNetworkManager : CharacterNetworkManager
         // 如果弓有动画的话，在这里通过WeaponManager得到弓的动画并播放
 
         // 生成投掷物
-        GameObject arrow = Instantiate(WorldItemDatabase.instance.GetProjectileByID(projectileID).drawProjectileModel, player.playerEquipmentManager.leftHandWeaponManager.transform);
+        GameObject arrow = Instantiate(WorldItemDatabase.instance.GetProjectileByID(projectileID).drawProjectileModel, player.playerEquipmentManager.leftHandWeaponSlot.transform);
+        arrow.transform.SetParent(player.playerEquipmentManager.leftHandWeaponSlot.transform);
+        arrow.transform.localPosition = Vector3.zero;
         player.playerEffectsManager.activeProjectileFX = arrow;
 
         player.characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(WorldSoundFXManager.instance.notchArrowSFX));
@@ -615,11 +633,7 @@ public class PlayerNetworkManager : CharacterNetworkManager
     [ClientRpc]
     private void HideWeaponsClientRpc()
     {
-        if (player.playerEquipmentManager.rightWeaponModel != null)
-            player.playerEquipmentManager.rightWeaponModel.SetActive(false);
-
-        if (player.playerEquipmentManager.leftWeaponModel != null)
-            player.playerEquipmentManager.leftWeaponModel.SetActive(false);
+        player.playerEquipmentManager.SetWeaponModelsVisible(false);
     }
 
     [ServerRpc]
@@ -655,11 +669,73 @@ public class PlayerNetworkManager : CharacterNetworkManager
     [ClientRpc]
     private void NotifyTheClientsOfUnhideWeaponsClientRpc()
     {
-        if (player.playerEquipmentManager.rightWeaponModel != null)
-            player.playerEquipmentManager.rightWeaponModel.SetActive(true);
-
-        if (player.playerEquipmentManager.leftWeaponModel != null)
-            player.playerEquipmentManager.leftWeaponModel.SetActive(true);
+        player.playerEquipmentManager.SetWeaponModelsVisible(true);
     }
 
+
+    [ServerRpc]
+    public void NotifyTheServerOfStartedBeamServerRpc(ulong clientID, int spellID, Vector3 forward, bool isUsingRightHand)
+    {
+        if (IsServer)
+        {
+            NotifyTheClientsOfStartedBeamClientRpc(clientID, spellID, forward, isUsingRightHand);
+        }
+    }
+
+    [ClientRpc]
+    private void NotifyTheClientsOfStartedBeamClientRpc(ulong clientID, int spellID, Vector3 forward, bool isUsingRightHand)
+    {
+        if (clientID != NetworkManager.Singleton.LocalClientId)
+        {
+            // Handle the started beam on the client side
+            HandleStartedBeam(spellID, forward, isUsingRightHand);
+        }
+    }
+
+    private void HandleStartedBeam(int spellID, Vector3 forward, bool isUsingRightHand)
+    {
+        if (player.IsOwner)
+            return;
+
+        SpellItem spell = WorldItemDatabase.instance.GetSpellByID(spellID);
+        if (spell != null && spell is ChannelingSpell channelingSpell)
+        {
+            channelingSpell.CreateBeamVisual(player, forward, isUsingRightHand);
+        }
+    }
+
+    [ServerRpc]
+    public void NotifyTheServerOfStoppedBeamServerRpc(ulong clientID, int spellID)
+    {
+        if (IsServer)
+        {
+            NotifyTheClientsOfStoppedBeamClientRpc(clientID, spellID);
+        }
+    }
+
+    [ClientRpc]
+    private void NotifyTheClientsOfStoppedBeamClientRpc(ulong clientID, int spellID)
+    {
+        if (clientID != NetworkManager.Singleton.LocalClientId)
+        {
+            HandleStoppedBeam(spellID);
+        }
+    }
+
+    private void HandleStoppedBeam(int spellID)
+    {
+        if (player.IsOwner)
+            return;
+
+        if (!player.playerCombatManager.currentChannelingSpellManager)
+            return;
+
+        if (!player.playerCombatManager.currentChannelingSpellManager.channelingSpell)
+            return;
+
+        if (player.playerCombatManager.currentChannelingSpellManager.channelingSpell.itemID != spellID)
+            return;
+
+        player.playerCombatManager.currentChannelingSpellManager.channelingSpell.DestoryBeamVisual(player);
+    }
 }

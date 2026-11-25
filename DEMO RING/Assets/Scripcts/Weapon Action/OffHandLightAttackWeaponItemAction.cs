@@ -13,6 +13,8 @@ public class OffHandLightAttackWeaponItemAction : WeaponItemAction
     [Header("Dual Wielding Light Attack Animations")]
     [SerializeField] private string dual_light_Attack_01 = "DW_Light_Attack_01";
     [SerializeField] private string dual_light_Attack_02 = "DW_Light_Attack_02";
+    private const string DualLightAttack03 = "DW_Light_Attack_03";
+    private const string StraightSwordDualLightAttack04 = "DW_Light_Attack_04";
 
     [Header("Running Attack Animations")]
     [SerializeField] private string running_Attack_01 = "DW_Run_Attack_01";
@@ -139,7 +141,22 @@ public class OffHandLightAttackWeaponItemAction : WeaponItemAction
                 {
                     playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.LightAttack02, dual_light_Attack_02, true);
                 }
-                else if (playerPerformingAction.playerCombatManager.lastAttackAnimation == dual_light_Attack_02)
+                else if ((weaponPerformingAction.dualWieldGroup == DualWieldGroup.StraightSword ||
+                    weaponPerformingAction.dualWieldGroup == DualWieldGroup.GreatAxe) &&
+                    playerPerformingAction.playerCombatManager.lastAttackAnimation == dual_light_Attack_02)
+                {
+                    playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(
+                        weaponPerformingAction, AttackType.LightAttack01, DualLightAttack03, true);
+                }
+                else if (weaponPerformingAction.dualWieldGroup == DualWieldGroup.StraightSword &&
+                    playerPerformingAction.playerCombatManager.lastAttackAnimation == DualLightAttack03)
+                {
+                    playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(
+                        weaponPerformingAction, AttackType.LightAttack02, StraightSwordDualLightAttack04, true);
+                }
+                else if (playerPerformingAction.playerCombatManager.lastAttackAnimation == dual_light_Attack_02 ||
+                    playerPerformingAction.playerCombatManager.lastAttackAnimation == DualLightAttack03 ||
+                    playerPerformingAction.playerCombatManager.lastAttackAnimation == StraightSwordDualLightAttack04)
                 {
                     playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.LightAttack01, dual_light_Attack_01, true);
                 }

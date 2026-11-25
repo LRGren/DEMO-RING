@@ -61,6 +61,10 @@ public class DamageCollider : MonoBehaviour
         if (characterDamaged.Contains(damageTarget))
             return;
 
+        CharacterManager attacker = GetAttackingCharacter();
+        if (attacker == null || damageTarget.isDead.Value || damageTarget.characterNetworkManager.isInvulnerable.Value)
+            return;
+
         CalculateDirectionToAttacker(damageTarget);
 
         if (damageTarget.characterNetworkManager.isBlocking.Value && dotFromDamageTargetToAttacker > 0.5f)
@@ -68,21 +72,16 @@ public class DamageCollider : MonoBehaviour
             //如果是格挡状态，且攻击方向在角色前方，则不使用DmageEffect，而是使用BlockEffect
             characterDamaged.Add(damageTarget);
 
-            TakeBlockedDamageEffect damageEffect = Instantiate(WorldCharacterEffectsManager.instance.takeBlockedDamageEffect);
-            damageEffect.physicalDamage = physicalDamage;
-            damageEffect.magicalDamage = magicalDamage;
-            damageEffect.fireDamage = fireDamage;
-            damageEffect.lightningDamage = lightningDamage;
-            damageEffect.holyDamage = holyDamage;
-
-            damageEffect.staminaCost = poiseDamage;
-
-            damageEffect.poiseDamage = poiseDamage;
-
-            damageEffect.contactPoint = contactPoint;
-
-            damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);
+            damageTarget.characterNetworkManager.RequestBlockedDamage(attacker,
+                physicalDamage, magicalDamage, fireDamage, holyDamage, lightningDamage,
+                poiseDamage, poiseDamage,
+                Vector3.SignedAngle(attacker.transform.forward, damageTarget.transform.forward, Vector3.up), contactPoint);
         }
+    }
+
+    protected virtual CharacterManager GetAttackingCharacter()
+    {
+        return GetComponentInParent<CharacterManager>();
     }
 
     protected virtual void CheckForParry(CharacterManager damageTarget)

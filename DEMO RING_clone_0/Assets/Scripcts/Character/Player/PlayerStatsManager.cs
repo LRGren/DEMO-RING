@@ -18,7 +18,7 @@ public class PlayerStatsManager : CharacterStatsManager
         base.Start();
 
         //创建角色时 没有计算过 要先行计算第一次
-        CalculateHealthBasedOnVitalityLevel(player.playerNetworkManager.vitality.Value);
+        CalculateHealthBasedOnVitalityLevel(player.playerNetworkManager.vigor.Value);
         CalculateStaminaBasedOnEnduranceLevel(player.playerNetworkManager.endurance.Value);
         CalculateFocusBasedOnMindLevel(player.playerNetworkManager.mind.Value);
     }

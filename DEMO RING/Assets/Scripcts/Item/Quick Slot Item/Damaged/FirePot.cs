@@ -57,7 +57,7 @@ public class FirePot : QuickSlotItem
         Vector3 launchVelocity = displacement / flightTime - 0.5f * gravity * flightTime;
         if (launchVelocity.sqrMagnitude > 0.001f)
             projectileBody.rotation = Quaternion.LookRotation(launchVelocity);
-        projectileBody.velocity = launchVelocity;
+        projectileBody.linearVelocity = launchVelocity;
 
         SetAmountOfItem(player, GetAmountOfItem(player) - 1);
 

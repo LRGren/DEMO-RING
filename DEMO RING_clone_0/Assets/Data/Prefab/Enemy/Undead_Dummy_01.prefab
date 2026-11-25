@@ -92,7 +92,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2
+  m_StoppingDistance: 1.45
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1456,16 +1456,16 @@ MonoBehaviour:
   minimumFOV: -35
   maximumFOV: 35
   attackRotationSpeed: 180
-  maxStance: 40
-  currentStance: 40
+  maxStance: 35
+  currentStance: 35
   stanceRegenRationPerSecond: 15
   ignoreStanceBreak: 0
   stanceRegenerationTimer: 15
   defaultTimeUntilStanceRegenerationBegins: 15
   rightHandUndeadDamageCollider: {fileID: 6356024641420292441}
   leftHandUndeadDamageCollider: {fileID: 3005679609566684791}
-  baseDamage: 25
-  basePoiseDamage: 10
+  baseDamage: 32
+  basePoiseDamage: 12
   attack01Modifier: 1.4
   attack02Modifier: 1
 --- !u!114 &4534554568840621454
@@ -1550,9 +1550,9 @@ MonoBehaviour:
   maxStamina:
     m_InternalValue: 0
   currentHealth:
-    m_InternalValue: 300
+    m_InternalValue: 270
   maxHealth:
-    m_InternalValue: 300
+    m_InternalValue: 270
   currentFocusPoints:
     m_InternalValue: 0
   maxFocus:

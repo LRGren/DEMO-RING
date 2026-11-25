@@ -36,6 +36,10 @@ public class PlayerUIHudManager : MonoBehaviour
     [Header("Crosshair")]
     public GameObject crosshair;
 
+    [Header("Gold")]
+    public TextMeshProUGUI goldText;
+    public TextMeshProUGUI goldAdditionText;
+
     public void ToggleHUD(bool status)
     {
         if (status)
@@ -61,6 +65,33 @@ public class PlayerUIHudManager : MonoBehaviour
 
         staminaBar.gameObject.SetActive(false);
         staminaBar.gameObject.SetActive(true);
+    }
+
+    public void RefreshHUDFromPlayer(PlayerManager player)
+    {
+        if (player == null || !player.IsOwner)
+            return;
+
+        var network = player.playerNetworkManager;
+        var inventory = player.playerInventoryManager;
+
+        SetMaxHealthValue(network.maxHealth.Value);
+        SetMaxStaminaValue(network.maxStamina.Value);
+        SetMaxFocusValue(network.maxFocus.Value);
+        healthBar.SetStat(network.currentHealth.Value);
+        staminaBar.SetStat(Mathf.RoundToInt(network.currentStamina.Value));
+        focusBar.SetStat(network.currentFocusPoints.Value);
+
+        SetRightWeaponQuickSlotIcon(network.currentRightHandWeaponID.Value);
+        SetLeftWeaponQuickSlotIcon(network.currentLeftHandWeaponID.Value);
+        SetSpellItemQuickSlotIcon(network.currentSpellID.Value);
+        SetQuickSlotItemQuickSlotIcon(network.currentQuickSlotItemID.Value, player);
+
+        SetMainProjectileItemQuickSlotIcon(inventory.mainProjectile);
+        SetSecondaryProjectileItemQuickSlotIcon(inventory.secondaryProjectile);
+        ToggleProjectileSlotsGameobject(inventory.currentRightHandWeapon?.weaponClass == WeaponClass.Bow
+            || inventory.currentLeftHandWeapon?.weaponClass == WeaponClass.Bow);
+        crosshair.SetActive(network.isAiming.Value);
     }
 
     public void SetNewHealthValue(int oldValue, int newValue)
@@ -167,6 +198,12 @@ public class PlayerUIHudManager : MonoBehaviour
 
     public void SetQuickSlotItemQuickSlotIcon(int quickSlotItemID)
     {
+        var playerObject = NetworkManager.Singleton?.LocalClient?.PlayerObject;
+        SetQuickSlotItemQuickSlotIcon(quickSlotItemID, playerObject != null ? playerObject.GetComponent<PlayerManager>() : null);
+    }
+
+    private void SetQuickSlotItemQuickSlotIcon(int quickSlotItemID, PlayerManager player)
+    {
         QuickSlotItem quickSlotItem = WorldItemDatabase.instance.GetQuickSlotItemByID(quickSlotItemID);
 
         if (quickSlotItem == null)
@@ -190,8 +227,8 @@ public class PlayerUIHudManager : MonoBehaviour
         quickSlotItemUI.sprite = quickSlotItem.itemIcon;
         quickSlotItemUI.enabled = true;
 
-        PlayerManager player = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerManager>();
-        SetQuickSlotCountText(quickSlotItem.GetAmountOfItem(player), quickSlotItem.isConsumable);
+        var current = player != null ? player.playerInventoryManager.currentQuickSlotItem : null;
+        SetQuickSlotCountText(current != null ? current.GetAmountOfItem(player) : 0, current != null && current.isConsumable);
     }
 
     public void SetQuickSlotCountText(int count, bool isConsumable)
@@ -267,4 +304,58 @@ public class PlayerUIHudManager : MonoBehaviour
         projectileSlotsGameobject.SetActive(status);
     }
 
+    public void UpdateGoldText(int newGoldAmount, bool animation = false)
+    {
+        if (!animation)
+            goldText.text = newGoldAmount.ToString();
+        else
+            StartCoroutine(UpdateGoldTextWithAnimation(newGoldAmount, 1f));
+    }
+    public void ShowGoldAdditionText(int goldAdded)
+    {
+        goldAdditionText.text = "+" + goldAdded.ToString();
+        StartCoroutine(FadeInThenFadeOutText(0.5f, 1f, goldAdditionText));
+    }
+    private IEnumerator UpdateGoldTextWithAnimation(int newGoldAmount, float duration)
+    {
+        int currentGold = int.Parse(goldText.text);
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            int interpolatedGold = Mathf.RoundToInt(Mathf.Lerp(currentGold, newGoldAmount, t));
+            goldText.text = interpolatedGold.ToString();
+            yield return null;
+        }
+
+        goldText.text = newGoldAmount.ToString();
+    }
+    private IEnumerator FadeInThenFadeOutText(float fadeInDuration, float fadeOutDuration, TextMeshProUGUI textElement)
+    {
+        // Fade in
+        yield return StartCoroutine(FadeTextTo(1f, fadeInDuration, textElement));
+
+        // Wait for a moment before fading out
+        yield return new WaitForSeconds(0.5f);
+
+        // Fade out
+        yield return StartCoroutine(FadeTextTo(0f, fadeOutDuration, textElement));
+    }
+    private IEnumerator FadeTextTo(float targetAlpha, float duration, TextMeshProUGUI textElement)
+    {
+        float startAlpha = textElement.alpha;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / duration);
+            textElement.alpha = newAlpha;
+            yield return null;
+        }
+
+        textElement.alpha = targetAlpha;
+    }
 }

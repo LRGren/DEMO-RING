@@ -22,9 +22,9 @@ public class RangedProjectileDamageCollider : DamageCollider
 
     void FixedUpdate()
     {
-        if (projectileRigidbody.velocity != Vector3.zero)
+        if (projectileRigidbody.linearVelocity != Vector3.zero)
         {
-            projectileRigidbody.rotation = Quaternion.LookRotation(projectileRigidbody.velocity);
+            projectileRigidbody.rotation = Quaternion.LookRotation(projectileRigidbody.linearVelocity);
         }
     }
 
@@ -54,6 +54,9 @@ public class RangedProjectileDamageCollider : DamageCollider
 
     protected override void CheckForBlocking(CharacterManager damageTarget)
     {
+        if (characterShootingProjectile == null || damageTarget.isDead.Value || damageTarget.characterNetworkManager.isInvulnerable.Value)
+            return;
+
         if (characterDamaged.Contains(damageTarget))
         {
             return;
@@ -64,20 +67,10 @@ public class RangedProjectileDamageCollider : DamageCollider
         {
             characterDamaged.Add(damageTarget);
 
-            TakeBlockedDamageEffect damageEffect = Instantiate(WorldCharacterEffectsManager.instance.takeBlockedDamageEffect);
-            damageEffect.physicalDamage = physicalDamage;
-            damageEffect.magicalDamage = magicalDamage;
-            damageEffect.fireDamage = fireDamage;
-            damageEffect.lightningDamage = lightningDamage;
-            damageEffect.holyDamage = holyDamage;
-
-            damageEffect.staminaCost = poiseDamage;
-
-            damageEffect.poiseDamage = poiseDamage;
-
-            damageEffect.contactPoint = contactPoint;
-
-            damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);
+            damageTarget.characterNetworkManager.RequestBlockedDamage(characterShootingProjectile,
+                physicalDamage, magicalDamage, fireDamage, holyDamage, lightningDamage,
+                poiseDamage, poiseDamage,
+                Vector3.SignedAngle(transform.forward, damageTarget.transform.forward, Vector3.up), contactPoint);
         }
     }
 
@@ -122,8 +115,6 @@ public class RangedProjectileDamageCollider : DamageCollider
         damageEffect.poiseDamage = poiseDamage;
 
         damageEffect.contactPoint = contactPoint;
-
-        damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);
 
         if (characterShootingProjectile.IsOwner)
         {

@@ -78,6 +78,35 @@ public class WorldSaveGameManager : MonoBehaviour
         return fileName;
     }
 
+    public bool HasEmptyCharacterSlot()
+    {
+        saveFileDataWriter = new SaveFileDataWriter();
+        saveFileDataWriter.saveDataDirectoryPath = Application.persistentDataPath;
+
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_01);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_02);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_03);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_04);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_05);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_06);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_07);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_08);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_09);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+        saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_10);
+        if (!saveFileDataWriter.CheckToSeeIfFileExists()) return true;
+
+        return false;
+    }
+
     public void AttemptToCreateNewGame()
     {
         saveFileDataWriter = new SaveFileDataWriter();
@@ -188,13 +217,7 @@ public class WorldSaveGameManager : MonoBehaviour
 
     private void NewGame()
     {
-        player.playerNetworkManager.vitality.Value = 15;
-        player.playerNetworkManager.mind.Value = 10;
-        player.playerNetworkManager.endurance.Value = 11;
-
-
         SaveGame();
-        //StartCoroutine(LoadWorldScene());
         LoadWorldScene(worldSceneIndex);
     }
 
@@ -209,12 +232,15 @@ public class WorldSaveGameManager : MonoBehaviour
 
         currentCharacterData = saveFileDataWriter.LoadSaveFile();
 
-        //StartCoroutine(LoadWorldScene());
-        LoadWorldScene(worldSceneIndex);
+        if (currentCharacterData != null && !PlayerUIManager.instance.IsParrelSyncClone)
+            LoadWorldScene(worldSceneIndex);
     }
 
     public void SaveGame()
     {
+        if (PlayerUIManager.instance && PlayerUIManager.instance.IsParrelSyncClone)
+            return;
+
         saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(currentCharacterSlotBeingUsed);
 
         saveFileDataWriter = new SaveFileDataWriter();
@@ -351,5 +377,53 @@ public class WorldSaveGameManager : MonoBehaviour
     public int GetWorldSceneIndex()
     {
         return worldSceneIndex;
+    }
+
+    public SerializableWeapon GetSerializableWeaponFromWeaponItem(WeaponItem weapon)
+    {
+        SerializableWeapon serializableWeapon = new SerializableWeapon();
+        serializableWeapon.itemID = weapon.itemID;
+
+        if (weapon.ashOfWar_Action)
+        {
+            serializableWeapon.ashOfWarID = weapon.ashOfWar_Action.itemID;
+        }
+        else
+        {
+            serializableWeapon.ashOfWarID = -1;
+        }
+
+        return serializableWeapon;
+    }
+
+    public SerializableRangedProjectile GetSerializableRangedProjectileFromRangedProjectileItem(RangedProjectileItem projectile)
+    {
+        SerializableRangedProjectile serializableRangedProjectile = new SerializableRangedProjectile();
+
+        if (projectile == null)
+        {
+            serializableRangedProjectile.itemID = -1;
+            serializableRangedProjectile.ammoAmount = 0;
+            return serializableRangedProjectile;
+        }
+        serializableRangedProjectile.itemID = projectile.itemID;
+        serializableRangedProjectile.ammoAmount = projectile.currentAmmoAmount;
+        return serializableRangedProjectile;
+    }
+
+    public SerializableQuickSlotItem GetSerializableQuickSlotItemFromQuickSlotItem(QuickSlotItem quickSlotItem, PlayerManager player)
+    {
+        SerializableQuickSlotItem serializableQuickSlotItem = new SerializableQuickSlotItem();
+
+        if (quickSlotItem == null)
+        {
+            serializableQuickSlotItem.itemID = -1;
+            serializableQuickSlotItem.itemCount = 0;
+            return serializableQuickSlotItem;
+        }
+
+        serializableQuickSlotItem.itemID = quickSlotItem.itemID;
+        serializableQuickSlotItem.itemCount = quickSlotItem.GetAmountOfItem(player);
+        return serializableQuickSlotItem;
     }
 }

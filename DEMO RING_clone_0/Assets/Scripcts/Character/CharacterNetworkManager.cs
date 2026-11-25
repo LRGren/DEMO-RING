@@ -41,10 +41,15 @@ public class CharacterNetworkManager : NetworkBehaviour
     public NetworkVariable<bool> isBeingRiposted = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("Stats")]
-    public NetworkVariable<int> endurance = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> level = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> vigor = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> mind = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    public NetworkVariable<int> vitality = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> endurance = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<int> strength = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> dexterity = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> intelligence = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> faith = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> arcane = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [Header("Stats Modifiers")]
     public NetworkVariable<int> strengthModifiers = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -93,10 +98,13 @@ public class CharacterNetworkManager : NetworkBehaviour
 
     public void OnLockOnTargetIDChange(ulong oldID, ulong newID)
     {
-        if (!IsOwner)
-        {
-            character.characterCombatManager.currentTarget = NetworkManager.Singleton.SpawnManager.SpawnedObjects[newID].GetComponent<CharacterManager>();
-        }
+        if (IsOwner)
+            return;
+
+        character.characterCombatManager.currentTarget =
+            NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(newID, out var target)
+                ? target.GetComponent<CharacterManager>()
+                : null;
     }
 
     public void OnIsLockOnChanged(bool old, bool isLockedOn)
@@ -230,27 +238,33 @@ public class CharacterNetworkManager : NetworkBehaviour
 
     #region Attack Animation
     [ServerRpc]
-    public void NotifyTheServerOfAttackActionAnimationServerRpc(ulong clientId, string animationName, bool applyRootMotion)
+    public void NotifyTheServerOfAttackActionAnimationServerRpc(ulong clientId, string animationName, bool applyRootMotion, float fixedTransitionDuration, int weaponId)
     {
         if (IsServer)
         {
-            PlayAttackActionAnimationForAllClientsClientRpc(clientId, animationName, applyRootMotion);
+            PlayAttackActionAnimationForAllClientsClientRpc(clientId, animationName, applyRootMotion, fixedTransitionDuration, weaponId);
         }
     }
 
     [ClientRpc]
-    public void PlayAttackActionAnimationForAllClientsClientRpc(ulong clientId, string animationName, bool applyRootMotion)
+    public void PlayAttackActionAnimationForAllClientsClientRpc(ulong clientId, string animationName, bool applyRootMotion, float fixedTransitionDuration, int weaponId)
     {
         if (clientId != NetworkManager.Singleton.LocalClientId)
         {
-            PerformAttackActionAnimationFromServer(animationName, applyRootMotion);
+            if (fixedTransitionDuration >= 0f && character is PlayerManager &&
+                WorldItemDatabase.instance.GetWeaponByID(weaponId) is WeaponItem weapon)
+            {
+                character.characterAnimatorManager.UpdateAnimatorController(weapon.weaponAnimator);
+            }
+
+            PerformAttackActionAnimationFromServer(animationName, applyRootMotion, fixedTransitionDuration);
         }
     }
 
-    public void PerformAttackActionAnimationFromServer(string animationName, bool applyRootMotion)
+    public void PerformAttackActionAnimationFromServer(string animationName, bool applyRootMotion, float fixedTransitionDuration)
     {
         character.characterAnimatorManager.applyRootMotion = applyRootMotion;
-        character.animator.CrossFade(animationName, 0.2f);
+        character.characterAnimatorManager.CrossFadeAttack(animationName, fixedTransitionDuration);
     }
     #endregion
 
@@ -325,6 +339,59 @@ public class CharacterNetworkManager : NetworkBehaviour
     }
 
 
+    // All attack types submit blocked hits through the attacker's owning peer.
+    public void RequestBlockedDamage(CharacterManager attacker,
+        float physicalDamage, float magicalDamage, float fireDamage, float holyDamage, float lightningDamage,
+        float poiseDamage, float staminaCost, float angleHitFrom, Vector3 contactPoint)
+    {
+        if (attacker == null || !attacker.IsOwner || !attacker.IsSpawned || !IsSpawned)
+            return;
+
+        NotifyTheServerOfBlockedDamageServerRpc(attacker.NetworkObjectId,
+            physicalDamage, magicalDamage, fireDamage, holyDamage, lightningDamage,
+            poiseDamage, staminaCost, angleHitFrom, contactPoint);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void NotifyTheServerOfBlockedDamageServerRpc(ulong attackerID,
+        float physicalDamage, float magicalDamage, float fireDamage, float holyDamage, float lightningDamage,
+        float poiseDamage, float staminaCost, float angleHitFrom, Vector3 contactPoint,
+        ServerRpcParams rpcParams = default)
+    {
+        if (!NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(attackerID, out NetworkObject attackerObject)
+            || attackerObject.OwnerClientId != rpcParams.Receive.SenderClientId
+            || attackerObject == NetworkObject
+            || attackerObject.GetComponent<CharacterManager>() == null)
+            return;
+
+        NotifyTheClientsOfBlockedDamageClientRpc(attackerID,
+            physicalDamage, magicalDamage, fireDamage, holyDamage, lightningDamage,
+            poiseDamage, staminaCost, angleHitFrom, contactPoint);
+    }
+
+    [ClientRpc]
+    private void NotifyTheClientsOfBlockedDamageClientRpc(ulong attackerID,
+        float physicalDamage, float magicalDamage, float fireDamage, float holyDamage, float lightningDamage,
+        float poiseDamage, float staminaCost, float angleHitFrom, Vector3 contactPoint)
+    {
+        if (character == null || character.isDead.Value || character.characterNetworkManager.isInvulnerable.Value
+            || !NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(attackerID, out NetworkObject attackerObject))
+            return;
+
+        TakeBlockedDamageEffect damageEffect = Instantiate(WorldCharacterEffectsManager.instance.takeBlockedDamageEffect);
+        damageEffect.characterCausingDamage = attackerObject.GetComponent<CharacterManager>();
+        damageEffect.physicalDamage = physicalDamage;
+        damageEffect.magicalDamage = magicalDamage;
+        damageEffect.fireDamage = fireDamage;
+        damageEffect.holyDamage = holyDamage;
+        damageEffect.lightningDamage = lightningDamage;
+        damageEffect.poiseDamage = poiseDamage;
+        damageEffect.staminaCost = staminaCost;
+        damageEffect.angleHitFrom = angleHitFrom;
+        damageEffect.contactPoint = contactPoint;
+        character.characterEffectsManager.ProcessInstantEffect(damageEffect);
+    }
+
     // Riposte
     [ServerRpc(RequireOwnership = false)]
     public void NotifyTheServerOfRiposteServerRpc(
@@ -378,7 +445,11 @@ public class CharacterNetworkManager : NetworkBehaviour
         TakeCriticalDamageEffect damageEffect = Instantiate(WorldCharacterEffectsManager.instance.takeCriticalDamageEffect);
 
         if (damageCharacter.IsOwner)
+        {
             damageCharacter.characterNetworkManager.isBeingRiposted.Value = true;
+            if (damageCharacter.characterNetworkManager is AICharacterNetworkManager enemyNetwork)
+                enemyNetwork.SetPendingCriticalDeathState(backstab: false);
+        }
 
         damageEffect.physicalDamage = physicalDamage;
         damageEffect.magicalDamage = magicalDamage;
@@ -456,7 +527,11 @@ public class CharacterNetworkManager : NetworkBehaviour
         TakeCriticalDamageEffect damageEffect = Instantiate(WorldCharacterEffectsManager.instance.takeCriticalDamageEffect);
 
         if (damageCharacter.IsOwner)
+        {
             damageCharacter.characterNetworkManager.isBeingRiposted.Value = true;
+            if (damageCharacter.characterNetworkManager is AICharacterNetworkManager enemyNetwork)
+                enemyNetwork.SetPendingCriticalDeathState(backstab: true);
+        }
 
         damageEffect.physicalDamage = physicalDamage;
         damageEffect.magicalDamage = magicalDamage;

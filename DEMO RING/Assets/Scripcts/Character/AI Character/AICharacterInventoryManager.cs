@@ -38,10 +38,10 @@ public class AICharacterInventoryManager : CharacterInventoryManager
 
         PickUpItemInteractable pickUpItemInteractable = droppedItem.GetComponent<PickUpItemInteractable>();
 
-        pickUpItemInteractable.GetComponent<NetworkObject>().Spawn();
         pickUpItemInteractable.itemID.Value = itemToDrop.itemID;
         pickUpItemInteractable.itemPosition.Value = transform.position;
         pickUpItemInteractable.droppingCreatureID.Value = aiCharacterManager.NetworkObjectId;
+        pickUpItemInteractable.GetComponent<NetworkObject>().Spawn();
     }
 
     public void ClearDroppedItem()

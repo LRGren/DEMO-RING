@@ -22,9 +22,9 @@ public class RangedProjectileDamageCollider : DamageCollider
 
     void FixedUpdate()
     {
-        if (projectileRigidbody.velocity != Vector3.zero)
+        if (projectileRigidbody.linearVelocity != Vector3.zero)
         {
-            projectileRigidbody.rotation = Quaternion.LookRotation(projectileRigidbody.velocity);
+            projectileRigidbody.rotation = Quaternion.LookRotation(projectileRigidbody.linearVelocity);
         }
     }
 

@@ -33,6 +33,10 @@ public class CharacterLocomotionManager : MonoBehaviour
 
     protected virtual void Update()
     {
+        var controller = character.characterController;
+        if (!controller || !controller.enabled || !controller.gameObject.activeInHierarchy)
+            return;
+
         HandleGroundCheck();
 
         if (isGrounded)
@@ -61,7 +65,7 @@ public class CharacterLocomotionManager : MonoBehaviour
         }
 
         //一直模拟重力
-        character.characterController.Move(yVelocity * Time.deltaTime);
+        controller.Move(yVelocity * Time.deltaTime);
     }
 
 

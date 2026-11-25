@@ -83,7 +83,7 @@ public class ProjectileSpell : SpellItem
         Vector3 upwardVelocity = instantiatedReleasedFX.transform.up * upwardForce;
         Vector3 forwardVelocity = instantiatedReleasedFX.transform.forward * forwardForce;
         Vector3 totalVelocity = upwardVelocity + forwardVelocity;
-        spellRigidbody.velocity = totalVelocity;
+        spellRigidbody.linearVelocity = totalVelocity;
     }
 
     public override void SuccessfullyCastSpellFull(PlayerManager player)
@@ -144,7 +144,7 @@ public class ProjectileSpell : SpellItem
         Vector3 upwardVelocity = instantiatedReleasedFX.transform.up * upwardForce;
         Vector3 forwardVelocity = instantiatedReleasedFX.transform.forward * forwardForce;
         Vector3 totalVelocity = upwardVelocity + forwardVelocity;
-        spellRigidbody.velocity = totalVelocity;
+        spellRigidbody.linearVelocity = totalVelocity;
     }
 
     public override void InstantiateSpellCastWarmUpFX(PlayerManager player)

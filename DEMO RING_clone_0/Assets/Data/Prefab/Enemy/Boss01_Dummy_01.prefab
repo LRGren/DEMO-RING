@@ -462,7 +462,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 360
-  m_StoppingDistance: 5
+  m_StoppingDistance: 2.7
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -2481,7 +2481,7 @@ MonoBehaviour:
   armorVitality: 0
   totalPoiseDamage: 0
   offensivePoiseBonus: 0
-  basePoiseDefense: 40
+  basePoiseDefense: 55
   defaultPoiseResetTimer: 8
   poiseResetTimer: 0
 --- !u!143 &5828806300916637300
@@ -2715,9 +2715,9 @@ MonoBehaviour:
   maxStamina:
     m_InternalValue: 0
   currentHealth:
-    m_InternalValue: 1600
+    m_InternalValue: 1800
   maxHealth:
-    m_InternalValue: 1600
+    m_InternalValue: 1800
   currentFocusPoints:
     m_InternalValue: 0
   maxFocus:
@@ -2757,8 +2757,8 @@ MonoBehaviour:
   minimumFOV: -35
   maximumFOV: 35
   attackRotationSpeed: 240
-  maxStance: 80
-  currentStance: 80
+  maxStance: 85
+  currentStance: 85
   stanceRegenRationPerSecond: 15
   ignoreStanceBreak: 0
   stanceRegenerationTimer: 15
@@ -2771,12 +2771,12 @@ MonoBehaviour:
   signalEffectPoint: {fileID: 4007835281239792374}
   BOSS01SignalEffect: {fileID: 119183615461286708, guid: 48aee95160c85f64c98b6ef36f2b59d6,
     type: 3}
-  baseDamage: 50
-  basePoiseDamage: 70
+  baseDamage: 70
+  basePoiseDamage: 36
   attack01Modifier: 1
-  attack02Modifier: 1.5
-  attack03Modifier: 2
-  earthquakeDamage: 60
+  attack02Modifier: 1.4
+  attack03Modifier: 1.8
+  earthquakeDamage: 105
 --- !u!114 &2239858814955359206
 MonoBehaviour:
   m_ObjectHideFlags: 0

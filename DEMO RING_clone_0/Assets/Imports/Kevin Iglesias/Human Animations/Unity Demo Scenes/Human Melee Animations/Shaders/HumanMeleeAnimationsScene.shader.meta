@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 7d525b5cde79af04391bdc19690dafce
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151650
+  packageName: Human Melee Animations
+  packageVersion: 2.1
+  assetPath: Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Melee
+    Animations/Shaders/HumanMeleeAnimationsScene.shader
+  uploadId: 909592

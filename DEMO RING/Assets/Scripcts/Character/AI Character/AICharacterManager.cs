@@ -47,6 +47,9 @@ public class AICharacterManager : CharacterManager
     {
         base.OnNetworkSpawn();
 
+        if (WorldAIManager.instance)
+            WorldAIManager.instance.AddSpawnedCharacter(this);
+
         if (IsOwner)
         {
             //拷贝一份，不改变原始的状态对象
@@ -59,6 +62,7 @@ public class AICharacterManager : CharacterManager
         }
 
         aiCharacterNetworkManager.currentHealth.OnValueChanged += aiCharacterNetworkManager.CheckHP;
+        aiCharacterNetworkManager.RestoreDeathPose();
     }
 
     protected override void Update()
@@ -74,6 +78,9 @@ public class AICharacterManager : CharacterManager
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
+
+        if (WorldAIManager.instance)
+            WorldAIManager.instance.RemoveSpawnedCharacter(this);
 
         aiCharacterNetworkManager.currentHealth.OnValueChanged -= aiCharacterNetworkManager.CheckHP;
     }

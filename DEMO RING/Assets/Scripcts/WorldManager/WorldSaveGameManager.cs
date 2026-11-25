@@ -232,12 +232,15 @@ public class WorldSaveGameManager : MonoBehaviour
 
         currentCharacterData = saveFileDataWriter.LoadSaveFile();
 
-        //StartCoroutine(LoadWorldScene());
-        LoadWorldScene(worldSceneIndex);
+        if (currentCharacterData != null && !PlayerUIManager.instance.IsParrelSyncClone)
+            LoadWorldScene(worldSceneIndex);
     }
 
     public void SaveGame()
     {
+        if (PlayerUIManager.instance && PlayerUIManager.instance.IsParrelSyncClone)
+            return;
+
         saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(currentCharacterSlotBeingUsed);
 
         saveFileDataWriter = new SaveFileDataWriter();

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class QuickSlotItem : Item
 {
+    public int itemCount;
+
     [Header("Item Model")]
     public GameObject itemModel;
 
@@ -24,6 +26,7 @@ public class QuickSlotItem : Item
     public virtual void SuccessfullyUsedItem(PlayerManager player)
     {
     }
+
     public virtual bool CanIUseThisItem(PlayerManager player)
     {
         return true;
@@ -31,7 +34,7 @@ public class QuickSlotItem : Item
 
     public virtual int GetAmountOfItem(PlayerManager player)
     {
-        return 0;
+        return itemCount;
     }
 
     public virtual void SetAmountOfItem(PlayerManager player, int amount)
@@ -40,5 +43,7 @@ public class QuickSlotItem : Item
             return;
         if (!isConsumable)
             return;
+
+        itemCount = Mathf.Max(amount, 0);
     }
 }

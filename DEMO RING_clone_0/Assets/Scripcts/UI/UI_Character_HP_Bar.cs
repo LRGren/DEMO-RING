@@ -23,22 +23,32 @@ public class UI_Character_HP_Bar : UI_StatBar
 
         character = GetComponentInParent<CharacterManager>();
 
-        if (character != null)
-        {
-            aiCharacter = character as AICharacterManager;
-            player = character as PlayerManager;
-        }
+        aiCharacter = character as AICharacterManager;
+        player = character as PlayerManager;
     }
 
     protected override void Start()
     {
         base.Start();
 
-        gameObject.SetActive(false);
+        if (hideTimer <= 0f)
+            gameObject.SetActive(false);
     }
 
     public override void SetStat(int newValue)
     {
+        // A network health update can arrive before this inactive bar's Awake.
+        if (!slider)
+        {
+            slider = GetComponent<UnityEngine.UI.Slider>();
+            character = GetComponentInParent<CharacterManager>(true);
+            aiCharacter = character as AICharacterManager;
+            player = character as PlayerManager;
+        }
+
+        if (!slider || !character || !character.characterNetworkManager)
+            return;
+
         if (displayCharacterName)
         {
             if (aiCharacter != null)
@@ -73,8 +83,8 @@ public class UI_Character_HP_Bar : UI_StatBar
 
         if (character.characterNetworkManager.currentHealth.Value != character.characterNetworkManager.maxHealth.Value)
         {
-            gameObject.SetActive(true);
             hideTimer = defaultTimeBeforeBarHides;
+            gameObject.SetActive(true);
         }
     }
 

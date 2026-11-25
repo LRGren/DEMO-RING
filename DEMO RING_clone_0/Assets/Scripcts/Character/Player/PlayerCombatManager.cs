@@ -12,15 +12,29 @@ public class PlayerCombatManager : CharacterCombatManager
     [Header("Projectile")]
     public Vector3 projectileAimDirection;
 
+    [Header("Spell Casting")]
+    [Header("Channeling Spell")]
+    public bool isChannelingSpell = false;
+    public bool isChannelingRightHand = true; // true = right hand, false = left hand
+    public ChannelingSpell currentChannelingSpell;
+    public ChannelingSpellManager currentChannelingSpellManager;
+
     [Header("Flags")]
     public bool canComboWithMainHandWeapon = false;
-    //public bool canComboWithOffHandWeapon = false;
+    public bool canComboWithOffHandWeapon = false;
     public bool isUsingItem = false;
 
     protected override void Awake()
     {
         base.Awake();
         player = GetComponent<PlayerManager>();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        CheckChannelingSpell();
     }
 
     public void PerformWeaponBasedAction(WeaponItemAction weaponAction, WeaponItem weaponPerformingAction)
@@ -209,19 +223,18 @@ public class PlayerCombatManager : CharacterCombatManager
     // Combo
     public override void EnableDoCombo()
     {
-        if (player.playerNetworkManager.isUsingRightHand.Value)
-        {
-            player.playerCombatManager.canComboWithMainHandWeapon = true;
-        }
-        else
-        {
+        // Two-handed attacks share the main-hand combo chain, regardless of which hand owns the weapon.
+        canComboWithMainHandWeapon = player.playerNetworkManager.isUsingRightHand.Value
+            || player.playerNetworkManager.isTwoHandingWeapon.Value;
 
-        }
+        canComboWithOffHandWeapon = player.playerNetworkManager.isUsingLeftHand.Value
+            && !player.playerNetworkManager.isTwoHandingWeapon.Value;
     }
 
     public override void DisableDoCombo()
     {
-        player.playerCombatManager.canComboWithMainHandWeapon = false;
+        canComboWithMainHandWeapon = false;
+        canComboWithOffHandWeapon = false;
     }
 
     // Projectile
@@ -366,6 +379,42 @@ public class PlayerCombatManager : CharacterCombatManager
         player.playerInventoryManager.currentSpell.SuccessfullyChargeSpell(player);
     }
 
+    public void CheckChannelingSpell()
+    {
+        if (!player.IsOwner)
+            return;
+
+        if (!isChannelingSpell)
+            return;
+
+        if (currentChannelingSpell == null)
+            return;
+
+        if ((!PlayerInputManager.instance.isChannelingSpell_Right && isChannelingRightHand) || (!PlayerInputManager.instance.isChannelingSpell_Left && !isChannelingRightHand))
+            StopChannelingSpell();
+    }
+    public void StopChannelingSpell(bool playEndAnimation = true)
+    {
+        if (currentChannelingSpell == null)
+            return;
+
+        currentChannelingSpell.StopChannelingSpell(player, playEndAnimation);
+    }
+
+    public override void DestoryAllAttemptedActions()
+    {
+        base.DestoryAllAttemptedActions();
+        player.playerEquipmentManager.ClosePairedWeaponDamageColliders();
+
+        if (player.IsOwner)
+        {
+            if (isChannelingSpell)
+            {
+                StopChannelingSpell(false);
+            }
+        }
+    }
+
     // Quick Slot Item
     public void SuccessfullyUseQuickSlotItem()
     {
@@ -413,7 +462,7 @@ public class PlayerCombatManager : CharacterCombatManager
         if (player.playerNetworkManager.isTwoHandingWeapon.Value)
         {
             selectedWeapon = player.playerInventoryManager.currentTwoHandedWeapon;
-            if (player.playerNetworkManager.isUsingRightHand.Value)
+            if (player.playerNetworkManager.isTwoHandingRightWeapon.Value)
             {
                 player.playerNetworkManager.SetCharacterActionHand(true);
             }
@@ -425,9 +474,18 @@ public class PlayerCombatManager : CharacterCombatManager
         }
         else
         {
-            selectedWeapon = player.playerInventoryManager.currentLeftHandWeapon;
-            player.playerNetworkManager.SetCharacterActionHand(false);
-            player.playerCombatManager.currentWeaponBedingUsed = selectedWeapon;
+            if (player.playerInventoryManager.currentLeftHandWeapon && (player.playerInventoryManager.currentLeftHandWeapon.weaponClass == WeaponClass.LightShield || player.playerInventoryManager.currentLeftHandWeapon.weaponClass == WeaponClass.MediumShield) && player.playerInventoryManager.currentLeftHandWeapon.ashOfWar_Action != null)
+            {
+                selectedWeapon = player.playerInventoryManager.currentLeftHandWeapon;
+                player.playerNetworkManager.SetCharacterActionHand(false);
+                player.playerCombatManager.currentWeaponBedingUsed = selectedWeapon;
+            }
+            else
+            {
+                selectedWeapon = player.playerInventoryManager.currentRightHandWeapon;
+                player.playerNetworkManager.SetCharacterActionHand(true);
+                player.playerCombatManager.currentWeaponBedingUsed = selectedWeapon;
+            }
         }
 
         return selectedWeapon;
@@ -437,11 +495,7 @@ public class PlayerCombatManager : CharacterCombatManager
     {
         base.CloseAllDamageColliders();
 
-        if (player.IsOwner)
-        {
-            player.playerEquipmentManager.rightHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
-            player.playerEquipmentManager.leftHandWeaponManager.meleeWeaponDamageCollider.DisableDamageCollider();
-        }
+        player.playerEquipmentManager.CloseAllWeaponDamageColliders();
     }
 
 

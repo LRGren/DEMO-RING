@@ -9,17 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f39b8ad8b1d518468789fdadca4cc7a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f72641919229f6488dbf033f0ebf81a, type: 3}
   m_Name: Fire Ball
   m_EditorClassIdentifier: 
   itemName: Fire Ball
-  itemIcon: {fileID: 21300000, guid: 07caf3d1930bab14aa8f6dcdf2db871a, type: 3}
-  itemDescription: 
-  itemID: 70012
+  itemIcon: {fileID: 21300000, guid: 99536261b188bf24b97ce607d012851e, type: 3}
+  itemDescription: 'Hurl a ball of flame. Hold the cast to throw a more powerful fireball.'
+  itemID: 70001
   spellClass: 0
   fullCastStaminaCostModifier: 1.32
   staminaCost: 25
-  focusCost: 18
+  focusCost: 11
   spellCastWarmUpFX: {fileID: 7360890951204890652, guid: 7e2766f54b4daff489e2342e91f7c0d1,
     type: 3}
   spellChargeFX: {fileID: 7360890951204890652, guid: b24f60f03816a254fbfaf7484ad693e0,
@@ -28,9 +28,11 @@ MonoBehaviour:
     type: 3}
   spellCastReleaseFXFullCharge: {fileID: 2479329178434569337, guid: 4576be9427f11564a848e3aa44ce0f02,
     type: 3}
-  mainHandSpellAnimtion: Spell_Main_Fire_Ball_Start
-  offHandSpellAnimtion: Spell_Off_Fire_Ball_Start
-  spellCastWarmUpSound: {fileID: 0}
-  spellCastReleaseSound: {fileID: 0}
-  upwardForce: 5
-  forwardForce: 15
+  mainHandSpellAnimation: Spell_Main_Fire_Ball_Start
+  offHandSpellAnimation: Spell_Off_Fire_Ball_Start
+  spellCastWarmUpSound: {fileID: 8300000, guid: c5e2a73ad4706440f93bf05df0b465fe,
+    type: 3}
+  spellCastReleaseSound: {fileID: 8300000, guid: a652877b012108e41871f867ada9f176,
+    type: 3}
+  upwardForce: 2.4
+  forwardForce: 20

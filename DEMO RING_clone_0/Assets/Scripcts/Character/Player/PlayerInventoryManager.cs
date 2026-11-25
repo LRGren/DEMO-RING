@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class PlayerInventoryManager : CharacterInventoryManager
 {
@@ -16,7 +17,6 @@ public class PlayerInventoryManager : CharacterInventoryManager
     public int rightWeaponIndex = 0;
     public WeaponItem[] weaponsInLeftHand = new WeaponItem[3];
     public int leftWeaponIndex = 0;
-    public SpellItem currentSpell;
 
     [Header("Equipment Slots")]
     public HeadEquipmentItem headEquipment;
@@ -33,8 +33,18 @@ public class PlayerInventoryManager : CharacterInventoryManager
     public int currentQuickSlotItemIndex = 0;
     public QuickSlotItem[] quickSlotItemInventory = new QuickSlotItem[10];
 
+    [Header("Spells")]
+    public int currentMaxSpellCapacity = 2;
+    public SpellItem currentSpell;
+    public int currentSpellIndex = 0;
+    public SpellItem[] spellInventory = new SpellItem[10];
+
     [Header("Inventory")]
     public List<Item> characterInventory = new List<Item>();
+
+    [Header("Test Item")]
+    public Item testItem;
+    public bool testItemAdded = false;
 
     //自己添加的
     override protected void Awake()
@@ -42,12 +52,13 @@ public class PlayerInventoryManager : CharacterInventoryManager
         base.Awake();
         player = GetComponent<PlayerManager>();
     }
-
     public void AddItemToInventory(Item item)
     {
+        if (item == null)
+            return;
+
         characterInventory.Add(Instantiate(item));
     }
-
     public void RemoveItemFromInventory(Item item)
     {
         characterInventory.Remove(item);
@@ -61,6 +72,8 @@ public class PlayerInventoryManager : CharacterInventoryManager
         }
     }
 
+
+    // Quick Slot Item Management
     public void SetItemInQuickSlot(QuickSlotItem item, int slotIndex)
     {
         quickSlotItemInventory[slotIndex] = item;
@@ -77,5 +90,96 @@ public class PlayerInventoryManager : CharacterInventoryManager
             PlayerUIManager.instance.playerUIEquipmentManager.SetQuickSlotCountText(EquipmentType.QuickSlot01 + slotIndex, item.GetAmountOfItem(player), true);
         }
     }
+    public void RestoreQuickSlot(SerializableQuickSlotItem serializableQuickSlotItem, int slotIndex)
+    {
+        QuickSlotItem quickSlotItem = serializableQuickSlotItem != null ? serializableQuickSlotItem.GetQuickSlotItem() : null;
 
+        if (quickSlotItem != null)
+        {
+            quickSlotItem.SetAmountOfItem(player, serializableQuickSlotItem.itemCount);
+        }
+
+        SetItemInQuickSlot(quickSlotItem, slotIndex);
+    }
+
+    // Spell Management
+    public void UpdateMaxSpellCapacity(int newMaxCapacity)
+    {
+        if (newMaxCapacity < 0)
+            return;
+
+        currentMaxSpellCapacity = newMaxCapacity;
+
+        for (int i = currentMaxSpellCapacity; i < spellInventory.Length; i++)
+        {
+            spellInventory[i] = null;
+        }
+    }
+    public void SetSpellInInventory(SpellItem spell, int index)
+    {
+        if (spell == null)
+        {
+            AddItemToInventory(spellInventory[index]);
+            spellInventory[index] = null;
+            if (index == currentSpellIndex)
+            {
+                player.playerNetworkManager.currentSpellID.Value = -1;
+            }
+            return;
+        }
+
+        var playerUISpellManager = PlayerUIManager.instance.playerUISpellManager;
+
+        if (playerUISpellManager.hasEquippedSpell(spell))
+        {
+            int fromIndex = 0;
+            for (int i = 0; i < spellInventory.Length; i++)
+            {
+                if (spellInventory[i] == null)
+                    continue;
+
+                if (spellInventory[i].itemID == spell.itemID)
+                {
+                    fromIndex = i;
+                    break;
+                }
+            }
+
+            var oldSpell = spellInventory[index];
+            spellInventory[index] = spell;
+            spellInventory[fromIndex] = oldSpell;
+
+            if (fromIndex == currentSpellIndex)
+            {
+                player.playerNetworkManager.currentSpellID.Value = oldSpell != null ? oldSpell.itemID : -1;
+            }
+
+            if (oldSpell == null)
+            {
+                player.playerEquipmentManager.SwitchSpells();
+            }
+        }
+        else
+        {
+            var oldSpell = spellInventory[index];
+            if (oldSpell != null)
+                AddItemToInventory(oldSpell);
+
+            spellInventory[index] = spell;
+        }
+
+        if (index == currentSpellIndex)
+        {
+            player.playerNetworkManager.currentSpellID.Value = spell != null ? spell.itemID : -1;
+        }
+    }
+
+    void Update()
+    {
+        if (testItem != null && testItemAdded)
+        {
+            AddItemToInventory(testItem);
+            testItemAdded = false;
+        }
+    }
 }

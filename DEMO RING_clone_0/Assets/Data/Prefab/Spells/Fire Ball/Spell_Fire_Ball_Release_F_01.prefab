@@ -5211,7 +5211,7 @@ Rigidbody:
   m_GameObject: {fileID: 2479329178434569337}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 1
+  m_Drag: 0.15
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -5238,7 +5238,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2479329178434569337}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95e21ca5b0d28fd45a20092a2a2abefb, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f45db698d2583746addbf316ddbd404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spellTarget: {fileID: 0}
@@ -5246,8 +5246,9 @@ MonoBehaviour:
     type: 3}
   impactParticleFullCharge: {fileID: 5148641800312607829, guid: c0b1852413cc73b4fb0a76c724b639a8,
     type: 3}
-  damageCollider: {fileID: 8944971573705329145}
+  _damageCollider: {fileID: 8944971573705329145}
   isFullCharge: 0
+  spellSetup: {fileID: 11400000, guid: c6952027d9e741ffad6d17b06f20040a, type: 2}
 --- !u!1 &8326114798120990034
 GameObject:
   m_ObjectHideFlags: 0
@@ -5339,7 +5340,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8326114798120990034}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86c420ebfff649c4a80eb8a6c08c737c, type: 3}
+  m_Script: {fileID: 11500000, guid: 37aa1c9878f1d3245b45f1ec873fb6bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damageCollider: {fileID: 5783355308278983885}

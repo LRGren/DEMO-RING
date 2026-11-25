@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7aa72babf755f6747aafeebf7cf09ad6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 156596
+  packageName: Human Spellcasting Animations
+  packageVersion: 2.0
+  assetPath: Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Spellcasting
+    Animations/Prefabs/Spells/Human_SpellAura_Lightning.prefab
+  uploadId: 824672

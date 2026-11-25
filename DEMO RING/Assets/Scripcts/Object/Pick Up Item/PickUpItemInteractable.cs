@@ -126,22 +126,15 @@ public class PickUpItemInteractable : Interactable
 
     private IEnumerator TrackDroppingCreaturePosition()
     {
-        AICharacterManager droppingCreature = NetworkManager.Singleton.SpawnManager.SpawnedObjects[droppingCreatureID.Value].GetComponent<AICharacterManager>();
-        bool tracking = false;
+        if (!NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(droppingCreatureID.Value, out var creature) ||
+            !creature.TryGetComponent(out AICharacterManager droppingCreature))
+            yield break;
 
-        if (droppingCreature != null)
-            tracking = true;
-
-        if (tracking)
+        while (gameObject.activeSelf && droppingCreature)
         {
-            while (gameObject.activeSelf)
-            {
-                transform.position = droppingCreature.characterCombatManager.lockOnTransform.position;
-                yield return null;
-            }
+            transform.position = droppingCreature.characterCombatManager.lockOnTransform.position;
+            yield return null;
         }
-
-        yield return null;
     }
 
     [ServerRpc(RequireOwnership = false)]

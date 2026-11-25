@@ -92,6 +92,11 @@ public class MeleeWeaponDamageCollider : DamageCollider
 
     }
 
+    protected override CharacterManager GetAttackingCharacter()
+    {
+        return characterCasuingDamage;
+    }
+
     protected override void CalculateDirectionToAttacker(CharacterManager damageTarget)
     {
         directionToAttacker = (characterCasuingDamage.transform.position - damageTarget.transform.position).normalized;

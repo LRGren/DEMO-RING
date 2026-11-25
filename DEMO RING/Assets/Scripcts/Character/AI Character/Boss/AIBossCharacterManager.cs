@@ -77,7 +77,7 @@ public class AIBossCharacterManager : AICharacterManager
             currentState = bossSleepState;
         }
 
-        if (!hasBeenAwakened.Value)
+        if (!isDead.Value && !hasBeenAwakened.Value)
         {
             animator.Play(sleepAnimation);
         }

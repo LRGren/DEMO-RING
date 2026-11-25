@@ -158,7 +158,12 @@ public class PlayerManager : CharacterManager
         //如果是房主，当前角色数据会在游戏开始时加载,所以不需要在这里加载
         if (IsOwner && !IsServer)
         {
-            LoadGameFromCurrentCharacterData(ref WorldSaveGameManager.instance.currentCharacterData);
+            var saveManager = WorldSaveGameManager.instance;
+            if (!PlayerUIManager.instance.ApplyPreparedClientCharacter(this) &&
+                saveManager.currentCharacterData != null)
+            {
+                LoadGameFromCurrentCharacterData(ref saveManager.currentCharacterData);
+            }
         }
     }
 

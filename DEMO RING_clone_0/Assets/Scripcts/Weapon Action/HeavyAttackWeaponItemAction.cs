@@ -31,7 +31,7 @@ public class HeavyAttackWeaponItemAction : WeaponItemAction
         if (playerPerformingAction.playerNetworkManager.currentStamina.Value <= 0)
             return;
 
-        if (playerPerformingAction.playerCombatManager.canPerformJumpAttack && (!playerPerformingAction.playerLocomotionManager.isGrounded || playerPerformingAction.playerNetworkManager.isJumping.Value))
+        if (playerPerformingAction.playerLocomotionManager.CanStartJumpAttack())
         {
             PerformJumpAttack(playerPerformingAction, weaponPerformingAction);
             return;
@@ -99,13 +99,11 @@ public class HeavyAttackWeaponItemAction : WeaponItemAction
 
     private void PerformJumpAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
     {
-        if (playerPerformingAction.isPerformingAction)
-            return;
-
-        if (playerPerformingAction.playerNetworkManager.isTwoHandingWeapon.Value)
-            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.JumpHeavyAttack01, th_jump_Attack_01, true);
-        else
-            playerPerformingAction.playerAnimatorManager.PlayerTargetAttackActionAnimation(weaponPerformingAction, AttackType.JumpHeavyAttack01, jump_Attack_01, true);
+        string airborneState = playerPerformingAction.playerNetworkManager.isTwoHandingWeapon.Value
+            ? th_jump_Attack_01
+            : jump_Attack_01;
+        playerPerformingAction.playerLocomotionManager.PerformJumpAttack(
+            weaponPerformingAction, AttackType.JumpHeavyAttack01, airborneState);
     }
 
 }

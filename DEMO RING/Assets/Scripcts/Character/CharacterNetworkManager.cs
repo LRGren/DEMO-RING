@@ -98,10 +98,13 @@ public class CharacterNetworkManager : NetworkBehaviour
 
     public void OnLockOnTargetIDChange(ulong oldID, ulong newID)
     {
-        if (!IsOwner)
-        {
-            character.characterCombatManager.currentTarget = NetworkManager.Singleton.SpawnManager.SpawnedObjects[newID].GetComponent<CharacterManager>();
-        }
+        if (IsOwner)
+            return;
+
+        character.characterCombatManager.currentTarget =
+            NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(newID, out var target)
+                ? target.GetComponent<CharacterManager>()
+                : null;
     }
 
     public void OnIsLockOnChanged(bool old, bool isLockedOn)
@@ -442,7 +445,11 @@ public class CharacterNetworkManager : NetworkBehaviour
         TakeCriticalDamageEffect damageEffect = Instantiate(WorldCharacterEffectsManager.instance.takeCriticalDamageEffect);
 
         if (damageCharacter.IsOwner)
+        {
             damageCharacter.characterNetworkManager.isBeingRiposted.Value = true;
+            if (damageCharacter.characterNetworkManager is AICharacterNetworkManager enemyNetwork)
+                enemyNetwork.SetPendingCriticalDeathState(backstab: false);
+        }
 
         damageEffect.physicalDamage = physicalDamage;
         damageEffect.magicalDamage = magicalDamage;
@@ -520,7 +527,11 @@ public class CharacterNetworkManager : NetworkBehaviour
         TakeCriticalDamageEffect damageEffect = Instantiate(WorldCharacterEffectsManager.instance.takeCriticalDamageEffect);
 
         if (damageCharacter.IsOwner)
+        {
             damageCharacter.characterNetworkManager.isBeingRiposted.Value = true;
+            if (damageCharacter.characterNetworkManager is AICharacterNetworkManager enemyNetwork)
+                enemyNetwork.SetPendingCriticalDeathState(backstab: true);
+        }
 
         damageEffect.physicalDamage = physicalDamage;
         damageEffect.magicalDamage = magicalDamage;

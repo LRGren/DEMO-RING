@@ -11,6 +11,8 @@ public class AICharacterInventoryManager : CharacterInventoryManager
     public int dropItemChance = 50;
     [SerializeField] private List<Item> lootItems = new List<Item>();
 
+    private GameObject droppedItem;
+
     protected override void Awake()
     {
         base.Awake();
@@ -31,14 +33,23 @@ public class AICharacterInventoryManager : CharacterInventoryManager
             return;
 
         Item itemToDrop = lootItems[Random.Range(0, lootItems.Count)];
+        droppedItem = Instantiate(WorldItemDatabase.instance.characterDropPickUpItemPrefab);
+        droppedItem.transform.position = transform.position;
 
-        GameObject droppedItemPrefab = Instantiate(WorldItemDatabase.instance.characterDropPickUpItemPrefab);
-        PickUpItemInteractable pickUpItemInteractable = droppedItemPrefab.GetComponent<PickUpItemInteractable>();
+        PickUpItemInteractable pickUpItemInteractable = droppedItem.GetComponent<PickUpItemInteractable>();
 
-        pickUpItemInteractable.GetComponent<NetworkObject>().Spawn();
         pickUpItemInteractable.itemID.Value = itemToDrop.itemID;
         pickUpItemInteractable.itemPosition.Value = transform.position;
         pickUpItemInteractable.droppingCreatureID.Value = aiCharacterManager.NetworkObjectId;
+        pickUpItemInteractable.GetComponent<NetworkObject>().Spawn();
+    }
+
+    public void ClearDroppedItem()
+    {
+        if (droppedItem != null)
+        {
+            Destroy(droppedItem);
+        }
     }
 
 }
