@@ -38,9 +38,11 @@ public class AICharacterInventoryManager : CharacterInventoryManager
 
         PickUpItemInteractable pickUpItemInteractable = droppedItem.GetComponent<PickUpItemInteractable>();
 
-        pickUpItemInteractable.itemID.Value = itemToDrop.itemID;
-        pickUpItemInteractable.itemPosition.Value = transform.position;
-        pickUpItemInteractable.droppingCreatureID.Value = aiCharacterManager.NetworkObjectId;
+        pickUpItemInteractable.item = itemToDrop;
+        // Initialize the spawn state before Netcode binds the drop's variables.
+        pickUpItemInteractable.itemID.Reset(itemToDrop.itemID);
+        pickUpItemInteractable.itemPosition.Reset(transform.position);
+        pickUpItemInteractable.droppingCreatureID.Reset(aiCharacterManager.NetworkObjectId);
         pickUpItemInteractable.GetComponent<NetworkObject>().Spawn();
     }
 

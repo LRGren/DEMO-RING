@@ -157,7 +157,7 @@ public class AICharacterManager : CharacterManager
         // Give Every Player Some Gold When This AI Character Dies
         if (IsOwner)
         {
-            var players = FindObjectsOfType<PlayerNetworkManager>();
+            var players = FindObjectsByType<PlayerNetworkManager>(FindObjectsSortMode.InstanceID);
             foreach (var player in players)
             {
                 if (Vector3.Distance(player.transform.position, transform.position) > goldDropRange)

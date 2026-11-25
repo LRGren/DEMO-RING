@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
+using Unity.Netcode.Transports.SinglePlayer;
 
 public class WorldSaveGameManager : MonoBehaviour
 {
@@ -76,6 +77,26 @@ public class WorldSaveGameManager : MonoBehaviour
         string fileName = slot.ToString();
 
         return fileName;
+    }
+
+    public bool TryStartSinglePlayer()
+    {
+        var network = NetworkManager.Singleton;
+        if (!network || network.ShutdownInProgress)
+            return false;
+
+        if (network.IsListening)
+            return network.IsHost &&
+                   network.NetworkConfig.NetworkTransport is SinglePlayerTransport;
+
+        if (!network.TryGetComponent<SinglePlayerTransport>(out var transport))
+        {
+            Debug.LogError("Single Player Transport is missing.");
+            return false;
+        }
+
+        network.NetworkConfig.NetworkTransport = transport;
+        return network.StartHost();
     }
 
     public bool HasEmptyCharacterSlot()
@@ -231,14 +252,19 @@ public class WorldSaveGameManager : MonoBehaviour
         saveFileDataWriter.saveFileName = saveFileName;
 
         currentCharacterData = saveFileDataWriter.LoadSaveFile();
+        if (currentCharacterData == null)
+            return;
 
-        if (currentCharacterData != null && !PlayerUIManager.instance.IsParrelSyncClone)
-            LoadWorldScene(worldSceneIndex);
+        if (!TryStartSinglePlayer())
+            return;
+
+        LoadWorldScene(worldSceneIndex);
     }
 
     public void SaveGame()
     {
-        if (PlayerUIManager.instance && PlayerUIManager.instance.IsParrelSyncClone)
+        var network = NetworkManager.Singleton;
+        if (!network || !network.IsServer || !player || currentCharacterData == null)
             return;
 
         saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(currentCharacterSlotBeingUsed);

@@ -159,8 +159,7 @@ public class PlayerManager : CharacterManager
         if (IsOwner && !IsServer)
         {
             var saveManager = WorldSaveGameManager.instance;
-            if (!PlayerUIManager.instance.ApplyPreparedClientCharacter(this) &&
-                saveManager.currentCharacterData != null)
+            if (saveManager.currentCharacterData != null)
             {
                 LoadGameFromCurrentCharacterData(ref saveManager.currentCharacterData);
             }

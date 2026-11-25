@@ -201,7 +201,8 @@ public class PlayerBodyManager : MonoBehaviour
             femaleObject.SetActive(true);
         }
 
-        player.playerNetworkManager.isMale.Value = isMale;
+        if (player.IsSpawned && player.IsOwner)
+            player.playerNetworkManager.isMale.Value = isMale;
         ToggleEquipmentPreview(isShowingEquipmentPreview);
     }
 

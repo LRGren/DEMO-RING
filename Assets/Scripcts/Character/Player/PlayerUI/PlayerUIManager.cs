@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -10,11 +11,6 @@ public class PlayerUIManager : MonoBehaviour
 
     [Header("Network JOIN")]
     [SerializeField] private bool startAsClient;
-    public bool IsParrelSyncClone { get; private set; }
-    private StartingClassDefinition clientStartingClass;
-    private string clientCharacterName;
-    private AppearanceSaveData clientAppearance;
-    private bool clientIsMale;
 
     [HideInInspector] public PlayerUIHudManager playerUIHudManager;
     [HideInInspector] public PlayerUIPopUpManager playerUIPopUpManager;
@@ -30,10 +26,6 @@ public class PlayerUIManager : MonoBehaviour
 
     private void Awake()
     {
-#if UNITY_EDITOR
-        string directory = System.IO.Path.GetDirectoryName(Application.dataPath);
-        IsParrelSyncClone = System.IO.File.Exists(System.IO.Path.Combine(directory, ".clone"));
-#endif
         if (instance == null)
         {
             instance = this;
@@ -66,43 +58,15 @@ public class PlayerUIManager : MonoBehaviour
         }
     }
 
-    public void PrepareClientCharacter(string characterName, StartingClassDefinition startingClass,
-        AppearanceSaveData appearance = null, bool isMale = false)
-    {
-        clientCharacterName = characterName;
-        clientStartingClass = startingClass;
-        clientAppearance = appearance;
-        clientIsMale = isMale;
-        WorldSaveGameManager.instance.currentCharacterData = new CharacterSaveData();
-        WorldSaveGameManager.instance.currentCharacterSlotBeingUsed = CharacterSlot.NO_SLOT;
-    }
-
-    public bool ApplyPreparedClientCharacter(PlayerManager player)
-    {
-        if (!IsParrelSyncClone || !clientStartingClass ||
-            WorldSaveGameManager.instance.currentCharacterSlotBeingUsed != CharacterSlot.NO_SLOT)
-            return false;
-
-        if (clientAppearance != null)
-        {
-            player.playerBodyManager.ToggleBodyType(clientIsMale);
-            player.playerBodyManager.LoadAppearance(clientAppearance);
-        }
-
-        player.InitializeNewCharacter(clientCharacterName, clientStartingClass);
-        return true;
-    }
-
     private IEnumerator SwitchToClient()
     {
         var network = NetworkManager.Singleton;
         if (!network || network.IsClient && !network.IsHost)
             yield break;
 
-        if (IsParrelSyncClone && !clientStartingClass &&
-            WorldSaveGameManager.instance.currentCharacterData == null)
+        if (!network.TryGetComponent<UnityTransport>(out var transport))
         {
-            Debug.LogWarning("Press Start and prepare a character before joining.");
+            Debug.LogError("Unity Transport is missing.");
             yield break;
         }
 
@@ -112,6 +76,7 @@ public class PlayerUIManager : MonoBehaviour
         while (network.ShutdownInProgress)
             yield return null;
 
+        network.NetworkConfig.NetworkTransport = transport;
         network.StartClient();
     }
 

@@ -89,7 +89,7 @@ public class FogWallInteractable : Interactable
         }
     }
 
-    [ServerRpc(RequireOwnership = false)]
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void AllowPlayerToPassThroughFogWallServerRpc(ulong clientId)
     {
         AllowPlayerToPassThroughFogWallClientRpc(clientId);

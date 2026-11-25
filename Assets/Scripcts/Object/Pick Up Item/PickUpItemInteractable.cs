@@ -137,7 +137,7 @@ public class PickUpItemInteractable : Interactable
         }
     }
 
-    [ServerRpc(RequireOwnership = false)]
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     private void DestroyItemServerRpc()
     {
         if (!IsServer)

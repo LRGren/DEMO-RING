@@ -269,7 +269,7 @@ public class CharacterNetworkManager : NetworkBehaviour
     #endregion
 
     #region Damage
-    [ServerRpc(RequireOwnership = false)]
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void NotifyTheServerOfCharacterDamageServerRpc(
         ulong damageCharacterID, ulong charcterCausingDamageID,
         float physicalDamage,
@@ -352,11 +352,11 @@ public class CharacterNetworkManager : NetworkBehaviour
             poiseDamage, staminaCost, angleHitFrom, contactPoint);
     }
 
-    [ServerRpc(RequireOwnership = false)]
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void NotifyTheServerOfBlockedDamageServerRpc(ulong attackerID,
         float physicalDamage, float magicalDamage, float fireDamage, float holyDamage, float lightningDamage,
         float poiseDamage, float staminaCost, float angleHitFrom, Vector3 contactPoint,
-        ServerRpcParams rpcParams = default)
+        RpcParams rpcParams = default)
     {
         if (!NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(attackerID, out NetworkObject attackerObject)
             || attackerObject.OwnerClientId != rpcParams.Receive.SenderClientId
@@ -393,7 +393,7 @@ public class CharacterNetworkManager : NetworkBehaviour
     }
 
     // Riposte
-    [ServerRpc(RequireOwnership = false)]
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void NotifyTheServerOfRiposteServerRpc(
         ulong damageCharacterID,
         ulong charcterCausingDamageID,
@@ -470,7 +470,7 @@ public class CharacterNetworkManager : NetworkBehaviour
     }
 
     // Backstab
-    [ServerRpc(RequireOwnership = false)]
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void NotifyTheServerOfBackstabServerRpc(
         ulong damageCharacterID,
         ulong charcterCausingDamageID,
@@ -554,7 +554,7 @@ public class CharacterNetworkManager : NetworkBehaviour
     #endregion
 
     #region Parry
-    [ServerRpc(RequireOwnership = false)]
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void NotifyTheServerOfCharacterParriedServerRpc(ulong charcterCausingDamageID)
     {
         if (IsServer)
