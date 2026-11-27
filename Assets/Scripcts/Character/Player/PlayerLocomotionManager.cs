@@ -380,20 +380,23 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
             (!isGrounded || (player.playerNetworkManager.isJumping.Value && yVelocity.y < 0f));
     }
 
-    public void PerformJumpAttack(WeaponItem weapon, AttackType attackType, string airborneState)
+    public void PerformJumpAttack(WeaponItem weapon, AttackType attackType, string airborneState,
+        string groundLightAttackState = null)
     {
         if (player.isPerformingAction || queuedJumpWeapon != null)
             return;
 
         int layer = player.animator.GetLayerIndex(ActionLayer);
-        string lateState = ActionLayer + ".Jump Attacks." + airborneState + "_Ground_Attack";
+        string lateState = groundLightAttackState ??
+            (ActionLayer + ".Jump Attacks." + airborneState + "_Ground_Attack");
         if (lateJumpAttackWindow > 0f && layer >= 0 &&
-            player.animator.HasState(layer, Animator.StringToHash(lateState)) && IsLandingSoon())
+            (groundLightAttackState != null || player.animator.HasState(layer, Animator.StringToHash(lateState))) &&
+            IsLandingSoon())
         {
             queuedJumpWeapon = weapon;
             queuedRightWeapon = player.playerInventoryManager.currentRightHandWeapon;
             queuedLeftWeapon = player.playerInventoryManager.currentLeftHandWeapon;
-            queuedJumpAttackType = attackType;
+            queuedJumpAttackType = groundLightAttackState != null ? AttackType.LightAttack01 : attackType;
             queuedGroundAttackState = lateState;
             queuedJumpUsesRightHand = player.playerNetworkManager.isUsingRightHand.Value;
             queuedJumpTwoHanded = player.playerNetworkManager.isTwoHandingWeapon.Value;
@@ -454,6 +457,9 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         ClearQueuedJumpAttack();
 
         player.playerCombatManager.DisableCanPerformJumpAttack();
+        if (attackType == AttackType.LightAttack01)
+            network.isJumping.Value = false;
+
         network.SetCharacterActionHand(useRightHand);
         network.currentWeaponBeingUsed.Value = weapon.itemID;
         player.playerAnimatorManager.PlayerTargetAttackActionAnimation(

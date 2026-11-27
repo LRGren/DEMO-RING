@@ -19,6 +19,9 @@ public class TitleScreenManager : MonoBehaviour
 
     [Header("Character Creation")]
     private string characterName = "Tarnished";
+    [SerializeField] GameObject characterCreation_NameInputMenu;
+    [SerializeField] TMP_InputField characterNameInputField;
+
     public PlayerManager previewPlayer;
     private StartingClassDefinition selectedStartingClass;
     public StartingClass currentSelectedStartingClass;
@@ -83,8 +86,11 @@ public class TitleScreenManager : MonoBehaviour
         var appearance = previewPlayer.playerBodyManager.GetAppearanceData();
         bool isMale = previewPlayer.playerBodyManager.IsMaleBody;
 
+        var sessionManager = WorldGameSessionManager.instance;
         var saveManager = WorldSaveGameManager.instance;
-        if (!saveManager.TryStartSinglePlayer())
+
+        previewPlayer.gameObject.SetActive(false);
+        if (!sessionManager.TryStartSinglePlayer())
             return;
 
         var playerObject = NetworkManager.Singleton.LocalClient?.PlayerObject;
@@ -259,6 +265,26 @@ public class TitleScreenManager : MonoBehaviour
         NAMEButton.Select();
     }
 
+    // ------------------- Character Name Input ------------------- //
+    public void OpenCharacterNameInputMenu()
+    {
+        characterCreation_NameInputMenu.SetActive(true);
+        characterNameInputField.Select();
+    }
+
+    public void CloseCharacterNameInputMenu()
+    {
+        characterCreation_NameInputMenu.SetActive(false);
+        NAMEButton.Select();
+    }
+
+    public void SetCharacterName()
+    {
+        if (string.IsNullOrEmpty(characterNameInputField.text))
+            return;
+        characterName = characterNameInputField.text;
+        CloseCharacterNameInputMenu();
+    }
 
     // ------------------- Character Customization ------------------- //
     public void ToggleEquipmentPreview(bool isOn)

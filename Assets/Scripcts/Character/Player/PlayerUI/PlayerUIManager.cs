@@ -9,9 +9,6 @@ public class PlayerUIManager : MonoBehaviour
 {
     public static PlayerUIManager instance;
 
-    [Header("Network JOIN")]
-    [SerializeField] private bool startAsClient;
-
     [HideInInspector] public PlayerUIHudManager playerUIHudManager;
     [HideInInspector] public PlayerUIPopUpManager playerUIPopUpManager;
     [HideInInspector] public PlayerUICharacterMenuManager playerUICharacterMenuManager;
@@ -47,37 +44,6 @@ public class PlayerUIManager : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-    }
-
-    private void Update()
-    {
-        if (startAsClient)
-        {
-            startAsClient = false;
-            StartCoroutine(SwitchToClient());
-        }
-    }
-
-    private IEnumerator SwitchToClient()
-    {
-        var network = NetworkManager.Singleton;
-        if (!network || network.IsClient && !network.IsHost)
-            yield break;
-
-        if (!network.TryGetComponent<UnityTransport>(out var transport))
-        {
-            Debug.LogError("Unity Transport is missing.");
-            yield break;
-        }
-
-        if (network.IsListening)
-            network.Shutdown();
-
-        while (network.ShutdownInProgress)
-            yield return null;
-
-        network.NetworkConfig.NetworkTransport = transport;
-        network.StartClient();
     }
 
     public void CloseAllWindows()

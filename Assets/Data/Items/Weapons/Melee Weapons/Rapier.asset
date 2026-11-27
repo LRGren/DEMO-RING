@@ -18,6 +18,7 @@ MonoBehaviour:
     openings.
   itemID: 10011
   itemWeight: 2.5
+  dualWieldGroup: 0
   weaponAnimator: {fileID: 22100000, guid: c105071075868a7438869ac1afddb2d9, type: 2}
   weaponType: 0
   weaponClass: 1
@@ -64,7 +65,8 @@ MonoBehaviour:
   jumpHeavyAttackStaminaModifier: 1.5
   oh_RB_Action: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b, type: 2}
   oh_RT_Action: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8, type: 2}
-  oh_LB_Attack_Action: {fileID: 0}
+  oh_LB_Attack_Action: {fileID: 11400000, guid: 302e5e9a98cf91648900a52e926fb893,
+    type: 2}
   oh_LB_Block_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
   ashOfWar_Action: {fileID: 0}
   wooshes:

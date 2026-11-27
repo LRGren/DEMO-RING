@@ -130,10 +130,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 3.7632494
-  m_Height: 10.000001
-  m_Direction: 0
-  m_Center: {x: -0.0000015611381, y: 8.830261, z: 0.0000011784878}
+  m_Radius: 5
+  m_Height: 17
+  m_Direction: 1
+  m_Center: {x: -0.0000014551108, y: 5.235806, z: -0.000031830088}
 --- !u!114 &2014818975539460984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,6 +258,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -279,7 +284,9 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}

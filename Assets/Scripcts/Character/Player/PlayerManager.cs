@@ -155,13 +155,14 @@ public class PlayerManager : CharacterManager
 
         //如果不是房主，本地玩家需要重新设置状态条最大值和当前值 因为房主的数值会同步过来
         //否则会导致Player Network Manager的数据不会更新
+        //同时，需要把坐标和旋转同步过来 因为房主的坐标和旋转会同步过来s
         //如果是房主，当前角色数据会在游戏开始时加载,所以不需要在这里加载
         if (IsOwner && !IsServer)
         {
             var saveManager = WorldSaveGameManager.instance;
             if (saveManager.currentCharacterData != null)
             {
-                LoadGameFromCurrentCharacterData(ref saveManager.currentCharacterData);
+                LoadGameFromCurrentCharacterData(ref saveManager.currentCharacterData, false);
             }
         }
     }
@@ -597,7 +598,7 @@ public class PlayerManager : CharacterManager
         }
     }
 
-    public void LoadGameFromCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData)
+    public void LoadGameFromCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData, bool restoreSavedPosition = true)
     {
         playerNetworkManager.characterName.Value = currentCharacterSaveData.characterName;
 
@@ -610,9 +611,12 @@ public class PlayerManager : CharacterManager
             currentCharacterSaveData.yPosition,
             currentCharacterSaveData.zPosition);
 
-        characterController.enabled = false;
-        transform.position = myPosition;
-        characterController.enabled = true;
+        if (restoreSavedPosition)
+        {
+            characterController.enabled = false;
+            transform.position = myPosition;
+            characterController.enabled = true;
+        }
 
         playerNetworkManager.currentGold.Value = currentCharacterSaveData.currentGold;
         PlayerUIManager.instance.playerUIHudManager.UpdateGoldText(playerNetworkManager.currentGold.Value);

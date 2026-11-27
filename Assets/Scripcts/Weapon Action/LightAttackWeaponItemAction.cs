@@ -175,11 +175,11 @@ public class LightAttackWeaponItemAction : WeaponItemAction
 
     public void PerformJumpAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
     {
-        string airborneState = playerPerformingAction.playerNetworkManager.isTwoHandingWeapon.Value
-            ? th_jump_Attack_01
-            : jump_Attack_01;
+        bool isTwoHanding = playerPerformingAction.playerNetworkManager.isTwoHandingWeapon.Value;
+        string airborneState = isTwoHanding ? th_jump_Attack_01 : jump_Attack_01;
+        string groundLightAttackState = isTwoHanding ? th_light_Attack_01 : light_Attack_01;
         playerPerformingAction.playerLocomotionManager.PerformJumpAttack(
-            weaponPerformingAction, AttackType.JumpLightAttack01, airborneState);
+            weaponPerformingAction, AttackType.JumpLightAttack01, airborneState, groundLightAttackState);
     }
 
 }

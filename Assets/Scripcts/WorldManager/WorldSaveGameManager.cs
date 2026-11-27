@@ -79,26 +79,6 @@ public class WorldSaveGameManager : MonoBehaviour
         return fileName;
     }
 
-    public bool TryStartSinglePlayer()
-    {
-        var network = NetworkManager.Singleton;
-        if (!network || network.ShutdownInProgress)
-            return false;
-
-        if (network.IsListening)
-            return network.IsHost &&
-                   network.NetworkConfig.NetworkTransport is SinglePlayerTransport;
-
-        if (!network.TryGetComponent<SinglePlayerTransport>(out var transport))
-        {
-            Debug.LogError("Single Player Transport is missing.");
-            return false;
-        }
-
-        network.NetworkConfig.NetworkTransport = transport;
-        return network.StartHost();
-    }
-
     public bool HasEmptyCharacterSlot()
     {
         saveFileDataWriter = new SaveFileDataWriter();
@@ -255,7 +235,7 @@ public class WorldSaveGameManager : MonoBehaviour
         if (currentCharacterData == null)
             return;
 
-        if (!TryStartSinglePlayer())
+        if (!WorldGameSessionManager.instance.TryStartSinglePlayer())
             return;
 
         LoadWorldScene(worldSceneIndex);
@@ -355,25 +335,6 @@ public class WorldSaveGameManager : MonoBehaviour
             DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_10);
         characterSlot10 = saveFileDataWriter.LoadSaveFile();
     }
-
-    /*public IEnumerator void LoadWorldScene(int buildIndex)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(worldSceneIndex);
-
-        // 等待场景完全加载完成后再设置角色位置。
-        // 如果一调用 LoadSceneAsync 就立刻传送角色，此时世界场景的地面碰撞体还没生成，
-        // 角色会被传送到空中并持续下落，掉出地图。
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
-        string sceneName = SceneUtility.GetScenePathByBuildIndex(buildIndex);
-        NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-
-        player.LoadGameFromCurrentCharacterData(ref currentCharacterData);
-
-        //yield return null;
-    }*/
 
     public void LoadWorldScene(int buildIndex)
     {

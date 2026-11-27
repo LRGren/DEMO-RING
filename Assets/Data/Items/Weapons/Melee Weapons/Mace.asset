@@ -17,13 +17,14 @@ MonoBehaviour:
   itemDescription: A compact iron mace that delivers heavy blows at close range.
   itemID: 10009
   itemWeight: 4.5
+  dualWieldGroup: 0
   weaponAnimator: {fileID: 22100000, guid: dd7f717c533941318cc53ee15da6d26c, type: 2}
   weaponType: 0
   weaponClass: 1
   weaponModel: {fileID: 7341409941833069142, guid: dad6ffe563f3b83439f5c511d8fc0a36,
     type: 3}
   useAsymmetricLeftHandSlot: 0
-  isPairedWeapon: 0
+  isPairedWeapon: 1
   strengthREQ: 12
   dexterityREQ: 7
   intelligenceREQ: 0
@@ -63,7 +64,8 @@ MonoBehaviour:
   jumpHeavyAttackStaminaModifier: 1.5
   oh_RB_Action: {fileID: 11400000, guid: 18802e8d12332d04096e8492274a531b, type: 2}
   oh_RT_Action: {fileID: 11400000, guid: 1df7a69a19c7dbc418ec1104055cfdb8, type: 2}
-  oh_LB_Attack_Action: {fileID: 0}
+  oh_LB_Attack_Action: {fileID: 11400000, guid: 302e5e9a98cf91648900a52e926fb893,
+    type: 2}
   oh_LB_Block_Action: {fileID: 11400000, guid: 4609420e1337d1c4d8e66d9d718e80eb, type: 2}
   ashOfWar_Action: {fileID: 0}
   wooshes:

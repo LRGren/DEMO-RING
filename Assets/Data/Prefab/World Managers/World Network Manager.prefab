@@ -58,7 +58,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 01b178acee25301438aca769aaf7bcad, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 0
+    ConnectionApproval: 1
     ConnectionData: 
     EnableTimeResync: 0
     TimeResyncInterval: 30
@@ -122,6 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: []
+  joinRoom: 0
+  createRoom: 0
 --- !u!114 &4044646732767170678
 MonoBehaviour:
   m_ObjectHideFlags: 0

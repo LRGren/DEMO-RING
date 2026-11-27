@@ -55,7 +55,7 @@ public class PickUpItemInteractable : Interactable
     {
         if (!NetworkManager.Singleton.IsHost)
         {
-            gameObject.SetActive(false);
+            // gameObject.SetActive(false);
             return;
         }
 
