@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using System.Linq;
 
 public class PlayerInventoryManager : CharacterInventoryManager
 {
@@ -52,13 +53,82 @@ public class PlayerInventoryManager : CharacterInventoryManager
         base.Awake();
         player = GetComponent<PlayerManager>();
     }
-    public void AddItemToInventory(Item item)
+    public void AddItemToInventory(Item item, int itemCount = 0)
     {
         if (item == null)
             return;
 
-        characterInventory.Add(Instantiate(item));
+        bool stacked = itemCount > 0 &&
+        (
+            TryStackInventoryItemAndQuickSlotItems(item, itemCount)
+            || TryStackRangedProjectileItem(item, itemCount)
+        );
+
+        if (!stacked)
+        {
+            var addedItem = Instantiate(item);
+
+            if (itemCount > 0)
+            {
+                if (addedItem is QuickSlotItem quickSlotItem &&
+                    quickSlotItem.isConsumable &&
+                    !(quickSlotItem is FlaskItem))
+                {
+                    quickSlotItem.SetAmountOfItem(player, itemCount);
+                }
+                else if (addedItem is RangedProjectileItem ammo)
+                {
+                    ammo.currentAmmoAmount = Mathf.Min(itemCount, ammo.maxAmmoAmount);
+                }
+            }
+
+            characterInventory.Add(addedItem);
+        }
+
+        PlayerUIManager.instance.playerUIHudManager.RefreshHUD();
     }
+    private bool TryStackInventoryItemAndQuickSlotItems(Item item, int itemCount)
+    {
+        // 检查背包中是否已经存在相同的物品，如果存在则尝试堆叠
+        var itemInInventory = characterInventory.Find(i => i != null && i.itemID == item.itemID);
+        if (itemInInventory != null && itemInInventory is QuickSlotItem quickSlotItem)
+        {
+            quickSlotItem.SetAmountOfItem(player, quickSlotItem.GetAmountOfItem(player) + itemCount);
+            return true;
+        }
+
+        // 检查快捷栏中是否已经存在相同的物品，如果存在则尝试堆叠
+        itemInInventory = quickSlotItemInventory.ToList().Find(i => i != null && i.itemID == item.itemID);
+        if (itemInInventory != null && itemInInventory is QuickSlotItem quickSlotItem2)
+        {
+            quickSlotItem2.SetAmountOfItem(player, quickSlotItem2.GetAmountOfItem(player) + itemCount);
+            PlayerUIManager.instance.playerUIHudManager.RefreshHUDFromPlayer(player);
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool TryStackRangedProjectileItem(Item item, int itemCount)
+    {
+        var itemInInventory = mainProjectile != null && mainProjectile.itemID == item.itemID ? mainProjectile : null;
+        if (itemInInventory != null && itemInInventory is RangedProjectileItem rangedProjectileItem)
+        {
+            rangedProjectileItem.currentAmmoAmount = Mathf.Min(rangedProjectileItem.currentAmmoAmount + itemCount, rangedProjectileItem.maxAmmoAmount);
+            PlayerUIManager.instance.playerUIHudManager.RefreshHUDFromPlayer(player);
+            return true;
+        }
+
+        itemInInventory = secondaryProjectile != null && secondaryProjectile.itemID == item.itemID ? secondaryProjectile : null;
+        if (itemInInventory != null && itemInInventory is RangedProjectileItem rangedProjectileItem2)
+        {
+            rangedProjectileItem2.currentAmmoAmount = Mathf.Min(rangedProjectileItem2.currentAmmoAmount + itemCount, rangedProjectileItem2.maxAmmoAmount);
+            PlayerUIManager.instance.playerUIHudManager.RefreshHUDFromPlayer(player);
+            return true;
+        }
+        return false;
+    }
+
     public void RemoveItemFromInventory(Item item)
     {
         characterInventory.Remove(item);

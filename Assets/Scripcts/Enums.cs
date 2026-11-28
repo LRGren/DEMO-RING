@@ -52,6 +52,8 @@ public enum WeaponClass
     Axe,
     GreatAxe,
     CurvedSword,
+    Hammer,
+    Rapier,
 }
 
 public enum DualWieldGroup
@@ -60,7 +62,9 @@ public enum DualWieldGroup
     StraightSword,
     Axe,
     CurvedSword,
-    GreatAxe
+    GreatAxe,
+    Hammer,
+    Rapier,
 }
 
 public enum SpellClass

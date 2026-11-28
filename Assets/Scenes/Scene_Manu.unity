@@ -3569,6 +3569,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 636b97032cdd28f4b9ad6df80841469f,
         type: 2}
+    - target: {fileID: 4967183320913126218, guid: ba46be3c9ee99aa41971da263ce4d03b,
+        type: 3}
+      propertyPath: characterDropPickUpItemPrefab
+      value: 
+      objectReference: {fileID: 9081125947541991849, guid: b434f00d2c78efd45889e7525f67afd0,
+        type: 3}
     - target: {fileID: 7703937357132980738, guid: ba46be3c9ee99aa41971da263ce4d03b,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.unity.springbone": {
+      "version": "file:com.unity.springbone-1.2.1-preview.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {}
+    },
     "com.autodesk.fbx": {
       "version": "5.1.5",
       "depth": 1,

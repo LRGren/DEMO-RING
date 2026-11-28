@@ -14,7 +14,6 @@ public class AICharacterManager : CharacterManager
     [HideInInspector] public AICharacterInventoryManager aiCharacterInventoryManager;
 
     [Header("Gold Drop")]
-    public int goldDropRange = 400;
     public int goldDropAmount = 500;
     public int goldDropRandomRange = 100;
 
@@ -154,20 +153,16 @@ public class AICharacterManager : CharacterManager
 
     public override IEnumerator ProcessDeathEvent(bool manuallySelectedDeathAnimation = false)
     {
-        // Give Every Player Some Gold When This AI Character Dies
-        if (IsOwner)
+        if (IsServer)
         {
-            var players = FindObjectsByType<PlayerNetworkManager>(FindObjectsSortMode.InstanceID);
-            foreach (var player in players)
+            foreach (var client in NetworkManager.ConnectedClientsList)
             {
-                if (Vector3.Distance(player.transform.position, transform.position) > goldDropRange)
+                var playerObject = client.PlayerObject;
+                if (!playerObject || !playerObject.TryGetComponent<PlayerNetworkManager>(out var player))
                     continue;
 
                 int randomGoldDrop = Random.Range(goldDropAmount - goldDropRandomRange, goldDropAmount + goldDropRandomRange);
-
-                PlayerUIManager.instance.playerUIHudManager.ShowGoldAdditionText(randomGoldDrop);
-                PlayerUIManager.instance.playerUIHudManager.UpdateGoldText(player.currentGold.Value + randomGoldDrop, true);
-                player.UpdateCurrentGold(player.currentGold.Value + randomGoldDrop);
+                player.SendGoldReward(randomGoldDrop);
             }
         }
 

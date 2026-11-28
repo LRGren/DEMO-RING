@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class Interactable : NetworkBehaviour
+public class Interactable : NetworkBehaviour, IInteractable
 {
     public string InteractableText;
+    string IInteractable.InteractableText => InteractableText;
+
     [SerializeField] protected Collider interactableCollider;
     [SerializeField] protected bool hostOnlyInteractable = false;
 

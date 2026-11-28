@@ -6,7 +6,7 @@ public class PlayerInteractionManager : MonoBehaviour
 {
     PlayerManager player;
 
-    [SerializeField] private List<Interactable> currentInteractableActions;
+    [SerializeField] private List<IInteractable> currentInteractableActions;
 
     void Awake()
     {
@@ -15,7 +15,7 @@ public class PlayerInteractionManager : MonoBehaviour
 
     void Start()
     {
-        currentInteractableActions = new List<Interactable>();
+        currentInteractableActions = new List<IInteractable>();
     }
 
     void FixedUpdate()
@@ -64,7 +64,7 @@ public class PlayerInteractionManager : MonoBehaviour
         RefreshInteractableList();
     }
 
-    public void AddInteractable(Interactable interactable)
+    public void AddInteractable(IInteractable interactable)
     {
         RefreshInteractableList();
 
@@ -72,7 +72,7 @@ public class PlayerInteractionManager : MonoBehaviour
             currentInteractableActions.Add(interactable);
     }
 
-    public void RemoveInteractable(Interactable interactable)
+    public void RemoveInteractable(IInteractable interactable)
     {
         if (currentInteractableActions.Contains(interactable))
             currentInteractableActions.Remove(interactable);

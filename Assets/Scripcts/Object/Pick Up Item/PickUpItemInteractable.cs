@@ -5,12 +5,8 @@ using Unity.Netcode;
 
 public class PickUpItemInteractable : Interactable
 {
-    public PickUpItemType pickUpType;
+    // public PickUpItemType pickUpType;
     public Item item;
-
-    [Header("World Spawned Item")]
-    public int worldSpawnedLootedItemID;
-    public bool hasBeenLooted = false;
 
     [Header("Character Drop Item")]
     public NetworkVariable<int> itemID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -22,10 +18,10 @@ public class PickUpItemInteractable : Interactable
     {
         base.Start();
 
-        if (pickUpType == PickUpItemType.WorldSpawn)
+        /*if (pickUpType == PickUpItemType.WorldSpawn)
         {
             CheckIfItemWasAlreadyLooted();
-        }
+        }*/
     }
 
     public override void OnNetworkSpawn()
@@ -51,7 +47,7 @@ public class PickUpItemInteractable : Interactable
         droppingCreatureID.OnValueChanged -= OnDroppingCreatureIDChanged;
     }
 
-    private void CheckIfItemWasAlreadyLooted()
+    /*private void CheckIfItemWasAlreadyLooted()
     {
         if (!NetworkManager.Singleton.IsHost)
         {
@@ -70,7 +66,7 @@ public class PickUpItemInteractable : Interactable
         {
             gameObject.SetActive(false);
         }
-    }
+    }*/
 
     public override void Interact(PlayerManager player)
     {
@@ -88,38 +84,38 @@ public class PickUpItemInteractable : Interactable
         // Display a message to the player that they have picked up the item
         PlayerUIManager.instance.playerUIPopUpManager.SendItemPopUp(item, 1);
 
-        if (pickUpType == PickUpItemType.WorldSpawn)
+        /*if (pickUpType == PickUpItemType.WorldSpawn)
         {
             if (WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.ContainsKey(worldSpawnedLootedItemID))
             {
                 WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.Remove(worldSpawnedLootedItemID);
             }
             WorldSaveGameManager.instance.currentCharacterData.worldItemsLooted.Add(worldSpawnedLootedItemID, true);
-        }
+        }*/
 
         DestroyItemServerRpc();
     }
 
     private void OnItemIDChanged(int previousValue, int newValue)
     {
-        if (pickUpType != PickUpItemType.CharacterDrop)
-            return;
+        /*if (pickUpType != PickUpItemType.CharacterDrop)
+            return;*/
 
         item = WorldItemDatabase.instance.GetItemByID(itemID.Value);
     }
 
     private void OnItemPositionChanged(Vector3 previousValue, Vector3 newValue)
     {
-        if (pickUpType != PickUpItemType.CharacterDrop)
-            return;
+        /*if (pickUpType != PickUpItemType.CharacterDrop)
+            return;*/
 
         transform.position = itemPosition.Value;
     }
 
     private void OnDroppingCreatureIDChanged(ulong previousValue, ulong newValue)
     {
-        if (pickUpType != PickUpItemType.CharacterDrop)
-            return;
+        /*if (pickUpType != PickUpItemType.CharacterDrop)
+            return;*/
 
         StartCoroutine(TrackDroppingCreaturePosition());
     }

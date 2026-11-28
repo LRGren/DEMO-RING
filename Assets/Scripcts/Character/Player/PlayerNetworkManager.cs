@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.TextCore.Text;
 
 public class PlayerNetworkManager : CharacterNetworkManager
@@ -106,6 +107,30 @@ public class PlayerNetworkManager : CharacterNetworkManager
     public void UpdateCurrentGold(int newGoldAmount)
     {
         currentGold.Value = newGoldAmount;
+    }
+
+    public void SendGoldReward(int amount)
+    {
+        if (!IsServer || !IsSpawned)
+            return;
+
+        GrantGoldRewardRpc(amount, RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
+    }
+
+    [Rpc(SendTo.SpecifiedInParams, InvokePermission = RpcInvokePermission.Server)]
+    private void GrantGoldRewardRpc(int amount, RpcParams rpcParams = default)
+    {
+        if (!IsOwner)
+            return;
+
+        UpdateCurrentGold(currentGold.Value + amount);
+
+        var ui = PlayerUIManager.instance;
+        if (ui && ui.playerUIHudManager)
+        {
+            ui.playerUIHudManager.ShowGoldAdditionText(amount);
+            ui.playerUIHudManager.UpdateGoldText(currentGold.Value, true);
+        }
     }
 
     // Aiming
@@ -737,5 +762,45 @@ public class PlayerNetworkManager : CharacterNetworkManager
             return;
 
         player.playerCombatManager.currentChannelingSpellManager.channelingSpell.DestoryBeamVisual(player);
+    }
+
+    public void SendPersonalDrop(int itemId, Vector3 spwanPosition)
+    {
+        if (!IsServer || !IsSpawned)
+            return;
+
+        NotifyPersonalDropRpc(
+            itemId,
+            spwanPosition,
+            RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
+    }
+
+    [Rpc(SendTo.SpecifiedInParams, InvokePermission = RpcInvokePermission.Server)]
+    private void NotifyPersonalDropRpc(int itemId, Vector3 spawnPosition, RpcParams rpcParams = default)
+    {
+        Debug.Log($"我收到了个人掉落，物品 ID：{itemId}");
+        var item = WorldItemDatabase.instance.GetItemByID(itemId);
+        if (item == null)
+        {
+            Debug.LogError($"物品 ID {itemId} 不存在于数据库中！");
+            return;
+        }
+
+        var droppedItem = Instantiate(WorldItemDatabase.instance.characterDropPickUpItemPrefab);
+
+        LocalCharacterDropItem localCharacterDropItem = droppedItem.GetComponent<LocalCharacterDropItem>();
+        localCharacterDropItem.item = item;
+        localCharacterDropItem.itemCount = 0;
+
+        if (item is QuickSlotItem quickSlotItem && quickSlotItem.isConsumable)
+        {
+            localCharacterDropItem.itemCount = Random.Range(5, 10);
+        }
+        else if (item is RangedProjectileItem)
+        {
+            localCharacterDropItem.itemCount = Random.Range(10, 20);
+        }
+
+        droppedItem.transform.position = spawnPosition;
     }
 }

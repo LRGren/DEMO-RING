@@ -259,6 +259,24 @@ public class WorldSaveGameManager : MonoBehaviour
         saveFileDataWriter.CreateNewCharacterSaveFile(currentCharacterData);
     }
 
+    public void SaveClientInventory()
+    {
+        var network = NetworkManager.Singleton;
+        if (!network || network.IsServer || !player || currentCharacterData == null)
+            return;
+
+        //传输需要保存的数据
+        player.SaveInventoryToCurrentCharacterData(ref currentCharacterData);
+        player.SaveQuickSlotItemsToCurrentCharacterData(ref currentCharacterData);
+        player.SaveRangedProjectilesToCurrentCharacterData(ref currentCharacterData);
+
+        var writer = new SaveFileDataWriter();
+        writer.saveDataDirectoryPath = Application.persistentDataPath;
+        writer.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(currentCharacterSlotBeingUsed);
+
+        writer.CreateNewCharacterSaveFile(currentCharacterData);
+    }
+
     /// <summary>
     /// (临时添加用以测试)保存Boss的觉醒和击败状态
     /// </summary>
@@ -356,6 +374,12 @@ public class WorldSaveGameManager : MonoBehaviour
 
         // 用完立即解绑，避免重复触发
         NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnWorldSceneLoadComplete;
+
+        var loaclWorldPickUps = FindObjectsByType<LocalWorldPickUp>(FindObjectsSortMode.None);
+        foreach (var localWorldPickUp in loaclWorldPickUps)
+        {
+            localWorldPickUp.RefreshFromSave(currentCharacterData);
+        }
 
         player.LoadGameFromCurrentCharacterData(ref currentCharacterData);
     }

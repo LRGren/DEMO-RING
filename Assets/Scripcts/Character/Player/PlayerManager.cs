@@ -516,22 +516,8 @@ public class PlayerManager : CharacterManager
         currentCharacterSaveData.currentSpell09 = playerInventoryManager.spellInventory[8] != null ? playerInventoryManager.spellInventory[8].itemID : -1;
         currentCharacterSaveData.currentSpell10 = playerInventoryManager.spellInventory[9] != null ? playerInventoryManager.spellInventory[9].itemID : -1;
 
-        currentCharacterSaveData.currentQuickSlotItemIndex = playerInventoryManager.currentQuickSlotItemIndex;
-        currentCharacterSaveData.quickSlotItem01 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[0], this);
-        currentCharacterSaveData.quickSlotItem02 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[1], this);
-        currentCharacterSaveData.quickSlotItem03 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[2], this);
-        currentCharacterSaveData.quickSlotItem04 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[3], this);
-        currentCharacterSaveData.quickSlotItem05 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[4], this);
-        currentCharacterSaveData.quickSlotItem06 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[5], this);
-        currentCharacterSaveData.quickSlotItem07 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[6], this);
-        currentCharacterSaveData.quickSlotItem08 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[7], this);
-        currentCharacterSaveData.quickSlotItem09 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[8], this);
-        currentCharacterSaveData.quickSlotItem10 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[9], this);
-
-        // TODO: 需要保存当前的弹药数量 以及当前的弹药类型
-        currentCharacterSaveData.currentMainProjectile = WorldSaveGameManager.instance.GetSerializableRangedProjectileFromRangedProjectileItem(playerInventoryManager.mainProjectile);
-
-        currentCharacterSaveData.currentSecondaryProjectile = WorldSaveGameManager.instance.GetSerializableRangedProjectileFromRangedProjectileItem(playerInventoryManager.secondaryProjectile);
+        SaveQuickSlotItemsToCurrentCharacterData(ref currentCharacterSaveData);
+        SaveRangedProjectilesToCurrentCharacterData(ref currentCharacterSaveData);
 
         // Spell
         if (playerInventoryManager.currentSpell != null)
@@ -543,6 +529,35 @@ public class PlayerManager : CharacterManager
         currentCharacterSaveData.remainingManaFlasks = playerNetworkManager.remainingManaFlasks.Value;
 
         // Inventory
+        SaveInventoryToCurrentCharacterData(ref currentCharacterSaveData);
+    }
+
+    /// <summary>
+    /// 将当前boss的状态保存到当前角色数据中
+    /// </summary>
+    public void SaveGameBossInfoToCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData, string bossID, bool isAwakened, bool isDefeated)
+    {
+        if (!currentCharacterSaveData.bossesAwakened.ContainsKey(bossID))
+        {
+            currentCharacterSaveData.bossesAwakened.Add(bossID, isAwakened);
+        }
+        else
+        {
+            currentCharacterSaveData.bossesAwakened[bossID] = isAwakened;
+        }
+
+        if (!currentCharacterSaveData.bossesDefeated.ContainsKey(bossID))
+        {
+            currentCharacterSaveData.bossesDefeated.Add(bossID, isDefeated);
+        }
+        else
+        {
+            currentCharacterSaveData.bossesDefeated[bossID] = isDefeated;
+        }
+    }
+
+    public void SaveInventoryToCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData)
+    {
         currentCharacterSaveData.weaponInInventory.Clear();
         currentCharacterSaveData.quickSlotItemInInventory.Clear();
         currentCharacterSaveData.rangedProjectileInInventory.Clear();
@@ -573,29 +588,25 @@ public class PlayerManager : CharacterManager
             }
         }
     }
-
-    /// <summary>
-    /// (临时添加用以测试) 将当前boss的状态保存到当前角色数据中
-    /// </summary>
-    public void SaveGameBossInfoToCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData, string bossID, bool isAwakened, bool isDefeated)
+    public void SaveQuickSlotItemsToCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData)
     {
-        if (!currentCharacterSaveData.bossesAwakened.ContainsKey(bossID))
-        {
-            currentCharacterSaveData.bossesAwakened.Add(bossID, isAwakened);
-        }
-        else
-        {
-            currentCharacterSaveData.bossesAwakened[bossID] = isAwakened;
-        }
+        currentCharacterSaveData.currentQuickSlotItemIndex = playerInventoryManager.currentQuickSlotItemIndex;
+        currentCharacterSaveData.quickSlotItem01 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[0], this);
+        currentCharacterSaveData.quickSlotItem02 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[1], this);
+        currentCharacterSaveData.quickSlotItem03 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[2], this);
+        currentCharacterSaveData.quickSlotItem04 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[3], this);
+        currentCharacterSaveData.quickSlotItem05 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[4], this);
+        currentCharacterSaveData.quickSlotItem06 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[5], this);
+        currentCharacterSaveData.quickSlotItem07 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[6], this);
+        currentCharacterSaveData.quickSlotItem08 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[7], this);
+        currentCharacterSaveData.quickSlotItem09 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[8], this);
+        currentCharacterSaveData.quickSlotItem10 = WorldSaveGameManager.instance.GetSerializableQuickSlotItemFromQuickSlotItem(playerInventoryManager.quickSlotItemInventory[9], this);
+    }
 
-        if (!currentCharacterSaveData.bossesDefeated.ContainsKey(bossID))
-        {
-            currentCharacterSaveData.bossesDefeated.Add(bossID, isDefeated);
-        }
-        else
-        {
-            currentCharacterSaveData.bossesDefeated[bossID] = isDefeated;
-        }
+    public void SaveRangedProjectilesToCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData)
+    {
+        currentCharacterSaveData.currentMainProjectile = WorldSaveGameManager.instance.GetSerializableRangedProjectileFromRangedProjectileItem(playerInventoryManager.mainProjectile);
+        currentCharacterSaveData.currentSecondaryProjectile = WorldSaveGameManager.instance.GetSerializableRangedProjectileFromRangedProjectileItem(playerInventoryManager.secondaryProjectile);
     }
 
     public void LoadGameFromCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData, bool restoreSavedPosition = true)

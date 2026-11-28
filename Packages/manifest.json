@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.unity.springbone": "file:com.unity.springbone-1.2.1-preview.tgz",
     "com.unity.ai.navigation": "2.0.17",
     "com.unity.collab-proxy": "2.13.6",
     "com.unity.formats.fbx": "5.1.7",

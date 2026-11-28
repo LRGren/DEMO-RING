@@ -17,10 +17,10 @@ MonoBehaviour:
   itemDescription: A compact iron mace that delivers heavy blows at close range.
   itemID: 10009
   itemWeight: 4.5
-  dualWieldGroup: 0
+  dualWieldGroup: 5
   weaponAnimator: {fileID: 22100000, guid: dd7f717c533941318cc53ee15da6d26c, type: 2}
   weaponType: 0
-  weaponClass: 1
+  weaponClass: 8
   weaponModel: {fileID: 7341409941833069142, guid: dad6ffe563f3b83439f5c511d8fc0a36,
     type: 3}
   useAsymmetricLeftHandSlot: 0
